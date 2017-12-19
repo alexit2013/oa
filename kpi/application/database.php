@@ -17,9 +17,9 @@ return [
     // 数据库名
     'database'        => 'oa',
     // 用户名
-    'username'        => 'oa',
+    'username'        => '',
     // 密码
-    'password'        => 'jiajun@xy',
+    'password'        => '',
     // 端口
     'hostport'        => '3306',
     // 连接dsn

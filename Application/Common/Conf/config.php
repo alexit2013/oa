@@ -30,12 +30,12 @@ return array(
     'DATA_AUTH_KEY'		=> '1*NX+Jds|p!IFqltgD)"?4;ic<{,wuya239Ax^]-', //默认数据加密KEY      
     /* 微信企业号配置 */
     
-    'token' => 'zzy',
-    'corpid'=> 'wx8e318c992b2d1b09',
-    'encodingAesKey' => 'ctLs7eXbGUhmneisGIoGuA3CbGAhsBa9U0g4vakp5T7',
-    'secret' => 'nmg4oG2H_XWPpip87SOnspP77uc2jY3B6Ne3H06lr1w',
-    'appid' => '27',
-    //金融Excel导出
+    'token' => '企业号token',
+    'corpid'=> '企业号id',
+    'encodingAesKey' => '',
+    'secret' => '',
+    'appid' => '',
+    //redis
     'redis_url'=> '127.0.0.1',
     'redis_port'=>'6379',
     'redis_db'=>'2'

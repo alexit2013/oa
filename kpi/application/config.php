@@ -248,11 +248,11 @@ return [
     ],
     /* 微信企业号配置 */
   'wx_config'=>[  
-    'token' => 'zzy',
-    'corpid'=> 'wx8e318c992b2d1b09',
-    'encodingAesKey' => 'ctLs7eXbGUhmneisGIoGuA3CbGAhsBa9U0g4vakp5T7',
-    'secret' => 'AS7g30CMxluH-Hc2e2c7vj2NrZablO35SH7RSRqxlNLhDXA9bAwuRXN51l7TGQuO',
-    'appid' => '1000003',
+    'token' => '',
+    'corpid'=> '',
+    'encodingAesKey' => '',
+    'secret' => '',
+    'appid' => '',
     ],
     'redis'=>[
         'redis_url'=> '127.0.0.1',
