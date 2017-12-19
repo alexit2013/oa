@@ -1,0 +1,156 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<style>
+    .ml1r{margin-left:1rem;}
+    .ridio_margin{margin:4px;}
+    .mt5{margin-top:5px}
+    .down_model{text-decoration:underline;color:#80B2DB;}
+    .down_tip{color: #a0a0a0!important;}
+    .upload_btn{cursor: pointer;}
+    .add_icon{color: #2abb97;position: absolute;top: -9px;right: 16px;font-size: 30px;cursor: pointer;}
+    #up_status{position: relative;display: none;font-weight: bold;}
+    .up_font{position: absolute;top:28px;left:18px;}
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;margin-bottom:1rem;}
+</style>
+            <form action="" method="post" class="form form-horizontal" id="form-article-add">
+                <input type="hidden" name="id" value="<?php echo $data_list['id']; ?>" >
+                <div class="hidden" id="refer_id">
+                    <?php foreach($data_list['refer'] as $k => $v ){ ?>
+                    <input type="hidden" name="refers[]" value="{$v['ask']}" >
+                    <?php } ?>
+                </div>
+                <input type="hidden" id="status">
+                <div class="hidden" id="refer_info">
+                    <ul>
+                        <?php foreach($data_list['refer'] as $k => $v ){ ?>
+                        <li data="{$v['ask']}">
+                        <span>{$v['name']}</span>
+                        <a class="fa fa-times"></a>
+                        </li>
+                        <?php } ?>
+                    </ul>                            
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择报表类型</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <span class="select-box">
+                            <select class="select" name="deptclass_id" id="">
+                                <option value="">请选择</option>
+                                <?php foreach ($data_chart as $key => $value) { ?>
+                                    <option value="<?php echo $value['id']; ?>" <?php if($data_list['deptclass_id']==$value['id']){ echo 'selected';} ?> ><?php echo $value['name']; ?></option>
+                                <?php } ?>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择抄送人</label>
+                    <div class="formControls col-xs-8 col-sm-9" id="branch">
+                        <input id="refer_input" type="text" class="input-text" value="" placeholder="请选择抄送人">
+                        <i class="Hui-iconfont Hui-iconfont-add4 add_icon icon2"></i>
+                    </div>
+                    <div class="obj_add"></div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>排序</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="{$data_list['sort']}" placeholder="请填写排序码" id="sort" name="sort">
+                    </div>
+                </div>
+
+        <div class="form-group col-xs-12 hidden">
+            <label class="col-sm-2 control-label" for="type">抄送：</label>
+            <div class="col-sm-10">
+                <div id="refer_wrap" class="inputbox">
+                    <a class="pull-right btn btn-link text-center" onclick="popup_flow('b');"> <i class="fa fa-user"></i> </a>
+                    <div class="wrap" >
+                        <span class="address_list"></span>
+                        <span class="text" >
+                            <input class="letter" type="text"  >
+                        </span>
+                    </div>
+                    <div class="search dropdown ">
+                        <ul class="dropdown-menu"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <div class="row cl">
+                    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                        <a id="dosubmit" class="btn btn-primary radius ml-20" disabled="disabled">提交</a>
+                        <a href="javascript:;" onclick="window.history.back()" class="btn btn-default radius ml1r">返回</a>
+                    </div>
+                </div>
+            </form>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    // 选择部门员工
+    //选择部门范围
+    $(".icon1").click(function(){
+        $("#branch").click();
+    });
+    $(".icon2").click(function(){
+        $("#refer_input").click();
+    });
+    $("#refer_input").click(function(){
+        //iframe层-父子操作
+        layer.open({
+            type: 2,
+            title: '选择范围',
+            area: ['600px', '550px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: "{:Url('func/popup/read')}"
+        });
+        $("#status").val("5");
+    });
+    $("#dosubmit").click(function(){
+            //             $("#confirm").val("");
+            // $("#confirm_wrap span.address_list span").each(function() {
+            //     $("#confirm").val($("#confirm").val() + $(this).attr("data") + '|');
+            // });
+            // $("#confirm_name").val("");
+            // $("#confirm_name").val($("#confirm_wrap span.address_list").html());
+            $("#refer").val("");
+            $("#refer_wrap span.address_list span").each(function() {
+                $("#refer").val($("#refer").val() + $(this).attr("data") + '|');
+            });
+            $("#refer_name").val("");
+            $("#refer_name").val($("#refer_wrap span.address_list").html());
+                        var str = $("#form-article-add").serialize();
+                        $.ajax({
+                            type: 'POST',
+                            url: '{:Url("update")}',
+                            data:str,
+                            dataType: 'json',
+                            success: function(data){
+                                if(data.status=='1'){
+                                    layer.msg(data.info);
+                                    setTimeout("location.reload();",3000);
+                                }
+
+                            },
+                            error:function(data) {
+                            },
+                        });
+                        
+    });
+    $(function(){
+        var textitem='';
+        var text ='';
+        var referitem='';
+        var refer='';
+        $("#refer_info ul li").each(function(i){
+            textitem = $(this).children('span').text();
+            if(i==$("#refer_info ul li").length-1){
+                text += textitem;
+            }else{
+                text += textitem + '➨';
+            }
+        });
+        $("#refer_input").val(text);        
+    });
+</script>
+{/block}

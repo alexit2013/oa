@@ -1,0 +1,94 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+  {:W('PageHeader/simple',array('name'=>'新建：'.$flow_type['name']))}
+  <form method='post' id="form_data" class="well form-horizontal">
+    <input type="hidden" id="opmode" name="opmode" value="add">
+    <input type="hidden" id="ajax" name="ajax" value="1">
+
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="dept_id">门店*：</label>
+      <div class="col-sm-8">
+        <select class="form-control" name="dept_id" id="dept_id"check="require" msg="请选择门店">
+          <option value="">请选择门店</option>
+          {:fill_option($list['Alldept'])}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="brand_id">品牌*：</label>
+      <div class="col-sm-8">
+        <select class="form-control" name="brand_id" id="brand_id"check="require" msg="请选择品牌">
+          <option value="">请选择品牌</option>
+          {:fill_option($list['Allcarbrand'])}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="series_id">车系*：</label>
+      <div class="col-sm-8">
+        <select class="form-control" name="series_id" id="series_id"check="require" msg="请选择车系">
+          <option value="">请选择车系</option>
+          {:fill_option($list['Allcarseries'])}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="num">台数：</label>
+      <div class="col-sm-8">
+        <input class="form-control"  type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" id="num" name="num" check="require" msg="请输入台数">
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label" for="inputtime">录入日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-daterange input-group" >
+                        <input type="date" class="input-sm form-control text-center" name="inputtime"/>
+                    </div>
+                </div>
+        </div>
+    <div class="clearfix"></div>
+
+    <div class="pull-right">
+      <input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save();">
+      <input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
+    </div>
+  </form>
+</block>
+<block name="js">
+  <script type="text/javascript">
+      $("#brand_id").change(function(){
+            var brand_id=$(this).val();
+            sendAjax("{:U('Singlebrand')}","brand_id=" + brand_id, function(data) {
+                console.log(data);
+              var htmls = "<option value=''>请选择车系</option>";
+               for(i in data.info){
+                 htmls+= "<option value="+data.info[i].id+">"+data.info[i].carseries_name+"</option>";
+               }
+
+                 $("#series_id").html(htmls);
+            })
+        });
+    function save() {
+      sendForm("form_data", "{:U('save')}", "{:U('Seriesdata/index')}");
+    };
+
+    function popup_flow() {
+      winopen("{:U('popup/flow')}",560, 470);
+    };
+
+    $(document).ready(function() {
+      $(document).on("dblclick", ".inputbox .address_list b", function() {
+        $(this).parent().parent().remove();
+      });
+
+      $(document).on("click", ".inputbox .address_list a.del", function() {
+        $(this).parent().parent().remove();
+      });
+
+    });
+  </script>
+</block>

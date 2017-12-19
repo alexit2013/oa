@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title></title>
+		<link rel="stylesheet" href="__INS__/pui/css/planeui.min.css" />
+        <link rel="stylesheet" href="__INS__/Font-Awesome-3.2.1/css/font-awesome.min.css" />		
+		<link rel="stylesheet" href="__INS__/calendar/calendar.css" />
+        <script type="text/javascript" src="__INS__/js/jquery-2.1.1.js" ></script>
+		<script type="text/javascript" src="__INS__/calendar/calendar.js" ></script>
+		<style>
+			*{margin:0; padding:0; list-style:none; }
+			body{ background:#f1f0f7; font:normal 12px/22px 宋体;overflow-x: hidden;}
+			img{ border:0;}
+			a{ text-decoration:none; color:#333;  }
+			ul{margin-bottom: 0;}
+			.mt-10{margin-top:10px;}
+			.mt-20{margin-top:20px;}
+			.mt-30{margin-top:30px;}
+			.mt-50{margin-top:50px;}
+			.mb-20{margin-bottom: 20px;}
+			.mlp5{margin-left:0.5rem;}
+			.padding-init{padding: 0;}
+			.clear{clear: both;}
+			.submit_area{padding: 0 1.2rem;}
+			.select_item{height: 39px;line-height: 39px;background-color:#ffffff;padding-left:1.5rem;}
+			.select_item2{height: 70px;background-color:#ffffff;padding-left:1.5rem;padding-top: 13px;}
+			.select_item3{background-color:#ffffff;padding-left:1.5rem;padding-top: 13px;padding-bottom: 13px;}
+			.ab_ce{position:relative;}
+			.abnormal_cause{height: 132px;background-color:#ffffff;padding-left:1.5rem;}	
+			.border_tb{border-top:1px solid #d4d3d8;border-bottom: 1px solid #d4d3d8;}
+			.border_b{border-bottom: 1px solid #d4d3d8;}
+			.com_box{width: 40px;height: 40px;border: 1px solid #d4d3d8;position: absolute;top: 78px;left: 1.5rem;line-height: 40px;text-align: center;color:#d4d3d8;font-size: 30px;}
+			.com_box2{width: 40px;height: 40px;border: 1px solid #d4d3d8;float: left;}
+			.com_box3{width: 40px;height: 40px;border: 1px solid #d4d3d8;float: left;margin-left: 15px;margin-top:-8px;line-height: 40px;text-align: center;color:#d4d3d8;font-size: 30px;}
+			.com_box2 img{width: 40px;height: 40px;}
+			.com_name{font-weight: 600;width: 40px;height:20px;text-align: center;}
+			.ml_10p{margin-left:55px;}
+			.ml_20p{margin-left:110px;}	
+			.flow_tit{height: 30px;line-height: 30px;padding-left:1.5rem;}
+			.flow_area{height: 75px;background-color:#ffffff;padding-left:1.5rem;}
+			.remain_time{float: right;}
+			.remain_day{float: right;margin:0 1rem;}
+			.tip_color{color: #00b200;}
+			.c-red{color:red;}
+			.calendar_tip{background-color: #fff;padding-left: 9%;padding-top: 1rem;padding-bottom: 0.9rem;}
+			.status1{float: left;width: 20%;}
+			.status2{float: left;width: 20%;}
+			.status3{float: left;width: 20%;}
+			.normal{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #00b200;margin-top:0.2rem;display: block;float: left;}
+			.normal_size{font-size: 1rem;line-height:1rem;padding-left: .3rem;}
+			.late{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #00b200;margin-top:0.2rem;display: block;float: left;}
+			.forget{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #00b200;margin-top:0.2rem;display: block;float: left;}
+			.late_size{font-size: 1rem;line-height:1rem;padding-left: .3rem;}
+			.forget_size{font-size: 1rem;line-height:1rem;padding-left: .3rem;}			
+			.calendar-date .item {
+			    border-right: 1px solid #eee !important;
+			    border-bottom: 1px solid #eee !important;
+			}
+			.calendar-date .item{
+				width: 13%;
+				height: 60px !important;
+				padding: 1% 2% !important;
+				margin: 0 !important;
+				text-align: left;
+				line-height: 20px !important;
+			}			
+			.calendar-date .item{
+				border-radius: 0 !important;
+			}	
+			.hidden_date {
+			    visibility: visible !important;
+			}		
+			li.item-curMonth{
+				position: relative !important;
+			}
+			#short{
+				width: 90%;
+				height: 20px;
+				line-height: 15px;
+				text-align: right;
+				color: #ffa944;
+				font-size: 1em;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+			}
+			.item-curDay #short{
+				color: #fff !important;
+			}
+			.self_tip{
+				width: 70%;
+				height: 40px;
+				background-color: rgba(0,0,0,.4);
+				position: fixed;
+				z-index: 99;
+				top: 30%;
+				left: 50%;
+				margin-left: -35%;
+				display: none;
+				line-height: 40px;
+				text-align: center;
+				color: #ffffff;
+			}	
+		</style>
+	</head>
+	<body>
+		<div id="calendar" class="calendar"></div>
+		<div class="calendar_tip">
+			<div class="clear"></div>
+		</div>
+		<div class="flow_tit"><span id="current_time"></span><span class="mlp5">排班详情</span></div>
+		<div class="mb-20 float_s">
+			<div class="select_item3 border_tb" id="choose_date"></div>
+			<input type="hidden" id="emp_no" name="" value="">
+		</div>
+		<div class="self_tip"></div>
+	</body>	
+	<script>
+
+	$(document).ready(function(){
+	    $('.calendar-date .item').css('line-height',$('.calendar-date .item').css('width'));
+	    $('.calendar-date .item').css({'height':$('.calendar-date .item').css('width'),'line-height':'40px'});
+	    $('.calendar-date .hidden_date').html("");
+	    $("span.arrow-next,span.arrow-prev").on("click",function(){
+	    	$('.calendar-date .hidden_date').html("");
+	    	var y_m = $("a.title").text().split("/");
+	    	var month = y_m[1];
+	    	var emp_no = $("#emp_no").val();
+
+	    	if (emp_no == "") {
+	    		return false;
+	    	}else{
+                $.ajax({
+                    url: "{:U('Myschedule/Other_month')}",
+                    dataType: 'json',
+                    data : {emp_no:emp_no,month:month},  
+                    type: 'POST',
+                    cache: false,
+                    success: function(data){
+                    	
+				 	   if (data == null) {
+
+						$(".self_tip").fadeIn(500).html("还未排班!");
+				    	setTimeout(function(){
+				    		$(".self_tip").fadeOut();
+				    	},3000);
+
+					   	$(".flow_tit,.float_s").hide();
+					   }else{
+					   		$(".flow_tit,.float_s").show();
+						   	$.each(data,function(k,v){		   		
+						   		var year = v.year;
+						   		var m =v.month;
+						   		if (m < 10) {
+						   			m = "0"+m;
+						   		};
+						   		var d = v.day;
+						   		if (d < 10) {
+						   			d = "0"+d;
+						   		};
+						   		var current_date = year+m+d;
+						   		$("#emp_no").val(v.emp_no);
+						   		$("ul.calendar-date li.item-curMonth").each(function(){
+						   			 var data_n= $(this).attr("data");
+						   			 if(v.short == null){
+						   			 	v.short = '';
+						   			 }
+						   			 if (v.shift_name == undefined) {
+						   			 	v.shift_name = "";
+						   			 }
+						   			 if (v.work_start_time == null) {
+						   			 	v.work_start_time = "";
+						   			 }
+						   			 if(v.work_end_time == null){
+						   			 	v.work_end_time = "";
+						   			 }
+						   			 var short_words = '<div id="short">'+v.short+'</div>';
+						   			 if(data_n == current_date){
+						   			 	$(this).append(short_words).attr("data-name",v.shift_name).attr("data-time",v.work_start_time+v.work_end_time);
+						   			 }
+						   		});
+						   	})
+					   }                  	
+                    },
+                    error:function(){
+                    
+                    	$(".self_tip").fadeIn(500).html("请求失败");
+				    	setTimeout(function(){
+				    		$(".self_tip").fadeOut();
+				    	},3000);
+
+                    }
+                });
+
+	    	}
+
+	    });
+
+	   var data = {$data_list};
+	   console.log(data);
+	   if (data == null) {
+	   	$(".self_tip").fadeIn(500).html("还未排班!");
+    	setTimeout(function(){
+    		$(".self_tip").fadeOut();
+    	},3000);
+	   }else{
+		   	$.each(data,function(k,v){		   		
+		   		var year = v.year;
+		   		var m =v.month;
+		   		if (m < 10) {
+		   			m = "0"+m;
+		   		};
+		   		var d = v.day;
+		   		if (d < 10) {
+		   			d = "0"+d;
+		   		};
+		   		var current_date = year+m+d;
+		   		$("#emp_no").val(v.emp_no);
+		   		$("ul.calendar-date li.item-curMonth").each(function(){
+		   			 var data_n= $(this).attr("data");
+
+		   			 if(v.short == null){
+		   			 	v.short = '';
+		   			 };
+		   			 if (v.shift_name == undefined) {
+		   			 	v.shift_name = "";
+		   			 };
+		   			 if (v.work_start_time == null) {
+		   			 	v.work_start_time = "";
+		   			 }
+		   			 if(v.work_end_time == null){
+		   			 	v.work_end_time = "";
+		   			 }
+		   			 var short_words = '<div id="short">'+v.short+'</div>';
+		   			 if(data_n == current_date){
+		   			 	$(this).append(short_words).attr("data-name",v.shift_name).attr("data-time",v.work_start_time+v.work_end_time);
+		   			 }
+		   		});
+		   	})
+	   }
+
+	    $("ul.calendar-date li.item-curMonth,ul.calendar-date li.item-curDay").on("touchend",function(){
+	    	var current_data = $(this).attr("data");
+	    	var current_shift = $(this).attr("data-name");
+	    	var current_time = $(this).attr("data-time");
+
+	    	$("span#current_time").html(current_data.substring(0,4)+"年"+current_data.substring(4,6)+"月"+current_data.substring(6,8)+"日");
+	    	$("#choose_date").html(current_shift + "&nbsp;&nbsp;"+current_time.substring(0,8)+"-"+current_time.substring(8,16));
+	    });
+	   $("#choose_date").html( $(".item-curDay").attr("data-name") + "&nbsp;&nbsp;"+$(".item-curDay").attr("data-time").substring(0,7)+"-"+$(".item-curDay").attr("data-time").substring(7,15));
+	   $("span#current_time").html($("li.item-curDay").attr("data").substring(0,4)+"年"+$("li.item-curDay").attr("data").substring(4,6)+"月"+$("li.item-curDay").attr("data").substring(6,8)+"日");
+	});
+
+	</script>
+</html>

@@ -1,0 +1,92 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+<div class="page-header clearfix">
+    <h1 class="col-sm-8">车系销售数据采集管理</h1>
+</div>
+    <!--  功能操作区域  -->
+    <div class="operate panel panel-default">
+        <div class="panel-body">
+            <div class="pull-left" >
+                <a class="btn btn-sm btn-danger" onclick="del();">删除</a>
+            </div >
+            <div class="pull-right">
+                <a  onclick="add();" class="btn btn-sm btn-primary">新建</a>
+            </div>
+        </div>
+    </div>
+    <!-- 功能操作区域结束 -->
+    <div class="ul_table border-bottom ul_table_responsive">
+        <ul>
+            <li class="thead"  >
+                <label class="inline pull-left col-3">
+                    <input class="ace" type="checkbox" name="id-toggle-all" id="id-toggle-all" />
+                    <span class="lbl"></span></label>
+                <div class="pull-right">
+                    <span  class="col-15 text-center">门店</span>
+                    <span  class="col-15 text-center">品牌</span>
+                    <span  class="col-15 text-center">车系</span>
+                    <span  class="col-15 text-center">台数</span>
+                    <span  class="col-15 text-center">录入时间</span>
+                    <span class="col-6 text-center">修改</span>
+                </div>
+                <span class="autocut auto text-center">编号</span>
+            </li>
+            <empty name="list">
+                <li class="no-data">
+                    没找到数据
+                </li>
+                <else/>
+                <form method="post" action="" name="form_data" id="form_data">
+                    <foreach name="list" item="vo">
+                        <li class="tbody" >
+                            <label class="inline pull-left col-3">
+                                <input class="ace" type="checkbox" name="id[]" value="{$vo.id}" />
+                                <span class="lbl"></span></label>
+                            <div class="pull-right">
+                                <span class="col-15 text-center">{$vo.dept_name }</span>
+                                <span class="col-15 text-center">{$vo.carbrand_name}</span>
+                                <span class="col-15 text-center">{$vo.carseries_name}</span>
+                                <span class="col-15 text-center">{$vo.number}</span>
+
+                                <span class="col-15 text-center">{:date('Y/m/d',$vo['inputtime'])}</span>
+                                <span class="col-6 text-center">
+                                    <a class="col-6 text-center Cedit" Cid="{$vo.id}" >修改</a>
+                                </span>
+                            </div>
+                            <span  class="autocut auto text-center" >{$vo.id}</span>
+                        </li>
+                    </foreach>
+                </form>
+            </empty>
+        </ul>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript">
+        function add() {
+            window.open("{:U('add')}", "_self");
+        }
+        $('.Cedit').bind('click',function(){
+            var id=$(this).attr('Cid');
+            window.open("/index.php?m=&c=Seriesdata&a=edit&id="+id,"_self");
+        })
+
+
+        function del() {
+            var vars = $("#form_data").serialize();
+            ui_confirm('确定要删除吗?', function() {
+                sendAjax("{:U('seriesdatadel')}", vars, function(data) {
+                    if (data.status) {
+                        ui_alert(data.info, function() {
+                            location.reload(true);
+                        });
+                    }
+                });
+            });
+        }
+
+        $(document).ready(function() {
+            set_return_url();
+        });
+    </script>
+</block>

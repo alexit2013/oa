@@ -1,0 +1,103 @@
+{extend name="base@base/page_base" /}
+
+{block name="content"}
+<form class="form form-horizontal" id="form-datas">
+    <input type="hidden" name="id" value="{$data['id']}">
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3">上级权限：</label>
+        <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+                <select class="select" name="pid">
+                	<option value="0">顶级权限</option>
+                	<?php foreach ($data_list as $k => $v){ 
+                        if($v['id'] == $data['id'])
+                			continue;
+                		if($data['pid'] == $v['id'])
+                			$select = 'selected="selected"';
+                		else 
+                			$select = '';
+                        ?>
+                		<option <?php echo $select; ?> value="<?php echo $v['id']; ?>"><?php echo str_repeat('-', $v['level'] * 4) . $v['name']; ?></option>
+                	<?php } ?>
+                </select>
+                </span> 
+        </div>
+    </div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限名称：</label>
+		<div class="formControls col-xs-5 col-sm-8">
+                    <input type="text" class="input-text" name="name" maxlength="60" value="{$data['name']}" msg="权限名称" private="required" />
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>模块名称：</label>
+		<div class="formControls col-xs-5 col-sm-8">
+                    <input type="text" name="module_name" class="input-text" value="{$data['module_name']}" msg="模块名称" />
+                    
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>控制器名：</label>
+		<div class="formControls col-xs-5 col-sm-8">
+                    <input type="text" name="controller_name" class="input-text" value="{$data['controller_name']}" msg="控制器名"/>
+                    
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>方法名：</label>
+		<div class="formControls col-xs-5 col-sm-8">
+                    <input type="text" name="action_name" class="input-text" value="{$data['action_name']}" msg="方法名"/>
+		</div>
+	</div>
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                    <a class="btn btn-primary radius" onclick='submit_save()' id="submit-s"  >&nbsp;&nbsp;提交&nbsp;&nbsp;</a>
+		</div>
+	</div>
+</form>
+
+{/block}
+{block name='js'}
+<script>
+		function submit_save()
+		{
+		     var num=0;
+		     var str="";
+		     $("input[type$='text'][private$='required']").each(function(n){
+		          if($.trim($(this).val())=="")
+		          {
+		               num++;
+		               str+=$(this).attr("msg")+"不能为空！\r\n";
+		          }
+		     });
+		     if(num>0)
+		     {
+		          alert(str);
+		     }
+		     else
+		     {		
+		        var str = $("#form-datas").serialize();
+        		ajax("{:Url('save')}",str);	    	
+		     }
+		}
+                function ajax(url,str){
+                    $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    data: str,
+                    type: 'POST',
+                    cache: false,
+                    timeout: 20000,
+                    success: function(data){
+                            if(data.status == "1"){
+                                alert(data.message);
+                                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                parent.layer.close(index);
+                            }else{
+                                alert(data.message);
+                            }
+                        }
+                    });
+                }
+</script>
+{/block}
+

@@ -1,0 +1,99 @@
+{extend name="base@base/page_base" /}
+
+{block name="content"}
+<form method="post" action="{:Url('index')}">
+   <div class="text-c"> 权限名称：
+        <input type="text" name="name" value="{notempty name='name'}{$name}{/notempty}" placeholder="权限名称" style="width:250px" class="input-text">
+        <button  class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+    </div>
+</form>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+        <span class="l">
+            <a class="btn btn-primary radius" onclick="data_add('添加权限','{:Url('add')}')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加权限</a>
+        </span> 
+    </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-bg table-hover table-sort">
+            <thead>
+                    <tr class="text-c">
+                                <th>Id</th>
+                                <th>权限名称</th>
+                                <th>模块名</th>
+                                <th>控制器名</th>
+                                <th>方法名称</th>
+                                <th>上级权限</th>
+                                <th>操作</th>
+                    </tr>
+            </thead>
+            <tbody>
+                <?php foreach($data_list as $k => $v){ ?>
+                    <tr class="text-c">
+                        <td>{$v['id']}</td>
+                        <td style='text-align: left;'>{:str_repeat('-',$v['level']*4).$v['name']}</td>
+                        <td>{$v['module_name']}</td>
+                        <td>{$v['controller_name']}</td>
+                        <td>{$v['action_name']}</td>
+                        <td>{$v['pid']}</td>
+                        <td class="td-manage"><a style="text-decoration:none" class="ml-5" onclick="member_edit('编辑','{:Url('save',['id'=>$v['id']])}')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>
+                            <a style="text-decoration:none" class="ml-5" onclick="member_del('{$v['id']}')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__LIB__/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script>
+$('.table-sort').dataTable({
+//	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	// "aoColumnDefs": [
+	//   {"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	//   {"orderable":false}// 制定列不参与排序
+	// ]
+});
+//新增页面
+function data_add(title,url){
+    var index = layer.open({
+      type: 2,
+      content: url,
+      area: ['100%', '100%'],
+      title: title,
+      maxmin: true
+    });
+    layer.full(index);      
+}
+/*用户-编辑*/
+function member_edit(title,url){
+	var index = layer.open({
+      type: 2,
+      content: url,
+      area: ['100%', '100%'],
+      title: title,
+      maxmin: true
+    });
+    layer.full(index);
+}
+/*用户-删除*/
+function member_del(id){
+	var aid = "id="+id;
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: '{:Url("del")}',
+			data:aid,
+			dataType: 'json',
+			success: function(data){
+				layer.msg('已删除!',{icon:1,time:1000});
+				location.reload();
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+</script>
+{/block}

@@ -1,0 +1,197 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+	.c-red{color: red;}
+	.line_div{
+		width: 90%;
+		height: 10px;
+		border-bottom: 1px dashed rgb(209, 234, 255);
+		margin: 10px auto;
+	}
+	.top_infor{
+		width: 100%;
+		height: 40px;
+		font-size: 24px;
+		line-height: 40px;
+		text-align: center;
+	}
+	.top_infor > span{
+		color: red;
+	}
+</style>
+<div class="page-container">
+	<div class="top_infor">当前添加数据月份:<span class="current_month"></span>月</div>
+	<form action="{:Url('dateadd')}" method="post" class="form form-horizontal" id="form-article-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>门店：</label>
+			<div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                <select class="select" name="store_id">
+					<?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+					<option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+					<?php } ?>
+				</select>
+				</span></div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>90天以上的超期上月实际：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入上月实际超过90天库存数" id="" name="three_month_actual" onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">台次</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>90天以上的超期本月预计：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入本月预计超过90天库存数" id="" name="three_month_expect" onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">台次</span>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>180天以上的超期上月实际：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入上月实际超过180天库存数" id="" name="six_month_actual" onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">台次</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>180天以上的超期本月预计：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入本月预计超过180天库存数" id="" name="six_month_expect" onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">台次</span>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>一年以上的超期上月实际：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入上月实际超过一年库存数" id="" name="one_year_actual" onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">台次</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>一年以上的超期本月预计：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入本月预计超过一年库存数" id="" name="one_year_expect" onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">台次</span>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>两年以上的超期上月实际：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入上月实际超过两年库存数" id="" name="two_year_actual" onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">台次</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>两年以上的超期本月预计：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入本月预计超过两年库存数" id="" name="two_year_expect" onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">台次</span>
+		</div>
+
+		<div class="line_div"></div>
+		<div class="row cl"><label class="form-label col-xs-4 col-sm-3">财务资金需求:</label></div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>上月实际现款：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入上月实际现款" id="" name="cash_actual"  onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">万元</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>本月预计现款：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入本月预计现款：" id="" name="cash_expect"  onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">万元</span>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>上月实际银行票据：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入上月实际银行票据" id="" name="bank_bill_actual"  onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">万元</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>本月预计银行票据：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入本月预计银行票据：" id="" name="bank_bill_expect"  onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">万元</span>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>上月实际厂家融资：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入上月实际厂家融资" id="" name="financing_actual"  onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">万元</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>本月预计厂家融资：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入本月预计厂家融资：" id="" name="financing_expect"  onkeyup="clearNoNum(this)">
+			</div>
+			<span class="c-red">万元</span>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="return article_save_submit();" class="btn btn-primary radius" type="submit">提交</button>
+				<button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+	function article_save_submit(){
+		var num=0;
+		var str = '';
+		$("input").each(function () {
+			if ($(this).val() == "") {
+				this.focus();
+				num++;
+				str = $(this).attr("placeholder")+"</br>";
+			}
+
+		});
+		if(num>0)
+		{
+			layer.msg(str);
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	$(function(){
+		//当前月份
+		var current_date = new Date();;
+		var cur_month = current_date.getMonth()+1;
+		$(".top_infor span.current_month").html(cur_month);
+	})
+</script>
+{/block}

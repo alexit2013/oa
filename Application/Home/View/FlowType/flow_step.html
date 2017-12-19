@@ -1,0 +1,209 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+	<input type="hidden" name="ajax" id="ajax" value="1">
+	<form id="form_search" name="form_search" method="post">
+		<div class="operate panel panel-default">
+			<div class="panel-body">
+                            <div class="pull-left">
+				<a onclick="go_return_url(1)" class="btn btn-sm btn-primary">返回</a>
+                            </div>
+                            <div class="pull-right">
+                                    <a onclick="add()" class="btn btn-sm btn-primary">新增</a>
+                                    <a onclick="save()"  class="btn btn-sm btn-primary">保存</a>
+                                    |
+                                    <a onclick="del()"  class="btn btn-sm btn-danger">删除</a>
+                            </div>
+			</div>
+		</div>
+	</form>
+	<!-- 功能操作区域结束 -->
+	<!-- 列表显示区域  -->
+	<div class="row">
+		<div class="col-sm-4 sub_left_menu ">
+			<div class="well">
+				<?php echo $menu ?>
+	</script>
+                                
+			</div>
+		</div>
+		<div class="col-sm-8 sub_content">
+			<form id="form_data" name="form_data" method="post" class="well form-horizontal clearfix">
+				<input type="hidden" name="id" id="id">
+				<input type="hidden" id="flow_type_id" name="flow_type_id" value="{$tag_list['id']}">
+				<input type="hidden" id="confirm" name="confirm">
+				<input type="hidden" id="confirm_name" name="confirm_name">
+				<input type="hidden" id="consult" name="consult">
+				<input type="hidden" id="consult_name" name="consult_name">
+				<input type="hidden" name="opmode" id="opmode" value="">
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="name">名称*：</label>
+					<div class="col-sm-9">
+						<input class="form-control" type="text" id="name" name="name" check="require" msg="请输入名称">
+					</div>
+				</div>
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="sort">条件：</label>
+					<div class="col-sm-9">
+						<p class="form-control-static">
+							<span id="condition_name"></span><a class="pull-right" onclick="popup_condition()">修改</a>
+						</p>
+					</div>
+				</div>
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="sort">审批：</label>
+					<div class="col-sm-9">
+						<div id="confirm_wrap" class="inputbox">
+							<a class="pull-right btn btn-link text-center" onclick="popup_flow();"> <i class="fa fa-user"></i> </a>
+							<div class="wrap">
+								<span class="address_list"></span>
+								<span class="text">
+									<input class="letter" type="text">
+								</span>
+							</div>
+							<div class="search dropdown ">
+								<ul class="dropdown-menu"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="sort">协商：</label>
+					<div class="col-sm-9">
+						<div id="consult_wrap" class="inputbox">
+							<a class="pull-right btn btn-link text-center" onclick="popup_flow();"> <i class="fa fa-user"></i> </a>
+							<div class="wrap">
+								<span class="address_list"></span>
+								<span class="text">
+									<input class="letter" type="text">
+								</span>
+							</div>
+							<div class="search dropdown">
+								<ul class="dropdown-menu"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+                                <div class="form-group col-xs-12">
+                                        <label class="col-sm-3 control-label" for="type">抄送：</label>
+                                        <div class="col-sm-9">
+                                                <div id="refer_wrap" class="inputbox">
+                                                        <a class="pull-right btn btn-link text-center" onclick="popup_flow();"> <i class="fa fa-user"></i> </a>
+                                                        <div class="wrap" >
+                                                                <span class="address_list">{$vo.refer_name}</span>
+                                                                <span class="text" >
+                                                                        <input class="letter" type="text"  >
+                                                                </span>
+                                                        </div>
+                                                        <div class="search dropdown ">
+                                                                <ul class="dropdown-menu"></ul>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="sort">排序：</label>
+					<div class="col-sm-9">
+						<input class="form-control" type="text" id="sort" name="sort">
+					</div>
+				</div>
+
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="is_del">状态：</label>
+					<div class="col-sm-9">
+						<select class="form-control" name="is_del" id="is_del">
+							<option value="0">启用</option>
+							<option value="1">禁用</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="remark">备注：</label>
+					<div class="col-sm-9">
+						<textarea class="form-control" name="remark" rows="5"></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</block>
+<block name="js">	
+            <script type="text/javascript">
+                        function popup_flow() {
+                                winopen("__ROOT__/index.php?m=&c=popup&a=flow",560, 470);
+                        }
+
+                        function popup_condition() {
+                                $id = $("#id").val();
+                                if ($id == "") {
+                                        ui_error('请选择工作步骤');
+                                } else {
+                                        winopen(fix_url("__ROOT__/index.php?m=&c=FlowType&a=condition?step_id="+$id), 560, 570);
+                                }
+                        }
+
+                        function add() {
+                                winopen("__ROOT__/index.php?m=&c=FlowType&a=add_step",600, 570);
+                        };
+
+                        function del() {
+                                ui_confirm('确定要删除吗?', function() {
+                                        $("#opmode").val("del");
+                                        sendForm("form_data", "", "__ROOT__/index.php?m=&c=FlowType&a=flow_step");
+                                });
+                        }
+
+                        function save() {
+                                if ($("#opmode").val() == "") {
+                                        ui_error("请选择文件夹或新增");
+                                        return false;
+                                } else {
+                                        $("#confirm").val("");
+                                        $("#confirm_wrap  span.address_list span").each(function() {
+                                                $("#confirm").val($("#confirm").val() + $(this).attr("data") + '|');
+                                        });
+
+                                        $("#confirm_name").val("");
+                                        $("#confirm_name").val($("#confirm_wrap span.address_list").html());
+
+                                        $("#consult").val("");
+                                        $("#consult_wrap span.address_list span").each(function() {
+                                                $("#consult").val($("#consult").val() + $(this).attr("data") + '|');
+                                        });
+
+                                        $("#consult_name").val("");
+                                        $("#consult_name").val($("#consult_wrap span.address_list").html());
+                                        sendForm("form_data", "", "__ROOT__/index.php?m=&c=FlowType&a=flow_step");
+                                }
+                        };
+
+                        function showdata(result) {
+                                for (var s in result.data) {
+                                        set_val(s, result.data[s]);
+                                }
+                                $("#confirm_wrap span.address_list").html(result.data['confirm_name']);
+                                $("#consult_wrap span.address_list").html(result.data['consult_name']);
+                                $('#condition_name').html(result.data['condition_name']);
+
+                                $("#opmode").val("edit");
+                        }
+
+                        $(document).on("dblclick", ".inputbox .address_list b", function() {
+                                $(this).parent().parent().remove();
+                        });
+
+                        $(document).ready(function() {
+                                $(".sub_left_menu .tree_menu  a").click(function() {
+                                        $(".sub_left_menu .tree_menu  a").each(function() {
+                                                $(this).attr("class", "");
+                                        });
+                                        $(this).attr("class", "active");
+                                        sendAjax("__ROOT__/index.php?m=&c=FlowType&a=get_step", "id=" + $(this).attr("node"), function(data) {
+                                       
+                                                showdata(data);
+                                        });
+                                        return false;
+                                });
+                        });
+
+                </script>
+</block>

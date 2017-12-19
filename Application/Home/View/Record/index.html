@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title></title>
+	<link rel="stylesheet" href="__INS__/pui/css/planeui.min.css" />
+	<link rel="stylesheet" href="__INS__/Font-Awesome-3.2.1/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="__INS__/calendar/calendar.css" />
+	<script type="text/javascript" src="__INS__/js/jquery-2.1.1.js" ></script>
+	<script type="text/javascript" src="__INS__/calendar/calendar.js" ></script>
+
+	<style>
+		*{margin:0; padding:0; list-style:none; }
+		body{ background:#f1f0f7; font:normal 12px/22px 宋体;overflow-x: hidden;}
+		img{ border:0;}
+		a{ text-decoration:none; color:#333;  }
+		ul{margin-bottom: 0;}
+		.mt-10{margin-top:10px;}
+		.mt-20{margin-top:20px;}
+		.mt-30{margin-top:30px;}
+		.mt-50{margin-top:50px;}
+		.mb-20{margin-bottom: 20px;}
+		.padding-init{padding: 0;}
+		.clear{clear: both;}
+		.submit_area{padding: 0 1.2rem;}
+		.select_item{height: 39px;line-height: 39px;background-color:#ffffff;padding-left:1.5rem;}
+		.select_item2{height: 70px;background-color:#ffffff;padding-left:1.5rem;padding-top: 13px;}
+		.select_item3{background-color:#ffffff;padding-left:1.5rem;padding-top: 13px;padding-bottom: 13px;}
+		.ab_ce{position:relative;}
+		.abnormal_cause{height: 132px;background-color:#ffffff;padding-left:1.5rem;}
+		.border_tb{border-top:1px solid #d4d3d8;border-bottom: 1px solid #d4d3d8;}
+		.border_b{border-bottom: 1px solid #d4d3d8;}
+		.com_box{width: 40px;height: 40px;border: 1px solid #d4d3d8;position: absolute;top: 78px;left: 1.5rem;line-height: 40px;text-align: center;color:#d4d3d8;font-size: 30px;}
+		.com_box2{width: 40px;height: 40px;border: 1px solid #d4d3d8;float: left;}
+		.com_box3{width: 40px;height: 40px;border: 1px solid #d4d3d8;float: left;margin-left: 15px;margin-top:-8px;line-height: 40px;text-align: center;color:#d4d3d8;font-size: 30px;}
+		.com_box2 img{width: 40px;height: 40px;}
+		.com_name{font-weight: 600;width: 40px;height:20px;text-align: center;}
+		.ml_10p{margin-left:55px;}
+		.ml_20p{margin-left:110px;}
+		.flow_tit{height: 30px;line-height: 30px;padding-left:1.5rem;}
+		.flow_area{height: 75px;background-color:#ffffff;padding-left:1.5rem;}
+		.remain_time{float: right;}
+		.remain_day{float: right;margin:0 1rem;}
+		.tip_color{color: #00b200;}
+		.c-red{color:red;}
+		.calendar_tip{background-color: #fff;padding-left: 9%;padding-top: 1rem;padding-bottom: 0.9rem; height: auto; overflow: hidden;}
+		.status1{float: left;width: 25%;}
+		.status2{float: left;width: 25%;}
+		.status3{float: left;width: 25%; display: none;}
+		.normal{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #70c039;margin-top:0.2rem;display: block;float: left;}
+		.normal_size{font-size: 1rem;line-height:1rem;padding-left: .3rem;}
+		.late{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #FFB6C1;margin-top:0.2rem;display: block;float: left;}
+		.forget{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #cc7dc2;margin-top:0.2rem;display: block;float: left;}
+		.leave_early{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #ff7c90;margin-top:0.2rem;display: block;float: left;}
+		.leave_times{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #f9ff97;margin-top:0.2rem;display: block;float: left;}
+		.out_times{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #49e6d2;margin-top:0.2rem;display: block;float: left;}
+		.over_times{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #ffa96a;margin-top:0.2rem;display: block;float: left;}
+		.adjust_times{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #566aff;margin-top:0.2rem;display: block;float: left;}
+		.business_time{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #00b8a0;margin-top:0.2rem;display: block;float: left;}
+		.sp{width: 1.5rem;height: 1.5rem;line-height:1.5rem;border-radius: 50%;background-color: #FFD6B9;margin-top:0.2rem;display: block;float: left;}
+		.late_size{font-size: 1rem;line-height:1rem;padding-left: .3rem;}
+		.forget_size{font-size: 1rem;line-height:1rem;padding-left: .3rem;}
+		.calendar-date .item{
+			overflow: hidden !important;
+			position: relative !important;
+			z-index: 2 !important;
+
+		}
+
+		.z_l{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			bottom: 50%;
+			left: 0;
+			background-color: #cc7dc2;
+			z-index: -1;
+		}
+		.c_d{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			bottom: 50%;
+			left: 0;
+			background-color: #FFB6C1;
+			z-index: -1;
+		}
+		.x_l{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			background-color: #cc7dc2;
+			z-index: -1;
+		}
+		.z_t{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			background-color: #ff7c90;
+			z-index: -1;
+		}
+		.m_c_c{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			bottom: 50%;
+			left: 0;
+			background-color: #00b8a0;
+			z-index: -1;
+		}
+		.x_c_c{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			background-color: #00b8a0;
+			z-index: -1;
+		}
+		.x_t_x{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			background-color: #566aff;
+			z-index: -1;
+		}
+		.m_t_x{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			bottom: 50%;
+			left: 0;
+			background-color: #566aff;
+			z-index: -1;
+		}
+		.q_j_x{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			background-color: #f9ff97;
+			z-index: -1;
+		}
+		.q_j_z{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			bottom: 50%;
+			left: 0;
+			background-color: #f9ff97;
+			z-index: -1;
+		}
+		.x_w_c{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			background-color: #49e6d2;
+			z-index: -1;
+		}
+		.m_w_c{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			bottom: 50%;
+			left: 0;
+			background-color: #49e6d2;
+			z-index: -1;
+		}
+		.x_j_b{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			background-color: #ffa96a;
+			z-index: -1;
+		}
+		.m_j_b{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			bottom: 50%;
+			left: 0;
+			background-color: #ffa96a;
+			z-index: -1;
+		}
+		.calendar-date .item-curDay{
+			background-color: #f0f0f0 !important;
+		}
+		div.arrow{
+			display: none;
+		}
+		.self_tip{
+			width: 70%;
+			height: 40px;
+			background-color: rgba(0,0,0,.4);
+			position: fixed;
+			z-index: 99;
+			top: 30%;
+			left: 50%;
+			margin-left: -35%;
+			display: none;
+			line-height: 40px;
+			text-align: center;
+			color: #ffffff;
+		}
+	</style>
+</head>
+<body>
+<!--日历-->
+<div id="calendar" class="calendar"></div>
+<!--日历-->
+
+<!--考勤状况汇总数据-->
+<div class="calendar_tip">
+	<div class="status1"></div>
+	<div class="status3"><span class="forget"></span><span class="forget_size">漏刷</span><span class="forget_days"></span>次</div>
+	<div class="status2 late_box"><span class="late"></span><span class="late_size">迟到</span><span class="late_num"></span></div>
+	<div class="status2 early_box"><span class="leave_early"></span><span class="late_size">早退</span><span class="early_num"></span></div>
+	<div class="status2 leave_box"><span class="leave_times"></span><span class="late_size">请假</span><span class="leave_num"></span></div>
+	<div class="status2 out_box"><span class="out_times"></span><span class="late_size">外出</span><span class="out_num"></span></div>
+	<div class="status2 over_box"><span class="over_times"></span><span class="late_size">加班</span><span class="over_num"></span></div>
+	<div class="status2 adjust_box"><span class="adjust_times"></span><span class="late_size">调休</span><span class="adjust_num"></span></div>
+	<div class="status2 business_box"><span class="business_time"></span><span class="late_size">出差</span><span class="business_num"></span></div>
+	<div class="status2 sp_box" style="display: none;"><span class="sp"></span><span class="late_size">已审批</span><span class="business_num"></span></div>
+</div>
+<div class="clear"></div>
+<!--考勤状况汇总数据-->
+
+<!--当天的打卡数据-->
+<div id="test1" class="mt-30">
+	<div class="select_item border_tb" id=""><span class="data_info"></span>&nbsp; <span class="week_info"></span></div>
+	<div class="select_item2 border_b">签到|<span class="come_record">
+					<?php if(empty($sum_sign['sign_in'])){echo "暂无数据";  ?>
+		<?php }else{ echo $sum_sign['sign_in']; ?>
+		<?php } ?></span>
+
+		<div class="come_address">
+			<?php if(empty($sum_sign['in_address'])){echo "暂无打卡记录";  ?>
+			<?php }else{ echo $sum_sign['in_address']; ?>
+			<?php } ?>
+		</div>
+	</div>
+	<div class="select_item2 border_b">签退|<span class="out_record">
+					<?php if(empty($sum_sign['sign_out'])){echo "暂无数据";  ?>
+		<?php }else{ echo $sum_sign['sign_out']; ?>
+		<?php } ?></span>
+		<div class="out_address">
+			<?php if(empty($sum_sign['out_address'])){echo "暂无打卡记录";  ?>
+			<?php }else{ echo $sum_sign['out_address']; ?>
+			<?php } ?>
+		</div>
+	</div>
+</div>
+<div class="mt-30 mb-20">
+	<div class="select_item3 border_tb" id="choose_date">打卡记录
+		<div class="sign_inShow1">
+
+			<?php if(empty($sum_sign['sign_in'])){echo "暂无数据";  ?>
+			<?php }else{ echo $sum_sign['sign_in']; ?>
+			<?php } ?>
+			<?php if(empty($sum_sign['in_address'])){echo "(暂无打卡记录)";  ?>
+			<?php }else{ echo "(".$sum_sign['in_address'].")"; ?>
+			<?php } ?>
+		</div>
+		<div class="sign_inShow2">
+
+			<?php if(empty($sum_sign['sign_out'])){echo "暂无数据";  ?>
+			<?php }else{ echo $sum_sign['sign_out']; ?>
+			<?php } ?>
+			<?php if(empty($sum_sign['out_address'])){echo "(暂无打卡记录)";  ?>
+			<?php }else{ echo "(".$sum_sign['out_address'].")"; ?>
+			<?php } ?>
+		</div>
+	</div>
+</div>
+<!--当天的打卡数据-->
+<input type="hidden" id="emp_no" name="" value="{$emp_no}">
+<div class="self_tip"></div>
+
+</body>
+
+<script>
+	$(document).ready(function(){
+		$('.calendar-date .item').css('height',$('.calendar-date .item').css('width'));
+		$('.calendar-date .item').css('line-height',$('.calendar-date .item').css('width'));
+
+		//打卡记录显示
+		var data_list = {$data_list};		//后台数据
+		console.log(data_list);
+		var m_l = '<div class="z_l leak"></div>';				//早上漏打卡
+		var a_l = '<div class="x_l leak"></div>';				//下午漏打卡
+		var c_d = '<div class="c_d"></div>';				//迟到
+		var z_t = '<div class="z_t"></div>';				//早退
+		var m_c_c = '<div class="m_c_c"></div>';				//出差
+		var x_c_c = '<div class="x_c_c"></div>';				//出差
+		var m_t_x = '<div class="m_t_x"></div>';				//调休
+		var x_t_x = '<div class="x_t_x"></div>';				//调休
+		var q_j_x = '<div class="q_j_x"></div>';				//请假
+		var q_j_z = '<div class="q_j_z"></div>';				//请假
+		var m_w_c = '<div class="m_w_c"></div>';				//外出
+		var x_w_c = '<div class="x_w_c"></div>';				//外出
+		var m_j_b = '<div class="m_j_b"></div>';				//加班
+		var x_j_b = '<div class="x_j_b"></div>';				//加班
+		if(data_list == null || data_list == ''){
+			$(".self_tip").fadeIn(500).html("暂无数据");
+			setTimeout(function(){
+				$(".self_tip").fadeOut();
+			},3000);
+
+			$(".calendar_tip div").hide();
+		}else{
+			$.each(data_list,function(k,v){
+				$("ul.calendar-date li.item-curMonth").each(function(s,h) {		//遍历li.item-curMonth用来和排班数据匹配
+					var data_n= $(this).attr("data");									//获取日历上的每一个日期
+					var every_day = data_n.substring(6,8);								//截取获得到日
+					if(every_day<10){													//10号之前的去除0
+						every_day = every_day.substring(1,2);
+					}
+					if(k == every_day){
+						if(v['mon']['type']==0 && v['aft']['type']==0){
+							$(this).attr("work","ok");
+						}
+						switch (v['mon']['type']){
+							case 0:
+								$(this).css({"background-color":"rgb(112, 192, 57)","color":"#ffffff"});
+								break;
+							case 1:
+								$(this).append(c_d).attr("work","no").css("color","#ffffff");
+								break;
+							case 3:
+								$(this).append(m_l).attr("work","no").css("color","#ffffff");
+								break;
+							case 4:
+								$(this).append(m_c_c).attr("work","no").css("color","#ffffff");
+								break;
+							case 5:
+								$(this).append(m_t_x).attr("work","no").css("color","#ffffff");
+								break;
+							case 6:
+								$(this).append(m_w_c).attr("work","no").css("color","#ffffff");
+								break;
+							case 7:
+								$(this).append(m_j_b).attr("work","no").css("color","#ffffff");
+								break;
+							case 8:
+								$(this).append(q_j_z).attr("work","no").css("color","#ffffff");
+								break;
+						}
+						switch (v['aft']['type']){
+							case 0:
+								$(this).css({"background-color":"rgb(112, 192, 57)","color":"#ffffff"});
+								break;
+							case 2:
+								$(this).append(z_t).attr("work","no").css("color","#ffffff");
+								break;
+							case 3:
+								$(this).append(a_l).attr("work","no").css("color","#ffffff");
+								break;
+							case 4:
+								$(this).append(x_c_c).attr("work","no").css("color","#ffffff");
+								break;
+							case 5:
+								$(this).append(x_t_x).attr("work","no").css("color","#ffffff");
+								break;
+							case 6:
+								$(this).append(x_w_c).attr("work","no").css("color","#ffffff");
+								break;
+							case 7:
+								$(this).append(x_j_b).attr("work","no").css("color","#ffffff");
+								break;
+							case 8:
+								$(this).append(q_j_x).attr("work","no").css("color","#ffffff");
+								break;
+						}
+					}
+				})
+			});
+		}
+
+		//考勤状况
+		var times_list ={$times_list};
+		console.log(times_list);
+		//统计正常天数
+		if($("li.item-curMonth[work='ok']")){
+			$("li.item-curMonth[work='ok']").each(function(w,f){		//统计正常天数
+				if(w >= 0){
+					w=w+1;
+					$("div.status1").show().html('<span class="normal"></span><span class="late_size">正常</span><span class="nor_days">'+w+'天</span>');
+				}
+			});
+		}
+		//漏杀次数
+		if($("div.leak").size() > 0){
+			$("div.status3").show();
+			$("div.status3 span.forget_days").html($("div.leak").size());
+		}
+
+
+		if(times_list == null || times_list == ""){
+			$(".self_tip").fadeIn(500).html("暂无考勤记录");
+			setTimeout(function(){
+				$(".self_tip").fadeOut();
+			},3000);
+
+		}else{
+			if(times_list['late_times'] == null || times_list['late_times'] == 0){			//迟到次数
+				$(".late_box").hide();
+			}else{
+				$(".late_box").show();
+				$("span.late_num").html(times_list['late_times']+"次");
+			}
+			if(times_list['leave_early_times'] == 0 ||times_list['leave_early_times'] == null){		//早退次数
+				$(".early_box").hide();
+			}else{
+				$(".early_box").show();
+				$("span.early_num").html(times_list['leave_early_times']+"次");
+			}
+			if(times_list['leave_times'] > 0 ){															//请假次数
+				$(".leave_box").show();
+				$("span.leave_num").html(times_list['leave_times']+"次");
+
+			}else{
+				$(".leave_box").hide();
+			}
+			if(times_list['out_times'] == 0 || times_list['out_times'] == null){						//外出次数
+				$(".out_box").hide();
+			}else{
+				$(".out_box").show();
+				$("span.out_num").html(times_list['out_times']+"次");
+			}
+			if(times_list['over_times'] == 0 ||times_list['over_times'] == null){					//加班次数
+				$(".over_box").hide();
+			}else{
+				$(".over_box").show();
+				$("span.over_num").html(times_list['over_times']+"次");
+			}
+			if(times_list['adjust_times'] == 0 || times_list['adjust_times'] == null){				//调休次数
+				$(".adjust_box").hide();
+			}else{
+				$(".adjust_box").show();
+				$("span.adjust_num").html(times_list['adjust_times']+"次");
+			}
+			if(times_list['business_times'] == 0 ||times_list['business_times'] == null){			//出差次数
+				$(".business_box").hide();
+			}else{
+				$(".business_box").show();
+				$("span.business_num").html(times_list['business_times']+"次");
+			}
+		}
+
+		//显示第一次进页面时的当前日期
+		$(function(){
+			var current_date = new Date();
+			var cur_year = current_date.getFullYear();
+			var cur_month = current_date.getMonth()+1;
+			if(cur_month < 10){
+				cur_month = "0"+cur_month;
+			}
+			var cur_day = current_date.getDate();
+			if(cur_day<10){
+				cur_day = "0"+cur_day;
+			}
+			var y_m = String(cur_year)+"-"+String(cur_month)+"-"+String(cur_day);	//当前年月日
+
+			var date = y_m;    //此处也可以写成 17/07/2014 一样识别    也可以写成 07-17-2014  但需要正则转换
+			var day = new Date(Date.parse(date));   //需要正则转换的则 此处为 ： var day = new Date(Date.parse(date.replace(/-/g, '/')));
+			var today = new Array('星期日','星期一','星期二','星期三','星期四','星期五','星期六');
+			var week = today[day.getDay()];  	//当前的星期几
+			$("span.data_info").html(y_m);
+			$("span.week_info").html(week);
+
+		})
+
+		$("span.arrow-next,span.arrow-prev").on("click",function(){		//点击切换月份
+			//获取当前年月
+			var emp_no = $("#emp_no").val();
+			var current_date = new Date();
+			var cur_year = current_date.getFullYear();
+			var cur_month = current_date.getMonth()+1;
+			if(cur_month < 10){
+				cur_month = "0"+cur_month;
+			}
+			var y_m = String(cur_year)+String(cur_month);
+			var c_data = $("a.title").text();
+			var c_data = c_data.split('/');
+			var c_data = c_data[0]+c_data[1];
+			var c_data = c_data.substring(4,6);
+
+			if (c_data >= y_m.substring(4,6)) {			//在当前月之后的就让下一个月的箭头不出现
+				$("div.arrow").hide();
+			}else{
+				$("div.arrow").show();
+			}
+			$("ul.calendar-date li.item-curMonth").removeAttr("data-statu").removeAttr("work").css({"background-color":"#ffffff","color":"#000"});
+
+			$.ajax({
+				url: "{:U('Other_month')}",
+				dataType: 'json',
+				data : {emp_no:emp_no,time:c_data},
+				type: 'POST',
+				cache: false,
+				success: function(data){
+					console.log(data);
+					if(data.data_list == null || data.data_list == ''){
+						$(".self_tip").fadeIn(500).html("暂无打卡数据");
+						setTimeout(function(){
+							$(".self_tip").fadeOut();
+						},3000);
+
+						$(".calendar_tip div").hide().html('');
+					}else{
+						$.each(data.data_list,function(k,v){
+							$("ul.calendar-date li.item-curMonth").each(function(s,h) {		//遍历li.item-curMonth用来和排班数据匹配
+								var data_n= $(this).attr("data");									//获取日历上的每一个日期
+								var every_day = data_n.substring(6,8);								//截取获得到日
+								if(every_day<10){													//10号之前的去除0
+									every_day = every_day.substring(1,2);
+								}
+								if(k == every_day){
+									if(v['mon']['type']==0 && v['aft']['type']==0){
+										$(this).attr("work","ok");
+									}
+									switch (v['mon']['type']){
+										case 0:
+											$(this).css({"background-color":"rgb(112, 192, 57)","color":"#ffffff"});
+											break;
+										case 1:
+											$(this).append(c_d).attr("work","no").css("color","#ffffff");
+											break;
+										case 3:
+											$(this).append(m_l).attr("work","no").css("color","#ffffff");
+											break;
+										case 4:
+											$(this).append(m_c_c).attr("work","no").css("color","#ffffff");
+											break;
+										case 5:
+											$(this).append(m_t_x).attr("work","no").css("color","#ffffff");
+											break;
+										case 6:
+											$(this).append(m_w_c).attr("work","no").css("color","#ffffff");
+											break;
+										case 7:
+											$(this).append(m_j_b).attr("work","no").css("color","#ffffff");
+											break;
+										case 8:
+											$(this).append(q_j_z).attr("work","no").css("color","#ffffff");
+											break;
+									}
+									switch (v['aft']['type']){
+										case 0:
+											$(this).css({"background-color":"rgb(112, 192, 57)","color":"#ffffff"});
+											break;
+										case 2:
+											$(this).append(z_t).attr("work","no").css("color","#ffffff");
+											break;
+										case 3:
+											$(this).append(a_l).attr("work","no").css("color","#ffffff");
+											break;
+										case 4:
+											$(this).append(x_c_c).attr("work","no").css("color","#ffffff");
+											break;
+										case 5:
+											$(this).append(x_t_x).attr("work","no").css("color","#ffffff");
+											break;
+										case 6:
+											$(this).append(x_w_c).attr("work","no").css("color","#ffffff");
+											break;
+										case 7:
+											$(this).append(x_j_b).attr("work","no").css("color","#ffffff");
+											break;
+										case 8:
+											$(this).append(q_j_x).attr("work","no").css("color","#ffffff");
+											break;
+									}
+								}
+							})
+						});
+					}
+
+					//考勤状况
+					var times_list = data.times_list;
+					$("div.status1").hide();
+					$("div.status3").hide();
+					//统计正常天数
+					if($("li.item-curMonth[work='ok']")){
+						$("li.item-curMonth[work='ok']").each(function(w,f){		//统计正常天数
+							if(w >= 0){
+								console.log(w);
+								w=w+1;
+								$("div.status1").show().html('<span class="normal"></span><span class="late_size">正常</span><span class="nor_days">'+w+'天</span>');
+							}
+						});
+					}
+					//漏杀次数
+					if($("div.leak").size() > 0){
+						$("div.status3").show();
+						$("div.status3 span.forget_days").html($("div.leak").size());
+					}
+
+
+					if(times_list == null || times_list == ""){
+						$(".self_tip").fadeIn(500).html("暂无考勤记录");
+						setTimeout(function(){
+							$(".self_tip").fadeOut();
+						},3000);
+
+					}else{
+						if(times_list['late_times'] == null || times_list['late_times'] == 0){			//迟到次数
+							$(".late_box").hide();
+						}else{
+							$(".late_box").show();
+							$("span.late_num").html(times_list['late_times']+"次");
+						}
+						if(times_list['leave_early_times'] == 0 ||times_list['leave_early_times'] == null){		//早退次数
+							$(".early_box").hide();
+						}else{
+							$(".early_box").show();
+							$("span.early_num").html(times_list['leave_early_times']+"次");
+						}
+						if(times_list['leave_times'] > 0 ){															//请假次数
+							$(".leave_box").show();
+							$("span.leave_num").html(times_list['leave_times']+"次");
+
+						}else{
+							$(".leave_box").hide();
+						}
+						if(times_list['out_times'] == 0 || times_list['out_times'] == null){						//外出次数
+							$(".out_box").hide();
+						}else{
+							$(".out_box").show();
+							$("span.out_num").html(times_list['out_times']+"次");
+						}
+						if(times_list['over_times'] == 0 ||times_list['over_times'] == null){					//加班次数
+							$(".over_box").hide();
+						}else{
+							$(".over_box").show();
+							$("span.over_num").html(times_list['over_times']+"次");
+						}
+						if(times_list['adjust_times'] == 0 || times_list['adjust_times'] == null){				//调休次数
+							$(".adjust_box").hide();
+						}else{
+							$(".adjust_box").show();
+							$("span.adjust_num").html(times_list['adjust_times']+"次");
+						}
+						if(times_list['business_times'] == 0 ||times_list['business_times'] == null){			//出差次数
+							$(".business_box").hide();
+						}else{
+							$(".business_box").show();
+							$("span.business_num").html(times_list['business_times']+"次");
+						}
+					}
+
+				},
+				error: function(){
+					console.log("请求失败");
+				}
+			});
+
+		});
+
+
+		//点击每一天时候查询数据
+		$("li.item-curMonth").on("touchend",function(){
+			//获取当前天的日期
+			var current_date = new Date();
+			var cur_year = current_date.getFullYear();
+			var cur_month = current_date.getMonth()+1;
+			if(cur_month < 10){
+				cur_month = "0"+cur_month;
+			}
+			var cur_day = current_date.getDate();
+			if(cur_day<10){
+				cur_day = "0"+cur_day;
+			}
+			var y_m = String(cur_year)+String(cur_month)+String(cur_day);	//当前年月日;
+
+			var dateNow = $(this).attr("data");
+			var emp_no = $("#emp_no").val();
+			var new_date = dateNow.substring(0,4)+"-"+dateNow.substring(4,6)+"-"+dateNow.substring(6,8);
+			var date = new_date;    //此处也可以写成 17/07/2014 一样识别    也可以写成 07-17-2014  但需要正则转换
+			var day = new Date(Date.parse(date));   //需要正则转换的则 此处为 ： var day = new Date(Date.parse(date.replace(/-/g, '/')));
+			var today = new Array('星期日','星期一','星期二','星期三','星期四','星期五','星期六');
+			var week = today[day.getDay()];  	//当前的星期几
+			$("span.data_info").html(new_date);
+			$("span.week_info").html(week);
+			$.ajax({
+				url: "{:U('Other_day')}",
+				dataType: 'json',
+				data : {emp_no:emp_no,time:dateNow},
+				type: 'POST',
+				cache: false,
+				success: function(data){
+
+					if (data == null) {
+						$("span.come_record,span.out_record").html("暂无数据");
+						$("div.come_address,div.out_address").html("暂无打卡地址数据");
+						$("div.sign_inShow1,div.sign_inShow2").html("暂无数据&nbsp;(暂无打卡地址数据)");
+					}else{
+
+						if(data.sign_in == "" || data.sign_in == undefined || data.sign_in == null){
+							if(y_m == dateNow){
+								$("span.come_record").html("<span>暂无数据</span>");
+								$("div.sign_inShow1").html("暂无数据");
+							}else{
+								$("span.come_record").html("<span style='color:red;'>漏刷</span>");
+								$("div.sign_inShow1").html("暂无数据");
+							};
+							if(data.adjust_times == 1){
+								$("span.come_record").html("<span style='color:red;'>调休</span>");
+								$("div.sign_inShow1").html("暂无数据");
+							}else{
+								$("span.come_record").html("<span style='color:red;'>漏刷</span>");
+								$("div.sign_inShow1").html("暂无数据");
+							};
+
+							if(data.business_times ==1){
+								$("span.come_record").html("<span style='color:red;'>出差</span>");
+								$("div.sign_inShow1").html("暂无数据");
+							}
+							if(data.out_times ==1){
+								$("span.come_record").html("<span style='color:red;'>外出</span>");
+								$("div.sign_inShow1").html("暂无数据");
+							}
+							if(data.other_time > 0 || data.death_time > 0 || data.marriage_time > 0 || data.maternity_time > 0 || data.sick_time > 0 || data.thing_time > 0){
+								$("span.come_record").html("<span style='color:red;'>请假</span>");
+								$("div.sign_inShow1").html("暂无数据");
+							}
+							if(data.over_times ==1){
+								$("span.come_record").html("<span style='color:red;'>加班</span>");
+								$("div.sign_inShow1").html("暂无数据");
+							}
+
+
+						}else{
+							$("span.come_record").html(data.sign_in);
+							$("div.sign_inShow1").html(data.sign_in);
+						};
+						if(data.in_address == "" || data.in_address == undefined || data.in_address == null){
+							$("div.come_address").html("暂无打卡地址数据");
+							$("div.sign_inShow1").append("&nbsp;暂无打卡地址数据");
+						}else{
+							$("div.come_address").html(data.in_address);
+							$("div.sign_inShow1").append("&nbsp;("+data.in_address+")");
+						};
+						if(data.sign_out == "" || data.sign_out == undefined || data.sign_out == null){
+							if (y_m == dateNow) {
+								$("span.out_record").html("<span>暂无数据</span>");
+								$("div.sign_inShow2").html("暂无数据");
+							}else{
+								$("span.out_record").html("<span style='color:red;'>漏刷</span>");
+								$("div.sign_inShow2").html("暂无数据");
+							};
+							if(data.adjust_times == 1){
+								$("span.out_record").html("<span style='color:red;'>调休</span>");
+								$("div.sign_inShow2").html("暂无数据");
+							}
+							if(data.business_times ==1){
+								$("span.out_record").html("<span style='color:red;'>出差</span>");
+								$("div.sign_inShow2").html("暂无数据");
+							}
+							if(data.out_times ==1){
+								$("span.out_record").html("<span style='color:red;'>外出</span>");
+								$("div.sign_inShow2").html("暂无数据");
+							}
+							if(data.other_time > 0 || data.death_time > 0 || data.marriage_time > 0 || data.maternity_time > 0 || data.sick_time > 0 || data.thing_time > 0){
+								$("span.out_record").html("<span style='color:red;'>请假</span>");
+								$("div.sign_inShow2").html("暂无数据");
+							}
+							if(data.over_times ==1){
+								$("span.out_record").html("<span style='color:red;'>加班</span>");
+								$("div.sign_inShow2").html("暂无数据");
+							}
+
+						}else{
+							$("span.out_record").html(data.sign_out);
+							$("div.sign_inShow2").html(data.sign_out);
+						};
+						if(data.out_address == "" || data.out_address == undefined || data.out_address == null){
+							$("div.out_address").html("暂无打卡地址数据");
+							$("div.sign_inShow2").append("&nbsp;暂无打卡地址数据");
+						}else{
+							$("div.out_address").html(data.out_address);
+							$("div.sign_inShow2").append("&nbsp;("+data.out_address+")");
+						};
+					}
+				},
+				error: function(){
+					console.log("请求失败");
+				}
+			});
+		});
+
+
+	});
+
+</script>
+</html>

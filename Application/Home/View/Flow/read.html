@@ -1,0 +1,465 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+	{:W('PageHeader/simple',array($flow_type['name'].'：'.$vo['name']))}
+	<div class="operate panel panel-default hidden-print">
+		<div class="panel-body">
+				<a onclick="go_return_url();" class="btn btn-sm btn-primary btn-special hidden">返回</a>				
+				<eq name="is_edit" value="1">
+					<neq name="flow_type.is_lock" value="1">
+<!--						<a onclick="popup_confirm();"  class="btn btn-sm btn-primary">选择审批流程</a>-->
+					</neq>
+				</eq>
+				<div class="pull-right">
+                        <a href="{:U('FlowSuggest/suggest',array('flow_id'=>$vo['id'],'flow_log_id'=>$to_confirm['id'],'flow_name'=>$vo['name']))}" id="collect" class="btn btn-sm btn-primary btn-special mrl_5">收集意见</a>
+				<a href="#flow_status"  class="btn btn-sm btn-primary btn-special">审批情况</a>
+				<notempty name="to_confirm">					
+					<a href="#confirm"  class="btn btn-sm btn-primary btn-special hidden">审批意见</a>
+				</notempty>
+				</div>
+			<div class="pull-right">
+				<a onclick="winprint();" class="btn btn-sm btn-primary hidden_xs btn-right-define" style="margin-right: 10px;">打印</a>
+				<eq name="is_edit" value="1">
+					<a onclick="save();" class="btn btn-sm btn-primary">保存</a>
+				</eq>
+			</div>
+		</div>
+	</div>
+	<!--审批人可编辑模板  -->
+	<eq name="is_edit" value="1">
+		<form method='post' id="form_data" name="form_data" enctype="multipart/form-data" class="well form-horizontal">
+			<input type="hidden" id="id" name="id" value="{$vo.id}">
+			<input type="hidden" id="step" name="step" value="{$vo.step}">
+			<input type="hidden" id="ajax" name="ajax" value="0">
+			<input type="hidden" id="type" name="type" value="{$flow_type.id}">
+			<input type="hidden" id="opmode" name="opmode" value="edit">
+			<input type="hidden" id="confirm" name="confirm" value="">
+			<input type="hidden" id="confirm_name" name="confirm_name" value="">
+			<input type="hidden" id="consult" name="consult" value="">
+			<input type="hidden" id="consult_name" name="consult_name" value="">
+			<input type="hidden" id="refer" name="refer" value="">
+			<input type="hidden" id="refer_name" name="refer_name" value="">
+                     
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="name">标题*：</label>
+				<div class="col-sm-10">
+					<input value="{$vo.name}" class="form-control" type="text" id="name" name="name" check="require" msg="请输入标题">
+				</div>
+			</div>
+                        
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label file-a">文件编号：</label>
+				<div class="col-sm-8">
+					<p class="form-control-static">
+						{$vo.doc_no}
+					</p>
+				</div>
+                                
+			</div>
+			
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label file-b">日期：</label>
+				<div class="col-sm-8">
+					<p class="form-control-static">
+						{$vo.create_time|to_date='Y-m-d H:i'}
+					</p>
+				</div>
+			</div>
+
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label file-c">编写人：</label>
+				<div class="col-sm-8">
+					<p class="form-control-static">
+						{$vo.user_name}
+					</p>
+				</div>
+			</div>
+
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label file-d">部门：</label>
+				<div class="col-sm-8">
+					<p class="form-control-static">
+						{$vo.dept_name}
+					</p>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label" >审批：</label>
+				<div class="col-sm-10 address_list_box">
+					<p id="confirm_wrap" class="form-control-static address_list">
+						{$vo.confirm_name}
+					</p>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label" >协商：</label>
+				<div class="col-sm-10 address_list_box">
+					<p id="consult_wrap" class="form-control-static address_list">
+						{$vo.consult_name}
+					</p>
+				</div>
+			</div>
+
+			<div class="form-group hidden">
+				<label class="col-sm-2 control-label" >传阅：</label>
+				<div class="col-sm-10">
+					<p id="refer_wrap" class="form-control-static address_list">
+						{$vo.refer_name}
+					</p>
+				</div>
+			</div>
+			<volist name="field_list" id="field_vo">
+				{:W('UserDefineField/edit',array($field_vo))}
+			</volist>
+			<eq name="flow_type.is_show" value="1">
+				<div class="form-group">
+					<div class="col-xs-12">
+						<textarea class="editor" id="content" name="content" style="width:100%;height:300px;">{$vo.content}</textarea>
+					</div>
+				</div>
+			</eq>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" >附件：</label>
+				<div class="col-sm-10">
+					{:W('FileUpload/edit',array('add_file'=>$vo['add_file']))}
+				</div>
+			</div>
+		</form>
+	</eq>
+	<!--审批人不可编辑模板  -->
+	<eq name="is_edit" value="0">
+		<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"  class="well form-horizontal">
+			<input type="hidden" id="ajax" name="ajax" value="0">
+			<input type="hidden" id="opmode" name="opmode" value="edit">
+			<input type="hidden" id="name" name="name" value="{$vo.name}">
+			<input type="hidden" id="id" name="id" value="{$vo.id}">
+			<div class="form-group">
+				<label class="col-xs-4 text-justify text-nowrap fine-a" >文件编号:</label><span class="col-xs-8 spn-content text-nowrap">{$vo.doc_no}</span>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-4 text-justify text-nowrap fine-a" >日期:</label>
+					<span class="col-xs-8 spn-content">
+					{$vo.create_time|to_date='Y-m-d H:i'}
+					</span>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-4 text-justify text-nowrap fine-a" >编写人:</label><span class="col-xs-8 spn-content">{$vo.user_name}</span>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-4 text-justify text-nowrap fine-a" >部门:</label><span class="col-xs-8 spn-content">{$vo.dept_name}</span>				
+			</div>
+
+			<div class="form-group col-xs-12 hidden">
+				<label class="col-sm-2 control-label" >传阅：</label>
+				<div class="col-sm-10">
+					<p id="refer_wrap" class="form-control-static address_list">
+						{$vo.refer_name}
+					</p>
+				</div>
+			</div>
+			
+			<volist name="field_list" id="field_vo">
+				{:W('UserDefineField/view',array($field_vo))}
+			</volist>
+			
+			<eq name="flow_type.is_show" value="1">
+				<div class="form-group">
+					<div class="col-xs-12">
+						<div class="content_wrap">
+							<iframe class="content_iframe"></iframe>							
+							<textarea class="content hidden"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
+						</div>
+					</div>
+				</div>
+			</eq>
+			<notempty name="vo.add_file">
+				<div class="form-group">
+					<label class="col-sm-2 control-label" >附件：</label>
+					<div class="col-sm-10">
+						{:W('FileUpload/view',array('add_file'=>$vo['add_file']))}
+					</div>
+				</div>
+			</notempty>
+			<div class="clearfix"></div>
+		</form>
+	</eq>
+
+	<a id="flow_status"></a>
+	 <span class="span-define">审批情况:</span>       
+ <?php $count = count($flow_log);
+ foreach($flow_log as $k => $item){ 
+ ?>
+
+ <div class="container con-define">
+	<div class="row">
+		<div class="col-xs-2 mar-2">
+			<div class="cil-k">
+				<span class="glyphicon <?php 
+				if($item['result']== '1')
+				{echo 'glyphicon-ok';} 
+				else if($item['result']=='0')
+				{echo 'glyphicon-remove gly-red';} 
+				else if
+				(empty($item['result'])){echo 'glyphicon-option-horizontal';} ?> gly-define"></span>
+				<?php if($k != $count-1){ ?>
+                                <div class="das hidden"></div>
+                                <?php } ?>
+			</div>
+		</div>
+		<div class="col-xs-10 colcation">
+			<div class="row flow-a">
+				<div class="col-xs-4 text-nowrap flow-a-1">{$item.user_name}</div>
+				<div class="col-xs-8 text-nowrap text-right flow-a-2">{$item.update_time|to_date='Y-m-d'}</div>	
+			</div>
+			<div class="row flow-b">
+				<div class="col-xs-4 text-nowrap flow-a-3 text-center" id="flow-sp">{$item.result|show_result}</div>
+				
+				<div class="col-xs-8 text-nowrap text-right flow-a-4">{$item.update_time|to_date='H:i'}</div>
+			</div>
+			<div class="row flow-c">
+			<div class="col-xs-12 flow-a-5" id="cutstr">批示：{$item.comment}</div>
+			<?php
+			 foreach($item['suggest'] as $ko => $vo){ 
+			 ?>
+			<div class="col-xs-12 flow-a-6"><div class="flow_collect">
+			<div>问题：
+			{$vo['question']}</div>
+			建议：
+			<?php if(empty($vo['comment'])){ 
+					echo "<span style='color:#8B8989'>正在填写意见</span>";
+					}else{ 
+					echo $vo['comment'];
+					}				
+			?>
+                </div><div class="flow-a-7">--{$vo.user_name}&nbsp;
+                <?php if(!empty($vo['comment'])){ 
+					echo "(".(date('Y-m-d',$vo['write_time'])).")";
+					}				
+				?>                
+                </div></div>
+				<?php } ?>
+			</div>
+			
+			<script>
+			window.onload = function() {
+				var str = $('#cutstr{$k}').html();
+				$('#cutstr{$k}').html(str);
+			}
+			</script>
+		</div>		
+	</div>
+</div>
+<?php } ?>
+<script>
+$(".flow-c").on('click','#cutstr',function(){
+	$("#pop-define").css("display","block");
+	var str = $(this).html();
+	$('#pop-define-content').html(str);	
+	$("#detailcover").show();	
+});
+					
+</script>
+ <div id="detailcover"></div>
+ <div class="detail" id="pop-define">
+		<div class="close1">
+		<span>批示详情<span>
+		<a href="javascript:void(0)" id="closebt"><img src="__ROOT__/Public/Ins/img/close.gif"></a>
+		</div>
+		<div class="deptail-content" id="pop-define-content">
+		</div>
+</div> 
+<script>
+			$("#closebt").click(function(){
+				$("#pop-define").css("display","none");
+				$("#detailcover").hide();
+				});
+			$('#detailcover').click(function() {
+		        $("#pop-define").css("display","none");
+				$("#detailcover").hide();
+		    });
+			$(function(){  
+		            var sUserAgent = navigator.userAgent.toLowerCase();  
+		            var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";  
+		            var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";  
+		            var bIsMidp = sUserAgent.match(/midp/i) == "midp";  
+		            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";  
+		            var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";  
+		            var bIsAndroid = sUserAgent.match(/android/i) == "android";  
+		            var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";  
+		            var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";   
+		            if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {  
+		                // $("#price").addClass("text-right");
+		                //var value=$("#price").html(); 
+		                // $("#price").html("金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额："); 
+		            } else {  
+		                $(".flow-a-3").removeClass("text-center");
+		                $(".gly-define").css("margin-left","4px");
+		                $(".gly-define").css("margin-top","4px");
+		                $(".spn-content").css("margin-left","-21rem");
+		                $(".fine-a").removeClass("text-right");
+		                $(".mar-2").css("margin-top","1rem");
+		                $(".colcation").css({"margin-top":"2rem","margin-left":"-8rem"});
+		                $(".das").css("height","141px");
+		                $(".fine-a").css("font-size","16px");
+		                $(".spn-content").css("font-size","16px");
+		                $(".fine-a").css("padding-left","22px");
+		                $(".con-define").css("margin-left","6rem");
+		                $(".span-define").css("margin-left","2rem");
+		                $(".con-define").css("margin-top","5px");
+		            }  
+			} );
+</script>
+
+	<notempty name="to_confirm">
+		<a id="confirm"></a>
+		<form method="post" action="" name="form_confirm" id="form_confirm">
+			<input type="hidden" name="id" value="{$to_confirm.id}">
+			<input type="hidden" name="flow_id" value="{$flow_id}">
+			<input type="hidden" name="step" value="{$to_confirm.step}">
+                        <input type="hidden" name="token" value="{:session('token')}"/>
+			<div class="operate panel panel-default op-mar">
+
+				<div class="form-group panel-body">
+					<label class="col-sm-2 control-label" >审批意见：</label>
+					<div class="col-sm-10">
+						<textarea name="comment" class="col-xs-12" placeholder="请填写审批意见" style="height:120px" check="require" msg="请填写审批意见"></textarea>
+						<div><a href="{:U('FlowSuggest/suggest',array('flow_id'=>$vo['id'],'flow_log_id'=>$to_confirm['id'],'flow_name'=>$vo['name']))}" class="btn btn-collect btn-special">收集意见</a></div>
+					</div>
+				</div>
+			</div>
+		</form>                
+				<a onclick="approve();" class="btn btn-sm btn-primary btn-block btn-approve">同意</a><br/>
+				<a onclick="reject();" class="btn btn-sm btn-danger btn-block">驳回</a>
+	</notempty>
+        <notempty name="to_suggestion">
+		<form method="post" action="" name="form_suggestion" id="form_suggestion">
+			<input type="hidden" name="id" value="{$to_suggestion.id}">
+			<div class="operate panel panel-default op-mar">
+				<div class="form-group panel-body">
+                                    <label class="col-sm-2 control-label" ><?php if(empty($to_suggestion['question'])){echo "请填写意见：";}else{echo $to_suggestion['question'];} ?></label>
+					<div class="col-sm-10">
+						<textarea name="comment" class="col-xs-12" placeholder="请填写意见" style="height:120px" check="require" msg="请填写意见"></textarea>
+					</div>
+				</div>
+			</div>
+		</form>                
+				<a onclick="approve_suggestion();" class="btn btn-sm btn-primary btn-block btn-approve">提交</a><br/>
+	</notempty>
+</block>
+<block name="js">
+	<script type="text/javascript">
+		udf_field.init({$vo['udf_data']});
+		function approve() {
+			if(confirm("是否确认同意?")){
+                var t=100;
+                $(".btn-approve").attr("disabled","disabled");
+                var int=setInterval(function(){
+                t--;                
+                if(t==0){                            		
+                        $(".btn-approve").html("同意");
+                        $(".btn-approve").attr("disabled",false);
+                        $(".btn-approve").attr("onclick","approve()");                        
+                        clearInterval(int);
+                }else{  
+                		$(".btn-approve").html("同意("+t+")");              		
+                        $(".btn-approve").attr("onclick","javascript:alert('不能重复提交！')");
+                        return;                   
+                }
+                },1000);
+                sendForm("form_confirm", "{:U('approve')}", "{:U('read','id='.$flow_id)}");  
+                }			
+		}
+
+		function refer() {
+			sendForm("form_confirm", "{:U('refer')}", "{:U('read','id='.$flow_id)}");
+		}
+		function approve_suggestion() {
+			var str = $("#form_suggestion").serialize();
+			$.ajax({
+	                url: "{:U('FlowSuggest/flow_suggestion')}",
+	                dataType: 'json',
+	                data: str,
+	                type: 'POST',
+	                cache: false,
+	                timeout: 2000,
+	                success: function(data){
+	                	if(data.status == 1){
+	                		alert('提交成功');
+	                		location.href="{:U('folder','fid=suggestion')}";
+	                	}else{
+	                		alert('提交失败');
+	                	}
+	                }
+	        });
+		}
+
+		function reject() {
+			if(confirm("是否确认驳回？")){
+			sendForm("form_confirm", "{:U('reject')}", "{:U('read','id='.$flow_id)}");
+			}
+		}
+
+		function back_to(emp_no) {
+			sendForm("form_confirm", fix_url("{:U('back_to')}?emp_no=" + emp_no), "{:U('read','id='.$flow_id)}");
+		}
+
+		function save() {
+			$("#confirm").val("");
+			$("#confirm_wrap  span").each(function() {
+				$("#confirm").val($("#confirm").val() + $(this).attr("data") + '|');
+			});
+			$("#confirm_name").val($("#confirm_wrap").html());
+
+			$("#consult").val("");
+			$("#consult_wrap  span").each(function() {
+				$("#consult").val($("#consult").val() + $(this).attr("data") + '|');
+			});
+			$("#consult_name").val($("#consult_wrap").html());
+
+			$("#refer").val("");
+			$("#refer_wrap  span").each(function() {
+				$("#refer").val($("#refer").val() + $(this).attr("data") + '|');
+			});
+			$("#refer_name").val($("#refer_wrap").html());
+
+			if ($("#confirm").val().length < 2) {
+				ui_error('请选择审批流程');
+				return false;
+			}
+            sendForm("form_data", "{:U('save')}");
+		}
+
+		function popup_confirm() {
+			winopen("{:U('popup/confirm')}", 560, 470);
+		}
+
+		function popup_refer() {
+			winopen("{:U('popup/refer')}", 560, 470);
+		}
+		$(document).ready(function() {
+			set_return_url(document.location, 1);
+			$('.address_list').on('mouseenter', 'span', function() {
+				$i = $(this).find('i');
+				$i.removeClass('fa-arrow-right');
+				$i.addClass('fa-times');
+			});
+			$('.address_list').on('mouseleave', 'span', function() {
+				$i = $(this).find('i');
+				$i.removeClass('fa-times');
+				$i.addClass('fa-arrow-right');
+
+				$(".address_list span i:last").attr('class', 'fa');
+			});
+
+			$('.address_list').on('click', 'i', function() {
+				$(this).parents('span').remove();
+			});
+			show_content();
+		});
+	</script>
+</block>

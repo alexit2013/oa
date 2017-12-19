@@ -1,0 +1,144 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<style>
+    .ml1r{margin-left:1rem;}
+    .ridio_margin{margin:4px;}
+    .mt5{margin-top:5px}
+    .down_model{text-decoration:underline;color:#80B2DB;}
+    .down_tip{color: #a0a0a0!important;}
+    .upload_btn{cursor: pointer;}
+    .add_icon{color: #2abb97;position: absolute;top: -9px;right: 16px;font-size: 30px;cursor: pointer;}
+    #up_status{position: relative;display: none;font-weight: bold;}
+    .up_font{position: absolute;top:28px;left:18px;}
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;margin-bottom:1rem;}
+</style>
+
+    <!--     <?php 
+        // dump($list_dept);//部门列表
+        // dump($flow_list);//报表列表
+        //  dump($data_chart);//流程列表
+        ?> -->
+            <form action="" method="post" class="form form-horizontal" id="form-article-add">
+                <div class="hidden" id="dept_id"></div>
+                <div class="hidden" id="emp_id">
+                </div>                
+                <input type="hidden" id="status">               
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择部门</label>
+                     <div class="formControls col-xs-8 col-sm-9" id="dept_info"> 
+                         <input id="dept_input" type="text" class="input-text" value="" placeholder="请选择部门">
+                        <i class="Hui-iconfont Hui-iconfont-add4 add_icon icon1"></i>
+                     </div> 
+                    <div class="obj_add"></div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择人员</label>
+                     <div class="formControls col-xs-8 col-sm-9" id="dept_info"> 
+                         <input id="emp_input" type="text" class="input-text" value="" placeholder="请选择人员">
+                        <i class="Hui-iconfont Hui-iconfont-add4 add_icon icon2"></i>
+                     </div> 
+                    <div class="obj_add"></div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>报表类型</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <span class="select-box">
+                            <select class="select" name="chart_type_id" id="">
+                                <option value="">请选择</option>
+                                <?php foreach ($data_chart as $key => $value) { ?>
+                                    <option value="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></option>
+                                <?php } ?>
+
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>审批流程</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <span class="select-box">
+                        <select class="select" name="flow_type_id" id="">
+                            <option value="">请选择</option>
+                            <?php foreach ($flow_list as $key => $value) { ?>$flow_list
+                                <option value="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></option>
+                            <?php } ?>
+                        </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>排序</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="" placeholder="请填写排序码" id="sort" name="sort">
+                    </div>
+                </div>
+<!--                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择审批节点</label>
+                    <div class="formControls col-xs-8 col-sm-9" id="branch">
+                        <input id="branch_input" type="text" class="input-text" value="" placeholder="请选择审批节点">
+                        <i class="Hui-iconfont Hui-iconfont-add4 add_icon"></i>
+                    </div>
+                    <div class="obj_add"></div>
+                </div>  -->
+                <div class="row cl">
+                    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                        <a id="dosubmit" class="btn btn-primary radius ml-20" disabled="disabled">提交</a>
+                        <a href="javascript:;" onclick="window.history.back()" class="btn btn-default radius ml1r">返回</a>
+                    </div>
+                </div>
+            </form>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(".icon1").click(function(){
+        $("#dept_input").click();
+    });
+    $(".icon2").click(function(){
+        $("#emp_input").click();
+    });
+    $("#dept_input").click(function(){
+        //iframe层-父子操作
+        layer.open({
+            type: 2,
+            title: '选择范围',
+            area: ['600px', '550px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: "{:Url('func/popup/read')}"
+        });
+        $("#status").val("3");
+    });
+    $("#emp_input").click(function(){
+        //iframe层-父子操作
+        layer.open({
+            type: 2,
+            title: '选择范围',
+            area: ['600px', '550px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: "{:Url('func/popup/read')}"
+        });
+        $("#status").val("4");
+    });
+    $("#dosubmit").click(function(){                        
+                        var str = $("#form-article-add").serialize();
+                        $.ajax({
+                            type: 'POST',
+                            url: '{:Url("add")}',
+                            data:str,
+                            dataType: 'json',
+                            success: function(data){
+                                if(data.status=='1'){
+                                    layer.msg(data.info);
+                                    setTimeout("location.reload();",3000);
+                                }
+
+                            },
+                            error:function(data) {
+                            },
+                        });
+                        
+    });
+</script>
+{/block}

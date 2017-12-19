@@ -1,0 +1,220 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<style>
+    .bt_blue{
+        background-color: #2CBB97;
+        border-radius: 5px;
+        color: #FFFFFF;
+    }
+    .bt_blue:hover{
+        background-color: #28AA89;
+    }
+    .bt_button{
+        background-color: #F3F3F3!important;
+        background: -webkit-linear-gradient(#FCFCFC, #EEEEEE);
+        background: -o-linear-gradient(#FCFCFC, #EEEEEE);
+        background: -moz-linear-gradient(#FCFCFC, #EEEEEE);
+        background: linear-gradient(#FCFCFC, #EEEEEE)!important;
+    }
+    .bt_button:hover{
+        background: -webkit-gradient(linear, 0 0, 0 100%, from(#FCFCFC), to(#DDDDDD));
+        background: -webkit-linear-gradient(#FCFCFC, #DDDDDD);
+        background: -moz-linear-gradient(#FCFCFC, #DDDDDD);
+        background: -o-linear-gradient(#FCFCFC, #DDDDDD);
+        background: linear-gradient(#FCFCFC, #DDDDDD)!important;
+    }
+    a.come_time,a.end_time{
+        color: #4A90E2;
+    }
+    .custom_tip{
+        background-image: url(answer-bg.png);
+        background-repeat: no-repeat;
+        background-position: right top;
+        position: relative;
+    }
+    .custom_tip_box{
+        width: 250px;
+        height: auto;
+        overflow: hidden;
+        position: absolute;
+        left: 95%;
+        top: 0%;
+        z-index: 999;
+
+    }
+    .custom_tip_box div.triangle{
+        width: 15px;
+        height: 15px;
+        border-top: 1px solid #B3B3B3;
+        border-left: 1px solid #B3B3B3;
+        background-color: #FFFFFF;
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        z-index: 10;
+    }
+    .custom_tip_box div.tip_content{
+        width: 230px;
+        height: auto;
+        overflow: hidden;
+        float: right;
+        border: 1px solid #B3B3B3;
+        font-size: 12px;
+    }
+    .tip_content div.tip_title{
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        background-color: #f5f5f5;
+        border-bottom: 1px solid #B3B3B3;
+    }
+    .tip_content div.tip_words{
+        text-align: left !important;
+        font-size: 12px;
+        font-weight: normal;
+        background-color: #FFFFFF;
+        width: 88%;
+        height: auto;
+        line-height: 24px;
+        padding: 0 6%;
+    }
+    .chose_bc{
+        cursor: pointer;
+    }
+    ul.pagination{
+        position: absolute;
+        bottom: 20px;
+        right: 50px;
+        width: 100%;
+        background-color: #ffffff;
+    }
+    .rude_box{
+        width: 14%;
+        border: 0.5px solid #B3B3B3;
+        float: left;
+        height: 30px;
+        cursor: pointer;
+        position: relative;
+    }
+    .rude_box:hover{
+        background-color: #eeeeee;
+    }
+    .date{
+        width: 100%;
+        height: auto;
+        position: absolute;
+        top:0;
+        left: 5%;
+        text-align: left;
+    }
+    .week{
+        width: 100%;
+        height: auto;
+        position: absolute;
+        top: 25%;
+        right: 5%;
+        text-align: right;
+    }
+    .schedual_name{
+        width: 100%;
+        height: auto;
+        position: absolute;
+        top: 60%;
+        text-align: center;
+
+    }
+</style>
+
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 考勤设置 <span class="c-gray en">&gt;</span> 编辑新员工排班 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="mt-20" style="overflow-x: auto;">
+        <table class="table table-border table-bordered table-bg month_table">
+            <thead>
+            <tr class="text-c" height="57">
+                <th colspan="7">排班视图</th>
+            </tr>
+            </thead>
+        </table>
+        <div class="mt-20">
+            <form class="form form-horizontal" id="form-admin-add">
+                <input type="hidden" name="emp_no" value="{$emp_no}">
+            <?php for($i=0; $i<35; $i++){ ?>
+            <?php if(!empty($data_list[$i])){ ?>
+                <div class="rude_box" id="box{$i}" onclick="member_add('选择排班','{:Url('schedual',array('schedual_id'=>$data_list[$i]['schedual_id'],'id'=>$i))}')">
+                    <input type="hidden" name="name[{$data_list[$i]['day']}][id]" value="{$data_list[$i]['id']}">
+                    <input type="hidden" class="schedual_id" name="name[{$data_list[$i]['day']}][schedual_id]" value="{$data_list[$i]['schedual_id']}">
+                    <input type="hidden" class="schedual_name" name="name[{$data_list[$i]['day']}][schedual_name]" value="{$data_list[$i]['schedual_name']}">
+                    <div class="date"><?php echo $data_list[$i]['year'].'-'.$data_list[$i]['month'].'-'.$data_list[$i]['day']; ?></div>
+                    <div class="week"><?php $time=mktime(0,0,0,$data_list[$i]['month'],$data_list[$i]['day'],$data_list[$i]['year']);$w = date('w',$time);echo $week[$w]; ?></div>
+                    <div class="schedual_name"><?php echo $data_list[$i]['schedual_name'];  ?></div>
+                </div>
+            <?php }else{ echo '<div class="rude_box"></div>'; } ?>
+            <?php } ?>
+            </form>
+            <div class="form-group" style="margin-top: 30px; width: 100%;">
+                <div class="action" style="width: 200px; margin: 0 auto">
+                    <input class="btn btn-sm btn-primary" type="button" value="保存" onClick="save_data();">
+                    <a class="btn btn-sm btn-primary" href="{:Url('index')}">取消</a>
+                </div>
+            </div>
+
+    </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(document).ready(function(){
+        var w = $(".rude_box").eq(0).width();
+        $(".rude_box").css("height",w);
+    })
+
+    function member_add(title,url){
+        layer.open({
+            type: 2,
+            title: title,
+            area: ['600px', '500px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: url
+        });
+    }
+    function myDate(content,box_id){
+        var schedual_id = content.split("-")[0];
+        var schedual_name = content.split("-")[1];
+        $("#box"+box_id+" .schedual_id").val(schedual_id);
+        $("#box"+box_id+" div.schedual_name").html(schedual_name);
+        $("#box"+box_id+" input.schedual_name").val(schedual_name);
+    };
+
+    function save_data(){
+        var str = $("#form-admin-add").serialize();
+        $.ajax({
+            type: 'POST',
+            url: '{:Url("edit")}',
+            data:str,
+            dataType: 'json',
+            success: function(data){
+
+                if(data.stauts=='1'){
+                    layer.msg(data.msg);
+                    setTimeout("location.href='{:Url('index')}';",2000);
+                }
+                if(data.stauts=='0'){
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(data) {
+                if(data.stauts=='0'){
+                    layer.msg(data.msg);
+                }
+            },
+        });
+    }
+
+</script>
+{/block}

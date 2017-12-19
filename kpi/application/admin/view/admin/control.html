@@ -1,0 +1,85 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<div class="page-container">
+  
+    <form action="" class="form form-horizontal" id="form-data">
+          <input name='emp_no' id='empno' type="hidden" value="{$userinfo['emp_no']}">
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>账号：</label>
+        <div class="formControls col-xs-5 col-sm-8">
+                    <input type="text" disabled="disabled" class="input-text" maxlength="20" value="{$userinfo['emp_no']}" private="required" />
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>姓名：</label>
+        <div class="formControls col-xs-5 col-sm-8">
+                <input type="text" disabled="disabled" class="input-text" maxlength="20" value="{$userinfo['name']}" private="required" />  
+        </div>
+    </div>
+    <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择门店：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <ul>
+                    <?php foreach ($kpi_dept as $k => $v){ ?>
+                    <li class="col-xs-4">
+                        <input name="kpi_dept[{$k}]" type="checkbox" value="{$v['ID']}" />
+                                        {$v['NAME']}
+                    </li>
+                    <?php } ?>
+                </ul>
+            </div>
+        </div> 
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+                <button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+        $(function(){
+            var emp_no = "emp_no="+$("#empno").val();
+            $.ajax({
+                type : 'POST' ,
+                url: '{:Url("control_store")}',
+                data: emp_no,
+                dataType: 'json',
+                success: function(data){
+                    $.each(data,function(k,v){
+                    var id = v.ID;
+                    $('input[value='+id+']').prop('checked', true);
+               }); 
+                },
+                error:function(data) {
+                        console.log(data.msg);
+                }
+            });
+        });
+    function article_save_submit(){
+            var checked =$("input:checkbox[name^='kpi_dept']:checked").length;
+            if (checked < 1){
+                layer.msg('请至少选择一个店面！');
+                return false;
+            }
+            var data = $("#form-data").serialize();
+            console.log(data);
+            $.ajax({
+                            type: 'POST',
+                            url: '{:Url("control_save")}',
+                            data:data,
+                            dataType: 'json',
+                            success: function(data){
+                                    layer.msg(data.msg);
+                                     setTimeout("location.reload();",3000);                                 
+                            },
+                            error:function(data) {
+                                layer.msg(data.msg);
+                            },
+                        });
+    }               
+</script>
+{/block}

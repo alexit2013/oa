@@ -1,0 +1,377 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    body,html{
+        width: 100%;
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background-color: #efefef;
+    }
+    .page-container{
+        padding: 0 !important;
+    }
+    .content_box{
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        margin: 0 auto;
+    }
+    .top_box{
+        width: 100%;
+        overflow: hidden;
+        background-color: #FFFFFF;
+        padding-bottom: 3px;
+        border-bottom: 1px solid #9a9a9a;
+    }
+    .top_info{
+        width: 90%;
+        height:40px;
+        padding: 10px 0;
+        border-bottom: 1px solid #eeeeee;
+        margin: 0 auto;
+    }
+    .user_heard{
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+        margin-right: 5px;
+        float: left;
+    }
+    .user_heard > img{
+        display: block;
+        border: none;
+        width: 100%;
+        height:100%;
+    }
+    .tip_box_new{
+        width: 100%;
+        height: 40px;
+        line-height: 20px;
+        color: #000000;
+        font-size: 0.8em;
+        position: relative;
+    }
+    .tip_box_new > .ap_status{
+        position: absolute;
+        top: 35px;
+        right: 6%;
+        width: 60px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        color: orange;
+        font-size: 0.8em;
+        border: 1px solid orange;
+        transform: rotate(30deg);
+        -webkit-transform: rotate(30deg);
+        -moz-transform: rotate(30deg);
+        -ms-transform: rotate(30deg);
+    }
+    .top_details{
+        width: 90%;
+        overflow: hidden;
+        margin: 10px auto 0 auto;
+        font-size: 0.8em;
+    }
+    .tip_bar{
+        width: 90%;
+        height: 25px;
+        margin: 0 auto;
+        font-family: '微软雅黑';
+        font-size: 0.8em;
+        line-height: 30px;
+    }
+    .flow_content{
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        border: 1px solid #eeeeee;
+        border-radius: 10px;
+    }
+    .flow_content_box{
+        width: 100%;
+        height:auto;
+        overflow: hidden;
+        font-size: 0.9em;
+    }
+    .flow_content_box .words{
+        width: 15%;
+        height: 20px;
+        line-height: 20px;
+        text-align: right;
+        float: left;
+        color: #7a7a7a;
+    }
+    .flow_content_box .fill_bar{
+        width: 70%;
+        height:auto;
+        float: left;
+        line-height: 20px;
+        margin-left: 2%;
+    }
+    .process_box .receive{
+        width: 90%;
+        height: auto;
+        overflow: hidden;
+        margin: 0 auto;
+        line-height: 20px;
+        padding: 10px 0;
+        border: 1px rgb(165, 42, 42) dashed;
+        border-radius: 20px;
+        background: rgba(121, 181, 28, .1);
+        box-shadow: 4px 4px rgba(0,0,0,.2);
+    }
+    .process_box .start{
+        /*background-image: url('/position/public/kpi/img/start.png');*/
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+    .process_box .bosom{
+        /*background-image: url('/position/public/kpi/img/bosom.png');*/
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+    .process_box .end{
+        /*background-image: url('/position/public/kpi/img/end.png');*/
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+    .process_box .receive img{
+        display: block;
+        border: none;
+        width: 40px;
+        height:40px;
+        border-radius: 5px;
+        float: left;
+        margin-left: 30px;
+    }
+
+    .process_box{
+        width: 100%;
+        overflow: hidden;
+        background-color: #FFFFFF;
+        border-bottom: 1px solid #9a9a9a;
+        border-top: 1px solid #9a9a9a;
+        padding: 20px 0;
+    }
+    .ps_box{
+        width: 60%;
+        height: auto;
+        overflow: hidden;
+        float: left;
+        margin: 0 5px;
+        font-size: 0.8em;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #5a98de;
+        border-color: #5a98de;
+        display: block;
+        float: left;
+        margin: 10px;
+    }
+    .submit_btn{
+        width: 170px;
+        height: auto;
+        overflow: hidden;
+        margin: 0 auto;
+        margin-bottom: 40px;
+    }
+    .next_step{
+        width: 30px;
+        height: 30px;
+        display: block;
+        border: none;
+        margin: 5px auto;
+    }
+</style>
+
+    <input type="hidden" id="emp_no_name" value="{:get_emp_no()}">          <!--获取到当前用户名-->
+    <input type="hidden" id="yiban" value="{$yiban}">
+    <input type="hidden" id="current_status" value="{$data_list['status']}" >
+    <?php foreach($data_flowend as $key => $val){ ?>
+        <input type="hidden" class="end_floe" data-emp="{$val['emp_no']}" data-status="{$val['status']}">
+    <?php } ?>
+    <form class="form form-horizontal" id="flow">
+        <div class="content_box">
+            <div class="top_box">
+                <div class="top_info">
+                    <div class="user_heard"><img src="{$data_list['pic']}"></div>
+                    <div class="tip_box_new">
+                        <div><span>{$data_list['user_name']}</span>发起的<span>{$data_list['chart_name']}</span>审批</div>
+                        <div style="color: #7e7e7e; font-size: 0.7em;">{:date('Y-m-d H:i:s',$data_list['createtime'])}</div>
+                        <div class="ap_status"><?php if(empty($yiban)){ echo '待处理'; }else{ 
+                            if($data_list['status']==0){ echo '正在审批'; }  
+                            if($data_list['status']==1){ echo '审批完成'; }
+                            if($data_list['status']==2){ echo '已退回'; }
+                            } ?></div>
+                    </div>
+                </div>
+                <div class="top_details">
+                    <div class="flow_content_box">{$data_list['chart_name']}审批单:</div>
+                    <div class="flow_content_box">
+                        <div class="words">发起人：</div>
+                        <div class="fill_bar">{$data_list['user_name']}</div>
+                    </div>
+                    <div class="flow_content_box">
+                        <div class="words">部门：</div>
+                        <div class="fill_bar">{$data_list['dept_name']}</div>
+                    </div>
+                    <div class="flow_content_box">
+                        <div class="words">报表：</div>
+                        <div class="fill_bar">{$data_list['chart_name']}</div>
+                    </div>
+                    <div class="flow_content_box">
+                        <div class="words">说明：</div>
+                        <div class="fill_bar">{$data_list['content']}</div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="flow_log_id" value="{$data_list['flow_log_id']}">
+            <input type="hidden" id="emp_no" value="{$data_list['emp_no']}">
+            <div class="tip_bar">审批进程:</div>
+            <div class="process_box">
+                <div class="receive">
+                    <img src="{$data_list['pic']}">
+                    <div class="ps_box">
+                        <div>{$data_list['user_name']}</div>
+                        <?php if(!empty($data_list['content'])){ ?>
+                        <div>批示:{$data_list['content']}</div>
+                        <?php } ?>
+                        <?php if(!empty($data_list['createtime'])){ ?>
+                        <div>{:date('Y-m-d H:i:s',$data_list['createtime'])}</div>
+                        <?php } ?>
+                    </div>
+                    <div>已发起</div>
+                </div>
+
+                <?php $count = count($data_list["confirm"]); ?>
+                {foreach $data_list["confirm"] as $k => $v}
+                <img class="next_step" src="/position/public/kpi/img/next_step.png">
+                <div class="receive <?php if($k == 0){ echo 'start'; }else if($k == $count-1){ echo 'end'; }else{ echo 'bosom'; } ?>">
+                    {foreach $v as $ko => $vo}
+                    <div style="width: 100%; height: auto; clear: both; padding: 10px 0;">
+                        <img src="{$vo['pic']}">
+                        <div class="ps_box">
+                            <div>{$vo['user_name']}</div>
+                            <?php if(!empty($vo['content'])){ ?>
+                            <div>批示:{$vo['content']}</div>
+                            <?php } ?>
+                            <?php if(!empty($vo['updatetime'])){ ?>
+                            <div>{:date('Y-m-d H:i:s',$vo['updatetime'])}</div>
+                            <?php } ?>
+                        </div>
+                        <div><?php if(empty($vo['status'])){ echo '待审批';}elseif($vo['status'] == '1'){ echo '已审批';}elseif($vo['status'] == '2'){ echo '已驳回'; }elseif($vo['status'] == '3'){ echo '待提交'; } ?></div>
+                    </div>
+                    {/foreach}
+                </div>
+                {/foreach}
+            </div>
+            <div class="tip_bar done_it">审批意见:</div>
+            <div class="process_box done_it">
+                <div class="flow_content_box">
+                    <div class="words">说明：</div>
+                    <div class="fill_bar">
+                        <textarea cols="" rows="" class="textarea valid" name="remark" id="content" placeholder="说点什么..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="submit_btn done_it">
+                <button id="dosubmit" onclick="agree(1,this);" class="btn btn-primary radius" type="button">同意</button>
+                <button id="cancel" onclick="agree(2,this);" class="btn btn-primary radius" type="button" style="background-color: #dd514c;">退回</button>
+            </div>
+        </div>
+    </form>
+
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function agree(status,current){
+            $("#dosubmit").attr("disabled","disabled");
+            $("#cancel").attr("disabled","disabled");
+        var flow_log_id = $("#flow_log_id").val();
+        var content = $("#content").val();
+        var emp_no = $("#emp_no").val();
+        $.ajax({
+            type: 'POST',
+            url: '{:Url("workflow/flow/pend")}',
+            data: {'flow_log_id':flow_log_id,'content':content,'status':status,'emp_no':emp_no},
+            dataType: 'json',
+            success: function(data){
+                var sUserAgent = navigator.userAgent.toLowerCase();
+                var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+                var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+                var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+                var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+                var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+                var bIsAndroid = sUserAgent.match(/android/i) == "android";
+                var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+                var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+                if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+                    if(data.status=='1') {
+                        layer.msg(data.msg);
+                        setTimeout(function(){
+                            location.href='/kpi/index.php/workflow/flow/finish.html';
+                        },2000)
+                    }
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                        setTimeout(function(){
+                            location.href='/kpi/index.php/workflow/flow/finish.html';
+                        },2000)
+                    }
+                } else {
+                    if(data.status=='1'){
+                        layer.msg(data.msg);
+                        setTimeout(function(){
+                            parent.myDate(1);
+                            layer_close();
+                            location.reload();
+                        },2000);
+                    }
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                        parent.myDate(1);
+                        layer_close();
+                    }
+                }
+            },
+            error:function(data) {
+                    layer_close();
+                    parent.myDate(1);
+                    layer.msg(data.msg);
+            },
+        });
+    }
+    $(function(){
+        var yiban = $("#yiban").val();
+        var current_status = $("#current_status").val();
+        if(current_status == "2"){
+            $("#cancel").remove();
+            $("#dosubmit").html("提交");
+            if(yiban == '1'){
+                $(".done_it").remove();
+            }
+        }
+        if(current_status != "2"){
+            if(yiban == '1'){
+                $(".done_it").remove();
+            }
+            if(yiban == ''){
+                //手机推送消息判断是否已审批过
+                var emp_no_name = $("#emp_no_name").val();      //当前用户账号
+                $("input.end_floe").each(function(){
+                    var data_emp = $(this).attr("data-emp");
+                    var data_status = $(this).attr("data-status");
+                    if(emp_no_name != data_emp){
+                        $(".done_it").remove();
+                    }else if(data_status != ""){
+                        $(".done_it").remove();
+                    }
+                });
+            }
+        }
+    })
+</script>
+{/block}

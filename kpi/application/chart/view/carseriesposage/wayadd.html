@@ -1,0 +1,308 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+	.c-red{color: red;}
+        .AddIcon{font-size: 19px;line-height: 31px;cursor:pointer;}
+        .mt-3{margin-top:3px;}
+        .ml1r{margin-left:1rem;}
+        .file_upload{
+            border: 1px solid #dfdfdf;
+            width: 121px;
+            height: 36px;
+            line-height: 34px;
+            text-align: center;
+            color: #676795;
+            font-size: 16px;
+            position: relative;
+            padding-left:18px;
+        }
+        .file_upload i{
+            position: absolute;
+            top:0px;
+            left:19px;
+            font-size:19px;
+            color: #60b879;
+        }
+        .msg_content{
+            margin:25px 0px;
+            padding: 25px 0px;
+            box-sizing:border-box;
+            border: 1px solid #00ccff;
+            border-radius:15px;
+            position: relative;
+        }
+    .msg_del{
+      border-radius:5px;
+      color: #fff;
+      background-color:#3399ff;
+      width:auto;
+      height: 28px;
+      line-height: 28px;
+      padding: 0px 12px;
+      position: absolute;
+      top:-15px;
+      left:16px;
+      text-align: center;
+      font-size: 13px;
+      cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;}
+    .de-container{padding:10px 20px}
+    .table-box{width:100%;overflow-x: scroll;}
+    .delete > i{
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+<div class="page-container">
+	<form class="form form-horizontal" id="form-article-add">
+            <div class="row cl hidden">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <span class="select-box">
+                            <select class="select" name="store_id1" id="store_id1">
+                                <?php foreach($stores as $k => $v){ ?>
+                                    <option value="{$v['ID']}">{$v['NAME']}</option>
+                                <?php } ?>
+                            </select>
+                        </span>
+                    </div>
+            </div>
+            <h3 style="width:100%;text-align: center;margin-top:30px;">在途表数据新增</h3>
+            <div class="table-box">
+                <table class="table table-border table-bordered table-hover table-bg table-sort">
+                    <thead>
+                            <tr class="text-c">
+                                <th rowspan="2"><div style="width: 60px;">序号</div></th>
+                                <th colspan="4"><div style="width: 720px;">在途</div></th>
+                                <th rowspan="2"></th>
+                            </tr>
+                            <tr class="text-c">
+                                <th style="width: 180px;">品牌</th>
+                                <th style="width: 180px;">车系</th>
+                                <th style="width: 180px;">车架号</th>
+                                <th style="width: 180px;">采购价</th>
+                            </tr>
+                    </thead>
+                    <tbody class='way_tb'>
+                        <tr class="text-c">
+                                <td class='way_no'>1</td>
+                                <td>
+                                    <span class="select-box">
+                                        <select class="select carbrand_select s1-1" name="carbrand_id[0][]" data-num="1" id="carbrand_id1">
+                                            <option>请选择</option>
+                                        </select>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="select-box">
+                                            <select class="select s1-2" name="finance_carseries_id[]" id="carseries_id1">
+                                                <option>请选择</option>
+                                            </select>
+                                    </span>
+                                </td>						
+                                <td>
+                                    <input type="text" class="input-text" value="" private="required"  msg="车架号" placeholder="请输入车架号" id="finance_vin" name="finance_vin[]">
+                                </td>
+                                <td>
+                                    <input type="text" class="input-text" value="" private="required"  msg="采购价" onkeyup="clearNoNum(this)" placeholder="请输入采购价" id="finance_price" name="finance_price[]">
+                                </td>                                
+                                <td class="delete"><a href="javascript:;" id="additem" class="btn btn-primary radius add"><i class="Hui-iconfont">&#xe600;</i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>                              
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+				<button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">        
+        function article_save_submit(){
+                    if ($("#carbrand option:selected").text()=="请选择") {
+                            layer.msg("请选择品牌"); 
+                            return false;
+                    }
+                    if ($("#carseries option:selected").text()=="请选择") {
+                                    layer.msg("请选择车系"); 
+                                    return false;
+                            }
+                     var num=0;
+		     var str="";
+		     $("input[private='required']").each(function(n){
+		          if($.trim($(this).val())=="")
+		          {
+		               num++;
+		               str+=$(this).attr("msg")+"不能为空！\r\n";
+		          }
+		     });
+		     if(num>0)
+		     {
+		          layer.msg(str);
+		     }
+		     else
+		     {	
+		        var str = $("#form-article-add").serialize();
+		        $.ajax({
+                            type: 'POST',
+                            url: '{:Url("wayadd")}',
+                            data:str,
+                            dataType: 'json',
+                            success: function(data){
+                                if(data.status=='1'){
+                                    layer.msg(data.msg);
+                                     setTimeout("location.reload();",3000);
+                                }                                
+                            },
+                            error:function(data) {
+                                  if(data.status=='0'){
+                                    layer.msg(data.msg);
+                                }
+                            },
+                        });		    	
+		     }
+	}
+
+	//预加载获取品牌
+	$(document).ready(function(){
+		var store_id = "store_id=" + $("#store_id1").val();
+                var html = '<option>请选择</option>';
+            $.ajax({
+               type : 'POST' ,
+               url: '{:Url("carbrand")}',
+               data: store_id,
+               dataType: 'json',
+               success: function(data){
+                  $.each(data,function(k,v){
+                           html += '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                           $("#carbrand_id1").html(html);
+                           $("#carbrand_id2").html(html);
+                           $("#carbrand_id3").html(html);
+                  });             		            	                 
+               },
+               error:function(data) {
+                       console.log(data.msg);
+               }
+           });      
+	});
+
+	//获取品牌（通过选择）
+    $("#store_id1").change(function(){
+        $("#carbrand_id1").html('<option>请选择</option>');
+        $("#carseries_id1").html("<option value=''>请先选择品牌</option>");
+        var html = '<option>请选择</option>';
+        var store_id = "store_id=" + $(this).val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+               $.each(data,function(k,v){
+               		html += '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                        $(".carbrand_select").html(html);
+               		$("#carbrand_id1").html(html);
+               });                   
+            },
+            error:function(data) {
+                    console.log(data.msg);
+            }
+        });
+    });
+//    function auto_carbrand(i){
+//        $("#carbrand_id"+i).html('<option>请选择</option>');
+//        $("#carseries_id"+i).html("<option value=''>请先选择品牌</option>");
+//        alert(i);
+//        var html = '<option>请选择</option>';
+//        var store_id = "store_id=" + $(this).val();        
+//        alert("2");
+//        $.ajax({
+//            type : 'POST' ,
+//            url: '{:Url("carbrand")}',
+//            data: store_id,
+//            dataType: 'json',
+//            success: function(data){
+//               $.each(data,function(k,v){
+//               		html += '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';                        
+//               		$("#carbrand_id"+i).html(html);
+//               });                   
+//            },
+//            error:function(data) {
+//                    console.log(data.msg);
+//            }
+//        });
+//    }
+
+    //获取车系
+    $(document).on('change', '.carbrand_select', function() {
+        var i = $(this).attr('data-num');
+        var html="<option>请选择</option>";
+        var carbrand_id = "carbrand_id=" + $(this).val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carseries")}',
+            data: carbrand_id,
+            dataType: 'json',
+            success: function(data){
+               $.each(data,function(k,v){
+               		html += '<option class="carseries" value="'+v.id+'">'+v.carseries_name+'</option>';
+               		$("#carseries_id"+i).html(html);
+               });                   
+            },
+            error:function(data) {
+                    console.log(data.msg);
+            }
+        });
+    }); 
+    $('#additem').click(function(){
+        var wl = $(".way_no").length;
+        if(wl>=20){
+            layer.msg("单次最多只可新增20条在途数据！"); 
+            return false;            
+        }
+        var i = '<i class="icon Hui-iconfont remove">&#xe631;</i>';
+        var num = $('.way_tb tr').last().children('.way_no').text();
+        var inum = parseInt(num)+1;
+        var tum = $('.way_tb tr').last().children('.last_num').children().children().attr('data-num');
+//        var tum = $('.last_num').last().children().children().attr('data-num');
+        var itum = parseInt(tum)+1; 
+        var itum2 = parseInt(tum)+2;
+        var itum3 = parseInt(tum)+3;
+//        var html = '<tr class="text-c"><td class="way_no">+'inum'+</td>';
+//        html += '<td><span class="select-box"><select class="select carbrand_select" name="carbrand_id" data-num="+'itum'+" id="carbrand_id+'itum'+"><option>请选择</option></select></span></td>';
+//        html += '<td><span class="select-box"><select class="select" name="finance_carseries_id" id="carseries_id1"><option>请选择</option></select></span></td>'
+        var html = $('.way_tb tr').last().clone();
+        $(".way_tb").append(html);                                        
+        $(".delete").last().html(i);
+        $(".way_no").last().text(parseInt(num)+1);
+        $(".s1-1").last().attr("data-num",itum).attr("id","carbrand_id"+itum).attr("name","carbrand_id["+num+"][]");
+        $(".s1-2").last().attr("id","carseries_id"+itum);
+        $(".s1-3").last().attr("data-num",itum2).attr("id","carbrand_id"+itum2).attr("name","carbrand_id["+num+"][]");
+        $(".s1-4").last().attr("id","carseries_id"+itum2);
+        $(".s1-5").last().attr("data-num",itum3).attr("id","carbrand_id"+itum3).attr("name","carbrand_id["+num+"][]");
+        $(".s1-6").last().attr("id","carseries_id"+itum3);
+        //删除新加的列
+        $('.remove').on("click",function(){
+            $(this).parent().parent().remove();
+            $(".way_no").each(function(k,v){
+                $(this).text(k+1);
+            });
+            $(".s1-1").each(function(k,v){
+                $(this).attr("name","carbrand_id["+k+"][]");
+            });
+            $(".s1-3").each(function(k,v){
+                $(this).attr("name","carbrand_id["+k+"][]");
+            });
+            $(".s1-5").each(function(k,v){
+                $(this).attr("name","carbrand_id["+k+"][]");
+            });
+        })
+    });
+</script>
+{/block}

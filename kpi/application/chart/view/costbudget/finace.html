@@ -1,0 +1,216 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<style>
+    .ml1r{margin-left:1rem;}
+    .ridio_margin{margin:4px;}
+    .mt5{margin-top:5px}
+    .down_model{text-decoration:underline;color:#80B2DB;}
+    .down_tip{color: #a0a0a0!important;}
+    .upload_btn{cursor: pointer;}
+    .add_icon{color: #2abb97;position: absolute;top: -9px;right: 16px;font-size: 30px;cursor: pointer;}
+    #up_status{position: relative;display: none;font-weight: bold;}
+    .up_font{position: absolute;top:28px;left:18px;}
+    .msg_content{
+        margin:25px 0px 0px 0px;
+        padding: 25px 0px;
+        box-sizing:border-box;
+        border: 1px solid #00ccff;
+        border-radius:15px;
+        position: relative;
+    }
+    .msg_del{
+        border-radius:5px;
+        color: #fff;
+        background-color:#3399ff;
+        width:auto;
+        height: 28px;
+        line-height: 28px;
+        padding: 0px 12px;
+        position: absolute;
+        top:-15px;
+        left:16px;
+        text-align: center;
+        font-size: 13px;
+        cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;margin-bottom:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">导入费用预算数据<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <?php if($is_import==0){ ?>
+            <form action="" method="post" class="form form-horizontal" id="form-article-add">
+                <input type="hidden" name="type" value="1" >
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择年份</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <span class="select-box">
+                            <select class="select" name="year" id="store_year">
+                                <option value="{:date('Y');}">{:date('Y');}年</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择月份</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <span class="select-box">
+                            <select class="select" name="month" id="store_month">
+                                <option value="{:date('n');}">{:date('n');}月</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red"></span>下载模板</label>
+                    <div class="formControls col-xs-5 col-sm-8 pt-3 ridio_margin">
+                           <a href="/kpi/Uploads/excel/费用预算(财务部分)导入模板.xls" class="down_model">下载模板</a>                     
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上传文件</label>
+                    <div class="formControls col-xs-5 col-sm-8 pt-3 ridio_margin">
+                        <a href="javascript:;" class="btn btn-default radius upload_btn">上传文件</a>
+                        <input type="file" name="upfile" id="upfile" style="width:86px;height:34px;position: absolute;left:12px;right: 0;top:0;bottom:0;z-index: 2;opacity: 0;cursor: pointer;" onchange="upload(this.value)"/>
+                        <input type="hidden" id="filepath" name="filepath" value="" />
+                        <div class="down_tip">请下载系统提供的模板并编辑上传</div>
+                        <div id="up_status">
+                            <img src="__INS__/img/scz.gif" class="up_img" />
+                            <div class="up_font">上传中...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                        <button id="dosubmit" class="btn btn-primary radius ml-20">导入</button>
+                        <button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+                    </div>
+                </div>
+            </form>
+            <?php } ?>
+            <?php if($is_import==1){ ?>
+                <span class="c-red">单据正在审批中，无法导入！</span>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/ajaxfileupload.js"></script>
+<script type="text/javascript">
+    // 选择部门员工
+    //选择部门范围
+    $("#branch").click(function(){
+        //iframe层-父子操作
+        layer.open({
+            type: 2,
+            title: '选择范围',
+            area: ['600px', '500px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: '{:Url('popup')}'
+        })
+
+    });
+    function myDate(s,h){
+        $("#branch_input").val(s);
+        $("#seach_must").val(h);
+    };
+
+    $("#upfile").on("click",function(){
+        var time = $('#month').val();
+        var com = $("#branch_input").val();
+        if(time == ''){
+            $(this).attr("readonly","readonly");
+            layer.msg("请先选择时间");
+            return false;
+        }
+        if(com == ''){
+            $(this).attr("readonly","readonly");
+            layer.msg("请先选择部门");
+            return false;
+        }else{
+            $("#upfile").removeAttr("readonly");
+        }
+    });
+    $(".file_upload").click(
+            function(){
+                $("#upfile").click();
+                $('#dosubmit').text("上传中");
+            });
+    function upload(val){
+        // document.write(val);
+        // return false;
+        $('#uploadFile').val(val);
+        $.ajaxFileUpload ({
+            url:"{:Url('excel')}",
+            type: 'post',
+            secureuri:false,
+            fileElementId:'upfile',
+            dataType: 'json',
+            success: function(data){
+                layer.msg('上传成功！');
+                if(data.status ==="1"){
+                    $('#filepath').val(data.message);
+                    $('#dosubmit').text("提交");
+                    $('#dosubmit').removeAttr("disabled");
+                }
+            }
+        });
+        var upval = $("#uploadFile").val();
+
+        if(upval==""){
+            $(".file_tip").text("请选择文件!");
+        }
+        else{
+            $(".file_tip").text(upval);
+        }
+
+    }
+
+    /*********************************数据提交*************************************/
+    $('#dosubmit').click(function(){
+        var year = $('#store_year').val();
+        var month = $("#store_month").val();
+        var fileval =$('#filepath').val();        
+        if(year == ''){
+            layer.msg("请先选择年份");
+            return false;
+        }
+        if(month == ''){
+            layer.msg("请先选择月份");
+            return false;
+        }
+        if(fileval == ""){
+            layer.msg('请先选择Excel文件');
+            return false;
+        }else{
+            $('#dosubmit').text('上传中');
+            $('#up_status').css('display','block');
+            $('#dosubmit').attr("disabled",true);
+            $.ajax({                
+                url:"{:Url('import')}",
+                type:"post",
+                data:$("#form-article-add").serialize(),
+                dataType: 'json',
+                success: function(data){
+                    $('#up_status').css('display','none');
+                    $('#dosubmit').text('上传完成');
+                    $('#dosubmit').attr("disabled",false);
+                    alert(data.msg);
+                    if(data.status ==="ok"){
+                        location.replace(data.url);
+                    }
+
+                },
+                error: function(){
+                    alert("请求失败");
+                }
+            });
+        }
+    });
+</script>
+{/block}

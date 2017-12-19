@@ -1,0 +1,185 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    .c-red{color: red;}
+    .re_icon{font-size: 19px;line-height: 31px;cursor:pointer;}
+</style>
+<div class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-article-add">
+        <div class="rebate_box">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店：</label>
+                <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                                <select class="select" name="store_id" id="store_id">
+                                    <?php foreach($store as $k => $v){ ?>
+                                    <option value="{$v['ID']}">{$v['NAME']}</option>
+                                    <?php } ?>
+                                </select>
+				</span></div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌：</label>
+                <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                        <select class="select" name="carbrand" id="carbrand">
+                            <option>请选择</option>
+                        </select>
+			</span></div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>返利名称：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text rebate_input" msg="返利名称" private="required" value="" placeholder="请输入返利名称" id="rebate_name[0]" name="rebate_name[0]">
+                </div>
+                <i class="Hui-iconfont re_icon" id="add_subject">&#xe604;</i>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-2">
+                <button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+                <button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function article_save_submit(){
+        var num=0;
+        var str="";
+        $("input[type$='text'][private='required']").each(function(n){
+            if($.trim($(this).val())=="")
+            {
+                num++;
+                str+=$(this).attr("msg")+"不能为空！\r\n";
+            }
+        });
+        if(num>0)
+        {
+            layer.msg(str);
+        }
+        else
+        {
+            var str = $("#form-article-add").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("rebatenameadd")}',
+                data:str,
+                dataType: 'json',
+                success: function(data){
+                    if(data.status=='1'){
+                        layer.msg(data.msg);
+                    }
+
+                },
+                error:function(data) {
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+            });
+        }
+    }
+
+    //预加载获取品牌
+    $(document).ready(function(){
+        var store_id = "store_id=" + $("#store_id").val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    var html = '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                    $("#carbrand").append(html);
+                });
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+
+    //获取品牌（通过选择）
+    $("#store_id").change(function(){
+        var store_id = "store_id=" + $(this).val();
+        $("#carbrand").html('<option>请选择</option>');
+        $("#carseries").html("<option value=''>请先选择品牌</option>");
+        $("#carsize").html("<option value=''>请先选择车系</option>");
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    var html = '<option>请选择</option>';
+                    html += '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+
+                    $("#carbrand").html(html);
+                });
+
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取车系
+    $("#carbrand").change(function(){
+        var html="";
+        var carbrand_id = "carbrand_id=" + $(this).val();
+        $("#carsize").html("<option value=''>请先选择车系</option>");
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carseries")}',
+            data: carbrand_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    html += '<option value="未选择品牌">请选择</option>';
+                    html += '<option class="carseries" value="'+v.id+'">'+v.carseries_name+'</option>';
+                    $("#carseries").html(html);
+                });
+
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取车型
+    $("#carseries").change(function(){
+        var carseries_id = "carseries_id=" + $(this).val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carsize")}',
+            data: carseries_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    var html = '<option>请选择</option>';
+                    html += '<option class="carsize" value="'+v.id+'">'+v.carsize_name+'</option>';
+                    $("#carsize").html(html);
+                });
+
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //增加返利名称
+    $("#add_subject").click(function(){
+        var len =$(".rebate_input").length;
+        var html ='<div class="row cl"><label class="form-label col-xs-4 col-sm-2"></label><div class="formControls col-xs-8 col-sm-3"><input type="text" class="input-text rebate_input" value="" msg="返利名称" private="required" placeholder="请输入返利名称" name="rebate_name[]"></div><i class="Hui-iconfont re_icon remove_subject" tid="rebate_name['+len+']">&#xe60b;</i></div>';
+//                var html = '<input type="text" class="input-text rebate_input rebate_name['+len+']" value="" placeholder="请输入返利名称" id="rebate_name" name="rebate_name['+len+']">';
+//                html += '<i class="Hui-iconfont re_icon remove_subject" tid="rebate_name['+len+']">&#xe60b;</i>';
+        $(".rebate_box").append(html);
+    });
+    $(document).on('click','.remove_subject',function(){
+        $(this).parent().remove();
+    });
+</script>
+{/block}

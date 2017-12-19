@@ -1,0 +1,6 @@
+<eq name="readonly" value="true">
+	<input class="hidden form-control input-date" type="text" name="udf_field_{$id}" id="udf_field_{$id}" value="{$val}" >
+	<input class="form-control" type="datetime-local" name="disabled_udf_field_{$id}" id="udf_field_{$id}" value="{$val}" <notempty name="validate">check="{$validate}" msg="{$msg}"</notempty>  >
+	<else/>
+	<input class="form-control" type="datetime-local" name="udf_field_{$id}" id="udf_field_{$id}" value="{$val}" <notempty name="validate">check="{$validate}" msg="{$msg}"</notempty>  >
+</eq>

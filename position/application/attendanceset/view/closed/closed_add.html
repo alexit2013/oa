@@ -1,0 +1,113 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<style>
+	.ml-1rem{margin-left: 1rem;}
+	.holiday_name{float: left;width: 40%;}
+	.holiday_date{float: left;width: 40%;}
+	.icon_border1{border: 2px solid #ff7801;border-radius: 2px;text-align: center;font-family: "微软雅黑";font-size: 20px;padding: 0 3px;cursor: pointer;font-weight: bold;}
+	.icon_border2{border: 2px solid #2abb97;border-radius: 2px;text-align: center;font-family: "微软雅黑";font-size: 20px;padding: 0 6px;cursor: pointer;font-weight: bold;}
+</style>
+
+<div class="page-container">
+	<form action="{:Url('Closedadd')}" method="post" class="form form-horizontal" id="form-article-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="data_name" name="data[playday][name]">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>节假日：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<div class="">日常休息日</div>
+				 <input name="data[playday][daily][0]" type="checkbox" id="ishot" value="1">星期一
+                <span class="ml-1rem"><input name="data[playday][daily][1]" type="checkbox" id=""  value="2">星期二</span>
+                <span class="ml-1rem"><input name="data[playday][daily][2]" type="checkbox" id="" value="3">星期三</span>
+                <span class="ml-1rem"><input name="data[playday][daily][3]" type="checkbox" id="" value="4">星期四</span>
+                <span class="ml-1rem"><input name="data[playday][daily][4]" type="checkbox" id="" value="5">星期五</span>
+                <span class="ml-1rem"><input name="data[playday][daily][5]" type="checkbox" id="" value="6" checked="checked">星期六</span>
+                <span class="ml-1rem"><input name="data[playday][daily][6]" type="checkbox" id="" value="0" checked="checked">星期日</span>
+                <div class="col-xs-3">法定节假日</div>
+                <select name="" class="col-xs-5">
+					<option value="0">2017年</option>
+					<option value="1">2016年</option>
+					<option value="11">2015年</option>
+					<option value="12">2014年</option>
+					<option value="13">2013年</option>
+				</select>
+			</div>
+		</div>
+		<div class="set_holiday">
+			<div class="row cl row_holiday">
+				<label class="form-label col-xs-4 col-sm-2"></label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text holiday_name" value="" placeholder="名称" id="" name="data[holiday][0][name]">
+						<span class="ml-1rem icon_border1 add_holiday">+</span>
+						<span class="icon_border2 del_holiday">-</span>
+					<input type="date"  class="input-text holiday_date ml-1rem" value="" placeholder="节假日日期" id="" name="data[holiday][0][day]">
+				</div>
+			</div>
+		</div>
+		<div class="set_work">
+			<div class="row cl row_work">
+				<label class="form-label col-xs-4 col-sm-2">补班日：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text holiday_name" value="" placeholder="名称" id="" name="data[fillworkday][0][name]">
+						<span class="ml-1rem icon_border1 add_work">+</span>
+						<span class="icon_border2 del_work1">-</span>
+					<input type="date" class="input-text holiday_date ml-1rem" value="" placeholder="补班日日期" id="" name="data[fillworkday][0][day]">
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button class="btn btn-primary radius" id="submit" type="submit">保存</button>		
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+$("#submit").click(function(){
+	var data_name = $("#data_name").val();
+	if(data_name == ""){
+		layer.msg("请填写名称！");
+		return false;
+	}
+});
+$(function(){
+	$(document).on("click",".add_holiday",function(){
+        var lenth = $(".set_holiday .row_holiday").length;
+        var html ='<div class="row cl row_holiday"><label class="form-label col-xs-4 col-sm-2"></label><div class="formControls col-xs-8 col-sm-9"><input type="text" class="input-text holiday_name" value="" placeholder="名称" id="" name="data[holiday]['+lenth+'][name]"><span class="ml-1rem icon_border1 add_holiday">+</span><span class="icon_border2 del_holiday" style="margin-left:.25rem">-</span><input type="date" class="input-text holiday_date ml-1rem" value="" placeholder="节假日日期" id="" name="data[holiday]['+lenth+'][day]"></div></div>';
+        $(".set_holiday").append(html);	
+	});
+	$(document).on("click",".del_holiday",function(){
+		var lenth = $(".set_holiday .row_holiday").length;
+        
+		if(lenth == 1){
+			
+		}else{
+			$(this).parent().parent().remove();
+		}
+	});
+	$(document).on("click",".add_work",function(){
+         var lenth1 = $(".set_work .row_work").length;
+        
+         
+		var html ='<div class="row cl row_work"><label class="form-label col-xs-4 col-sm-2"></label><div class="formControls col-xs-8 col-sm-9"><input type="text" class="input-text holiday_name" value="" placeholder="名称" id="" name="data[fillworkday]['+lenth1+'][name]"><span class="ml-1rem icon_border1 add_work">+</span><span class="icon_border2 del_work" style="margin-left:.25rem">-</span><input type="date" class="input-text holiday_date ml-1rem" value="" placeholder="补班日日期" id="" name="data[fillworkday]['+lenth1+'][day]"></div></div>';
+		
+        $(".set_work").append(html);
+	});
+	$(document).on("click",".del_work",function(){
+		var lenth = $(".set_work .row_work").length;
+		if(lenth == 1){
+			
+		}else{
+			$(this).parent().parent().remove();
+		}
+	});	
+})
+</script>
+{/block}

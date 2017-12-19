@@ -1,0 +1,249 @@
+<extend name="Layout/ins_popup" />
+<block name="content">
+	<input type="hidden" name="ajax" id="ajax" value="1">
+	<select name="dept_list" id="dept_list" class="hidden">
+		{:fill_option($dept_list)}
+	</select>
+	<div class="popup-header clearfix">
+		<div class="pull-left">
+			<h1>添加员工</h1>
+		</div>
+		<div class="pull-right">
+			<a onclick="save();" class="btn btn-sm btn-primary">确定</a>
+			<a onclick="myclose();" class="btn btn-sm btn-default">关闭</a>
+		</div>
+	</div>
+	<div class="popup-body" style="height: 520px;overflow-y: auto;">
+		<form id="form_data" name="form_data" method="post" class="form-horizontal">
+			<input type="hidden" name="opmode" id="opmode" value="add">
+			<table class="table table-bordered" >
+				<tr>
+                                    <th class="col-10">
+					<nobr>
+						员工编号<i>*<i>
+					</nobr>
+                                    </th>
+                                    <td class="col-20">
+					<input class="form-control" type="text" id="emp_no" name="emp_no"  check="require" msg="请输入员工编号" onkeyup="synchro()">
+                                    </td>
+                                    <th  class="col-5">姓名<i>*<i></th>
+                                    <td class="col-20">
+					<input  class="form-control" type="text" id="name" name="name" class="input-sm" check="require" msg="请输入姓名">
+                                    </td>
+				</tr>
+                                <tr>
+                                    <th  class="col-10">移动电话<i>*<i></th>
+                                    <td class="col-10">
+                                        <input type="text" id="mobile_tel" name="mobile_tel" class="form-control" msg="请填写移动电话" check="require">
+                                    </td>                                   
+                                    <th>电子邮箱<i>*<i></th>
+					<td colspan="3">
+                                            <input type="email" id="email" name="email" msg="请填写电子邮箱" class="form-control" check="require">
+					</td>				
+				</tr>
+				<tr>
+					<th>性别<i>*<i></th>
+					<td >
+                                            <select name="sex" id="sex" class="form-control col-10">
+                                                    <option  value="male">男</option>
+                                                    <option value="female">女</option>
+                                            </select>
+                                        </td>
+                                        <th>生日</th>
+					<td style="position: relative" >
+                                            <input type="text" id="birthday" name="birthday" readonly="readonly" class="input-date form-control">
+					</td>
+				</tr>
+				<tr>
+					<th>主要部门<i>*<i></th>
+					<td class="col-20">
+											<input type="hidden" name="com_id" id="com_id">
+                                            <div class="input-group ">
+                                                    <input class="form-control" name="dept_name"  id="dept_name" type="text" msg="请选择部门" check="require" readonly="readonly" />
+                                                    <input name="dept_id" id="dept_id" type="hidden" msg="请选择部门" check="require" />
+                                                    <div class="input-group-btn">
+                                                            <a class="btn btn-sm btn-primary" onclick="select_dept();" > <i class="fa fa-search" ></i> </a>
+                                                    </div>
+                                            </div>
+                                        </td>
+					<th class="col-10">职位<i>*<i></th>
+					<td>
+                                            <select name="position_id" id="position_id" class="form-control" msg="请选择职位" check="require">
+                                                    <!-- 判断超级管理员选择职位权限 -->
+                                                    <?php if(session('com_id')!== '0'){ ?>
+                                                    <option value="37">员工</option>
+                                                    <?php }else{ ?>
+                                                    <option value="">选择职位</option>
+                                                    {:fill_option($position_list)}
+                                                    <?php } ?>
+                                            </select>
+                                        </td>
+				</tr>
+                                <!-- 超级管理员选择其他部门权限 -->
+                                <?php if(session('com_id')=='0'){ ?>
+                                 <tr>
+                                            <td>
+                                                <label>其他部门</label>
+                                            </td> 
+                                            <td colspan="3">
+                                                <a class="btn btn-sm btn-primary btn-special" onclick="depts_add()">添加</a>
+                                                <div id="depts">
+                                                    <div class="input-group btn-mar">
+                                                        <a class="btn btn-sm btn-primary" id="dept_select" >
+                                                        <input type="hidden" id="num" value="1" />
+							<input class="form-control form-color" name="dept_names[0]"  id="dept_names1" type="text" msg="请选择部门" readonly="readonly" />
+							<input name="dept_ids[0]" id="dept_ids1" type="hidden" msg="请选择部门"/>
+							</a>
+                                                    </div><br/>
+                                                </div>
+                                            </td>
+                                        </tr>
+				<tr>
+                                
+                <tr>
+                    <td>
+                        <label>其他公司</label>
+                    </td> 
+                    <td colspan="3">
+                        <a class="btn btn-sm btn-primary btn-special" onclick="companys_add()">添加</a>
+                        <div id="companys">
+                            <div class="input-group btn-mar">
+                                <a class="btn btn-sm btn-primary" id="company_select" >
+                                <input type="hidden" id="c_num" value="1" />
+                                <input class="form-control form-color" name="company_names[0]"  id="company_names1" type="text" msg="请选择公司" readonly="readonly" />
+                                <input name="company_ids[0]" id="company_ids1" type="hidden" msg="请选择公司"/>
+                                </a>
+                            </div><br/>
+                        </div>
+                    </td>
+                    </tr>
+                    <?php } ?>
+					<th>
+                                            <nobr>
+                                                    办公室电话
+                                            </nobr>
+                                        </th>
+					<td>
+                                            <input type="text" id="office_tel" name="office_tel" class="form-control">
+					</td>
+					<th>
+                                            <nobr>
+                                                    负责业务<i>*<i>
+                                            </nobr>
+                                        </th>
+					<td>
+                                            <input type="text" id="duty" name="duty" class="form-control">
+					</td>
+				</tr>                   
+				<tr>
+					<th>状态</th>
+					<td colspan="3">
+					<select class="form-control col-10"  name="is_del" id="is_del">
+						<option  value="0">启用</option>
+						<option value="1">禁用</option>
+					</select></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	</div>
+</block>
+<block name="js">
+	<script type="text/javascript">
+        // $(function(){
+        //     $("#position_id").find("option[value='37']").attr("selected",true);
+        // });
+		function select_dept() {
+			winopen("{:U('dept/winpop2')}", 560, 470);
+		}
+                /*
+                 * 添其他部门
+                 */
+                var i = 1;
+                function depts_add(){
+                    i++;
+                    $("#depts").append(' <div class="input-group "><a class="btn btn-sm btn-primary form-color" id="dept_select" >\n\
+                                        <input type="hidden" id="num" value="'+i+'" />\n\
+                                        <input class="form-control" name="dept_names['+i+']"  id="dept_names'+i+'" type="text" msg="请选择部门" readonly="readonly" />\n\
+                                        <input name="dept_ids['+i+']" id="dept_ids'+i+'" type="hidden" msg="请选择部门" /></a></div><br/>');
+                }
+                 /*
+                 * 添其他公司
+                 */
+                var i = 1;
+                function companys_add(){
+                    i++;
+                    $("#companys").append(' <div class="input-group "><a class="btn btn-sm btn-primary form-color" id="company_select" >\n\
+                                        <input type="hidden" id="c_num" value="'+i+'" />\n\
+                                        <input class="form-control" name="company_names['+i+']"  id="company_names'+i+'" type="text" msg="请选择公司" readonly="readonly" />\n\
+                                        <input name="company_ids['+i+']" id="company_ids'+i+'" type="hidden" msg="请选择公司" /></a></div><br/>');
+                }
+/*
+		function save() {
+			if (check_form("form_data")) {
+				var vars = $("#form_data").serialize();
+                                alert(vars);
+				sendAjax("{:U('save')}", vars, function(data) {
+					if (data.status) {
+						ui_alert(data.info, function() {
+							parent.location.reload(true);
+							myclose();
+						});
+					} else {
+						ui_error(data.info);
+					}
+				});
+			}
+		}
+                */
+               $(document).on('click',"#dept_select",function(){
+                    var num = $(this).children('#num').val();
+                    winopen("https://{$_SERVER['SERVER_NAME']}/index.php?m=&c=dept&a=winpop3&num="+num, 560, 470);
+                 });
+               $(document).on('click',"#company_select",function(){
+                    var c_num = $(this).children('#c_num').val();
+                    winopen("https://{$_SERVER['SERVER_NAME']}/index.php?m=&c=dept&a=winpop4&num="+c_num, 560, 470);
+                 });
+               function synchro(){
+                   var val = $("#emp_no").val();
+                   $("#nickname").val(val);
+                   $("#weixin").val(val);
+               }
+               function save(){
+               		var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1})|(14[0-9]{1}))+\d{8})$/; 
+					if(!myreg.test($("#mobile_tel").val())) 
+					{ 
+					    alert('请输入有效的手机号码！'); 
+					    return false; 
+					}
+		            //对电子邮件的验证
+		            var temp = document.getElementById("email");
+		            var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+		            if(!myreg.test(temp.value))
+		            {
+		                  alert('提示\n\n请输入有效的E_mail！');
+		                  myreg.focus();
+		                  return false;
+		            }
+                   if (check_form("form_data")) {
+                       var vars = $("#form_data").serialize();
+                       $.ajax({
+                           url:"{:U('save')}",
+                           data:vars,
+                           type: 'POST',
+                           cache: false,
+                           error: function() {
+                                    alert("添加出错！");
+                            },
+                            success: function(data) {
+                                alert(data.msg);
+                                if (data.status == 1) {
+                                    parent.location.reload(true);
+                                    myclose();
+                                }
+                            }
+                       });
+                   }
+               }
+	</script>
+</block>

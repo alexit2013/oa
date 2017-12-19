@@ -1,0 +1,146 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<div class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-article-add">
+            
+                <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+                <span class="select-box">
+					<select class="select" id="carbrand" name="carbrand_id">
+		                 <?php foreach($data_brand as $val){ ?>                  
+						<option  value="{$val['id']}">{$val['carbrand_name']}</option>
+		                <?php } ?>                    
+					</select>
+                </span>
+            </div>
+		</div>
+            
+                <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车系：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+                            <span class="select-box">
+				<select class="select" id="carseries_id" name="carseries_id">
+					<option>请选择</option>
+ 				</select>
+                            </span>
+                        </div>
+		</div>
+            
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车型：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请填写车型" id="revise_obj" name="carsize_name">
+			</div>
+		</div>
+            
+		
+            
+                <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>厂家指导价：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请填写指导价" id="suggest_price" name="guide_price"  onkeyup="clearNoNum(this)">
+			</div>
+		</div>
+            
+                <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>厂家开票进货价：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请填写厂家开票进货价" id="buying_price" name="invoice_price"  onkeyup="clearNoNum(this)">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+				<button id="ture_submit" style="display: none;" class="btn btn-primary radius" type="submit">提交</button>
+				<button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+{/block}
+{block name="js"}
+<script type="text/javascript">
+
+    //预加载获取车系
+    $(document).ready(function(){
+        var carbrand_id = "carbrand_id=" + $("#carbrand").val();
+         $.ajax({
+            type : 'GET' ,
+            url: '{:Url("other_brand")}',
+            data: carbrand_id,
+            dataType: 'json',
+            success: function(data){
+            	console.log(data);
+               $.each(data,function(k,v){
+                    var html = '<option class="store_id" value="'+v.id+'">'+v.carseries_name+'</option>';
+                    $("#carseries_id").append(html);
+               });                                                   
+            },
+            error:function(data) {
+                    console.log(data.msg);
+            }
+        });      
+    });
+
+    //获取车系
+    $("#carbrand").change(function(){
+        $("#carseries_id > option").remove();       
+        var carbrand_id = "carbrand_id=" + $("#carbrand").val();
+        $.ajax({
+            type : 'GET' ,
+            url: '{:Url("other_brand")}',
+            data: carbrand_id,
+            dataType: 'json',
+            success: function(data){
+            	console.log(data);
+                var html = '<option>请选择</option>';
+               $.each(data,function(k,v){
+               	console.log(v);
+                    html += '<option class="carseries" value="'+v.id+'">'+v.carseries_name+'</option>';                  
+               }); 
+                $("#carseries_id").append(html);   
+            },
+            error:function(data) {
+                    console.log(data.msg);
+            }
+        });
+    });
+
+	//只能输入数字
+    function clearNoNum(obj)
+    {
+        //先把非数字的都替换掉，除了数字和.
+        obj.value = obj.value.replace(/[^\d.]/g,"");
+        //必须保证第一个为数字而不是.
+        obj.value = obj.value.replace(/^\./g,"");
+        //保证只有出现一个.而没有多个.
+        obj.value = obj.value.replace(/\.{2,}/g,".");
+        //保证.只出现一次，而不能出现两次以上
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+    }
+
+	function article_save_submit(){
+			if ($("#revise_obj").val()=="") {
+				layer.msg("请填写车型"); 
+				return false;
+			}
+			if ($("#carseries_id option:selected").text()=="请选择") {
+			layer.msg("请选择车系"); 
+			return false;
+			}
+			if ($("#suggest_price").val()=="") {
+				layer.msg("请填写厂家指导价"); 
+				return false;
+			}
+			if ($("#buying_price").val()=="") {
+				layer.msg("请填写厂家开票进货价"); 
+				return false;
+			}
+			$("#ture_submit").click();
+		}
+		
+</script>
+{/block}

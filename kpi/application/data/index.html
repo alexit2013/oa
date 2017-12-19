@@ -1,0 +1,59 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+	.msg_content{
+            margin:25px 0px 0px 0px;
+            padding: 25px 0px;
+            box-sizing:border-box;
+            border: 1px solid #00ccff;
+            border-radius:15px;
+            position: relative;
+    }
+    .msg_del{
+      border-radius:5px;
+      color: #fff;
+      background-color:#3399ff;
+      width:auto;
+      height: 28px;
+      line-height: 28px;
+      padding: 0px 12px;
+      position: absolute;
+      top:-15px;
+      left:16px;
+      text-align: center;
+      font-size: 13px;
+      cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+	<div class="de-container">
+		<div class="msg_content">
+			<div class="msg_del">整车毛利测算表<i class="Hui-iconfont"></i></div>
+			<div class="addbox cl">
+				<a id="add_r" class="btn btn-danger-outline radius additem" href="javascript:void(0)">基础数据收集A</a>
+				<a id="add_r" class="btn btn-danger-outline radius additem" href="javascript:void(0)">基础数据收集B</a>
+			</div>
+		</div>
+	</div>
+	<div class="de-container">
+		<div class="msg_content">
+			<div class="msg_del">三月滚动库存（整车）<i class="Hui-iconfont"></i></div>
+			<div class="addbox cl">
+				<a id="add_r" class="btn btn-danger-outline radius additem" href="javascript:void(0)">基础数据收集A</a>
+				<a id="add_r" class="btn btn-danger-outline radius additem" href="javascript:void(0)">基础数据收集B</a>
+			</div>
+		</div>
+	</div>
+	<div class="de-container">
+		<div class="msg_content">
+			<div class="msg_del">返利计算表<i class="Hui-iconfont"></i></div>
+			<div class="addbox cl">
+				<a id="add_r" class="btn btn-danger-outline radius additem" href="javascript:void(0)">基础数据收集A</a>
+			</div>
+		</div>
+	</div>
+{/block}
+{block name="js"}
+{/block}

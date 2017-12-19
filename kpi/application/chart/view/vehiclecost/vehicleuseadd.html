@@ -1,0 +1,253 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    .c-red{color: red;}
+</style>
+<div class="page-container">
+    <form action="{:Url("testdriveadd")}" method="post" class="form form-horizontal" id="form-article-add">
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店：</label>
+        <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                        <select class="select" name="store_id" id="store_id">
+                            <?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+                            <option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+                            <?php } ?>
+                        </select>
+				</span></div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌：</label>
+        <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                <select class="select" name="" id="carbrand">
+                    <option>请选择</option>
+                </select>
+				</span></div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车系：</label>
+        <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                <select class="select" name="carseries_id" id="carseries">
+                    <option>请选择</option>
+                </select>
+				</span></div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>购车时间：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+            <input type="date" class="input-text" value="" id="buycartime" msg="购车时间" private="required" name="buycartime" placeholder="请输入购车时间">
+        </div>
+
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车牌号码：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+            <input type="text" class="input-text" value="" private="required" msg="车牌号码" placeholder="请输入车牌号码" id="carnum" name="carnum">
+        </div>
+
+    </div>
+
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>裸车市场价：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+            <input type="text" class="input-text" value="" private="required" msg="裸车市场价" placeholder="请输入裸车市场价：" id="naked" name="naked" onkeyup="clearNoNum(this)">
+        </div>
+        <span class="c-red">元</span>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>购入价格：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+            <input type="text" class="input-text" value="" private="required" msg="购入价格" placeholder="请输入购入价格：" id="price" name="price" onkeyup="clearNoNum(this)">
+        </div>
+        <span class="c-red">元</span>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>折扣率：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+            <input type="text" class="input-text" value="" private="required" msg="折扣率" placeholder="请输入折扣率：" id="discount" name="discount">
+        </div>
+        <span class="c-red">%</span>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>挂牌费用：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+            <input type="text" class="input-text" value="" private="required" msg="挂牌费用" placeholder="请输入挂牌费用：" id="plate" name="plate" onkeyup="clearNoNum(this)">
+        </div>
+        <span class="c-red">元</span>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>累计行使公里数：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+            <input type="text" class="input-text" value="" private="required" msg="累计行驶公里数" placeholder="请输入累计行使公里数：" id="mileage" name="mileage" onkeyup="clearNoNum(this)">
+        </div>
+        <span class="c-red">公里</span>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>到期日：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+            <input type="date" class="input-text" value="" private="required" msg="到期日" id="enddate" name="enddate" placeholder="请输入到期日">
+        </div>
+
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>近期是否处置：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+				<span class="select-box">
+	                <select class="select" name="is_mana" id="is_mana">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+				</span>
+        </div>
+    </div>
+
+    <div class="row cl">
+        <div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-2">
+            <button  onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+        </div>
+    </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function article_save_submit(){
+        if ($("#carbrand option:selected").text()=="请选择") {
+            layer.msg("请选择品牌");
+            return false;
+        }
+        if ($("#carseries option:selected").text()=="请选择") {
+            layer.msg("请选择车系");
+            return false;
+        }
+        var num=0;
+        var str="";
+        $("input[private='required']").each(function(n){
+            if($.trim($(this).val())=="")
+            {
+                num++;
+                str+=$(this).attr("msg")+"不能为空！\r\n";
+            }
+        });
+        if(num>0)
+        {
+            layer.msg(str);
+        }
+        else
+        {
+            var str = $("#form-article-add").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("vehicleuseadd")}',
+                data:str,
+                dataType: 'json',
+                success: function(data){
+                    if(data.status=='1'){
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }else{
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }
+                },
+                error:function(data) {
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+            });
+        }
+    }
+    //预加载获取品牌
+    $(document).ready(function(){
+        var store_id = "store_id=" + $("#store_id").val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    var html = '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                    $("#carbrand").append(html);
+                });
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+
+    //获取品牌（通过选择）
+    $("#store_id").change(function(){
+        $("#carbrand > option").remove();
+        $("#carseries > option").remove();
+        $("#carsize > option").remove();
+        var store_id = "store_id=" + $(this).val();
+
+        $("#carseries").html("<option value=''>请先选择品牌</option>");
+        $("#carsize").html("<option value=''>请先选择车系</option>");
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+                var html = '<option>请选择</option>';
+                $.each(data,function(k,v){
+                    html += '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                });
+                $("#carbrand").append(html);
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取车系
+    $("#carbrand").change(function(){
+        $("#carseries > option").remove();
+        $("#carsize > option").remove();
+        var carbrand_id = "carbrand_id=" + $(this).val();
+        $("#carsize").html("<option value=''>请先选择车系</option>");
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carseries")}',
+            data: carbrand_id,
+            dataType: 'json',
+            success: function(data){
+                var html = '<option>请选择</option>';
+                $.each(data,function(k,v){
+                    html += '<option class="carseries" value="'+v.id+'">'+v.carseries_name+'</option>';
+                });
+                $("#carseries").append(html);
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取车型
+    $("#carseries").change(function(){
+        $("#carsize > option").remove();
+
+        var carseries_id = "carseries_id=" + $(this).val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carsize")}',
+            data: carseries_id,
+            dataType: 'json',
+            success: function(data){
+                var html = '<option>请选择</option>';
+                $.each(data,function(k,v){
+                    html += '<option class="carsize" value="'+v.id+'">'+v.carsize_name+'</option>';
+                });
+                $("#carsize").append(html);
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+
+</script>
+{/block}

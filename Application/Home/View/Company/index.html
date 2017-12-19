@@ -1,0 +1,84 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+<div class="page-header clearfix">
+    <h1 class="col-sm-8">金融公司</h1>
+</div>
+    <!--  功能操作区域  -->
+    <div class="operate panel panel-default">
+        <div class="panel-body">
+            <div class="pull-right">
+                <a  onclick="add();" class="btn btn-sm btn-primary">新建</a>
+            </div>
+        </div>
+    </div>
+    <!-- 功能操作区域结束 -->
+    <div class="ul_table border-bottom ul_table_responsive">
+        <ul>
+            <li class="thead"  >
+                <label class="inline pull-left col-3">
+                    <input class="ace" type="checkbox" name="id-toggle-all" id="id-toggle-all" />
+                    <span class="lbl"></span></label>
+                <div class="pull-right">
+                    <span class="col-6 text-center">修改</span>
+                    <!-- <span class="col-6 text-center">删除</span> -->
+                </div>
+                <span class="col-8 text-center">编号</span>
+                <span  class="col-15 text-center">金融公司</span>
+            </li>
+            <empty name="list">
+                <li class="no-data">
+                    没找到数据
+                </li>
+                <else/>
+                <form method="post" action="" name="form_data" id="form_data">
+                    <foreach name="list" item="vo">
+                        <li class="tbody" >
+                            <label class="inline pull-left col-3">
+                                <input class="ace" type="checkbox" name="id[]" value="{$vo.id}" />
+                                <span class="lbl"></span></label>
+                            <div class="pull-right">                            
+                                <span class="col-6 text-center">
+                                    <a Cid="{$vo['id']}" class="Cedit">修改</a>
+                                </span>
+                                <!-- <span class="col-6 text-center"><a class="delid" Cid="{$vo['id']}">删除</a></span> -->
+                            </div>
+                                <span class="col-8 text-center">{$vo.id}</span>
+                                <span  class="col-15 text-center">{$vo.company_name}</span>
+                        </li>
+                    </foreach>
+                </form>
+            </empty>
+        </ul>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript">
+        function add() {
+            window.open("{:U('add')}", "_self");
+        }
+
+        function btn_search() {
+            $("#form_search").submit();
+        }
+
+        $(".Cedit").bind('click',function(){
+            var id=$(this).attr('Cid');
+            window.open("/index.php?m=&c=Company&a=companyedit&id="+id,"_self");
+        });
+        $(".delid").bind('click',function(){
+            var id=$(this).attr('Cid');
+            ui_confirm('确定要删除吗?', function() {
+                sendAjax("{:U('companydel')}","id=" + id, function(data) {
+                    if (data.status) {
+                        ui_alert(data.info, function() {
+                            location.reload(true);
+                        });
+                    }
+                });
+            })
+        });
+        $(document).ready(function() {
+            set_return_url();
+        });
+    </script>
+</block>

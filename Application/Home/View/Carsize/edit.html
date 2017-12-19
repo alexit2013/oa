@@ -1,0 +1,60 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+  {:W('PageHeader/simple',array('name'=>'新建：'.$flow_type['name']))}
+  <form method='post' id="form_data" class="well form-horizontal">
+    <input type="hidden" id="opmode" name="opmode" value="edit">
+    <input type="hidden" id="ajax" name="ajax" value="1">
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="name">车型*：</label>
+      <div class="col-sm-8">
+        <input class="form-control" type="text" value="{$list['carsize_name']}"id="name" name="carsize_name" check="require" msg="请输入车系">
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="carseries_id">车系：</label>
+      <div class="col-sm-8">
+        <select class="form-control" name="carseries_id" id="carseries_id"check="require" msg="请选择车系">
+          <option value="">请选择车系</option>
+          {:fill_option($Allserise,$list['carseries_id'])}
+        </select>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+ 
+    <div class="pull-right">
+      <input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save();">
+      <input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
+    </div>
+    <input type="hidden" name="carsize_id" value="{$list['id']}">
+  </form>
+</block>
+<block name="js">
+  <script type="text/javascript">
+    function save() {
+
+       if ($("#name").val().length < 2) {
+                ui_error('请填写车型');
+                return false;
+              }
+
+      sendForm("form_data", "{:U('save')}", "{:U('Carsize/index')}");
+    };
+
+    function popup_flow() {
+      winopen("{:U('popup/flow')}",560, 470);
+    };
+
+    $(document).ready(function() {
+      $(document).on("dblclick", ".inputbox .address_list b", function() {
+        $(this).parent().parent().remove();
+      });
+
+      $(document).on("click", ".inputbox .address_list a.del", function() {
+        $(this).parent().parent().remove();
+      });
+
+    });
+  </script>
+</block>

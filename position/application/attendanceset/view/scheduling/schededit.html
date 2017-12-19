@@ -1,0 +1,87 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+
+<div class="page-container" style="width: 98%; height: 500px; overflow-y: auto; margin-bottom: 100px">
+	<ul>
+	{foreach name="data_schedual" item="vo" key="k" }
+		<li>
+			<span><input id="schedual_id" type="radio" value="{$vo['id']}" name="schedual_id" {if condition="$single_schedual['schedual_id'] == $vo['id']"}checked{/if}></span>
+			{$vo['work_start_time']}-{$vo['work_end_time']}
+			<span>{$vo['shift_name']}({$vo['short']})</span>
+			<input id="schedual_name" type="hidden" name="schedual_name" value="<?php echo $vo['shift_name'] ?>">
+		</li>
+	{/foreach}
+	</ul>
+	<div class="row cl mt-40" style="margin-bottom: 120px">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-2 col-sm-offset-1">
+			<a id="submit" class="btn btn-primary radius">保存</a>
+			<a id="cancel" class="btn btn-primary radius">取消</a>	
+		</div>
+	</div>
+
+	<input id="id" type="hidden" name="id" value="<?php echo $single_schedual['id']; ?>">
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+$("#cancel").click(function(){
+	$("input:radio[name='schedual_id']:checked").attr("checked",false);
+});
+$("#submit").click(function(){
+	var schedual_id = $("input:radio[name='schedual_id']:checked").val();
+	var schedual_name = $("input:radio[name='schedual_id']:checked").parent("span").nextAll("input").val();
+	var id = $("#id").val();
+	var check = $("input:radio[name='schedual_id']:checked").val();
+	if(check == null){
+		$.ajax({
+			url: "{:Url('schededit')}",
+            dataType: 'json',
+            data :{schedual_id:0,schedual_name:"",id:id},		
+            type: 'POST',
+            cache: false,
+            success: function(data){
+        		if(data.status=='1'){
+        			layer.msg("修改成功!");
+			 		 setTimeout(function(){
+					 	parent. location.reload();
+					 },1000);	    
+        		}  
+        		if(data.status=='0'){
+        			layer.msg(data.msg);
+        		}         		
+            },
+            error:function(data){
+            		 layer.msg(data.msg);
+      				 return;
+            }
+		});
+			    
+	}else{
+		$.ajax({
+			url: "{:Url('schededit')}",
+            dataType: 'json',
+            data :{schedual_id:schedual_id,schedual_name:schedual_name,id:id},		
+            type: 'POST',
+            cache: false,
+            success: function(data){
+        		if(data.status=='1'){
+        			layer.msg("修改成功!");
+			 		 setTimeout(function(){
+					 	parent. location.reload();
+					 },1000);	    
+        		}  
+        		if(data.status=='0'){
+        			layer.msg(data.msg);
+        		}         		
+            },
+            error:function(data){
+            		 layer.msg(data.msg);
+      				 return;
+            }
+		});
+
+	}
+});
+</script>
+{/block}

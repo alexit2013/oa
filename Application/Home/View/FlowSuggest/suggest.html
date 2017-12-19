@@ -1,0 +1,189 @@
+<extend name="Layout/ins_suggest" />
+<block name="content">
+	<style>
+		.collect_ul li{
+			font-weight:bold;
+			list-style: none;
+		}
+	</style>
+	<nav class="navbar navbar-default row" role="navigation" id="top_menu">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-6">
+				<span class="sr-only">Toggle navigation</span>
+				<i class="fa fa-bars fa-lg"></i>
+			</button>
+			<div class="hidden-xs zzytitle">
+				<img src="/Public/Ins/img/logo1.png">
+			</div>
+			<a href="/index.php?m=&c=index&a=index" class="navbar-brand zzytitle">中致远OA</a>
+		</div>
+	</nav>
+	<div class="breadcrumbs" id="breadcrumbs">
+						<ul class="collect_ul">
+							<li>意见收集</li>
+						</ul>
+					</div>
+    <div>
+    	<div class="col-sm-3">
+        <label class="control-label col-sm-3 chart2label">公司</label>
+        	<div class="col-sm-9">         		      
+		        <select class="form-control" id="com_name" check="require" msg="请选择公司" name='com_name'>
+		        <option value=''>请选择公司</option>
+		        <volist name="com_list" id="vo">
+				<option value={$vo.id}>{$vo.name}</option>
+		        </volist>		            		            
+		        </select>		        
+	        </div>
+        </div>
+        <div class="col-sm-3">
+	        <label class="control-label col-sm-4 chart2label">部门</label>
+	        <div class="col-sm-8">
+		        <select class="form-control" id="dept_name" name='dept_name' check="require" msg="请选择部门">
+		            <option value=''>请选择部门</option>
+		        </select>
+	        </div>
+        </div>
+        <div class="col-sm-3">
+	        <label class="control-label col-sm-4 chart2label">人员</label>
+	        <div class="col-sm-8">
+		        <select class="form-control" id="person_name" name='person_name' check="require" msg="请选择人员">
+		            <option value=''>请选择人员</option>
+		        </select>
+	        </div>
+        </div>
+        <div class="col-sm-2 text-right text-phone">
+        <button class="hidden" id="turesubmit">提交</button>
+        <a  class="btn btn-sm btn-info btn-special submit-phone" id="addperson" href="javascript:;">添加</a>
+        </div>
+    </div>
+  	<div class="ibox ibox-border float-e-margins collect_mar edge_distance">
+			<div class="ibox-title">
+				<h5 class="smaller">向以下人员收集建议：</h5>
+			</div>
+			<div class="ibox-content clearfix" id="ibox-content">
+						<div class="space-8"></div>						
+			</div>
+	</div>	
+		<form id="collect_from" class="edge_distance">
+		<div class="form-group panel-body">
+					<label class="col-sm-2 control-label" >请输入收集意见问题：</label>
+					<div class="col-sm-10">
+						<textarea name="question" class="col-xs-12" placeholder="请输入收集意见问题" style="height:120px" check="require" msg="请填写审批意见"></textarea>
+					</div>
+		</div>
+			<input type="hidden" name="flow_id" value="{$data['flow_id']}">
+			<input type="hidden" name="flow_log_id" value="{$data['flow_log_id']}">
+			<input type="hidden" name="token" value="{:session('token')}">
+			<input type="hidden" name="flow_name" value="{$data['flow_name']}">
+			<div id="submitarea" class="hidden">				
+			</div>
+			<a href="####" id="collect_submit" class="btn btn-sm btn-primary btn-block">提交</a><br/>
+			<a href="{:U('Flow/index')}" class="btn btn-sm btn-danger btn-block">返回</a>
+		</form>		
+</block>
+<block name="js">
+	<script type="text/javascript">
+		$("#addperson").click(function(){
+                        if($("#person_name option:selected").text()==="请选择人员"){
+                            alert('请选择人员后再添加');
+                            return false;
+                        }
+			var p_id = $("#person_name").val();
+			var p_name = $("#person_name option:selected").text();
+			var p_emp = $("#person_name option:selected").attr("emp");
+			console.log(p_id,p_name,p_emp,"添加成功");
+			var input_html = '<input type="text" class="'+p_id+'" name="user['+p_id+'][id]" value="'+p_id+'"><input type="text" class="'+p_id+'" name="user['+p_id+'][name]" value="'+p_name+'"><input type="text" class="'+p_id+'" name="user['+p_id+'][emp]" value="'+p_emp+'">';
+			$("#submitarea").append(input_html);
+			var content_html ='<div class="col-sm-4 col-xs-12 text-center nav-mar"><div class="btn btn-info btn-block btn_cl">'+p_name+'</div><div class="space-8"></div></div>';
+			$("#ibox-content").append(content_html);
+		});
+		$(document).on('click', '.btn_cl', function() {
+    		$(this).remove();
+    		var r_name = $(this).text();
+    		var c_name = $("#submitarea").children().val(r_name).attr("class");
+    		$("#submitarea input[class="+c_name+"]").remove();
+		});
+		function send_ajax(url,str,type){
+	    	$.ajax({
+	                url: url,
+	                dataType: 'json',
+	                data: str,
+	                type: 'POST',
+	                cache: false,
+	                timeout: 2000,
+	                success: function(data){
+	                	if(type=="com_name"){
+		                	console.log('数据传输成功');
+		                	var htmls = "<option value=''>请选择部门</option>";
+	            			for(i in data){
+	            			htmls+= "<option value="+data[i].id+">"+data[i].name+"</option>";
+	            			}
+	                		$("#dept_name").html(htmls);
+	                	}
+	                	else if(type=="dept_name"){
+	                		var phtmls = "<option value=''>请选择人员</option>";
+	            			for(i in data){
+	            			phtmls+= "<option emp="+data[i].emp_no+" value="+data[i].id+">"+data[i].name+"</option>";
+	            			}
+	                		$("#person_name").html(phtmls);
+	                	}
+	                	else if(type=="person_name"){
+	                		var shtmls = "<option value=''>请选择人员</option>";
+	            			for(i in data){
+	            			shtmls+= "<option emp="+data[i].emp_no+" value="+data[i].id+">"+data[i].name+"</option>";
+	            			}
+	                		$("#person_name").html(shtmls);
+	                	}
+	                }
+	        });
+		}
+		$("#com_name").change(function(){
+			var comid = $("#com_name").val();
+			console.log(comid);
+			send_ajax("{:U('dept_list')}","comid="+comid,"com_name");
+			send_ajax("{:U('user_list')}","comid="+comid,"person_name");
+		});
+		$("#dept_name").change(function(){
+			var comid = $("#dept_name").val();
+			send_ajax("{:U('user_list')}","comid="+comid,"dept_name");
+		});
+		$("#collect_submit").click(function(){
+			if(confirm("是否确认提交?")){
+                var t=60;
+                $("#collect_submit").attr("disabled","disabled");
+                var int=setInterval(function(){
+                t--;                
+                if(t==0){                            		
+                        $("#collect_submit").html("提交");
+                        $("#collect_submit").attr("disabled",false);                        
+                        clearInterval(int);
+                }else{  
+                		$("#collect_submit").html("提交("+t+")");
+                		$("#collect_submit").attr("disabled","disabled");                       
+                }
+                },1000);
+                var str = $("#collect_from").serialize();
+				$.ajax({
+	                url: "{:U('suggest')}",
+	                dataType: 'json',
+	                data: str,
+	                type: 'POST',
+	                cache: false,
+	                timeout: 60000,
+	                success: function(data){
+	                	if(data.status == 1){
+	                		alert(data.info);
+	                		location.href="{:U('Flow/folder','fid=confirm')}";
+	                	}else if(data.status == 0){
+	                		alert(data.info);
+	                		location.href="{:U('Flow/folder','fid=confirm')}";	
+	                	}
+	                	else{
+	                		alert('提交失败');
+	                	}
+	                }
+	        }); 
+            }			
+		});		
+	</script>
+</block>

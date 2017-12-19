@@ -1,0 +1,74 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<div class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-article-add">
+            <input name='id' type="hidden" value="{$size['id']}">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车型：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$size['carsize_name']}" placeholder="请填写车型" id="revise_obj" name="carsize_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车系：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+                            <span class="select-box">
+				<select class="select" name="carseries_id">
+                                        <?php foreach($car_serice as $v){ ?>
+					<option  value="{$v['id']}">{$v['carseries_name']}</option>
+                                        <?php } ?>
+				</select>
+				</span>
+                        </div>
+		</div>
+            
+                <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>厂家指导价：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$size['guide_price']}" placeholder="请填写厂家指导价" id="revise_obj" name="guide_price">
+			</div>
+		</div>
+                
+                <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>厂家指开票进货价：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$size['invoice_price']}" placeholder="请填写厂家开票进货价" id="revise_obj" name="invoice_price">
+			</div>
+		</div>
+            
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+				<button id="ture_submit" style="display: none;" class="btn btn-primary radius" type="submit">提交</button>
+				<button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+{/block}
+{block name="js"}
+<script type="text/javascript">
+	function article_save_submit(){
+			if ($("#revise_obj").val()=="") {
+				layer.msg("请填写车型"); 
+				return false;
+			}
+			if ($("#carseries_id option:selected").text()=="请选择") {
+			layer.msg("请选择车系"); 
+			return false;
+			}
+			if ($("#suggest_price").val()=="") {
+				layer.msg("请填写厂家指导价"); 
+				return false;
+			}
+			if ($("#buying_price").val()=="") {
+				layer.msg("请填写厂家开票进货价"); 
+				return false;
+			}
+			$("#ture_submit").click();
+		}
+		
+</script>
+{/block}

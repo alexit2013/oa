@@ -1,0 +1,59 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    .msg_content{
+        margin:25px 0px 0px 0px;
+        padding: 25px 0px;
+        box-sizing:border-box;
+        border: 1px solid #00ccff;
+        border-radius:15px;
+        position: relative;
+    }
+    .msg_del{
+        border-radius:5px;
+        color: #fff;
+        background-color:#3399ff;
+        width:auto;
+        height: 28px;
+        line-height: 28px;
+        padding: 0px 12px;
+        position: absolute;
+        top:-15px;
+        left:16px;
+        text-align: center;
+        font-size: 13px;
+        cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;margin-bottom:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">市场营销预算表<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <a id="add_r" onclick="add('新建市场营销预算数据','{:Url('chart/marketbudget/add')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新建市场营销预算数据</a>
+            <a id="add_r" onclick="add('新建本月客流目标数据','{:Url('chart/marketbudget/customadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新建本月客流目标数据</a>
+            <a id="add_r" onclick="add('新建上月客户来源数据','{:Url('chart/marketbudget/cuslastadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新建上月客户来源数据</a>
+            <a id="add_r" onclick="add('新建上月市场费用流向数据','{:Url('chart/marketbudget/marlastadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新建上月市场费用流向数据</a>
+        </div>
+    </div>
+</div>
+
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    /*新增车系*/
+    function add(title,url){
+        var index = layer.open({
+            type: 2,
+            content: url,
+            area: ['100%', '100%'],
+            title: title,
+            maxmin: true
+        });
+        layer.full(index);
+    }
+</script>
+{/block}

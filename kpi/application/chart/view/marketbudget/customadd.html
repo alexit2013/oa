@@ -1,0 +1,183 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    .c-red{color: red;}
+    .AddIcon{font-size: 19px;line-height: 31px;cursor:pointer;}
+    .mt-3{margin-top:3px;}
+    .ml1r{margin-left:1rem;}
+    .file_upload{
+        border: 1px solid #dfdfdf;
+        width: 121px;
+        height: 36px;
+        line-height: 34px;
+        text-align: center;
+        color: #676795;
+        font-size: 16px;
+        position: relative;
+        padding-left:18px;
+    }
+    .file_upload i{
+        position: absolute;
+        top:0px;
+        left:19px;
+        font-size:19px;
+        color: #60b879;
+    }
+    .msg_content{
+        margin:25px 0px;
+        padding: 25px 0px;
+        box-sizing:border-box;
+        border: 1px solid #00ccff;
+        border-radius:15px;
+        position: relative;
+    }
+    .msg_del{
+        border-radius:5px;
+        color: #fff;
+        background-color:#3399ff;
+        width:auto;
+        height: 28px;
+        line-height: 28px;
+        padding: 0px 12px;
+        position: absolute;
+        top:-15px;
+        left:16px;
+        text-align: center;
+        font-size: 13px;
+        cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+<div class="page-container">
+    <form class="form form-horizontal" id="form-article-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                                    <span class="select-box">
+                                        <select class="select" name="store_id" id="store_id1">
+                                            <?php foreach($stores as $k => $v){ ?>
+                                            <option value="{$v['ID']}">{$v['NAME']}</option>
+                                            <?php } ?>
+                                        </select>
+                                    </span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>年月：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="month" class="input-text" value="" placeholder="请输入月份" id="month">
+                <input type="hidden" class="input-text" value="" id="iyear" name="year">
+                <input type="hidden" class="input-text" value="" id="imonth" name="month">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>本月展厅销售目标：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" onkeyup="clearNoNum(this)" value="" placeholder="请输入本月展厅销售目标" msg="本月展厅销售目标" private="required" id="sale_one" name="sale_one">
+            </div>
+            <span class="c-red">台</span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>本月二级销售目标：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" onkeyup="clearNoNum(this)" value="" placeholder="请输入本月二级销售目标" msg="本月二级销售目标" private="required" id="sale_two" name="sale_two">
+            </div>
+            <span class="c-red">台</span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>本年平均成交率：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" onkeyup="clearNoNum(this)" value="" placeholder="请输入本年平均成交率" msg="本年平均成交率" private="required" id="deal_y" name="deal_y">
+            </div>
+            <span class="c-red">%</span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>同品牌平均成交率：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" onkeyup="clearNoNum(this)" value="" placeholder="请输入同品牌平均成交率" msg="同品牌平均成交率" private="required" id="deal_gh" name="deal_gh">
+            </div>
+            <span class="c-red">%</span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>本年平均留档率：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" onkeyup="clearNoNum(this)" value="" placeholder="请输入本年平均留档率" msg="本年平均留档率" private="required" id="file_y" name="file_y">
+            </div>
+            <span class="c-red">%</span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>同品牌平均留档率：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" onkeyup="clearNoNum(this)" value="" placeholder="请输入同品牌平均留档率" msg="同品牌平均留档率" private="required" id="file_gh" name="file_gh">
+            </div>
+            <span class="c-red">%</span>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-2">
+                <button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+                <button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function article_save_submit(){
+        var p_month = $("#month").val();
+        if(!p_month){
+            layer.msg("没有选择年月");
+            return false;
+        }
+        var num=0;
+        var str="";
+        $("input[private='required']").each(function(n){
+            if($.trim($(this).val())=="")
+            {
+                num++;
+                str+=$(this).attr("msg")+"不能为空！\r\n";
+            }
+        });
+        if(num>0)
+        {
+            layer.msg(str);
+        }
+        else
+        {
+            var month_val = $('#month').val();
+            var my = month_val.split("-");
+            var iyear = my[0];
+            if(my[1]<10){
+                var imonth = my[1].substring(1);
+            }else{
+                var imonth = my[1];
+            }
+            $("#iyear").val(iyear);
+            $("#imonth").val(imonth);
+            var str = $("#form-article-add").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("customadd")}',
+                data:str,
+                dataType: 'json',
+                success: function(data){
+                    if(data.status=='1'){
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }else{
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }
+                },
+                error:function(data) {
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+            });
+        }
+    }
+</script>
+{/block}

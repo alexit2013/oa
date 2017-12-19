@@ -1,0 +1,208 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+	.bt_blue{
+		background-color: #2CBB97;
+		border-radius: 5px;
+		color: #FFFFFF;
+	}
+	.bt_blue:hover{
+		background-color: #28AA89;
+	}
+	.bt_button{
+		background-color: #F3F3F3!important;
+	    background: -webkit-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: -o-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: -moz-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: linear-gradient(#FCFCFC, #EEEEEE)!important;
+	}
+	.bt_button:hover{
+		background: -webkit-gradient(linear, 0 0, 0 100%, from(#FCFCFC), to(#DDDDDD));
+		background: -webkit-linear-gradient(#FCFCFC, #DDDDDD);
+		background: -moz-linear-gradient(#FCFCFC, #DDDDDD);
+		background: -o-linear-gradient(#FCFCFC, #DDDDDD);
+		background: linear-gradient(#FCFCFC, #DDDDDD)!important;
+	}
+	a.come_time,a.end_time{
+		color: #4A90E2;
+	}
+	.custom_tip{
+		background-image: url(answer-bg.png);
+		background-repeat: no-repeat;
+		background-position: right top;
+		position: relative;
+	}
+	.custom_tip_box{
+		width: 250px;
+		height: auto;
+		overflow: hidden;		
+		position: absolute;
+		left: 95%;
+		top: 0%;
+		z-index: 999;
+		
+	}
+	.custom_tip_box div.triangle{
+		width: 15px;
+		height: 15px;
+		border-top: 1px solid #B3B3B3;
+		border-left: 1px solid #B3B3B3;
+		background-color: #FFFFFF;
+		transform: rotate(-45deg);
+		-webkit-transform: rotate(-45deg);
+		-moz-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		position: absolute;
+		left: 10px;
+		top: 50%;		
+		z-index: 10;
+	}
+	.custom_tip_box div.tip_content{
+		width: 230px;
+		height: auto;
+		overflow: hidden;
+		float: right;
+		border: 1px solid #B3B3B3;
+		font-size: 12px;
+	}
+	.tip_content div.tip_title{
+		width: 100%;
+		height: 30px;
+		line-height: 30px;
+		background-color: #f5f5f5;
+		border-bottom: 1px solid #B3B3B3;
+	}
+	.tip_content div.tip_words{
+		text-align: left !important;
+		font-size: 12px;
+		font-weight: normal;
+		background-color: #FFFFFF;
+		width: 88%;
+		height: auto;
+		line-height: 24px;
+		padding: 0 6%;
+	}
+	.chose_bc{
+		cursor: pointer;
+	}
+	ul.pagination{
+		position: absolute;
+		bottom: 20px;
+		right: 50px;
+		width: 100%;
+		background-color: #ffffff;
+	}
+</style>
+
+<form method="POST" action="{:Url('index')}">
+<div class="page-container">
+	<div class="text-c">
+	<a href="javascript:;" onclick="member_add('导入排班表','{:Url('import')}')" class="btn bt_blue">批量修改排班</a>
+	 <span class="select-box inline">
+		<select name="" class="select">
+			<option value="0">全部</option>
+			<option value="1">在职成员</option>
+			<option value="2">禁用成员</option>
+		</select>
+	</span> 
+	年月：
+                <input type="month" id="month"  value="<?php if(!empty($data['time'])){ echo $data['time']; } ?>" name="time" class="input-text" style="width:160px;">
+		<input type="text" name="user_name" id="branch" placeholder="请输入员工姓名" style="width:150px" class="input-text" value="<?php if(!empty($data['user_name'])){ echo $data['user_name']; } ?>">
+                <input type="text" name="emp_no" id="branch" placeholder="请输入员工账号" style="width:150px" class="input-text" value="<?php if(!empty($data['emp_no'])){ echo $data['emp_no']; } ?>">
+		<button name="submit" class="btn bt_button" type="submit">查询</button>
+	</div>
+	<div class="mt-20" style="overflow-x: auto;">
+		<table class="table table-border table-bordered table-bg month_table" style="width: 3000px;">
+			<thead>
+				<tr class="text-c" height="57">
+					<th width="80">帐号</th>
+					<th width="130">姓名</th>
+					<th width="100">部门</th>
+					<th width="100">职位</th>
+
+                                        {notempty name="daynum"}
+						<?php for ($i=1; $i <=$daynum ; $i++) {  ?>
+						<th><?php echo $i.'/'.$month; ?></th>
+						<?php } ?>
+                                        {/notempty}
+				</tr>
+			</thead>
+			<tbody>
+            <?php foreach($data_list as $k => $v){ ?>
+				<tr class="text-c">
+					<td>{$v['emp_no']}</td>
+					<td>{$v['user_name']}</td>
+					<td>{$v['dept_name']}</td>
+                    <td>{$v['position']}</td>
+					<?php for ($i=1; $i <=$daynum ; $i++) {  ?>
+                                        <td class="chose_bc" <?php if(!empty($v['scheduling'][$i]['id'])){ ?>onclick="popup_bc('选择班次','{:Url('schededit',array('id'=>$v['scheduling'][$i]['id']))}')" <?php } ?>>
+                            <?php if(!empty($v['scheduling'][$i]['schedual_name'])){ echo $v['scheduling'][$i]['schedual_name'];} ?>
+                        </td>
+                                        <?php } ?>
+				</tr>
+            <?php } ?>
+			</tbody>
+		</table>
+		<?php echo $page; ?>
+	</div>
+</div>
+</form>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+/*导入排班表*/
+function member_add(title,url){
+    var index = layer.open({
+      type: 2,
+      content: url,
+      area: ['100%', '100%'],
+      title: title,
+      maxmin: true
+    });
+    layer.full(index);      
+}
+function tip_pop(){
+		var index = layer.open({
+		  type: 2,
+		  content: 'import.html',
+		  btn: ['保存', '取消'],
+		  area: ['100%', '100%'],
+		  title: "导入排班表",
+		  maxmin: true
+		});
+		layer.full(index);		
+};
+
+//修改班次
+function popup_bc(title,url){
+//	layer.open({
+//	  type: 2,
+//	  title: title,
+//	  area: ['600px', '500px'],
+//	  fixed: false, //不固定
+//	  maxmin: true,
+//	  content: url
+//	});
+}
+
+$(function(){
+	//表头提示
+	$(".custom_tip").hover(function(){
+		var tip_title = $(this).attr("data-original-title");
+		var tip_content = $(this).attr("data-content");
+		var html = '<div class="custom_tip_box"><div class="triangle"></div><div class="tip_content"><div class="tip_title"></div><div class="tip_words"></div></div></div>';
+		$(this).append(html);
+		$(".custom_tip_box").fadeIn();
+		$(".tip_title").html(tip_title);
+		$(".tip_words").html(tip_content);		
+		//var tip_height = $(".custom_tip_box").height()/2;		
+		//$(".custom_tip_box").css("margin-top",-tip_height);
+		
+	},function(){
+		$(".custom_tip_box").remove();
+	});
+});	
+
+
+</script> 
+{/block}

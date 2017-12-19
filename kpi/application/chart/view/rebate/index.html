@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>返利计算表</title>
+		<script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/kpi/table.js"></script>
+		<link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="/position/public/lib/self_tip.css" />
+		<script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript" src="/position/public/lib/pubjs.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+                                //预计表
+				var w = $(".table_box").width();
+				var h = $(".table_box").height();
+				$("#MyTable thead tr th").css({"padding":"10px 10px","height":"20px"});
+				$("#MyTable").css({"text-align":"center","font-size":"0.5rem","width":w,"height":h});
+				$("#MyTable td").css({"padding":"8px 2px","color":"rgb(70, 70, 70)"});
+				FixTable("MyTable",  0, w, h);
+                                //预计表
+				var w2 = $(".table_box2").width();
+				var h2 = $(".table_box2").height();
+				$("#MyTable2 thead tr th").css({"padding":"10px 10px","height":"20px"});
+				$("#MyTable2").css({"text-align":"center","font-size":"0.5rem","width":w2,"height":h2});
+				$("#MyTable2 td").css({"padding":"8px 2px","color":"rgb(70, 70, 70)"});
+				FixTable("MyTable2",  2, w, h);
+			});
+			// ]]>
+		</script>	
+
+		<style>
+			body{
+				font-size: 62.5%;				
+			}
+                        table{border-collapse:collapse;}
+			.table_box{
+				width: 100%;
+				height: 460px;
+				margin: 0 auto;
+				font-size: 0.5rem;
+			}
+                        .table_box2{
+				width: 100%;
+				height: 460px;
+				margin: 0 auto;
+				font-size: 0.5rem;
+			}
+			a{
+				text-decoration: none;;
+			}
+			.top_bar{
+				width: 100%;
+				height: 40px;
+			}
+			.top_bar .btn{
+				width: auto;
+				height: 20px;
+				padding: 4px 12px;
+				margin-top: 6px;
+				background-color: #5a98de;
+				border-radius: 8px;
+				-webkit-border-radius: 8px;
+				color: #fff;
+				font-size: 14px;
+				font-weight: 400;
+			}
+                       .search_box{
+				width: 100%;
+				height: 40px;
+				margin: 10px auto;
+				border: 1px solid #eaeaea;
+			}
+			.select_box{
+			    border: solid 1px #ddd;
+			    box-sizing: border-box;
+			    vertical-align: middle;
+			    width: 200px;
+			    padding: 4px 5px;
+			    display: inline-block;
+			    margin-top: 5px;
+			    margin-left: 20px;
+			    float: left;	
+			    height: 30px;			
+			}
+			.search_box >span{
+                            display: block;
+                            float: left;
+                            width: 40px;
+                            height: 40px;
+                            float: left;
+                            text-align: right;
+                            line-height: 40px;
+                            font-size: 14px;
+			}
+			.select{
+                            border: 0;
+                            font-size: 14px;
+                            box-sizing: border-box;
+			    cursor: pointer;
+			    line-height: normal;
+			    font-weight: normal;
+			    width: 100%;
+			    float: right;
+			    white-space: nowrap;
+			    outline: none;				
+			}
+			.search_btn{
+                            background-color: #5a98de;
+			    border-radius: 5px;
+			    color: #FFFFFF;
+			    float: left;
+                            display: inline-block;
+			    box-sizing: border-box;
+			    cursor: pointer;
+			    text-align: center;
+			    font-weight: 400;
+			    white-space: nowrap;
+			    vertical-align: middle;
+			    -moz-padding-start: npx;
+			    -moz-padding-end: npx;
+			    width: auto;
+			    border: none;
+   				outline: none;
+   				height: 30px;
+   				margin-left: 20px;
+   				margin-top: 5px;
+   				padding: 0 10px;
+			}
+                        #MyTable2 thead tr{
+                            height: 30px;
+                            background-color: rgb(209, 234, 255);
+                        }
+		</style>
+
+	</head>
+	
+	<body>
+                <form action="{:Url('index')}" method="post">
+			<div class="search_box">
+                                <span>门店:</span>
+				<div class="select_box">                                    
+					<select class="select" name="store_id" id="store_id">
+						<?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+						<option <?php if(!empty($search_data) && $search_data['store_id']==$v['ID']){ echo 'selected';} ?> value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+                                <span>年份:</span>
+                                <div class="select_box">
+					<select class="select" name="year">                                            
+						<option value="">请选择年份</option>
+                                                <option <?php if(!empty($search_data) && $search_data['year']==2013){ echo 'selected';} ?>  value="2013">2013年</option>
+                                                <option <?php if(!empty($search_data) && $search_data['year']==2014){ echo 'selected';} ?> value="2014">2014年</option>
+                                                <option <?php if(!empty($search_data) && $search_data['year']==2015){ echo 'selected';} ?> value="2015">2015年</option>
+                                                <option <?php if(!empty($search_data) && $search_data['year']==2016){ echo 'selected';} ?> value="2016">2016年</option>
+                                                <option <?php if(!empty($search_data) && $search_data['year']==2017){ echo 'selected';} ?> value="2017">2017年</option>
+					</select>
+				</div>
+                                <span>月份:</span>
+                                <div class="select_box">
+					<select class="select" name="month">
+                                                <option value="">请选择月份</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==1){ echo 'selected';} ?> value="1">1月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==2){ echo 'selected';} ?> value="2">2月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==3){ echo 'selected';} ?> value="3">3月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==4){ echo 'selected';} ?> value="4">4月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==5){ echo 'selected';} ?> value="5">5月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==6){ echo 'selected';} ?> value="6">6月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==7){ echo 'selected';} ?> value="7">7月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==8){ echo 'selected';} ?> value="8">8月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==9){ echo 'selected';} ?> value="9">9月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==10){ echo 'selected';} ?> value="10">10月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==11){ echo 'selected';} ?> value="11">11月</option>
+                                                <option <?php if(!empty($search_data) && $search_data['month']==12){ echo 'selected';} ?> value="12">12月</option>
+					</select>
+				</div>
+				<button name="" id="" class="search_btn" type="submit"> 查询</button>
+				<!--清除数据-->
+				<input type="hidden" id="table_name" value="rebate">
+				<?php $clear_button = session("clear_button"); if($clear_button == "1"){ echo '<button name="" id="clear_button" style="background-color:orange;" class="search_btn" type="button" onclick="clearbutton()">清空数据</button>';} ?>
+				<!--清除数据-->
+				<!--审批状态-->
+				<input type="hidden" id="status" value="<?php if(!empty($data_status)){ if(get_emp_no()==$data_status['emp_no']){echo $data_status['status']; }else{echo 0;}} ?>">
+				<!--审批状态-->
+			</div>
+		</form>
+                <!--实际表-->
+		<h1 style="width:100%;text-align: center;"><span></span><?php echo $preyear.'年'.$premonth.'月'; ?>返利预估汇总表（实际）{:is_pass($data_status)}</h1>
+		<div class="table_box">
+			<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable">
+				<thead>
+					<tr>
+						<th rowspan="2"><div style="width: 60px;">车型</div></th>
+						<th rowspan="2"><div style="width: 60px;">配置</div></th>
+						<th rowspan="2"><div style="width: 60px;">销售台次</div></th>
+						<th rowspan="2"><div style="width: 60px;">市场指导价</br>（元）</div></th>
+						<th rowspan="2"><div style="width: 60px;">批售价</br>（元）</div></th>
+						<th rowspan="2"><div style="width: 60px;">进销差</br>（元）</div></th>
+                                                <th colspan="{$rebatenamenum}"><div style="width: 600px;">单车返利（含税，单元：元）</div></th>
+						<th rowspan="2"><div style="width: 60px;">返利小计</br>（元）</div></th>
+                                                <th colspan="{$rebatenamenum}"><div style="width: 600px;">返利（除税，单位：万元）</div></th>
+						<th rowspan="2"><div style="width: 60px;">返利总计</br>（万元）</div></th>
+					</tr>
+					<tr>
+                        <?php foreach ($rebatenameres as $key => $val) {?>
+                        <th><?php  echo $val['rebate_name'].'('.$val['carbrand_name'].')';?></th>
+                       <?php } ?>
+						<?php foreach ($rebatenameres as $key => $val) {?>
+                        <th><?php  echo $val['rebate_name'].'('.$val['carbrand_name'].')';?></th>
+                       <?php } ?>
+					</tr>
+				</thead>
+				
+				<tbody>
+                      <!--车型--> 
+					
+					<?php foreach ($actual_data['data_list'] as $key => $value) {?>
+					<tr>
+                       <td rowspan="<?php echo count($value); ?>">{$key}</td>
+                        <?php  foreach ($value as $k => $val) {?>      
+                                                     
+						<td>{$val['carsize_name']}</td>
+						<td class="edit" data-key="sales_num" data-type="float" data-order="{$val['id']}">{$val['sales_num']}</td>
+						<td>{$val['marketprice']}</td>
+						<td>{$val['batchprice']}</td>
+						<td>{$val['into_seling_diffprice']}</td>
+						
+						<?php foreach ($rebatenameres as $kr => $vr) { ?>
+								<?php if(!empty($val['rebate'][$vr['rebate_name']])){ ?>
+									<td>{$val['rebate'][$vr['rebate_name']]}</td>
+								<?php }else{ ?>
+									<td></td>
+								<?php } ?>
+						<?php } ?>
+						<td><?php echo array_sum($val['rebate']); ?></td>	
+						
+						<?php foreach ($rebatenameres as $kr => $vr) { ?>
+								<?php if(!empty($val['tax_rebate'][$vr['rebate_name']])){ ?>
+									<td>{$val['tax_rebate'][$vr['rebate_name']]}</td>
+								<?php }else{ ?>
+									<td></td>
+								<?php } ?>
+						<?php } ?>
+						<?php if(!empty($val['tax_rebate'])){ ?>
+						<td><?php echo array_sum($val['tax_rebate']); ?></td>
+						<?php }else{ ?>
+						<td></td>
+						<?php } ?>
+						</tr>
+						<?php } ?>
+					
+						<?php } ?>
+					
+                          <!--合计-->
+                    <tr>
+						<td colspan="2">合计</td>						                                                
+						<td>{$actual_data['sales_sum']}</td>
+						<?php for ($i=1; $i <5+count($rebatenameres); $i++) { ?>
+						<td style="background-color:#cdd;border:0;"></td>
+						<?php } ?>						
+
+						<?php foreach ($rebatenameres as $kr => $vr) { ?>
+							<?php if(!empty($actual_data['sum'][$vr['rebate_name']])){ ?>
+									<td>{$actual_data['sum'][$vr['rebate_name']]}</td>
+								<?php }else{ ?>
+									<td></td>
+								<?php } ?>
+						<?php } ?>
+										
+						<td><?php echo array_sum($actual_data['sum']); ?></td>
+
+					</tr>
+                        
+                    <!--当期市场推广类预估返利-->
+					<tr>
+						<td colspan="3">当期市场推广类预估返利</td>						                                               
+						<td colspan="2" class="edit1" data-key="s_rebate" data-type="float" data-order="{$rebate_des['id']}"><?php echo $rebate_des['s_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des['s_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                                        <!--当期满意度类预估返利-->
+					<tr>
+						<td colspan="3">当期满意度类预估返利</td>						                                                
+					<td colspan="2" class="edit1" data-key="m_rebate" data-type="float" data-order="{$rebate_des['id']}"><?php echo $rebate_des['m_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des['m_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                                        <!--当期日常检查类预估返利-->
+					<tr>
+						<td colspan="3">当期日常检查类预估返利</td>						                                                
+					<td colspan="2" class="edit1" data-key="j_rebate" data-type="float" data-order="{$rebate_des['id']}"><?php echo $rebate_des['j_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des['j_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                                        <!--当期大客户类预估返利-->
+					<tr>
+						<td colspan="3">当期大客户类预估返利</td>					
+						<td colspan="2" class="edit1" data-key="d_rebate" data-type="float" data-order="{$rebate_des['id']}"><?php echo $rebate_des['d_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des['d_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                                        <!--当期其他类预估返利-->
+					<tr>
+						<td colspan="3">当期其他类预估返利</td>						
+						<td colspan="2" class="edit1" data-key="dq_rebate" data-type="float" data-order="{$rebate_des['id']}"><?php echo $rebate_des['dq_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des['dq_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                                        <!--前期未预估的补估返利-->
+                                        <tr>
+						<td colspan="3">前期未预估的补估返利</td>					
+						<td colspan="2" class="edit1" data-key="q_rebate" data-type="float" data-order="{$rebate_des['id']}"><?php echo $rebate_des['q_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des['q_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                          <!--合计-->
+                    <tr>
+						<td colspan="<?php echo 7+count($rebatenameres)*2; ?>">总计</td>						                                               
+						<td><?php echo round(($rebate_des['s_rebate']+$rebate_des['m_rebate']+$rebate_des['j_rebate']+$rebate_des['d_rebate']+$rebate_des['dq_rebate']+$rebate_des['q_rebate'])/10000/1.17,2)+array_sum($actual_data['sum']); ?></td>
+					</tr>
+				</tbody>			
+			</table>
+		</div>
+                <!--预计表-->
+                <h1 style="width:100%;text-align: center;margin-top:50px;"><span></span><?php echo $year.'年'.$month.'月'; ?>返利预估汇总表（预计）</h1>
+		<div class="table_box">
+			<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable2">
+				<thead>
+					<tr>
+						<th rowspan="2"><div style="width: 60px;">车型</div></th>
+						<th rowspan="2"><div style="width: 60px;">配置</div></th>
+						<th rowspan="2"><div style="width: 60px;">销售台次</div></th>
+						<th rowspan="2"><div style="width: 60px;">市场指导价</br>（元）</div></th>
+						<th rowspan="2"><div style="width: 60px;">批售价</br>（元）</div></th>
+						<th rowspan="2"><div style="width: 60px;">进销差</br>（元）</div></th>
+                                                <th colspan="{$rebatenamenum}"><div style="width: 600px;">单车返利（含税，单元：元）</div></th>
+						<th rowspan="2"><div style="width: 60px;">返利小计</br>（元）</div></th>
+                                                <th colspan="{$rebatenamenum}"><div style="width: 600px;">返利（除税，单位：万元）</div></th>
+						<th rowspan="2"><div style="width: 60px;">返利总计</br>（万元）</div></th>
+					</tr>
+					<tr>
+                        <?php foreach ($rebatenameres as $key => $val) {?>
+                        <th>{$val['rebate_name']}</th>
+                       <?php } ?>
+						<?php foreach ($rebatenameres as $key => $val) {?>
+                        <th>{$val['rebate_name']}</th>
+                       <?php } ?>
+					</tr>
+				</thead>
+				
+				<tbody>
+                      <!--车型--> 
+					
+					<?php foreach ($expect_data['data_list'] as $key => $value) {?>
+					<tr>
+                       <td rowspan="<?php echo count($value); ?>">{$key}</td>
+                        <?php  foreach ($value as $k => $val) {?>      
+                                                     
+						<td>{$val['carsize_name']}</td>
+						<td class="edit" data-key="sales_num" data-type="float" data-order="{$val['id']}">{$val['sales_num']}</td>
+						<td>{$val['marketprice']}</td>
+						<td>{$val['batchprice']}</td>
+						<td>{$val['into_seling_diffprice']}</td>
+						
+						<?php foreach ($rebatenameres as $kr => $vr) { ?>
+								<?php if(!empty($val['rebate'][$vr['rebate_name']])){ ?>
+									<td>{$val['rebate'][$vr['rebate_name']]}</td>
+								<?php }else{ ?>
+									<td></td>
+								<?php } ?>
+						<?php } ?>
+						<td><?php echo array_sum($val['rebate']); ?></td>	
+						
+						<?php foreach ($rebatenameres as $kr => $vr) { ?>
+								<?php if(!empty($val['tax_rebate'][$vr['rebate_name']])){ ?>
+									<td>{$val['tax_rebate'][$vr['rebate_name']]}</td>
+								<?php }else{ ?>
+									<td></td>
+								<?php } ?>
+						<?php } ?>
+						<?php if(!empty($val['tax_rebate'])){ ?>
+						<td><?php echo array_sum($val['tax_rebate']); ?></td>
+						<?php }else{ ?>
+						<td></td>
+						<?php } ?>
+				
+						</tr>
+						<?php } ?>
+					
+						<?php } ?>
+					
+                          <!--合计-->
+                    <tr style="background-color: darkseagreen;">
+						<td colspan="2">合计</td>						                                                
+						<td>{$expect_data['sales_sum']}</td>
+						<?php for ($i=1; $i <5+count($rebatenameres); $i++) { ?>
+						<td style="background-color:#cdd;border:0;"></td>
+						<?php } ?>						
+
+						<?php foreach ($rebatenameres as $kr => $vr) { ?>
+							<?php if(!empty($expect_data['sum'][$vr['rebate_name']])){ ?>
+									<td>{$expect_data['sum'][$vr['rebate_name']]}</td>
+								<?php }else{ ?>
+									<td></td>
+								<?php } ?>
+						<?php } ?>
+										
+						<td><?php echo array_sum($expect_data['sum']); ?></td>
+
+					</tr>
+
+                    <!--当期市场推广类预估返利-->
+					<tr>
+						<td colspan="3" style="text-align: left;">当期市场推广类预估返利</td>
+						<td colspan="2" class="edit1" data-key="s_rebate" data-type="float" data-order="{$rebate_des_expect['id']}"><?php echo $rebate_des_expect['s_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des_expect['s_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                                        <!--当期满意度类预估返利-->
+					<tr>
+						<td colspan="3" style="text-align: left;">当期满意度类预估返利</td>
+					<td colspan="2" class="edit1" data-key="m_rebate" data-type="float" data-order="{$rebate_des_expect['id']}"><?php echo $rebate_des_expect['m_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des_expect['m_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                                        <!--当期日常检查类预估返利-->
+					<tr>
+						<td colspan="3" style="text-align: left;">当期日常检查类预估返利</td>
+					<td colspan="2" class="edit1" data-key="j_rebate" data-type="float" data-order="{$rebate_des_expect['id']}"><?php echo $rebate_des_expect['j_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des_expect['j_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                                        <!--当期大客户类预估返利-->
+					<tr>
+						<td colspan="3" style="text-align: left;">当期大客户类预估返利</td>
+						<td colspan="2" class="edit1" data-key="d_rebate" data-type="float" data-order="{$rebate_des_expect['id']}"><?php echo $rebate_des_expect['d_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des_expect['d_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                                        <!--当期其他类预估返利-->
+					<tr>
+						<td colspan="3" style="text-align: left;">当期其他类预估返利</td>
+						<td colspan="2" class="edit1" data-key="dq_rebate" data-type="float" data-order="{$rebate_des_expect['id']}"><?php echo $rebate_des_expect['dq_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des_expect['dq_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                                        <!--前期未预估的补估返利-->
+                                        <tr>
+						<td colspan="3" style="text-align: left;">前期未预估的补估返利</td>
+						<td colspan="2" class="edit1" data-key="q_rebate" data-type="float" data-order="{$rebate_des_expect['id']}"><?php echo $rebate_des_expect['q_rebate']; ?></td>
+						<?php for ($i=1; $i <3+count($rebatenameres)*2; $i++) { ?>
+						<td style="background-color:#ccc;border:0;"></td>
+						<?php } ?>	
+					
+						<td><?php echo round($rebate_des_expect['q_rebate']/10000/1.17,2); ?></td>
+					</tr>
+                          <!--合计-->
+                                        <tr style="background-color: darkseagreen;">
+						<td colspan="<?php echo 7+count($rebatenameres)*2; ?>">总计</td>						                                               
+						<td><?php echo round(($rebate_des_expect['s_rebate']+$rebate_des_expect['m_rebate']+$rebate_des_expect['j_rebate']+$rebate_des_expect['d_rebate']+$rebate_des_expect['dq_rebate']+$rebate_des_expect['q_rebate'])/10000/1.17,2)+array_sum($expect_data['sum']); ?></td>
+					</tr>
+				</tbody>		
+			</table>
+		</div>
+		<script type="text/javascript" src="__LIB__/layer/2.4/layer.js"></script>
+		<script>
+			$(document).ready(function(){
+				var store_name = $("#store_id").find("option:selected").text();
+				$("h1 > span").eq(0).html(store_name);
+
+			});
+
+			$(document).ready(function(){
+				//执行
+				var self;
+				var status = $("#status").val();
+				//鼠标经过需要修改的地方的效果
+				$("td.edit,td.edit1").hover(
+						function(){
+							if(status == 2 || status == ''){
+								$(this).css({"cursor":"url(/position/public/kpi/img/edit.png),default","background-color":"#eee"});
+							}
+						},
+						function(){
+							if(status == 2 || status == ''){
+								$(this).css({"cursor":"default","background-color":"#fff"});
+							}
+						}
+				);
+				//表一数据修改
+				$("td.edit").on("dblclick",function(){
+					self = $(this);
+					var con = self.html();			//所点击要修改的原内容
+					var table_name = 'rebate';			//所点击要修改的表名
+					var key_name = self.attr("data-key");			//所点击要修改的键名
+					var order_num = self.attr("data-order");			//所点击要修改的序号id
+					var datatype = self.attr("data-type");			//此处是何种类型格式
+					if(status == 2 || status == ''){
+						tip_function(datatype,table_name,key_name,con,1,order_num);
+					}
+				});
+				$("td.edit1").on("dblclick",function(){
+					self = $(this);
+					var con = self.html();			//所点击要修改的原内容
+					var table_name = 'rebate_des';			//所点击要修改的表名
+					var key_name = self.attr("data-key");			//所点击要修改的键名
+					var order_num = self.attr("data-order");			//所点击要修改的序号id
+					var datatype = self.attr("data-type");			//此处是何种类型格式
+					if(status == 2 || status == ''){
+						tip_function(datatype,table_name,key_name,con,1,order_num);
+					}
+				});
+			})
+
+		</script>
+	</body>
+</html>

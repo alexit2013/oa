@@ -1,0 +1,223 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    body,html{
+        width: 100%;
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background-color: #efefef;
+    }
+    .content_box{
+        width: 90%;
+        height: auto;
+        overflow: hidden;
+        margin: 0 auto;
+    }
+    .top_info{
+        width: 100%;
+        height:40px;
+        padding: 10px 0;
+        border-bottom: 3px solid #eeeeee;
+    }
+    .user_heard{
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+        margin-right: 5px;
+        float: left;
+    }
+    .user_heard > img{
+        display: block;
+        border: none;
+        width: 100%;
+        height:100%;
+    }
+    .tip_box_new{
+        width: auto;
+        overflow: hidden;
+        height: 40px;
+        line-height: 20px;
+        color: #000000;
+        font-size: 0.8em;
+    }
+    .tip_bar{
+        width: 100%;
+        height: 25px;
+        font-family: '微软雅黑';
+        font-size: 0.8em;
+        line-height: 30px;
+        text-indent: 2em;
+    }
+    .flow_content{
+        width: 460px;
+        height: auto;
+        overflow: hidden;
+        border: 1px solid #eeeeee;
+        border-radius: 10px;
+    }
+    .flow_content .flow_content_box{
+        width: 100%;
+        height:auto;
+        overflow: hidden;
+        padding: 5px 0;
+        font-size: 0.9em;
+    }
+    .flow_content_box .words{
+        width: 20%;
+        height: 30px;
+        line-height: 30px;
+        text-align: right;
+        float: left;
+    }
+    .flow_content_box .fill_bar{
+        width: 70%;
+        height:auto;
+        float: left;
+        line-height: 30px;
+        margin-left: 2%;
+    }
+    .flow_content_box .receive{
+        width: 100%;
+        height: 20px;
+        padding: 5px 0;
+        line-height: 20px;
+        padding-left: 30px;
+    }
+    .flow_content_box .start{
+        background-image: url('/position/public/kpi/img/start.png');
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+    .flow_content_box .bosom{
+        background-image: url('/position/public/kpi/img/bosom.png');
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+    .flow_content_box .end{
+        background-image: url('/position/public/kpi/img/end.png');
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+    .flow_content_box .receive img{
+        display: block;
+        border: none;
+        width: 20px;
+        height:20px;
+        border-radius: 5px;
+        float: left;
+    }
+    .flow_content_box .receive div{
+        display: block;
+        border: none;
+        height:20px;
+        float: left;
+        margin: 0 5px;
+    }
+    .flow_content_box .fill_bar > textarea{
+        height: 80px;
+        resize: none;
+        font-size: 14px;
+        padding: 4px;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #5a98de;
+        border-color: #5a98de;
+        display: block;
+        margin: 10px auto;
+    }
+</style>
+
+<div class="page-container">
+    <form class="form form-horizontal" id="flow">
+        <div class="content_box">
+            <div class="top_info">
+                <div class="user_heard"><img src="{$data_list['pic']}"></div>
+                <div class="tip_box_new">
+                    <div><span>{$data_list['user_name']}</span>发起的<span>{$data_list['chart_name']}</span>审批</div>
+                    <div style="color: #7e7e7e; font-size: 0.7em;">{$data_list['dept_name']}</div>
+                </div>
+            </div>
+            <input type="hidden" name="chart_type_id" value="{$data_list['chart_type_id']}">
+            <input type="hidden" name="flow_type_id" value="{$data_list['flow_type_id']}">
+            <div class="tip_bar">审批内容:</div>
+            <div class="flow_content">
+                <div class="flow_content_box">
+                    <div class="words">报表：</div>
+                    <div class="fill_bar">{$data_list['chart_name']}</div>
+                </div>
+                <div class="flow_content_box">
+                    <div class="words">发起人：</div>
+                    <div class="fill_bar">{$data_list['user_name']}</div>
+                </div>
+                <div class="flow_content_box">
+                    <div class="words">流程：</div>
+                    <div class="fill_bar">
+
+                        <?php $count = count($data_list["confirm"]); ?>
+                        {foreach $data_list["confirm"] as $k => $v}
+                            <div class="receive <?php if($k == 0){ echo 'start'; }else if($k == $count-1){ echo 'end'; }else{ echo 'bosom'; } ?>">
+                                {foreach $v as $ko => $vo}
+                                <img src="{$vo['pic']}"><div>{$vo['user_name']}</div>
+                                {/foreach}
+                            </div>
+                        {/foreach}
+                    </div>
+                </div>
+                <div class="flow_content_box">
+                    <div class="words">抄送：</div>
+                    <div class="fill_bar">
+                        {foreach $data_list["refer"] as $k => $v}
+                            {foreach $v as $vo}
+                                {$vo['user_name']},
+                            {/foreach}
+                        {/foreach}
+                    </div>
+                </div>
+                <div class="flow_content_box">
+                    <div class="words">说明：</div>
+                    <div class="fill_bar">
+                        <textarea cols="" rows="" class="textarea valid" name="remark" id="remark" placeholder="说点什么..."></textarea>
+                    </div>
+                </div>
+                <button onclick="article_save_submit(this);" class="btn btn-primary radius" type="button">提交</button>
+            </div>
+         </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function article_save_submit(current){
+        var str = $("#flow").serialize();
+        $(current).attr('disabled','disabled');
+        $.ajax({
+            type: 'POST',
+            url: '{:Url("workflow/flow/add")}',
+            data:str,
+            dataType: 'json',
+            success: function(data){
+                if(data.status=='1'){
+                    layer.msg(data.msg);
+                    setTimeout(function(){
+                        layer_close();
+                        location.reload();
+                    },3000);
+                }
+                if(data.status=='0'){
+                    layer.msg(data.msg);
+                    layer_close();
+                }
+            },
+            error:function(data) {
+                if(data.status=='0'){
+                    layer_close();
+                    layer.msg(data.msg);
+                }
+            },
+        });
+    }
+
+</script>
+{/block}

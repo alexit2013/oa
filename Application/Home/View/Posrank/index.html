@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title></title>
+        <link rel="stylesheet" href="__INS__/Font-Awesome-3.2.1/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="__INS__/css/animate.min.css" />
+        <script type="text/javascript" src="__INS__/js/jquery-2.1.1.js" ></script>
+        <script type="text/javascript" src="__INS__/js/wow.min.js" ></script>
+        <script type="text/javascript">
+            new WOW().init();
+        </script>
+        <style>
+            *{margin:0; padding:0; list-style:none; }
+            body{ background:#f1f0f7; font:normal 12px/22px 宋体;overflow-x: hidden;}
+            img{ border:0;}
+            a{ text-decoration:none; color:#333;  }
+            .mt-20{margin-top:20px;}
+            .padding-init{padding: 0;}
+            .clear{clear: both;}
+            .navbar{
+                position:relative;
+                min-height:50px;
+                border:1px solid transparent;
+            }
+            .navbar-default{
+                background-color:#f8f8f8;
+                border-color:#d4d3d8;
+            }
+            .navbar-fixed-top{
+                position:fixed;
+                top:  0;
+                left: 0;
+                right: 0;
+                border-width:0 0 1px;
+                z-index: 10086;
+            }
+            .top_item{height:50px;line-height: 50px;font-size:17px;font-weight: bold; text-align: center;}
+            .nav-entity{min-height:50px;}
+            .top_active{color: #00b200;border-bottom: 3px solid #00b200;}
+            .top_active a{color: #00b200;}
+            .tips{height: 33px;line-height: 33px;padding-left:1rem;color: #acabb1;font-size: 13px;}
+            .my_info{background-color:#fff;height: 58px;line-height: 58px;}
+            .my_info .order_number{float: left;width: 10%;text-align: center;padding-left: .9rem;font-weight: bold;font-size: 13px; overflow: hidden;}
+            .my_info .name_info{float: left;width: 25%;text-align: center;padding-left:7%; overflow: hidden;}
+            .my_info .name_info .i_name{height: 29px;line-height: 29px;margin-top:5px;font-size:14px;font-weight: 600;text-align: center;}
+            .my_info .name_info .i_dept{height: 29px;line-height: 29px;margin-top:-10px;text-align: center;color: #a2a2a2;}
+            .my_info .time_info{float: left;width: 35%;text-align: center;font-size:15px;font-weight: 600;color: #00b200; overflow: hidden;}
+            .my_info .other_info{float: right;width: 19%;font-size:15px;text-align: center;color:#FFA500;line-height: 52px;}
+            .top3{color: #FFA500!important;}
+            .ph_area ul li{
+                border-bottom: 1px solid #d4d3d8;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="pui-grid-xs-6 pui-text-center top_item top_active">
+                <a href="javascript:;">打卡排行</a>
+            </div>
+<!--             <div class="pui-grid-xs-6 pui-text-center top_item">
+                <a href="javascript:;">孺子牛</a> 
+            </div>   -->         
+        </nav>
+        <div class="nav-entity"></div>
+        <!-- <div class="tips">指当日首次签到时间，本榜单仅统计前20名员工</div> -->
+
+        <div class="my_info">
+            <div class="order_number">&nbsp;</div>
+            <div class="name_info">
+                <div class="i_name">
+                   <?php $str=explode(".",$user_list['user_name']); ?>
+                   <?php echo $str[(count($str)-1)]; ?>
+                </div>
+                <div class="i_dept">{$user_list['dept_name']}</div>
+            </div>
+            <div class="time_info">
+                <?php if(empty($user_list['sign_in'])){ echo "未打卡"; ?>
+                <?php }else{ echo $user_list['sign_in']; ?>
+                <?php } ?>
+            </div>
+            
+            <div class="other_info">
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="ph_area mt-20">
+
+        <?php foreach($data_list as $k => $v){ ?>
+        
+        <?php if(!empty($v['sign_in'])){ ?>
+            <ul class="padding-init">
+                <li>
+                    <div class="my_info">
+                        <div class="order_number top3"></div>
+                        <div class="name_info">
+                            <div class="i_name">
+                                <?php $str=explode(".",$v['user_name']); ?>
+                                <?php echo $str[(count($str)-1)]; ?>
+                            </div>
+                            <div class="i_dept">{$v['dept_name']}</div>
+                        </div>
+                        <div class="time_info top3">{$v['sign_in']}</div>
+                        <div class="other_info">  
+                                             
+                         </div>
+                        <div class="clear"></div>
+                    </div>
+                </li>
+                <div class="clear"></div>
+            </ul>
+            <?php } ?>
+            <?php } ?>
+        </div>
+    </body>
+    <script>
+        $(".top_item").click(function(){
+            $(this).addClass("top_active");
+            $(this).siblings().removeClass("top_active")
+        });
+        $(document).ready(function(){
+            $("ul.padding-init div.order_number").each(function(k,v){
+                $(this).html(k+1);
+                switch(k+1){
+                    case 1:
+                    $(this).nextAll(".other_info").html('<i class="icon-trophy wow zoomInDown" data-wow-duration=".5s" data-wow-delay="0.5s" style="color: gold; font-size: 1.5em; line-height: 52px"></i>');
+                    break;
+                    case 2:
+                    $(this).nextAll(".other_info").html('<i class="icon-trophy wow zoomInDown" data-wow-duration=".5s" data-wow-delay="1s" style="color: #CCFFFF; font-size: 1.5em; line-height: 52px"></i>');
+                    break;
+                    case 3:
+                    $(this).nextAll(".other_info").html('<i class="icon-trophy wow zoomInDown" data-wow-duration=".5s" data-wow-delay="1.5s" style="color: #8C7853; font-size: 1.5em; line-height: 52px"></i>');
+                    break;
+                }
+            });
+        });
+    </script>
+</html>

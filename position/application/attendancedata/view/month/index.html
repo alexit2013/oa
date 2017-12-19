@@ -1,0 +1,243 @@
+{extend name="base@base/page_base" /}
+
+{block name="content"}
+<style>
+	dl,dt,dd{display: inline-block;}
+	.bt_blue{
+		background-color: #2CBB97;
+		border-radius: 5px;
+		color: #FFFFFF;
+	}
+	.bt_blue:hover{
+		background-color: #28AA89;
+	}
+	.bt_button{
+		background-color: #F3F3F3!important;
+		background: -webkit-linear-gradient(#FCFCFC, #EEEEEE);
+		background: -o-linear-gradient(#FCFCFC, #EEEEEE);
+		background: -moz-linear-gradient(#FCFCFC, #EEEEEE);
+		background: linear-gradient(#FCFCFC, #EEEEEE)!important;
+	}
+	.bt_button:hover{
+		background: -webkit-gradient(linear, 0 0, 0 100%, from(#FCFCFC), to(#DDDDDD));
+		background: -webkit-linear-gradient(#FCFCFC, #DDDDDD);
+		background: -moz-linear-gradient(#FCFCFC, #DDDDDD);
+		background: -o-linear-gradient(#FCFCFC, #DDDDDD);
+		background: linear-gradient(#FCFCFC, #DDDDDD)!important;
+	}
+	a.come_time,a.end_time{
+		color: #4A90E2;
+	}
+	.custom_tip{
+		background-image: url(answer-bg.png);
+		background-repeat: no-repeat;
+		background-position: right top;
+		position: relative;
+	}
+	.custom_tip_box{
+		width: 250px;
+		height: auto;
+		overflow: hidden;
+		position: absolute;
+		left: 95%;
+		top: 0%;
+		z-index: 999;
+
+	}
+	.custom_tip_box div.triangle{
+		width: 15px;
+		height: 15px;
+		border-top: 1px solid #B3B3B3;
+		border-left: 1px solid #B3B3B3;
+		background-color: #FFFFFF;
+		transform: rotate(-45deg);
+		-webkit-transform: rotate(-45deg);
+		-moz-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		position: absolute;
+		left: 10px;
+		top: 50%;
+		z-index: 10;
+	}
+	.custom_tip_box div.tip_content{
+		width: 230px;
+		height: auto;
+		overflow: hidden;
+		float: right;
+		border: 1px solid #B3B3B3;
+		font-size: 12px;
+	}
+	.tip_content div.tip_title{
+		width: 100%;
+		height: 30px;
+		line-height: 30px;
+		background-color: #f5f5f5;
+		border-bottom: 1px solid #B3B3B3;
+	}
+	.tip_content div.tip_words{
+		text-align: left !important;
+		font-size: 12px;
+		font-weight: normal;
+		background-color: #FFFFFF;
+		width: 88%;
+		height: auto;
+		line-height: 24px;
+		padding: 0 6%;
+	}
+	.month_table tbody tr td{position: relative;}
+	.month_table tbody tr td .td_u{margin-bottom: 10px;}
+	.month_table tbody tr td .td_d{margin-top: 10px;}
+	.hr_line{width:91px;height: 0;border-top: 1px solid #ddd;position: absolute;left: -1px;top: 50%;}
+	.late_1{color: #ff8878;}
+	.late_2{color: #5fa5fd;}
+	.late_3{color: #1aac88;}
+	.dataTables_wrapper .dataTables_paginate{
+		position: absolute;
+		bottom: -30px;
+		right: 50px;
+		margin-bottom: 20px;
+	}
+	.dataTables_wrapper .dataTables_info{
+		position: absolute;
+		bottom: -10px;
+		left: 50px;
+		margin-bottom: 20px;
+	}
+
+</style>
+<div class="page-container">
+	<form method="post" action="{:Url('index')}">
+		<div class="text-c">
+			日期范围：
+			<input type="month"  id="starttime" name="starttime" class="input-text Wdate" style="width:120px;" value="<?php if(!empty($data['starttime'])){ echo $data['starttime']; } ?>">
+			-
+			<input type="month"  id="endtime" name="endtime" class="input-text Wdate" style="width:120px;" value="<?php if(!empty($data['endtime'])){ echo $data['endtime']; } ?>">
+
+
+
+			<input type="text" name="dept_name" id="dept_name" placeholder=" 部门" style="width:150px" class="input-text" value="<?php if(!empty($data['dept_name'])){ echo $data['dept_name']; } ?>">
+
+			<input type="text" name="user_name" id="user_name" placeholder="员工姓名" style="width:150px" class="input-text"  value="<?php if(!empty($data['user_name'])){ echo $data['user_name']; } ?>">
+			<input type="text" name="emp_no" id="emp_no" placeholder="账号" style="width:150px" class="input-text"  value="<?php if(!empty($data['emp_no'])){ echo $data['emp_no']; } ?>">
+			<button class="btn bt_blue" type="submit"> 查询</button>
+			<a name="" id="" class="btn bt_blue" onclick="export_excel()"> 导出报表</a>
+		</div>
+	</form>
+	<div class="mt-20">
+		<dl>
+			<dt><i class="Hui-iconfont Hui-iconfont-luyin late_1"></i></dt>
+			<dd>迟到</dd>
+			<dt><i class="Hui-iconfont Hui-iconfont-luyin late_2"></i></dt>
+			<dd>早退</dd>
+			<dt><i class="Hui-iconfont Hui-iconfont-luyin late_3"></i></dt>
+			<dd>加班、请假等</dd>
+		</dl>
+	</div>
+	<div class="mt-20" style="overflow-x: auto;">
+		<table class="table table-border table-bordered table-bg month_table table-sort" style="width: 1800px;">
+			<thead>
+			<tr class="text-c" height="57">
+				<th><div style="width: 110px;">账号</div></th>
+				<th><div style="width: 150px;"></div>姓名</th>
+				<th><div style="width: 150px;">部门</div></th>
+				<th width="100">职位</th>
+				<th width="100">工作时长（天）</th>
+				<th width="100" class="custom_tip" data-content="默认（下班时间－上班时间）包含请假、出差、外出等虽然不在公司但仍然计薪部分（包含所有排班的工作日和休息日）" data-original-title="计薪时长计算规则">计薪时长（天）</th>
+				<th width="100">迟到<br>(分钟)</th>
+				<th width="100">早退<br>(分钟)</th>
+				<th width="100">旷工<br>(天)</th>
+                                <th width="100">加班<br>(天)</th>
+				<th width=""><div style="width: 50px;">调休<br>(天)</div></th>
+				<th width="100">外出<br>(天)</th>
+				<th width="100">出差<br>(天)</th>
+				<th width="100">事假<br>(天)</th>
+				<th width="100">病假<br>(天)</th>
+                                <th width="100">婚假<br>(天)</th>
+                                <th width="100">丧假<br>(天)</th>
+                                <th width="100">产假<br>(天)</th>
+                                <th width="100">其他假期<br>(天)</th>
+				<th width="100">剩余调休<br>(天)</th>
+			</tr>
+			</thead>
+			<tbody>
+			{foreach $data_list as $v}
+			<tr class="text-c">
+				<td>{$v['emp_no']}</td>
+				<td>{$v['user_name']}</td>
+				<td>{$v['dept_name']}</td>
+				<td>{$v['position']}</td>
+				<td>{$v['work_time_day']}</td>
+				<td>{$v['salary_time_day']}</td>
+				<td>{$v['late_time']}</td>
+				<td>{$v['leave_early_time']}</td>
+				<td>{$v['absent_time']}</td>
+                                <td>{$v['over_time']}</td>
+				<td>{$v['adjust_time']}</td>
+				<td>{$v['out_time']}</td>
+				<td>{$v['business_time']}</td>
+				<td>{$v['thing_time']}</td>
+				<td>{$v['sick_time']}</td>
+                                <td>{$v['marriage_time']}</td>
+                                <td>{$v['death_time']}</td>
+                                <td>{$v['maternity_time']}</td>
+                                <td>{$v['other_time']}</td>
+				<td>{$v['surplus_adjust_time']}</td>
+			</tr>
+			{/foreach}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{/block}
+{block name='js'}
+<script type="text/javascript" src="__LIB__/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+	/*前端分页*/
+	$('.table-sort').dataTable({
+		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+		"bStateSave": true,//状态保存
+		"aoColumnDefs": [
+			//{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+			{"orderable":false,"aTargets":[0,8]}// 制定列不参与排序
+		]
+	});
+	$(function(){
+		//表头提示
+		$(".custom_tip").hover(function(){
+			var tip_title = $(this).attr("data-original-title");
+			var tip_content = $(this).attr("data-content");
+			var html = '<div class="custom_tip_box"><div class="triangle"></div><div class="tip_content"><div class="tip_title"></div><div class="tip_words"></div></div></div>';
+			$(this).append(html);
+			$(".custom_tip_box").fadeIn();
+			$(".tip_title").html(tip_title);
+			$(".tip_words").html(tip_content);
+			//var tip_height = $(".custom_tip_box").height()/2;
+			//$(".custom_tip_box").css("margin-top",-tip_height);
+
+		},function(){
+			$(".custom_tip_box").remove();
+		});
+
+		//选择部门范围
+		$("#branch").focus(function(){
+			//iframe层-父子操作
+			layer.open({
+				type: 2,
+				title: '选择范围',
+				area: ['600px', '600px'],
+				fixed: false, //不固定
+				maxmin: true,
+				content: 'bmfw.html'
+			});
+
+		})
+	})
+
+	/*导出excel*/
+	function export_excel(){
+		var form =  $('form').serialize();
+		location.href = "/position/index.php/attendancedata/month/export?"+form;
+	}
+</script>
+{/block}

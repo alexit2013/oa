@@ -1,0 +1,3425 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title>月毛利预算表</title>
+	<script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/kpi/table.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/kpi/marginbudget.js"></script>
+	<link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="/position/public/lib/self_tip.css" />
+	<script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" src="/position/public/lib/pubjs.js"></script>
+
+	<style>
+		body{
+			font-size: 62.5%;
+		}
+		@media (min-width: 766px) {
+			.table_box {
+				width: 100%;
+				height: 500px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box1 {
+				width: 100%;
+				height: 150px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box2 {
+				width: 100%;
+				height: 400px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box3 {
+				width: 100%;
+				height: 500px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box4 {
+				width: 100%;
+				height: 300px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box5 {
+				width: 100%;
+				height: 300px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box6 {
+				width: 100%;
+				height: 150px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box7 {
+				width: 100%;
+				height: 400px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box8 {
+				width: 100%;
+				height: 400px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box9 {
+				width: 100%;
+				height: 400px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box10 {
+				width: 100%;
+				height: 400px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box11 {
+				width: 100%;
+				height: 150px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box12 {
+				width: 100%;
+				height: 400px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.table_box13 {
+				width: 100%;
+				height: 200px;
+				margin: 20px auto;
+				margin-bottom: 40px;
+				font-size: 0.5rem;
+			}
+
+			.top_bar {
+				width: 100%;
+				height: 40px;
+			}
+
+			.top_bar .btn {
+				width: auto;
+				height: 20px;
+				padding: 4px 12px;
+				margin-top: 6px;
+				background-color: #5a98de;
+				border-radius: 8px;
+				-webkit-border-radius: 8px;
+				color: #fff;
+				font-size: 14px;
+				font-weight: 400;
+			}
+
+			.search_box {
+				width: 100%;
+				height: 40px;
+				margin: 10px auto;
+				border: 1px solid #eaeaea;
+			}
+
+			.select_box {
+				border: solid 1px #ddd;
+				box-sizing: border-box;
+				vertical-align: middle;
+				width: 250px;
+				padding: 4px 5px;
+				display: inline-block;
+				margin-top: 5px;
+				margin-left: 20px;
+				float: left;
+				height: 30px;
+			}
+
+			.select {
+				border: 0;
+				font-size: 14px;
+				box-sizing: border-box;
+				cursor: pointer;
+				line-height: normal;
+				font-weight: normal;
+				width: 100%;
+				white-space: nowrap;
+				outline: none;
+			}
+
+			.search_btn {
+				background-color: #5a98de;
+				border-radius: 5px;
+				color: #FFFFFF;
+				float: left;
+				display: inline-block;
+				box-sizing: border-box;
+				cursor: pointer;
+				text-align: center;
+				font-weight: 400;
+				white-space: nowrap;
+				vertical-align: middle;
+				-moz-padding-start: npx;
+				-moz-padding-end: npx;
+				width: auto;
+				border: none;
+				outline: none;
+				height: 30px;
+				margin-left: 20px;
+				margin-top: 5px;
+				padding: 0 10px;
+			}
+
+			.search_box > span {
+				display: block;
+				float: left;
+				width: 40px;
+				height: 40px;
+				float: left;
+				text-align: right;
+				line-height: 40px;
+				font-size: 14px;
+			}
+			.cut_out,.m_search_bar,.select_box > i,.m_content_box{
+				display: none;
+			}
+                        .unitinfo{float:right;margin-right:29%;font-family: STKaiti;font-size:0.9rem;}
+		}
+		.hidden{display:none;}
+                @media (max-width: 766px) {
+                    .unitinfo{display:none;}
+                }                
+	</style>
+
+</head>
+
+<body>
+<form action="{:Url('index')}" method="post">
+	<!--移动端->搜索按钮-->
+	<div class="m_search_bar" style="line-height: 20px;font-size: 14px;">选择<br/>公司</div>
+	<!--移动端->搜索按钮-->
+
+	<input type="hidden" id="B10" value="<?php if(!empty($profit_Vehicle['pm_actualNum'])){ echo $profit_Vehicle['pm_actualNum'];} ?>">
+	<input type="hidden" id="C10" value="<?php if(!empty($profit_Vehicle['pm_expectAmount'])){ echo $profit_Vehicle['pm_expectAmount'];} ?>">
+
+	<div class="search_box">
+		<span>门店:</span>
+		<div class="select_box">
+			<select class="select" name="store_id" id="store_id">
+
+				<?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+				<option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+				<?php } ?>
+			</select>
+			<i class="icon Hui-iconfont">&#xe6d5;</i>
+		</div>
+		<span>年份:</span>
+		<div class="select_box">
+			<select class="select" name="year" id="store_year">
+			</select>
+			<i class="icon Hui-iconfont">&#xe6d5;</i>
+		</div>
+		<span>月份:</span>
+		<div class="select_box">
+			<select class="select" name="month" id="store_month">
+				<option value="">请选择月份</option>
+				<option value="1">1月</option>
+				<option value="2">2月</option>
+				<option value="3">3月</option>
+				<option value="4">4月</option>
+				<option value="5">5月</option>
+				<option value="6">6月</option>
+				<option value="7">7月</option>
+				<option value="8">8月</option>
+				<option value="9">9月</option>
+				<option value="10">10月</option>
+				<option value="11">11月</option>
+				<option value="12">12月</option>
+			</select>
+			<i class="icon Hui-iconfont">&#xe6d5;</i>
+		</div>
+
+		<button name="" id="" class="search_btn" type="submit"> 查询</button>
+		<!--清除数据-->
+		<input type="hidden" id="table_name" value="marginbudget">
+		<?php $clear_button = session("clear_button"); if($clear_button == "1"){ echo '<button name="" id="clear_button" style="background-color:orange;" class="search_btn" type="button" onclick="clearbutton()">清空数据</button>';} ?>
+		<!--清除数据-->
+		<!--审批状态-->
+		<input type="hidden" id="status" value="0">
+		<!--审批状态-->
+		<!--移动端收起搜索框按钮-->
+		<button name="" id="" class="cut_out" type="button" onclick="cut_out()">收起</button>
+		<!--移动端收起搜索框按钮-->
+
+	</div>
+</form>
+<h1 style="width:100%;text-align: center;"><span></span>月毛利预算表{:is_operateis_pass($data_status)}</h1><div class='unitinfo'>单位：万元</div>
+
+<?php if($data_status['status']==1){ ?>
+<div class="table_box">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable">
+
+		<tbbody>
+			<tr style="background-color: rgb(245, 250, 254);">
+				<td colspan="2" rowspan="2">项目</td>
+				<td rowspan="2"><div style="width: 150px;">车系分类</div></td>
+				<td colspan="6">上月</td>
+				<td colspan="5">本月预测</td>
+
+			</tr>
+			<tr style="background-color: rgb(245, 250, 254);">
+				<td><div style="width: 100px;">预测台数</div></td>
+				<td><div style="width: 100px;">实际台数</div></td>
+				<td><div style="width: 100px;">预测毛利</div></td>
+				<td><div style="width: 100px;">实际毛利</div></td>
+				<td><div style="width: 100px;">预测毛利率</div></td>
+				<td><div style="width: 100px;">实际毛利率</div></td>
+				<td><div style="width: 100px;">销售台数</div></td>
+				<td><div style="width: 100px;">进价合计</div></td>
+				<td><div style="width: 100px;">销价合计</div></td>
+				<td><div style="width: 100px;">毛利</div></td>
+				<td><div style="width: 100px;">毛利率</div></td>
+			</tr>
+			<!--新车业务-->
+			<tr>
+				<td rowspan="{:count($sale_margin)+count($fanli)+12}"><div style="width: 80px;">新车业务</div></td>
+				<td rowspan="{:count($sale_margin)+1}"><div style="width: 100px;">月销售正常毛利预测（进销差）</div></td>
+				<?php $sale_margin_total = array(); ?>                                
+				{foreach $sale_margin as $k => $v}
+				<td>{$k}</td>
+				<td class="edit" data-key="expect_num" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id'];} ?>">
+					<?php if(isset($v['expect_num'])){ echo $v['expect_num'];
+										if(!isset($sale_margin_total['expect_num'])){
+												$sale_margin_total['expect_num'] = 0;
+												}
+										$sale_margin_total['expect_num'] += $v['expect_num']; }?>
+				</td>
+				<td class="edit" data-key="actual_num" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id'];} ?>">
+					<?php if(isset($v['actual_num'])){ echo $v['actual_num'];
+									if(!isset($sale_margin_total['actual_num'])){
+											$sale_margin_total['actual_num'] = 0;
+											}
+									$sale_margin_total['actual_num'] += $v['actual_num']; } ?>
+				</td>
+				<td class="edit" data-key="expect_margin" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id'];} ?>">
+					<?php if(isset($v['expect_margin'])){ echo $v['expect_margin'];
+									if(!isset($sale_margin_total['expect_margin'])){
+											$sale_margin_total['expect_margin'] = 0;
+											}
+									$sale_margin_total['expect_margin'] += $v['expect_margin']; } ?>
+				</td>
+				<td class="edit" data-key="actual_margin" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id'];} ?>">
+					<?php if(isset($v['actual_margin'])){ echo $v['actual_margin'];
+									if(!isset($sale_margin_total['actual_margin'])){
+											$sale_margin_total['actual_margin'] = 0;
+											}
+									$sale_margin_total['actual_margin'] += $v['actual_margin']; 
+                                                                        } ?>
+				</td>
+				<td class="edit" data-key="expect_marginprofit" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id'];} ?>"><?php if(isset($v['expect_marginprofit'])){ echo $v['expect_marginprofit']; } ?>%</td>
+				<td class="edit" data-key="actual_marginprofit" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id'];} ?>"><?php if(isset($v['actual_marginprofit'])){ echo $v['actual_marginprofit'];} ?>%</td>
+				<td class="sale_num"><?php if(isset($v['sale_num'])){ echo $v['sale_num']; }else{echo 0;} ?></td>
+				<td class="bid_total_price" data-msg="进价合计"><?php if(isset($v['purchase_price'])){ echo $v['purchase_price']; }else{echo 0;} ?></td>
+				<td class="total_price" data-msg="销价合计"><?php if(isset($v['income'])){ echo $v['income']; }else{echo 0;} ?></td>
+				<td class="new_car_gross" data-msg="毛利">
+					<script>
+						$(document).ready(function(){
+							$("#MyTable .new_car_gross").each(function(){
+								var  total_price = $(this).parent().children(".total_price").html();
+								var  bid_total_price = $(this).parent().children(".bid_total_price").html();
+								if(total_price == ''){
+									var total_price = 0;
+								}
+								if(bid_total_price == ''){
+									var bid_total_price = 0;
+								}
+
+								$(this).html((Number(total_price)-Number(bid_total_price)).toFixed(2));
+							});
+
+						});
+					</script>
+				</td>
+				<td class="new_car_margin" data-msg="毛利率">
+					<script>
+						$(document).ready(function(){
+							$("#MyTable .new_car_margin").each(function(){
+								var  proportion = $(this).parent().children(".new_car_gross").html();	//分子
+								if(proportion == ''){
+									var proportion = 0;
+								}
+								var c = $(this).parent().children(".total_price").html();		//分母
+								if(c == '' || c == 0){
+									var p = 0;
+								}else{
+									var p = (Number(proportion)/Number(c))*100;
+								}
+
+								$(this).html(p.toFixed(2)+"%");
+							});
+						});
+					</script>
+				</td>
+			</tr>
+			{/foreach}
+			<tr style="background-color: red;">
+				<td>小计</td>
+				<td data-msg="上月预测台数"><?php if(!empty($sale_margin_total['expect_num'])){ echo $sale_margin_total['expect_num']; } ?></td>
+				<td data-msg="上月实际台数"><?php if(!empty($sale_margin_total['actual_num'])){ echo $sale_margin_total['actual_num']; } ?></td>
+				<td data-msg="上月预测毛利" class="F20"><?php if(!empty($sale_margin_total['expect_margin'])){ echo $sale_margin_total['expect_margin']; } ?></td>
+				<td data-msg="上月实际毛利" class="G20"><?php if(!empty($sale_margin_total['actual_margin'])){ echo $sale_margin_total['actual_margin']; } ?></td>
+				<td data-msg="上月预测毛利率" class="H20">
+					<script>
+						$(document).ready(function(){
+							var F20 = $("#MyTable .F20").html();
+							if(F20 == ''){
+								F20 = 0;
+							}
+							var C10 = $("#C10").val();
+							if(C10 == '' || C10 == '0'){
+								var count = 0;
+							}else{
+								var count = Number(F20)/Number(C10)*100;
+							}
+							$(".H20").html(count.toFixed(2)+'%');
+						})
+					</script>
+				</td>
+				<td data-msg="上月实际毛利率" class="I20">
+
+					<script>
+						$(document).ready(function(){
+							var G20 = $("#MyTable .G20").html();
+							if(G20 == ''){
+								G20 = 0;
+							}
+							var B10 = $("#B10").val();
+							if(B10 == '' || B10 == '0'){
+								var count = 0;
+							}else{
+								var count = Number(G20)/Number(B10)*100;
+							}
+							$(".I20").html(count.toFixed(2)+'%');
+						})
+					</script>
+				</td>
+				<td class="this_sale_num" data-msg="本月预测销售台数">
+					<script>
+						$(document).ready(function(){
+							var sum = 0;
+							$("#MyTable .sale_num").each(function(){
+								var new_car_gross = $(this).html();
+								if(new_car_gross == ''){
+									var new_car_gross = 0;
+								}
+								sum +=  Number(new_car_gross);
+							});
+							$(".this_sale_num").html(sum.toFixed(2));
+						});
+					</script>
+				</td>
+				<td class="this_bid_total" data-msg="本月预测进价合计">
+					<script>
+						$(document).ready(function(){
+							var sum = 0;
+							$("#MyTable .bid_total_price").each(function(){
+								var new_car_gross = $(this).html();
+								if(new_car_gross == ''){
+									var new_car_gross = 0;
+								}
+								sum +=  Number(new_car_gross);
+							});
+							$(".this_bid_total").html(sum.toFixed(2));
+						});
+					</script>
+				</td>
+				<td class="this_total_price" data-msg="本月预测销价合计">
+					<script>
+						$(document).ready(function(){
+							var sum = 0;
+							$("#MyTable .total_price").each(function(){
+								var new_car_gross = $(this).html();
+								if(new_car_gross == ''){
+									var new_car_gross = 0;
+								}
+								sum +=  Number(new_car_gross);
+							});
+							$(".this_total_price").html(sum.toFixed(2));
+						});
+					</script>
+				</td>
+				<td class="new_car_gross_total" data-msg="毛利小计">
+					<script>
+						$(document).ready(function(){
+							var sum = 0;
+							$("#MyTable .new_car_gross").each(function(){
+								var new_car_gross = $(this).html();
+								if(new_car_gross == ''){
+									var new_car_gross = 0;
+								}
+								sum +=  Number(new_car_gross);
+							});
+							$(".new_car_gross_total").html(sum.toFixed(2));
+						});
+					</script>
+				</td>
+				<td class="this_new_car_margin" data-msg="本月预测毛利率">
+					<script>
+						$(document).ready(function(){
+							$("#MyTable .this_new_car_margin").each(function(){
+								var  proportion = $(this).parent().children(".new_car_gross_total").html();	//分子
+								if(proportion == ''){
+									var proportion = 0;
+								}
+								var c = $(this).parent().children(".this_total_price").html();		//分母
+								if(c == '' || c == 0){
+									var p = 0;
+								}else{
+									var p = (Number(proportion)/Number(c))*100;
+								}
+
+								$(this).html(p.toFixed(2)+"%");
+							});
+						});
+					</script>
+				</td>
+			</tr>
+			<tr>
+				<td rowspan="2" style="background: rgb(204, 204, 204);"></td>
+				<td>虚开票</td>
+				<td class="edit1" data-key="expect_num" data-type="float" data-order="{$xupiao['id']}">{$xupiao['expect_num']}</td>
+				<td class="edit1" data-key="actual_num" data-type="float" data-order="{$xupiao['id']}">{$xupiao['actual_num']}</td>
+				<td class="edit1" data-key="expect_margin" data-type="float" data-order="{$xupiao['id']}">{$xupiao['expect_margin']}</td>
+				<td class="edit1" data-key="actual_margin" data-type="float" data-order="{$xupiao['id']}">{$xupiao['actual_margin']}</td>
+				<td class="edit1" data-key="expect_marginprofit" data-type="float" data-order="{$xupiao['id']}">{$xupiao['expect_marginprofit']}%</td>
+				<td class="edit1" data-key="actual_marginprofit" data-type="float" data-order="{$xupiao['id']}">{$xupiao['actual_marginprofit']}%</td>
+				<td data-key="tm_sale_num" data-type="float" data-order="{$xupiao['id']}" class="billing_sale_num edit1" data-msg="销售台数">{$xupiao['tm_sale_num']}</td>
+				<td data-key="tm_price" data-type="float" data-order="{$xupiao['id']}" class="billing_bid_total edit1" data-msg="	进价合计">{$xupiao['tm_price']}</td>
+				<td data-key="tm_sale_price" data-type="float" data-order="{$xupiao['id']}" class="billing_total_price edit1" data-msg="销价合计">{$xupiao['tm_sale_price']}</td>
+				<td data-key="tm_margin" data-type="float" data-order="{$xupiao['id']}" class="billing_gross edit1" data-msg="毛利">{$xupiao['tm_margin']}</td>
+				<td data-key="tm_marginprofit" data-type="float" data-order="{$xupiao['id']}" class="billing_margin edit1" data-msg="毛利率">{$xupiao['tm_marginprofit']}</td>
+			</tr>
+			<tr>
+				<td style="background-color: darkseagreen;">扣除虚开票合计</td>
+				<td style="background-color: darkseagreen;"><?php if(!empty($sale_margin_total['expect_num'])){ if(!isset($xupiao['expect_num'])){ $xupiao['expect_num']=0; } echo $sale_margin_total_xu['expect_num'] = $sale_margin_total['expect_num']-$xupiao['expect_num'];} ?></td>
+				<td style="background-color: darkseagreen;" id="E22"><?php if(!empty($sale_margin_total['actual_num'])){ if(!isset($xupiao['actual_num'])){ $xupiao['actual_num']=0; } echo $sale_margin_total_xu['actual_num'] = $sale_margin_total['actual_num']-$xupiao['actual_num'];} ?></td>
+				<td class="F22" style="background-color: darkseagreen;"><?php if(!empty($sale_margin_total['expect_margin']) && !empty($xupiao['expect_margin'])){ echo @round(($sale_margin_total_xu['expect_margin'] = $sale_margin_total['expect_margin']-$xupiao['expect_margin']),2);} ?></td>
+				<td class="G22" style="background-color: darkseagreen;"><?php if(!empty($sale_margin_total['actual_margin']) && !empty($xupiao['actual_margin'])){ echo $sale_margin_total_xu['actual_margin'] = $sale_margin_total['actual_margin']-$xupiao['actual_margin'];} ?></td>
+				<td style="background-color: darkseagreen;" class="H22"><?php if(!empty($sale_margin_total_xu['expect_margin']) && !empty($lirun['pm_expectAmount'])){ echo @round(($sale_margin_total_xu['expect_margin']/$lirun['pm_expectAmount'])*100,2); } ?>%</td>
+				<td style="background-color: darkseagreen;" class="I22"><?php if(!empty($sale_margin_total_xu['actual_margin']) && !empty($lirun['pm_actualNum'])){ echo @round(($sale_margin_total_xu['actual_margin']/$lirun['pm_actualNum'])*100,2); } ?>%</td>
+				<td class="ssts J22" id="J22" data-msg="销售台数" style="background-color: darkseagreen;">
+					<script>
+						$(document).ready(function(){
+							var total_price = $(".this_sale_num").html();		//本月预测销售台数小计
+							if(total_price == ''){
+								total_price = 0 ;
+							}
+							var bid_total_price = $(".billing_sale_num").html();		//本月预测销售台数虚开票
+							if(bid_total_price == ''){
+								bid_total_price = 0 ;
+							}
+							$(".ssts").html((Number(total_price)-Number(bid_total_price)).toFixed(2));
+						});
+					</script>
+				</td>
+				<td class="jjhj" data-msg="进价合计" style="background-color: darkseagreen;">
+					<script>
+						$(document).ready(function(){
+							var total_price = $(".this_bid_total").html();		//本月预测销售台数小计
+							if(total_price == ''){
+								total_price = 0 ;
+							}
+							var bid_total_price = $(".billing_bid_total").html();		//本月预测销售台数虚开票
+							if(bid_total_price == ''){
+								bid_total_price = 0 ;
+							}
+							$(".jjhj").html((Number(total_price)-Number(bid_total_price)).toFixed(2));
+						});
+					</script>
+				</td>
+				<td class="xjhj" data-msg="销价合计" style="background-color: darkseagreen;">
+					<script>
+						$(document).ready(function(){
+							var total_price = $(".this_total_price").html();		//本月预测销售台数小计
+							if(total_price == ''){
+								total_price = 0 ;
+							}
+							var bid_total_price = $(".billing_total_price").html();		//本月预测销售台数虚开票
+							if(bid_total_price == ''){
+								bid_total_price = 0 ;
+							}
+							$(".xjhj").html((Number(total_price)-Number(bid_total_price)).toFixed(2));
+						});
+					</script>
+				</td>
+				<td class="ml" data-msg="毛利" style="background-color: darkseagreen;">
+					<script>
+						$(document).ready(function(){
+							var total_price = $(".new_car_gross_total").html();		//本月预测销售台数小计
+							if(total_price == ''){
+								total_price = 0 ;
+							}
+							var bid_total_price = $(".billing_gross").html();		//本月预测销售台数虚开票
+							if(bid_total_price == ''){
+								bid_total_price = 0 ;
+							}
+							$(".ml").html((Number(total_price)-Number(bid_total_price)).toFixed(2));
+						});
+					</script>
+				</td>
+				<td class="mll" data-msg="毛利率" style="background-color: darkseagreen;">
+					<script>
+						$(document).ready(function(){
+							var mml = $("#MyTable .this_new_car_margin").html();
+							$("#MyTable .mll").html(mml);
+						});
+					</script>
+				</td>
+			</tr>
+			<tr style="background-color: rgb(245, 250, 254);">
+				<td rowspan="{:count($fanli)+count($yufanli)+3}">当期销售形成返利预测</td>
+				<td rowspan="2">当期销售形成返利预计分类</td>
+				<td colspan="6">上月</td>
+				<td colspan="5">本月</td>
+			</tr>
+			<tr style="background-color: rgb(245, 250, 254);">
+				<td colspan="2">预测</td>
+				<td colspan="4">实际</td>
+				<td colspan="3">预测</td>
+				<td colspan="2">占比</td>
+			</tr>
+			<?php $fanli_tot['expect_last']= 0; $fanli_tot['actual_last']= 0; $fanli_tot['expect']= 0; ?>
+			{foreach $fanli as $k => $v}
+			<tr>
+				<td>{$k}</td>
+				<td colspan="2">
+					<?php
+                                                    if(!empty($v['expect_last'])){
+                                                        echo $v['expect_last'];
+                                                        $fanli_tot['expect_last'] += $v['expect_last'];
+                                                    }else{ echo '0'; }
+                                                ?>
+				</td>
+				<td colspan="4">
+					<?php
+                                                    if(!empty($v['actual_last'])){
+                                                        echo $v['actual_last'];
+                                                        $fanli_tot['actual_last'] += $v['actual_last'];
+                                                    }else{ echo '0'; }
+                                                    ?>
+				</td>
+				<td colspan="3" class="this_month">
+					<?php
+                                                    if(!empty($v['expect'])){
+                                                        echo $v['expect'];
+                                                        $fanli_tot['expect'] += $v['expect'];
+                                                    }else{ echo '0'; }
+                                                ?>
+				</td>
+				<td colspan="2" class="new_proportion"></td>
+			</tr>
+			{/foreach}
+			<?php $i =1; ?>
+			{foreach $yufanli as $k =>$v}
+
+			<tr>
+				<td>{$k}</td>
+				<td colspan="2">
+					<?php
+                                                    if(!empty($v['expect_last'])){
+                                                        echo $v['expect_last'];
+                                                        $fanli_tot['expect_last'] += $v['expect_last'];
+                                                    }else{ echo '0'; }
+                                                ?>
+				</td>
+				<td colspan="4">
+					<?php
+                                                    if(!empty($v['actual_last'])){
+                                                        echo $v['actual_last'];
+                                                        $fanli_tot['actual_last'] += $v['actual_last'];
+                                                    }else{ echo '0'; }
+                                                ?>
+				</td>
+				<td colspan="3">
+					<?php
+                                                    if(!empty($v['expect'])){
+                                                        echo $v['expect'];
+                                                        $fanli_tot['expect'] += $v['expect'];
+                                                    }else{ echo '0'; }
+                                                ?>
+				</td>
+				<td colspan="2" id="yfl{:$i++}"></td>
+			</tr>
+			{/foreach}
+			<tr style="background-color: red;">
+				<td>小计</td>
+				<td colspan="2" class="rebate_expect_last">{$fanli_tot['expect_last']}</td>
+				<td colspan="4" class="rebate_actual_last">{$fanli_tot['actual_last']}</td>
+				<td colspan="3" class="new_car_subtotal">{$fanli_tot['expect']}</td>
+				<td colspan="2">100%</td>
+			</tr>
+		</tbbody>
+	</table>
+</div>
+
+<!--新车销售毛利-->
+<input type="hidden" id="ct_status" value="{$data_status['status']}" />
+<div class="table_box1">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable1">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td style="background-color:  rgb(245, 250, 254);" rowspan="3" colspan="3">新车销售毛利</td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td colspan="2">预测毛利</td>
+			<td colspan="2">实际毛利</td>
+			<td>预测毛利率</td>
+			<td>实际毛利率</td>
+			<td colspan="2">成本</td>
+			<td>收入</td>
+			<td>毛利</td>
+			<td>毛利率</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="new_car_ycml D46">
+				<script>
+					$(document).ready(function(){
+						var total_price = $(".F22").html();		//本月预测销售台数小计
+						if(total_price == ''){
+							total_price = 0 ;
+						}
+						var bid_total_price = $(".rebate_expect_last").html();		//本月预测销售台数虚开票
+						if(bid_total_price == ''){
+							bid_total_price = 0 ;
+						}
+						$(".new_car_ycml").html((Number(total_price)+Number(bid_total_price)).toFixed(2));
+					});
+				</script>
+			</td>
+			<td colspan="2" class="new_car_sjml F46">
+				<script>
+					$(document).ready(function(){
+						var total_price = $(".G22").html();		//本月预测销售台数小计
+						if(total_price == ''){
+							total_price = 0 ;
+						}
+						var bid_total_price = $(".rebate_actual_last").html();		//本月预测销售台数虚开票
+						if(bid_total_price == ''){
+							bid_total_price = 0 ;
+						}
+						$(".new_car_sjml").html((Number(total_price)+Number(bid_total_price)).toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="H46"><?php if(!empty($lirun['pm_expectAmount']) && !empty($lirun_one['pm_expectAmount']) && $lirun_one['pm_expectAmount'] != 0){ echo @round((($lirun['pm_expectAmount']-$lirun_one['pm_expectAmount'])/$lirun['pm_expectAmount'])*100,2); }?>%</td>
+			<td class="I46"><?php if(!empty($lirun['pm_actualNum']) && !empty($lirun_one['pm_actualNum'])  && $lirun_one['pm_actualNum'] != 0){ echo @round((($lirun['pm_actualNum']-$lirun_one['pm_actualNum'])/$lirun['pm_actualNum'])*100,2); }?>%</td>
+			<td colspan="2" class="new_car_cost J46" data-msg="成本">
+				<script>
+					$(document).ready(function(){
+						var total_price = $(".jjhj").html();		//本月预测销售台数小计
+						if(total_price == ''){
+							total_price = 0 ;
+						}
+						var bid_total_price = $(".new_car_subtotal").html();		//本月预测销售台数虚开票
+						if(bid_total_price == ''){
+							bid_total_price = 0 ;
+						}
+						$(".new_car_cost").html((Number(total_price)-Number(bid_total_price)).toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="new_car_income L46" data-msg="收入">
+				<script>
+					$(document).ready(function(){
+						var total_price = $(".xjhj").html();		//本月预测销售台数小计
+						$(".new_car_income").html(total_price);
+					});
+				</script>
+			</td>
+			<td class="new_car_maoli M46" data-msg="毛利">
+				<script>
+					$(document).ready(function(){
+						var total_price = $(".new_car_income").html();		//本月预测销售台数小计
+						if(total_price == ''){
+							total_price = 0 ;
+						}
+						var bid_total_price = $(".new_car_cost").html();		//本月预测销售台数虚开票
+						if(bid_total_price == ''){
+							bid_total_price = 0 ;
+						}
+						$(".new_car_maoli").html((Number(total_price)-Number(bid_total_price)).toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="new_car_maolilv N46" data-msg="毛利率">
+				<script>
+					$(document).ready(function(){
+						var  proportion = $(".new_car_maoli").html();	//分子
+						if(proportion == ''){
+							var proportion = 0;
+						}
+						var c = $(".new_car_income").html();		//分母
+						if(c == '' || c == 0){
+							var p = 0;
+						}else{
+							var p = (Number(proportion)/Number(c))*100;
+						}
+						$(".new_car_maolilv").html(p.toFixed(2)+"%");
+					});
+				</script>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<!--装饰业务-->
+<div class="table_box2">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable2">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td colspan="2" rowspan="17">装饰业务</td>
+			<td rowspan="2">分类</td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td>预测收入</td>
+			<td>实际收入</td>
+			<td>预测毛利</td>
+			<td>预测毛利率</td>
+			<td>实际毛利</td>
+			<td>实际毛利率</td>
+			<td colspan="2">成本</td>
+			<td>收入</td>
+			<td>毛利</td>
+			<td>毛利率</td>
+		</tr>
+		{foreach $decorate_class as $k=> $v}
+		{neq name="k" value="小计"}
+		<tr>
+			<td>{$k}</td>
+			<td class="edit2" data-key="expect_income" data-type="float" data-order="{$v['id']}">{$v['expect_income']}</td>
+			<td class="edit2" data-key="actual_income" data-type="float" data-order="{$v['id']}">{$v['actual_income']}</td>
+			<td class="edit2" data-key="expect_margin" data-type="float" data-order="{$v['id']}">{$v['expect_margin']}</td>
+			<td>{$v['expect_marginprofit']}%</td>
+			<td class="edit2" data-key="actual_margin" data-type="float" data-order="{$v['id']}">{$v['actual_margin']}</td>
+			<td>{$v['actual_marginprofit']}%</td>
+			<td class="edit2" data-key="cost" data-type="float" data-order="{$v['id']}" colspan="2">{$v['cost']}</td>
+			<td class="<?php if($k != '人工成本'){ echo 'edit2'; } ?>" data-key="income" data-type="float" data-order="{$v['id']}">{$v['income']}</td>
+			<td>{$v['margin']}</td>
+			<td>{$v['marginprofig']}%</td>
+		</tr>
+		{/neq}
+		{/foreach}
+		<tr style="background-color: red;">
+			<td>小计</td>
+			<td class="D53"><?php if(!empty($decorate_class['小计']['expect_income'])){ echo $decorate_class['小计']['expect_income']; } ?></td>
+			<td class="E53"><?php if(!empty($decorate_class['小计']['actual_income'])){ echo $decorate_class['小计']['actual_income']; } ?></td>
+			<td class="F53"><?php if(!empty($decorate_class['小计']['expect_margin'])){ echo $decorate_class['小计']['expect_margin']; } ?></td>
+			<td class="G53"><?php if(!empty($decorate_class['小计']['expect_margin']) && !empty($decorate_class['小计']['expect_income']) && $decorate_class['小计']['expect_income'] != 0){ echo (@round(($decorate_class['小计']['expect_margin']/$decorate_class['小计']['expect_income'])*100,2)).'%'; } ?></td>
+			<td class="H53"><?php if(!empty($decorate_class['小计']['actual_margin'])){ echo $decorate_class['小计']['actual_margin']; } ?></td>
+			<td class="I53"><?php if(!empty($decorate_class['小计']['actual_margin']) && !empty($decorate_class['小计']['actual_income']) && $decorate_class['小计']['actual_income'] != 0){ echo (@round(($decorate_class['小计']['actual_margin']/$decorate_class['小计']['actual_income'])*100,2)).'%'; } ?></td>
+			<td colspan="2" class="J53"><?php if(!empty($decorate_class['小计']['cost'])){ echo $decorate_class['小计']['cost']; } ?></td>
+			<td class="L53"><?php if(!empty($decorate_class['小计']['income'])){ echo $decorate_class['小计']['income']; } ?></td>
+			<td class="M53"><?php if(!empty($decorate_class['小计']['margin'])){ echo $decorate_class['小计']['margin']; } ?></td>
+			<td class="N53"><?php if(!empty($decorate_class['小计']['margin']) && !empty($decorate_class['小计']['income']) && $decorate_class['小计']['income'] != 0){ echo (@round(($decorate_class['小计']['margin']/$decorate_class['小计']['income'])*100,2)).'%'; } ?></td>
+		</tr>
+		<tr>
+			<td>装饰客单价（元）</td>
+			<td><?php if(!empty($decorate_class['小计']['expect_income']) && !empty($sale_margin_total_xu['expect_num']) && $sale_margin_total_xu['expect_num'] !=0){ echo @round(($decorate_class['小计']['expect_income']/$sale_margin_total_xu['expect_num'])*10000,2); }else{ echo 0;} ?></td>
+			<td id="E54" class="E54">
+				<script>
+					$(document).ready(function(){
+						var L53 = $(".E53").html();
+						if(L53 == ''){
+							L53 = 0;
+						}
+						var J22 = $("#E22").html();
+						if(J22 == '' || J22 == 0){
+							var count = 0;
+						}else{
+							var count = Number(L53)/Number(J22)*10000;
+						}
+						$(".E54").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td colspan="2">------------</td>
+			<td class="L54" id="L54">
+				<script>
+					$(document).ready(function(){
+						var L53 = $(".L53").html();
+						if(L53 == ''){
+							L53 = 0;
+						}
+						var J22 = $(".J22").html();
+						if(J22 == '' || J22 == 0){
+							var count = 0;
+						}else{
+							var count = Number(L53)/Number(J22)*10000;
+						}
+						$(".L54").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td>------------</td>
+			<td>------------</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="2">集中采购额度</td>
+			<td colspan="2">目标</td>
+			<td colspan="2">实际</td>
+			<td colspan="2">达成率</td>
+			<td colspan="5">目标</td>
+		</tr>
+		<tr>
+			<td class="edit3" data-key="target" data-type="float" data-order="{$decorate_focus['id']}" colspan="2">{$decorate_focus['target']}</td>
+			<td class="edit3" data-key="actual" data-type="float" data-order="{$decorate_focus['id']}" colspan="2">{$decorate_focus['actual']}</td>
+			<td colspan="2"><?php if(!empty($decorate_focus['actual']) && !empty($decorate_focus['target']) && $decorate_focus['target'] != 0){ echo (@round(($decorate_focus['actual']/$decorate_focus['target'])*100,2)).'%'; } ?></td>
+			<td class="edit3" data-key="target2" data-type="float" data-order="{$decorate_focus['id']}" colspan="5">{$decorate_focus['target2']}</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td>重点产品</td>
+			<td colspan="2">同品牌平均渗透率</td>
+			<td colspan="2">店面渗透率目标</td>
+			<td colspan="2">实际渗透率</td>
+			<td colspan="5">店面渗透率目标</td>
+		</tr>
+		{foreach $decorate_emphasis as $v}
+		<tr>
+			<td>{$v['class_name']}</td>
+			<td class="edit4" data-key="average" data-type="float" data-order="{$v['id']}" colspan="2">{$v['average']}%</td>
+			<td class="edit4" data-key="store" data-type="float" data-order="{$v['id']}" colspan="2">{$v['store']}</td>
+			<td class="edit4" data-key="actual" data-type="float" data-order="{$v['id']}" colspan="2">{$v['actual']}%</td>
+			<td class="edit4" data-key="store_actual" data-type="float" data-order="{$v['id']}" colspan="5">{$v['store_actual']}</td>
+		</tr>
+		{/foreach}
+		</tbody>
+	</table>
+</div>
+
+<!--新保业务-->
+<div class="table_box3">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable3">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td colspan="2" rowspan="10">新保业务</td>
+			<td rowspan="2">分类</td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td>预测台次</td>
+			<td>实际台次</td>
+			<td>预测佣金收入</td>
+			<td>实际佣金收入</td>
+			<td>预测毛利</td>
+			<td>实际毛利</td>
+			<td>预测台次</td>
+			<td>人工成本</td>
+			<td>佣金收入</td>
+			<td>毛利</td>
+			<td>毛利率</td>
+		</tr>
+		{foreach $insurance['class'] as $k => $v}
+		<tr>
+			<td>{$k}</td>
+			<td class="<?php if($k == '人工成本'){ echo ''; }else{ echo 'edit5'; } ?>" data-key="expect_num_last" data-type="float" data-order="{$v['id']}"><?php if($k == '人工成本'){ echo '------------';}else{ echo $v['expect_num_last']; } ?></td>
+			<td class="<?php if($k == '人工成本'){ echo ''; }else{ echo 'edit5'; } ?>" data-key="actual_num_last" data-type="float" data-order="{$v['id']}"><?php if($k == '人工成本'){ echo '------------';}else{ echo $v['actual_num_last']; } ?></td>
+			<td class="edit5" data-key="expect_income_last" data-type="<?php if($k == '人工成本'){ echo 'negative'; }else{ echo 'float'; } ?>" data-order="{$v['id']}">{$v['expect_income_last']}</td>
+			<td class="edit5" data-key="actual_income_last" data-type="<?php if($k == '人工成本'){ echo 'negative'; }else{ echo 'float'; } ?>" data-order="{$v['id']}">{$v['actual_income_last']}</td>
+			<td>{$v['expect_income_last']}</td>
+			<td>{$v['actual_income_last']}</td>
+			<td class="<?php if($k =='新保商业险'){ echo 'J66 edit5'; }else if($k =='新保交强险'){ echo 'J67 edit5';}else{ echo '';} ?>" data-key="expect_num" data-type="float" data-order="{$v['id']}" >{$v['expect_num']}</td>
+			<td class="edit5" data-key="cost" data-type="<?php if($k == '人工成本'){ echo 'negative'; }else{ echo 'float'; } ?>" data-order="{$v['id']}">{$v['cost']}</td>
+			<td class="edit5" data-key="income" data-type="<?php if($k == '人工成本'){ echo 'negative'; }else{ echo 'float'; } ?>" data-order="{$v['id']}">{$v['income']}</td>
+			<td>{$v['margin']}</td>
+			<td>{$v['marginprofig']}%</td>
+		</tr>
+		{/foreach}
+		<tr style="background-color: red;">
+			<td>小计</td>
+			<td class="D69"><?php if(isset($insurance['class']['新保商业险']['expect_num_last']) && isset($insurance['class']['新保交强险']['expect_num_last'])){ echo $insurance['class']['新保商业险']['expect_num_last']+$insurance['class']['新保交强险']['expect_num_last']; } ?></td>
+			<td class="E69"><?php if(isset($insurance['class']['新保商业险']['actual_num_last']) && isset($insurance['class']['新保交强险']['actual_num_last'])){ echo $insurance['class']['新保商业险']['actual_num_last']+$insurance['class']['新保交强险']['actual_num_last']; } ?></td>
+			<td class="F69"><?php if(isset($insurance['class']['新保商业险']['expect_income_last']) && isset($insurance['class']['新保交强险']['expect_income_last'])){ echo $insurance['class']['新保商业险']['expect_income_last']+$insurance['class']['新保交强险']['expect_income_last'];} ?></td>
+			<td class="G69"><?php if(isset($insurance['class']['新保商业险']['actual_income_last']) && isset($insurance['class']['新保交强险']['actual_income_last'])){ echo $insurance['class']['新保商业险']['actual_income_last']+$insurance['class']['新保交强险']['actual_income_last'];} ?></td>
+			<td class="H69"><?php if(isset($insurance['class']['新保商业险']['expect_income_last']) && isset($insurance['class']['新保交强险']['expect_income_last'])){ echo $insurance['class']['新保商业险']['expect_income_last']+$insurance['class']['新保交强险']['expect_income_last'];} ?></td>
+			<td class="I69"><?php if(isset($insurance['class']['新保商业险']['actual_income_last']) && isset($insurance['class']['新保交强险']['actual_income_last'])){ echo $insurance['class']['新保商业险']['actual_income_last']+$insurance['class']['新保交强险']['actual_income_last'];} ?></td>
+			<td class="J69"><?php if(isset($insurance['class']['新保商业险']['expect_num']) && isset($insurance['class']['新保交强险']['expect_num'])){ echo $insurance['class']['新保商业险']['expect_num']+$insurance['class']['新保交强险']['expect_num'];} ?></td>
+			<td class="K69"><?php if(isset($insurance['class']['新保商业险']['cost']) && isset($insurance['class']['新保交强险']['cost']) && isset($insurance['class']['人工成本']['cost'])){ echo $insurance['class']['total']['cost']=$insurance['class']['新保商业险']['cost']+$insurance['class']['新保交强险']['cost']; } ?></td>
+			<td class="L69"><?php if(isset($insurance['class']['新保商业险']['income']) && isset($insurance['class']['新保交强险']['income']) && isset($insurance['class']['人工成本']['income'])){ echo $insurance['class']['total']['income']=$insurance['class']['新保商业险']['income']+$insurance['class']['新保交强险']['income'];} ?></td>
+			<td class="M69"><?php if(isset($insurance['class']['total']['income'])&& isset($insurance['class']['total']['cost'])){ echo $insurance['class']['total']['margin']=$insurance['class']['total']['income']-$insurance['class']['total']['cost']; }?></td>
+			<td class="N69"><?php if(!empty($insurance['class']['total']['margin'])){ echo @round(($insurance['class']['total']['margin']/$insurance['class']['total']['income'])*100,2); } ?>%</td>
+		</tr>
+		<tr>
+			<td>商业险渗透率(%)</td>
+			<td><?php if(!empty($insurance['class']['新保商业险']['expect_num_last']) && !empty($sale_margin_total_xu['expect_num'])){ echo @round(($insurance['class']['新保商业险']['expect_num_last']/$sale_margin_total_xu['expect_num'])*100,2); }  ?>%</td>
+			<td id="E72"><?php if(!empty($insurance['class']['新保商业险']['actual_num_last']) && !empty($sale_margin_total_xu['actual_num'])){ echo @round(($insurance['class']['新保商业险']['actual_num_last']/$sale_margin_total_xu['actual_num'])*100,2); }else{ echo '0.00';} ?>%</td>
+			<td colspan="4">------------</td>
+			<td class="J72" id="J72">
+				<script>
+					$(document).ready(function(){
+						var J66 = $(".J66").html();
+						if(J66 == ''){
+							J66 = 0;
+						}
+						var J22 = $(".J22").html();
+						if(J22 == '' || J22 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(J66)/Number(J22))*100;
+						}
+						$(".J72").html(count.toFixed(2)+"%");
+					});
+				</script>
+			</td>
+			<td colspan="4">------------</td>
+		</tr>
+		<tr>
+			<td>交强险渗透率(%)</td>
+			<td><?php if(!empty($insurance['class']['新保交强险']['expect_num_last']) && !empty($sale_margin_total_xu['expect_num'])){ echo @round(($insurance['class']['新保交强险']['expect_num_last']/$sale_margin_total_xu['expect_num'])*100,2); } ?>%</td>
+			<td><?php if(!empty($insurance['class']['新保交强险']['actual_num_last']) && !empty($sale_margin_total_xu['actual_num'])){ echo @round(($insurance['class']['新保交强险']['actual_num_last']/$sale_margin_total_xu['actual_num'])*100,2); } ?>%</td>
+			<td colspan="4">------------</td>
+			<td class="J73">
+				<script>
+					$(document).ready(function(){
+						var J67 = $(".J67").html();
+						if(J67 == ''){
+							J67 = 0;
+						}
+						var J22 = $(".J22").html();
+						if(J22 == '' || J22 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(J67)/Number(J22))*100;
+						}
+						$(".J73").html(count.toFixed(2)+"%");
+					});
+				</script>
+			</td>
+			<td colspan="4">------------</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="2">新保渗透率目标</td>
+			<td colspan="2">同品牌平均渗透率</td>
+			<td colspan="2">店面渗透率目标</td>
+			<td colspan="2">实际渗透率</td>
+		</tr>
+		<tr>
+			<td class="edit6" data-key="average" data-type="float" data-order="{$insurance['target']['id']}" colspan="2">{$insurance['target']['average']}%</td>
+			<td class="edit6" data-key="store" data-type="float" data-order="{$insurance['target']['id']}" colspan="2">{$insurance['target']['store']}</td>
+			<td class="edit6" data-key="actual" data-type="float" data-order="{$insurance['target']['id']}" colspan="2">{$insurance['target']['actual']}%</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<!--新车延保-->
+<div class="table_box4">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable4">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td colspan="2" rowspan="{:count($newcar['class'])+4}">新车延保</td>
+			<td rowspan="2">分类</td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td>预测台次</td>
+			<td>实际台次</td>
+			<td>预测佣金收入</td>
+			<td>实际佣金收入</td>
+			<td>预测毛利</td>
+			<td>实际毛利</td>
+			<td>预测台次</td>
+			<td>人工成本</td>
+			<td>佣金收入</td>
+			<td>毛利</td>
+			<td>毛利率</td>
+		</tr>
+		{foreach $newcar['class'] as $k => $v}
+
+		<tr>
+			<td>{$k}</td>
+			<?php if($k == '人工成本'){ ?>
+			<td>------</td>
+			<td>------</td>
+			<td>------</td>
+			<td>------</td>
+			<?php }else{ ?>
+			<td class="edit7" data-key="expect_num_last" data-type="float" data-order="{$v['id']}"><?php if(isset($v['expect_num_last'])){ echo $v['expect_num_last']; } ?></td>
+			<td class="edit7" data-key="actual_num_last" data-type="float" data-order="{$v['id']}"><?php if(isset($v['actual_num_last'])){ echo $v['actual_num_last']; } ?></td>
+			<td class="edit7" data-key="expect_income_last" data-type="float" data-order="{$v['id']}"><?php if(!empty($v['expect_income_last'])){ echo $v['expect_income_last']; } ?></td>
+			<td class="edit7" data-key="actual_income_last" data-type="float" data-order="{$v['id']}"><?php if(!empty($v['actual_income_last'])){ echo $v['actual_income_last']; } ?></td>
+			<?php } ?>
+
+			<?php if($k == '人工成本'){ ?>
+			<td class="edit7" data-key="expect_margin" data-type="float" data-order="{$v['id']}"><?php if(!empty($v['expect_margin'])){ echo $v['expect_margin']; } ?></td>
+			<td class="edit7" data-key="actual_margin" data-type="float" data-order="{$v['id']}"><?php if(!empty($v['actual_margin'])){ echo $v['actual_margin']; } ?></td>
+			<?php }else{ ?>
+			<td><?php if(!empty($v['expect_income_last'])){ echo $v['expect_income_last']; } ?></td>
+			<td><?php if(!empty($v['actual_income_last'])){ echo $v['actual_income_last']; } ?></td>
+			<?php } ?>
+
+			<?php if($k == '人工成本'){ ?>
+			<td>------</td>
+			<?php }else{ ?>
+			<td class="edit7" data-key="expect_num" data-type="float" data-order="{$v['id']}"><?php if(isset($v['expect_num'])){ echo $v['expect_num']; } ?></td>
+			<?php } ?>
+
+			<td class="edit7" data-key="cost" data-type="float" data-order="{$v['id']}"><?php if(isset($v['cost'])){ echo $v['cost']; } ?></td>
+
+			<?php if($k == '人工成本'){ ?>
+			<td>------</td>
+			<?php }else{ ?>
+			<td class="edit7" data-key="income" data-type="float" data-order="{$v['id']}"><?php if(!empty($v['income'])){ echo $v['income']; } ?></td>
+			<?php } ?>
+
+			<td><?php if(isset($v['margin'])){ echo $v['margin']; } ?></td>
+
+			<?php if($k == '人工成本'){ ?>
+			<td>------</td>
+			<?php }else{ ?>
+			<td><?php if(isset($v['marginprofit'])){ echo $v['marginprofit']."%"; } ?></td>
+			<?php } ?>
+		</tr>
+		
+		{/foreach}
+		<tr style="background-color: red;">
+			<td>小计</td>
+			<td class="D78"><?php if(!empty($newcar['class']['新车延保']['expect_num_last'])){ echo $newcar['class']['新车延保']['expect_num_last']; } ?></td>
+			<td class="E78"><?php if(!empty($newcar['class']['新车延保']['actual_num_last'])){ echo $newcar['class']['新车延保']['actual_num_last']; } ?></td>
+			<td class="F78"><?php if(!empty($newcar['class']['新车延保']['expect_income_last'])){ echo $newcar['class']['新车延保']['expect_income_last']; } ?></td>
+			<td class="G78"><?php if(!empty($newcar['class']['新车延保']['actual_income_last'])){ echo $newcar['class']['新车延保']['actual_income_last']; } ?></td>
+			<td class="H78"><?php if(!empty($newcar['class']['新车延保']['expect_income_last'])){ echo $newcar['class']['新车延保']['expect_income_last']+$newcar['class']['人工成本']['expect_margin']; } ?></td>
+			<td class="I78"><?php if(!empty($newcar['class']['新车延保']['actual_income_last'])){ echo $newcar['class']['新车延保']['actual_income_last']+$newcar['class']['人工成本']['actual_margin']; } ?></td>
+			<td class="J78"><?php if(!empty($newcar['class']['新车延保']['expect_num'])){ echo $newcar['class']['新车延保']['expect_num']; } ?></td>
+			<td class="K78"><?php if(!empty($newcar['class']['新车延保']['cost'])){ echo $newcar['class']['新车延保']['cost']; } ?></td>
+			<td class="L78"><?php if(!empty($newcar['class']['新车延保']['income'])){ echo $newcar['class']['新车延保']['income']; } ?></td>
+			<td class="M78"><?php if(!empty($newcar['class']['小计']['margin'])){ echo $newcar['class']['小计']['margin']; } ?></td>
+			<td class="N78"><?php if(!empty($newcar['class']['小计']['marginprofit'])){ echo $newcar['class']['小计']['marginprofit']."%"; } ?></td>
+		</tr>
+		<tr>
+			<td>新车延保渗透率（%）</td>
+			<td><?php if(isset($newcar['class']['新车延保']['expect_num_last'])){ @round($newcar['class']['新车延保']['expect_num_last']/$sale_margin_total_xu['expect_num'],4)*100; } ?>%</td>
+			<td><?php if(!isset($newcar['class']['新车延保']['actual_num_last'])){ @round($newcar['class']['新车延保']['actual_num_last']/$sale_margin_total_xu['actual_num'],4)*100; } ?>%</td>
+			<td colspan="4">------------</td>
+			<td></td>
+			<td colspan="4">------------</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<!--车贷业务-->
+<div class="table_box5">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable5">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="9" colspan="2">车贷业务</td>
+			<td rowspan="2">分类</td>
+			<td colspan="6">上月实际</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td colspan="2">预测佣金收入</td>
+			<td colspan="2">实际佣金收入</td>
+			<td>预测毛利</td>
+			<td>实际毛利</td>
+			<td colspan="2">成本</td>
+			<td>佣金收入</td>
+			<td>毛利</td>
+			<td>毛利率</td>
+		</tr>
+		{foreach $carloan as $k => $v}
+		<tr {eq name='$k' value='小计'}style='background-color:red;'{/eq}>
+			<td>{$k}</td>
+			<td class="<?php if($k == '小计'){ echo 'D85'; }else if($k == '人工成本(提成)'){ echo '';}else{ echo 'edit8';} ?>" data-key="expect_income_last" data-type="float" data-order="{$v['id']}"  colspan="2"><?php if($k=='人工成本(提成)'){ echo "---"; }else{ echo $v['expect_income_last']; } ?></td>
+			<td id="<?php if($k == '非租赁佣金(指厂家金融及银行按揭)'){ echo 'F82'; } ?>" class="<?php if($k == '小计'){ echo 'F85'; }else if($k == '人工成本(提成)'){ echo '';}else{ echo 'edit8';} ?>" data-key="actual_income_last" data-type="float" data-order="{$v['id']}"  colspan="2"><?php if($k=='人工成本(提成)'){ echo "---"; }else{ echo $v['actual_income_last']; } ?></td>
+			<td class="<?php if($k == '小计'){ echo 'H85'; }else if($k == '人工成本(提成)'){ echo 'edit8';}else{ echo '';} ?>" data-key="expect_margin" data-type="float" data-order="{$v['id']}"  ><?php if($k=='人工成本(提成)'){ echo $v['expect_margin']; }else{ echo $v['expect_income_last']; } ?></td>
+			<td class="<?php if($k == '小计'){ echo 'I85'; }else if($k == '人工成本(提成)'){ echo 'edit8';}else{ echo '';} ?>" data-key="actual_margin" data-type="float" data-order="{$v['id']}"  ><?php if($k=='人工成本(提成)'){ echo $v['actual_margin']; }else{ echo $v['actual_income_last']; } ?></td>
+			<td {eq name='$k' value='小计'}class='J85'{else /}class='edit8'{/eq}  colspan="2" data-key="cost" data-type="float" data-order="{$v['id']}">{$v['cost']}</td>
+			<td class="<?php if($k == '小计'){ echo 'L85'; }else if($k == '人工成本(提成)'){ echo '';}else{ echo 'edit8';} ?>" data-key="income" data-type="float" data-order="{$v['id']}" ><?php if($k=='人工成本(提成)'){ echo "---"; }else{ echo $v['income']; } ?></td>
+			<td {eq name='$k' value='小计'}class='M85'{/eq} ><?php if($k=='人工成本(提成)'){ echo "---"; }else{ echo $v['margin']; } ?></td>
+			<td {eq name='$k' value='小计'}class='N85'{/eq} ><?php if($k=='人工成本(提成)'){ echo "---"; }else{ echo $v['marginprofit']."%"; } ?></td>
+		</tr>
+		{/foreach}
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="2">分类</td>
+			<td colspan="6">上月实际</td>
+			<td colspan="5">本月预测目标</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td>预测</td>
+			<td>预测渗透率</td>
+			<td>实际</td>
+			<td>实际渗透率</td>
+			<td>预测管理报表利润</td>
+			<td>实际管理报表利润</td>
+			<td>台次</td>
+			<td>渗透率</td>
+			<td>手续费客单价（万元）</td>
+			<td colspan="2">手续费</td>
+		</tr>
+		<tr>
+			<td>厂家金融及银行按揭台次</td>
+			<td class="edit9" data-key="forecast_last" data-type="float" data-order="{$mortgage['id']}"><?php if(!empty($mortgage['forecast_last'])){ echo $mortgage['forecast_last']; } ?></td>
+			<td><?php if(!empty($mortgage['forecast_last']) && !empty($sale_margin_total_xu['expect_num']) && $sale_margin_total_xu['expect_num'] != 0){ echo @round(($mortgage['forecast_last']/$sale_margin_total_xu['expect_num'])*100,2).'%'; } ?></td>
+			<td id="F93" class="edit9" data-key="actual_last" data-type="float" data-order="{$mortgage['id']}"><?php if(!empty($mortgage['actual_last'])){ echo $mortgage['actual_last']; } ?></td>
+			<td id="G93" class="G93">
+				<script>
+					$(document).ready(function(){
+						var J94 = $("#F93").html();
+						if(J94 == ''){
+							J94 = 0;
+						}
+						var J22 = $("#E22").html();
+						if(J22 == '' || J22 == 0){
+							count = 0;
+						}else {
+							var count = (Number(J94)/Number(J22))*100;
+						}
+
+						$(".G93").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td class="edit9" data-key="forecast_report_profit" data-type="float" data-order="{$mortgage['id']}"><?php if(!empty($mortgage['forecast_report_profit'])){ echo $mortgage['forecast_report_profit']; } ?></td>
+			<td class="edit9" data-key="actual_report_profit" data-type="float" data-order="{$mortgage['id']}"><?php if(!empty($mortgage['actual_report_profit'])){ echo $mortgage['actual_report_profit']; } ?></td>
+			<td class="J94 edit9" data-key="forecast_this" data-type="float" data-order="{$mortgage['id']}"><?php if(!empty($mortgage['forecast_this'])){ echo $mortgage['forecast_this']; } ?></td>
+			<td class="K94" id="K93">
+				<script>
+					$(document).ready(function(){
+						var J94 = $(".J94").html();
+						if(J94 == ''){
+							J94 = 0;
+						}
+						var J22 = $(".J22").html();
+						if(J22 == '' || J22 == 0){
+							count = 0;
+						}else {
+							var count = (Number(J94)/Number(J22))*100;
+						}
+
+						$(".K94").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td id="L93" class="edit9" data-key="poundage" data-type="float" data-order="{$mortgage['id']}"><?php if(!empty($mortgage['poundage'])){ echo $mortgage['poundage']; } ?></td>
+			<td colspan="2"><?php if(!empty($mortgage['forecast_this']) && !empty($mortgage['poundage'])){ echo @round($mortgage['forecast_this']*$mortgage['poundage'],2); } ?></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<!--新车综合毛利（含装饰、新保、延保、车贷）-->
+<div class="table_box6">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable6">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td colspan="3" rowspan="3">新车综合毛利（含装饰、新保、延保、车贷）</td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td colspan="2">预测毛利</td>
+			<td colspan="4">实际毛利</td>
+			<td colspan="2">成本</td>
+			<td> 收入</td>
+			<td>毛利</td>
+			<td>毛利率</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="D96">
+				<script>
+					$(document).ready(function(){
+						var D46 = $('.D46').html();
+						if(D46 == ''){
+							var D46 = 0;
+						}
+						var F53 = $('.F53').html();
+						if(F53 == ''){
+							var F53 = 0;
+						}
+						var H69 = $('.H69').html();
+						if(H69 == ''){
+							var H69 = 0;
+						}
+						var H78 = $('.H78').html();
+						if(H78 == ''){
+							var H78 = 0;
+						}
+						var H85 = $('.H85').html();
+						if(H85 == ''){
+							var H85 = 0;
+						}
+						var count = Number(D46)+Number(F53)+Number(H69)+Number(H78)+Number(H85);
+						$(".D96").html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td colspan="4" class="F96" id="F96">
+				<script>
+					$(document).ready(function(){
+						var F46 = $('.F46').html();
+						if(F46 == ''){
+							var F46 = 0;
+						}
+						var H53 = $('.H53').html();
+						if(H53 == ''){
+							var H53 = 0;
+						}
+						var I69 = $('.I69').html();
+						if(I69 == ''){
+							var I69 = 0;
+						}
+						var I78 = $('.I78').html();
+						if(I78 == ''){
+							var I78 = 0;
+						}
+						var I85 = $('.I85').html();
+						if(I85 == ''){
+							var I85 = 0;
+						}
+						var count = Number(F46)+Number(H53)+Number(I69)+Number(I78)+Number(I85);
+						$(".F96").html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td colspan="2" class="J96">
+				<script>
+					$(document).ready(function(){
+						var J46 = $('.J46').html();
+						if(J46 == ''){
+							var J46 = 0;
+						}
+						var J53 = $('.J53').html();
+						if(J53 == ''){
+							var J53 = 0;
+						}
+						var K69 = $('.K69').html();
+						if(K69 == ''){
+							var K69 = 0;
+						}
+						var K78 = $('.K78').html();
+						if(K78 == ''){
+							var K78 = 0;
+						}
+						var J85 = $('.J85').html();
+						if(J85 == ''){
+							var J85 = 0;
+						}
+						var count = Number(J46)+Number(J53)+Number(K69)+Number(K78)+Number(J85);
+						$(".J96").html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="L96">
+				<script>
+					$(document).ready(function(){
+						var L46 = $('.L46').html();
+						if(L46 == ''){
+							var L46 = 0;
+						}
+						var L53 = $('.L53').html();
+						if(L53 == ''){
+							var L53 = 0;
+						}
+						var L69 = $('.L69').html();
+						if(L69 == ''){
+							var L69 = 0;
+						}
+						var L78 = $('.L78').html();
+						if(L78 == ''){
+							var L78 = 0;
+						}
+						var L85 = $('.L85').html();
+						if(L85 == ''){
+							var L85 = 0;
+						}
+						var count = Number(L46)+Number(L53)+Number(L69)+Number(L78)+Number(L85);
+						$(".L96").html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="M96" id="M96">
+				<script>
+					$(document).ready(function(){
+						var L96 = $('.L96').html();
+						if(L96 == ''){
+							var L96 = 0;
+						}
+						var J96 = $('.J96').html();
+						if(J96 == ''){
+							var J96 = 0;
+						}
+						var count = Number(L96) - Number(J96);
+						$('.M96').html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="N96">
+				<script>
+					$(document).ready(function(){
+						var  M96 = $('.M96').html();
+						if(M96 == ''){
+							var M96 = 0;
+						}
+						var L96 = $(".L96").html();
+						if(L96 == '' || L96 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(M96)/Number(L96))*100;
+						}
+
+						$(".N96").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<!--维修分类-->
+<div class="table_box7">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable7">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="2" colspan="3">维修分类</td>
+			<td colspan="6">上月实际</td>
+			<td colspan="5">本月预测</td>
+			<td></td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td>预测收入</td>
+			<td>实际收入</td>
+			<td>预测毛利</td>
+			<td>实际毛利</td>
+			<td>预测毛利率</td>
+			<td>实际毛利率</td>
+			<td>成本</td>
+			<td>收入</td>
+			<td>毛利</td>
+			<td>毛利占比</td>
+			<td>毛利率</td>
+			<td><div style="width: 100px;">维修台次</div></td>
+		</tr>
+		<tr>
+			<td rowspan="12">维修业务</td>
+			<td colspan="2">养护产品</td>
+			<td class="edit10" data-key="expect_income_last" data-type="float" data-order="<?php if(!empty($repair['养护产品']['id'])){ echo $repair['养护产品']['id']; } ?>"><?php if(!empty($repair['养护产品']['expect_income_last'])){ echo $repair['养护产品']['expect_income_last']; } ?></td>
+			<td class="edit10" data-key="actual_income_last" data-type="float" data-order="<?php if(!empty($repair['养护产品']['id'])){ echo $repair['养护产品']['id']; } ?>"><?php if(!empty($repair['养护产品']['actual_income_last'])){ echo $repair['养护产品']['actual_income_last']; } ?></td>
+			<td class="edit10" data-key="expect_margin" data-type="float" data-order="<?php if(!empty($repair['养护产品']['id'])){ echo $repair['养护产品']['id']; } ?>"><?php if(!empty($repair['养护产品']['expect_margin'])){ echo $repair['养护产品']['expect_margin']; } ?></td>
+			<td class="edit10" data-key="actual_margin" data-type="float" data-order="<?php if(!empty($repair['养护产品']['id'])){ echo $repair['养护产品']['id']; } ?>"><?php if(!empty($repair['养护产品']['actual_margin'])){ echo $repair['养护产品']['actual_margin']; } ?></td>
+			<td><?php if(!empty($repair['养护产品']['expect_marginprofit'])){ echo $repair['养护产品']['expect_marginprofit']; } ?>%</td>
+			<td><?php if(!empty($repair['养护产品']['actual_marginprofit'])){ echo $repair['养护产品']['actual_marginprofit']; } ?>%</td>
+			<td class="J99 edit10" data-key="cost" data-type="float" data-order="<?php if(!empty($repair['养护产品']['id'])){ echo $repair['养护产品']['id']; } ?>"><?php if(!empty($repair['养护产品']['cost'])){ echo $repair['养护产品']['cost']; } ?></td>
+			<td class="k99 edit10" data-key="income" data-type="float" data-order="<?php if(!empty($repair['养护产品']['id'])){ echo $repair['养护产品']['id']; } ?>"><?php if(!empty($repair['养护产品']['income'])){ echo $repair['养护产品']['income']; } ?></td>
+			<td class="profit"><?php if(!empty($repair['养护产品']['margin'])){ echo $repair['养护产品']['margin']; } ?></td>
+			<td class="proportion"></td>
+			<td><?php if(!empty($repair['养护产品']['actual_income_last'])){ echo $repair['养护产品']['marginprofig']; } ?>%</td>
+			<td class="edit10" data-key="actual_income_last" data-type="float" data-order="<?php if(!empty($repair['养护产品']['id'])){ echo $repair['养护产品']['id']; } ?>"><?php if(!empty($repair['养护产品']['actual_income_last'])){ echo $repair['养护产品']['repair_num']; } ?></td>
+		</tr>
+		<tr>
+			<td colspan="2">售后装饰美容精品</td>
+			<td class="edit10" data-key="expect_income_last" data-type="float" data-order="<?php if(!empty($repair['售后装饰美容精品']['id'])){ echo $repair['售后装饰美容精品']['id']; } ?>"><?php if(!empty($repair['售后装饰美容精品']['expect_income_last'])){ echo $repair['售后装饰美容精品']['expect_income_last']; } ?></td>
+			<td class="edit10" data-key="actual_income_last" data-type="float" data-order="<?php if(!empty($repair['售后装饰美容精品']['id'])){ echo $repair['售后装饰美容精品']['id']; } ?>"><?php if(!empty($repair['售后装饰美容精品']['actual_income_last'])){ echo $repair['售后装饰美容精品']['actual_income_last']; } ?></td>
+			<td class="edit10" data-key="expect_margin" data-type="float" data-order="<?php if(!empty($repair['售后装饰美容精品']['id'])){ echo $repair['售后装饰美容精品']['id']; } ?>"><?php if(!empty($repair['售后装饰美容精品']['actual_income_last'])){ echo $repair['售后装饰美容精品']['expect_margin']; } ?></td>
+			<td class="edit10" data-key="actual_margin" data-type="float" data-order="<?php if(!empty($repair['售后装饰美容精品']['id'])){ echo $repair['售后装饰美容精品']['id']; } ?>"><?php if(!empty($repair['售后装饰美容精品']['actual_income_last'])){ echo $repair['售后装饰美容精品']['actual_margin']; } ?></td>
+			<td><?php if(!empty($repair['售后装饰美容精品']['actual_income_last'])){ echo $repair['售后装饰美容精品']['expect_marginprofit']; } ?>%</td>
+			<td><?php if(!empty($repair['售后装饰美容精品']['actual_income_last'])){ echo $repair['售后装饰美容精品']['actual_marginprofit']; } ?>%</td>
+			<td class="J100 edit10" data-key="cost" data-type="float" data-order="<?php if(!empty($repair['售后装饰美容精品']['id'])){ echo $repair['售后装饰美容精品']['id']; } ?>"><?php if(!empty($repair['售后装饰美容精品']['actual_income_last'])){ echo $repair['售后装饰美容精品']['cost']; } ?></td>
+			<td class="K100 edit10" data-key="income" data-type="float" data-order="<?php if(!empty($repair['售后装饰美容精品']['id'])){ echo $repair['售后装饰美容精品']['id']; } ?>"><?php if(!empty($repair['售后装饰美容精品']['actual_income_last'])){ echo $repair['售后装饰美容精品']['income']; } ?></td>
+			<td class="profit"><?php if(!empty($repair['售后装饰美容精品']['actual_income_last'])){ echo $repair['售后装饰美容精品']['margin'];} ?></td>
+			<td class="proportion"></td>
+			<td><?php if(!empty($repair['售后装饰美容精品']['actual_income_last'])){ echo $repair['售后装饰美容精品']['marginprofig']; } ?>%</td>
+			<td>---</td>
+		</tr>
+<?php if(isset($repair['配件'])){ ?> 
+		<tr>
+			<td rowspan="6">配件</td>
+			{foreach $repair['配件'] as $k => $v}
+			{neq name='k' value="合计"}
+			<td>{$k}</td>
+			<td class="edit10" data-key="expect_income_last" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id']; } ?>">{$v['expect_income_last']}</td>
+			<td class="edit10" data-key="actual_income_last" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id']; } ?>">{$v['actual_income_last']}</td>
+			<td class="edit10" data-key="expect_margin" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id']; } ?>">{$v['expect_margin']}</td>
+			<td class="edit10" data-key="actual_margin" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id']; } ?>">{$v['actual_margin']}</td>
+			<td>{$v['expect_marginprofit']}%</td>
+			<td>{$v['actual_marginprofit']}%</td>
+			<td class="edit10" data-key="cost" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id']; } ?>">{$v['cost']}</td>
+			<td class="edit10" data-key="income" data-type="float" data-order="<?php if(!empty($v['id'])){ echo $v['id']; } ?>">{$v['income']}</td>
+			<td class="profit">{$v['margin']}</td>
+			<td class="proportion"></td>
+			<td>{$v['marginprofig']}%</td>
+			<td>---</td>
+		</tr>
+		{/neq}
+		{/foreach}
+		<tr style="background-color: darkseagreen;">
+			<td>合计</td>
+			<td class="D106">{$repair['配件']['合计']['expect_income_last']}</td>
+			<td class="E106">{$repair['配件']['合计']['actual_income_last']}</td>
+			<td class="F106">{$repair['配件']['合计']['expect_margin']}</td>
+			<td class="G106">{$repair['配件']['合计']['actual_margin']}</td>
+			<td class="H106"><?php echo round(($repair['配件']['合计']['expect_margin']/$repair['配件']['合计']['expect_income_last'])*100,2); ?>%</td>
+			<td class="I106"><?php echo @round(($repair['配件']['合计']['actual_margin']/$repair['配件']['合计']['actual_income_last'])*100,2); ?>%</td>
+			<td class="J106">{$repair['配件']['合计']['cost']}</td>
+			<td class="K106">{$repair['配件']['合计']['income']}</td>
+			<td class="profit"><?php echo $repair['配件']['合计']['margin'] = $repair['配件']['合计']['income']-$repair['配件']['合计']['cost']; ?></td>
+			<td class="proportion"></td>
+			<td><?php echo @round(($repair['配件']['合计']['margin']/$repair['配件']['合计']['income'])*100,2); ?>%</td>
+			<td>---</td>
+		</tr>
+                
+    <?php }   if(isset($repair['工时'])){ ?>
+    
+		<tr>
+			<td colspan="2">工时</td>
+			<td class="D107 edit10" data-key="expect_income_last" data-type="float" data-order="<?php if(!empty($repair['工时']['id'])){ echo $repair['工时']['id']; } ?>">{$repair['工时']['expect_income_last']}</td>
+			<td class="E107 edit10" data-key="actual_income_last" data-type="float" data-order="<?php if(!empty($repair['工时']['id'])){ echo $repair['工时']['id']; } ?>">{$repair['工时']['actual_income_last']}</td>
+			<td class="F107">
+				<script>
+					$(document).ready(function(){
+						var D107 = $(".D107").html();
+						if(D107 == ''){
+							D107 = 0;
+						}
+						var F108 = $(".F108").html();
+						if(F108 == ''){
+							F108 = 0;
+						}
+						var F109 = $(".F109").html();
+						if(F109 == ''){
+							F109 = 0;
+						}
+						var F110 = $(".F110").html();
+						if(F110 == ''){
+							F110 = 0;
+						}
+						var count = Number(D107)-Number(F108)-Number(F109)-Number(F110);
+						$(".F107").html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="G107">
+				<script>
+					$(document).ready(function(){
+						var E107 = $(".E107").html();
+						if(E107 == ''){
+							E107 = 0;
+						}
+						var G108 = $(".G108").html();
+						if(G108 == ''){
+							G108 = 0;
+						}
+						var G109 = $(".G109").html();
+						if(G109 == ''){
+							G109 = 0;
+						}
+						var G110 = $(".G110").html();
+						if(G110 == ''){
+							G110 = 0;
+						}
+						var count = Number(E107)-Number(G108)-Number(G109)-Number(G110);
+						$(".G107").html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="H107">
+				<script>
+					$(document).ready(function(){
+						var F107 = $(".F107").html();
+						if(F107 == ''){
+							F107 = 0;
+						}
+						var D107 = $(".D107").html();
+						if(D107 == '' || D107 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(F107)/Number(D107))*100;
+						}
+						$(".H107").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td class="I107">
+				<script>
+					$(document).ready(function(){
+						var G107 = $(".G107").html();
+						if(G107 == ''){
+							G107 = 0;
+						}
+						var E107 = $(".E107").html();
+						if(E107 == '' || E107 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(G107)/Number(E107))*100;
+						}
+						$(".I107").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td class="J107">
+				<script>
+					$(document).ready(function(){
+						var J108 = $(".J108").html();
+						if(J108 == ''){
+							J108 = 0;
+						}
+						var J109 = $(".J109").html();
+						if(J109 == ''){
+							J109 = 0;
+						}
+						var J110 = $(".J110").html();
+						if(J110 == ''){
+							J110 = 0;
+						}
+						var count = Number(J108)+Number(J109)+Number(J110);
+						$(".J107").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td class="K107 edit10" data-key="income" data-type="float" data-order="<?php if(!empty($repair['工时']['id'])){ echo $repair['工时']['id']; } ?>">{$repair['工时']['income']}</td>
+			<td class="profit L107">
+				<script>
+					$(document).ready(function(){
+						var K107 = $(".K107").html();
+						if(K107 == ''){
+							K107 = 0;
+						}
+						var J107 =$(".J107").html();
+						if(J107 == ''){
+							J107 = 0;
+						}
+						var count = Number(K107)-Number(J107);
+						$(".L107").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td class="proportion M107"></td>
+			<td class="N107">
+				<script>
+					$(document).ready(function(){
+						var L107  = $(".L107").html();
+						if(L107 == ''){
+							L107 = 0;
+						}
+						var K107 = $(".K107").html();
+						if(K107 == '' || K107 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(L107)/Number(K107))*100;
+						}
+						$(".N107").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td>---</td>
+		</tr>
+                <?php }  if(isset($repair['人工成本'])){ ?>
+		<tr>
+			<td colspan="2">人工成本</td>
+			<td>---</td>
+			<td>---</td>
+			<td class="F108 edit10" data-key="expect_margin" data-type="float" data-order="<?php if(!empty($repair['人工成本']['id'])){ echo $repair['人工成本']['id']; } ?>">{$repair['人工成本']['expect_margin']}</td>
+			<td class="G108 edit10" data-key="actual_margin" data-type="float" data-order="<?php if(!empty($repair['人工成本']['id'])){ echo $repair['人工成本']['id']; } ?>">{$repair['人工成本']['actual_margin']}</td>
+			<td>---</td>
+			<td>---</td>
+			<td class="J108 edit10" data-key="cost" data-type="float" data-order="<?php if(!empty($repair['人工成本']['id'])){ echo $repair['人工成本']['id']; } ?>">{$repair['人工成本']['cost']}</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+		</tr>
+                <?php } if(isset($repair['委托外加工费'])){ ?>
+		<tr>
+			<td colspan="2">委托外加工费</td>
+			<td>---</td>
+			<td>---</td>
+			<td class="F109 edit10" data-key="expect_margin" data-type="float" data-order="<?php if(!empty($repair['委托外加工费']['id'])){ echo $repair['委托外加工费']['id']; } ?>">{$repair['委托外加工费']['expect_margin']}</td>
+			<td class="G109 edit10" data-key="actual_margin" data-type="float" data-order="<?php if(!empty($repair['委托外加工费']['id'])){ echo $repair['委托外加工费']['id']; } ?>">{$repair['委托外加工费']['actual_margin']}</td>
+			<td>---</td>
+			<td>---</td>
+			<td class="J109 edit10" data-key="cost" data-type="float" data-order="<?php if(!empty($repair['委托外加工费']['id'])){ echo $repair['委托外加工费']['id']; } ?>">{$repair['委托外加工费']['cost']}</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+		</tr>
+                <?php } if(isset($repair['车间间接费用'])){ ?>
+		<tr>
+			<td colspan="2">车间间接费用</td>
+			<td>---</td>
+			<td>---</td>
+			<td class="F110 edit10" data-key="expect_margin" data-type="float" data-order="<?php if(!empty($repair['车间间接费用']['id'])){ echo $repair['车间间接费用']['id']; } ?>">{$repair['车间间接费用']['expect_margin']}</td>
+			<td class="G110 edit10" data-key="actual_margin" data-type="float" data-order="<?php if(!empty($repair['车间间接费用']['id'])){ echo $repair['车间间接费用']['id']; } ?>">{$repair['车间间接费用']['actual_margin']}</td>
+			<td>---</td>
+			<td>---</td>
+			<td class="J110 edit10" data-key="cost" data-type="float" data-order="<?php if(!empty($repair['车间间接费用']['id'])){ echo $repair['车间间接费用']['id']; } ?>">{$repair['车间间接费用']['cost']}</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+		</tr>
+		<tr>
+			<td colspan="3">售后维修直接毛利</td>
+			<td>---</td>
+			<td>---</td>
+			<td class="F111"><?php echo $repair['售后维修直接毛利']['expect_margin'] = $repair['养护产品']['expect_margin']+$repair['售后装饰美容精品']['expect_margin']+$repair['配件']['合计']['expect_margin']+$repair['工时']['expect_income_last']; ?></td>
+			<td class="G111"><?php echo $repair['售后维修直接毛利']['actual_margin'] = $repair['养护产品']['actual_margin']+$repair['售后装饰美容精品']['actual_margin']+$repair['配件']['合计']['actual_margin']+$repair['工时']['actual_income_last']; ?></td>
+			<td class="H111">
+				<script>
+					$(document).ready(function(){
+						var F111 = $(".F111").html();
+						if(F111 == ''){
+							F111 = 0;
+						}
+						var D112 = $(".D112").html();
+						if(D112 == '' || D112 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(F111)/Number(D112))*100;
+						}
+						$(".H111").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td class="I111">
+				<script>
+					$(document).ready(function(){
+						var G111 = $(".G111").html();
+						if(G111 == ''){
+							G111 = 0;
+						}
+						var E112 = $(".E112").html();
+						if(E112 == '' || E112 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(G111)/Number(E112))*100;
+						}
+						$(".I111").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td>---</td>
+			<td>---</td>
+			<td class="L111">
+				<script>
+					$(document).ready(function(){
+						var K112 = $(".K113").html();
+						if(K112 == ''){
+							K112 = 0;
+						}
+						var J99 = $(".J99").html();
+						if(J99 == ''){
+							J99 = 0;
+						}
+						var J100 = $(".J100").html();
+						if(J100 == ''){
+							J100 = 0;
+						}
+						var J106 = $(".J106").html();
+						if(J106 == ''){
+							J106 = 0;
+						}
+						var count = Number(K112)-Number(J99)-Number(J100)-Number(J106);
+						$(".L111").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td>---</td>
+			<td class="N111">
+				<script>
+					$(document).ready(function(){
+						var L111 = $(".L111").html();
+						if(L111 == ''){
+							L111 = 0;
+						}
+						var K112 = $(".K113").html();
+						if(K112 == '' || K112 == 0){
+							var count = 0;
+						}else {
+							var count = (Number(L111)/Number(K112))*100;
+						}
+						$(".N111").html(count.toFixed(2)+"%");
+					})
+
+				</script>
+			</td>
+			<td>---</td>
+		</tr>
+                <?php } if(isset($repair['配件']['合计'])){ ?>
+		<tr>
+			<td colspan="3">售后维修毛利</td>
+			<td class="D112">{$repair['售后维修毛利']['合计']['expect_income_last'] = $repair['配件']['合计']['expect_income_last']+$repair['养护产品']['expect_income_last']+$repair['售后装饰美容精品']['expect_income_last']+$repair['工时']['expect_income_last']}</td>
+			<td class="E112">{$repair['售后维修毛利']['合计']['actual_income_last'] = $repair['配件']['合计']['actual_income_last']+$repair['养护产品']['actual_income_last']+$repair['售后装饰美容精品']['actual_income_last']+$repair['工时']['actual_income_last']}</td>
+			<td class="F113"><?php echo
+                                                    $repair['售后维修毛利']['expect_margin'] = $repair['养护产品']['expect_margin']+$repair['售后装饰美容精品']['expect_margin']+$repair['配件']['合计']['expect_margin']+$repair['工时']['expect_income_last']+
+                                                    $repair['人工成本']['expect_margin']-$repair['委托外加工费']['expect_margin']-$repair['车间间接费用']['expect_margin'];
+                                                    ?></td>
+			<td class="G113"><?php echo
+                                                    $repair['售后维修毛利']['actual_margin'] = $repair['养护产品']['actual_margin']+$repair['售后装饰美容精品']['actual_margin']+$repair['配件']['合计']['actual_margin']+$repair['工时']['actual_income_last']+
+                                                    $repair['人工成本']['actual_margin']-$repair['委托外加工费']['actual_margin']-$repair['车间间接费用']['actual_margin'];
+                                                    ?></td>
+			<td class="H113"><?php echo $repair['售后维修毛利']['expect_marginprofit'] = @round(($repair['售后维修毛利']['expect_margin']/$repair['售后维修毛利']['合计']['expect_income_last'])*100,2)."%"; ?></td>
+			<td class="I113"><?php echo $repair['售后维修毛利']['actual_marginprofit'] = @round(($repair['售后维修毛利']['actual_margin']/$repair['售后维修毛利']['合计']['actual_income_last'])*100,2)."%"; ?></td>
+			<td class="J113">
+				<script>
+					$(document).ready(function(){
+						var J99 = $(".J99").html();
+						if(J99 == ''){
+							J99 = 0;
+						}
+						var J100 = $(".J100").html();
+						if(J100 == ''){
+							J100 = 0;
+						}
+						var J106 = $(".J106").html();
+						if(J106 == ''){
+							J106 = 0;
+						}
+						var J107 = $(".J107").html();
+						if(J107 == ''){
+							J107 = 0;
+						}
+						var J110 = $(".J110").html();
+						if(J110 == ''){
+							J110 = 0;
+						}
+						var count = Number(J99)+Number(J100)+Number(J106)+Number(J107)+Number(J110);
+						$(".J113").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td class="K113"><?php echo $repair['售后维修毛利']['income'] = $repair['养护产品']['income']+$repair['售后装饰美容精品']['income']+$repair['配件']['合计']['income']+$repair['工时']['income']; ?></td>
+			<td class="gross-profits L113">
+				<script>
+					$(document).ready(function(){
+						var K112 = $(".K113").html();
+						if(K112 == ''){
+							K112 = 0;
+						}
+						var J112 = $(".J113").html();
+						if(J112 == ''){
+							J112 = 0;
+						}
+						var count = Number(K112)-Number(J112);
+						$(".L113").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td>---</td>
+			<td class="N113">
+				<script>
+					$(document).ready(function(){
+						var L112 = $(".L113").html();
+						if(L112 == ''){
+							L112 = 0;
+						}
+						var K112 = $(".K113").html();
+						if(K112 == '' || K112 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(L112)/Number(K112))*100;
+						}
+						$(".N113").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td>---</td>
+		</tr>
+                <?php } ?>
+		</tbody>
+	</table>
+</div>
+
+<!--三卡业务-->
+<div class="table_box8">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable8">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="8" colspan="2">三卡业务</td>
+			<td></td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td>考核项目</td>
+			<td>预测数量</td>
+			<td>预测渗透率</td>
+			<td>实际数量</td>
+			<td>实际渗透率</td>
+			<td></td>
+			<td></td>
+			<td>数量</td>
+			<td>渗透率</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>考核基数</td>
+			<td class="D116"><?php if(!empty($sale_margin_total_xu['expect_num'])){ echo $sale_margin_total_xu['expect_num']; } ?></td>
+			<td>---</td>
+			<td class="F116"><?php if(!empty($sale_margin_total_xu['actual_num'])){ echo $sale_margin_total_xu['actual_num']; } ?></td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td class="J116">
+				<script>
+					$(document).ready(function(){
+						var J22 = $(".J22").html();
+						if (J22 == ""){
+							J22 = 0;
+						}
+						$(".J116").html(J22);
+					})
+				</script>
+			</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+		</tr>
+                <?php if(!empty($three_card['玻璃保障卡\\漆面保障卡'])){ ?>
+		<tr>
+			<td>玻璃保障卡\漆面保障卡</td>
+			<td class="D117">
+				<script>
+					$(document).ready(function(){
+						var D118 =$(".D118").html();
+						if(D118 == ''){
+							D118 = 0;
+						}
+						var D119 = $(".D119").html();
+						if(D119 == '' || D119 == 0){
+							D119 = 0;
+						}
+						var count = Number(D118)+Number(D119);
+
+						$(".D117").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td class="E117">
+				<script>
+					$(document).ready(function(){
+						var D117 =$(".D117").html();
+						if(D117 == ''){
+							D117 = 0;
+						}
+						var D116 = $(".D116").html();
+						if(D116 == '' || D116 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(D117)/Number(D116))*100;
+						}
+						$(".E117").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td class="F117">
+				<script>
+					$(document).ready(function(){
+						var F118 =$(".F118").html();
+						if(F118 == ''){
+							F118 = 0;
+						}
+						var F119 = $(".F119").html();
+						if(F119 == '' || F119 == 0){
+							F119 = 0;
+						}
+						var count = Number(F118)+Number(F119);
+
+						$(".F117").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td class="G117">
+				<script>
+					$(document).ready(function(){
+						var F117 =$(".F117").html();
+						if(F117 == ''){
+							F117 = 0;
+						}
+						var F116 = $(".F116").html();
+						if(F116 == '' || F116 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(F117)/Number(F116))*100;
+						}
+						$(".G117").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td class="J117 edit11" data-key="expect_num_last" data-type="float" data-order="<?php if(!empty($three_card['玻璃保障卡\\漆面保障卡']['id'])){ echo $three_card['玻璃保障卡\\漆面保障卡']['id']; } ?>">{$three_card['玻璃保障卡\\漆面保障卡']['expect_num_last']}</td>
+			<td class="K117">
+				<script>
+					$(document).ready(function(){
+						var J117 =$(".J117").html();
+						if(J117 == ''){
+							J117 = 0;
+						}
+						var J116 = $(".J116").html();
+						if(J116 == '' || J116 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(J117)/Number(J116))*100;
+						}
+						$(".K117").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+		</tr>
+                
+                <?php  }  if(isset($three_card['其中:玻璃保障卡'])){ ?>
+		<tr>
+			<td>其中：玻璃保障卡</td>
+			<td class="D118 edit11" data-key="expect_num_last" data-type="float" data-order="<?php if(!empty($three_card['其中:玻璃保障卡']['id'])){ echo $three_card['其中:玻璃保障卡']['id']; } ?>">{$three_card['其中:玻璃保障卡']['expect_num_last']}</td>
+			<td class="E118"><?php if(!empty($sale_margin_total_xu['expect_num']) && $sale_margin_total_xu['expect_num']!=0){ echo @round($three_card['其中:玻璃保障卡']['expect_num_last']/$sale_margin_total_xu['expect_num']*100,2)."%"; }?></td>
+			<td class="F118 edit11" data-key="actual_num_last" data-type="float" data-order="<?php if(!empty($three_card['其中:玻璃保障卡']['id'])){ echo $three_card['其中:玻璃保障卡']['id']; } ?>">{$three_card['其中:玻璃保障卡']['actual_num_last']}</td>
+			<td class="G118"><?php if(!empty($sale_margin_total_xu['actual_num']) && $sale_margin_total_xu['actual_num']!=0){ echo @round($three_card['其中:玻璃保障卡']['actual_num_last']/$sale_margin_total_xu['actual_num']*100,2)."%"; }?></td>
+			<td>------------</td>
+			<td>------------</td>
+			<td class="J118 edit11" data-key="expect_num_this" data-type="float" data-order="<?php if(!empty($three_card['其中:玻璃保障卡']['id'])){ echo $three_card['其中:玻璃保障卡']['id']; } ?>">{$three_card['其中:玻璃保障卡']['expect_num_this']}</td>
+			<td class="K118">
+				<script>
+					$(document).ready(function(){
+						var J118 =$(".J118").html();
+						if(J118 == ''){
+							J118 = 0;
+						}
+						var J116 = $(".J116").html();
+						if(J116 == '' || J116 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(J118)/Number(J116))*100;
+						}
+						$(".K118").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+		</tr>
+                <?php }  if(isset($three_card['漆面保障卡'])){ ?>
+		<tr>
+			<td>漆面保障卡</td>
+			<td class="D119 edit11" data-key="expect_num_last" data-type="float" data-order="<?php if(!empty($three_card['漆面保障卡']['id'])){ echo $three_card['漆面保障卡']['id']; } ?>">{$three_card['漆面保障卡']['expect_num_last']}</td>
+			<td class="E119"><?php if(!empty($sale_margin_total_xu['expect_num']) && $sale_margin_total_xu['expect_num']!=0){ echo @round($three_card['漆面保障卡']['expect_num_last']/$sale_margin_total_xu['expect_num']*100,2)."%"; }?></td>
+			<td class="F119 edit11" data-key="actual_num_last" data-type="float" data-order="<?php if(!empty($three_card['漆面保障卡']['id'])){ echo $three_card['漆面保障卡']['id']; } ?>">{$three_card['漆面保障卡']['actual_num_last']}</td>
+			<td class="G119"><?php if(!empty($sale_margin_total_xu['actual_num']) && $sale_margin_total_xu['actual_num']!=0){ echo @round($three_card['漆面保障卡']['actual_num_last']/$sale_margin_total_xu['actual_num']*100,2)."%"; }?></td>
+			<td>------------</td>
+			<td>------------</td>
+			<td class="J119 edit11" data-key="expect_num_this" data-type="float" data-order="<?php if(!empty($three_card['漆面保障卡']['id'])){ echo $three_card['漆面保障卡']['id']; } ?>">{$three_card['漆面保障卡']['expect_num_this']}</td>
+			<td class="K119">
+				<script>
+					$(document).ready(function(){
+						var J119 =$(".J119").html();
+						if(J119 == ''){
+							J119 = 0;
+						}
+						var J116 = $(".J116").html();
+						if(J116 == '' || J116 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(J119)/Number(J116))*100;
+						}
+						$(".K119").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+		</tr>
+                <?php } if(isset($three_card['基础保养卡'])){ ?>
+		<tr>
+			<td>基础保养卡</td>
+			<td class=" edit11" data-key="expect_num_last" data-type="float" data-order="<?php if(!empty($three_card['基础保养卡']['id'])){ echo $three_card['基础保养卡']['id']; } ?>">{$three_card['基础保养卡']['expect_num_last']}</td>
+			<td class=" edit11" data-key="actual_num_last" data-type="float" data-order="<?php if(!empty($three_card['基础保养卡']['id'])){ echo $three_card['基础保养卡']['id']; } ?>"><?php if(!empty($sale_margin_total_xu['expect_num']) && $sale_margin_total_xu['expect_num']!=0){ echo @round($three_card['基础保养卡']['expect_num_last']/$sale_margin_total_xu['expect_num']*100,2)."%"; }?></td>
+			<td>{$three_card['基础保养卡']['actual_num_last']}</td>
+			<td><?php if(!empty($sale_margin_total_xu['actual_num']) && $sale_margin_total_xu['actual_num']!=0){ echo @round($three_card['基础保养卡']['actual_num_last']/$sale_margin_total_xu['actual_num']*100,2)."%"; }?></td>
+			<td>------------</td>
+			<td>------------</td>
+			<td class="J120 edit11" data-key="expect_num_this" data-type="float" data-order="<?php if(!empty($three_card['基础保养卡']['id'])){ echo $three_card['基础保养卡']['id']; } ?>">{$three_card['基础保养卡']['expect_num_this']}</td>
+			<td class="K120">
+				<script>
+					$(document).ready(function(){
+						var J120 =$(".J120").html();
+						if(J120 == ''){
+							J120 = 0;
+						}
+						var J116 = $(".J116").html();
+						if(J116 == '' || J116 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(J120)/Number(J116))*100;
+						}
+						$(".K120").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+		</tr>
+                <?php }  if(isset($three_card['备件集采金额、渗透率'])){ ?>
+		<tr>
+			<td>备件集采金额、渗透率</td>
+			<td class=" edit11" data-key="expect_num_last" data-type="float" data-order="<?php if(!empty($three_card['备件集采金额、渗透率']['id'])){ echo $three_card['备件集采金额、渗透率']['id']; } ?>">{$three_card['备件集采金额、渗透率']['expect_num_last']}</td>
+			<td><?php if(!empty($sale_margin_total_xu['expect_num']) && $sale_margin_total_xu['expect_num']!=0){ echo @round($three_card['备件集采金额、渗透率']['expect_num_last']/$sale_margin_total_xu['expect_num']*100,2)."%"; }?></td>
+			<td class=" edit11" data-key="actual_num_last" data-type="float" data-order="<?php if(!empty($three_card['备件集采金额、渗透率']['id'])){ echo $three_card['备件集采金额、渗透率']['id']; } ?>">{$three_card['备件集采金额、渗透率']['actual_num_last']}</td>
+			<td><?php if(!empty($sale_margin_total_xu['actual_num']) && $sale_margin_total_xu['actual_num']!=0){ echo @round($three_card['备件集采金额、渗透率']['actual_num_last']/$sale_margin_total_xu['actual_num']*100,2)."%"; }?></td>
+			<td>------------</td>
+			<td>------------</td>
+			<td class="J121 edit11" data-key="expect_num_this" data-type="float" data-order="<?php if(!empty($three_card['备件集采金额、渗透率']['id'])){ echo $three_card['备件集采金额、渗透率']['id']; } ?>">{$three_card['备件集采金额、渗透率']['expect_num_this']}</td>
+			<td class="K121">
+				<script>
+					$(document).ready(function(){
+						var J121 =$(".J121").html();
+						if(J121 == ''){
+							J121 = 0;
+						}
+						var J116 = $(".J116").html();
+						if(J116 == '' || J116 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(J121)/Number(J116))*100;
+						}
+						$(".K121").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+		</tr>
+                <?php } ?>
+		</tbody>
+	</table>
+</div>
+
+<!--续保业务-->
+<div class="table_box9">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable9">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="11" colspan="2">续保业务</td>
+			<td rowspan="2">分类</td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td>预测台次</td>
+			<td>实际台次</td>
+			<td>预测佣金收入</td>
+			<td>实际佣金收入</td>
+			<td>预测毛利</td>
+			<td>实际毛利</td>
+			<td>预测台次</td>
+			<td>成本</td>
+			<td>佣金收入</td>
+			<td>毛利</td>
+			<td>毛利率</td>
+		</tr>
+                <?php if(isset($renewal['续保商业险'])){ ?>
+		<tr>
+			<td>续保商业险</td>
+			<td class="edit13" data-order="{$renewal['续保商业险']['id']}" data-key="expect_num" data-type="float">{$renewal['续保商业险']['expect_num']}</td>
+			<td class="edit13" data-order="{$renewal['续保商业险']['id']}" data-key="actual_num" data-type="float">{$renewal['续保商业险']['actual_num']}</td>
+			<td class="edit13" data-order="{$renewal['续保商业险']['id']}" data-key="expect_income" data-type="float">{$renewal['续保商业险']['expect_income']}</td>
+			<td class="edit13" data-order="{$renewal['续保商业险']['id']}" data-key="actual_income" data-type="float">{$renewal['续保商业险']['actual_income']}</td>
+			<td>{$renewal['续保商业险']['expect_income']}</td>
+			<td>{$renewal['续保商业险']['actual_income']}</td>
+			<td class="edit13" data-order="{$renewal['续保商业险']['id']}" data-key="expect_carnum" data-type="float">{$renewal['续保商业险']['expect_carnum']}</td>
+			<td class="edit13" data-order="{$renewal['续保商业险']['id']}" data-key="cost" data-type="float">{$renewal['续保商业险']['cost']}</td>
+			<td class="edit13" data-order="{$renewal['续保商业险']['id']}" data-key="income" data-type="float">{$renewal['续保商业险']['income']}</td>
+			<td class="M123" rowspan="2">
+				<script>
+					$(document).ready(function(){
+						var L126 = $(".L127").html();
+						if(L126 == ''){
+							L126 = 0;
+						}
+						var K126 = $(".K127").html();
+						if(K126 == ''){
+							K126 = 0;
+						}
+						var count = Number(L126)-Number(K126);
+						$(".M123").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td class="N123" rowspan="2">
+				<script>
+					$(document).ready(function(){
+						var M123 = $(".M123").html();
+						if(M123 == ''){
+							M123 = 0;
+						}
+						var L126 = $(".L127").html();
+						if(L126 == '' || L126 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(M123)/Number(L126))*100;
+						}
+						$(".N123").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+		</tr>
+                <?php } if(isset($renewal['续保交强险'])){ ?>
+		<tr>
+			<td>续保交强险</td>
+			<td class="edit13" data-order="{$renewal['续保交强险']['id']}" data-key="expect_num" data-type="float">{$renewal['续保交强险']['expect_num']}</td>
+			<td class="edit13" data-order="{$renewal['续保交强险']['id']}" data-key="actual_num" data-type="float">{$renewal['续保交强险']['actual_num']}</td>
+			<td class="edit13" data-order="{$renewal['续保交强险']['id']}" data-key="expect_income" data-type="float">{$renewal['续保交强险']['expect_income']}</td>
+			<td class="edit13" data-order="{$renewal['续保交强险']['id']}" data-key="actual_income" data-type="float">{$renewal['续保交强险']['actual_income']}</td>
+			<td>{$renewal['续保交强险']['expect_income']}</td>
+			<td>{$renewal['续保交强险']['actual_income']}</td>
+			<td class="edit13" data-order="{$renewal['续保交强险']['id']}" data-key="expect_carnum" data-type="float">{$renewal['续保交强险']['expect_carnum']}</td>
+			<td class="edit13" data-order="{$renewal['续保交强险']['id']}" data-key="cost" data-type="float">{$renewal['续保交强险']['cost']}</td>
+			<td class="edit13" data-order="{$renewal['续保交强险']['id']}" data-key="income" data-type="float">{$renewal['续保交强险']['income']}</td>
+		</tr>
+                <?php } if(isset($renewal['人工成本'])){ ?>
+		<tr>
+			<td>人工成本</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td class="edit13" data-order="{$renewal['人工成本']['id']}" data-key="expect_margin" data-type="negative">{$renewal['人工成本']['expect_margin']}</td>
+			<td class="edit13" data-order="{$renewal['人工成本']['id']}" data-key="actual_margin" data-type="negative">{$renewal['人工成本']['actual_margin']}</td>
+			<td>------------</td>
+			<td class="edit13" data-order="{$renewal['人工成本']['id']}" data-key="cost" data-type="negative">{$renewal['人工成本']['cost']}</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+		</tr>
+                
+		<tr style="background-color: red;">
+			<td>小计</td>
+			<td><?php echo $renewal['小计']['expect_num']=$renewal['续保商业险']['expect_num']+$renewal['续保交强险']['expect_num']; ?></td>
+			<td><?php echo $renewal['小计']['actual_num']=$renewal['续保商业险']['actual_num']+$renewal['续保交强险']['actual_num']; ?></td>
+			<td><?php echo $renewal['小计']['expect_income']=$renewal['续保商业险']['expect_income']+$renewal['续保交强险']['expect_income']; ?></td>
+			<td><?php echo $renewal['小计']['actual_income']=$renewal['续保商业险']['actual_income']+$renewal['续保交强险']['actual_income']; ?></td>
+			<td class="H127"><?php echo $renewal['小计']['expect_margin']=$renewal['续保商业险']['expect_income']+$renewal['续保交强险']['expect_income']+$renewal['人工成本']['expect_margin']; ?></td>
+			<td class="I127"><?php echo $renewal['小计']['actual_margin']=$renewal['续保商业险']['actual_income']+$renewal['续保交强险']['actual_income']+$renewal['人工成本']['actual_margin']; ?></td>
+			<td class="J127"><?php echo $renewal['小计']['expect_carnum']=$renewal['续保商业险']['expect_carnum']+$renewal['续保交强险']['expect_carnum']; ?></td>
+			<td class="K127"><?php echo $renewal['小计']['cost']=$renewal['续保商业险']['cost']+$renewal['续保交强险']['cost']+$renewal['人工成本']['cost']; ?></td>
+			<td class="margin_subtotal L127"><?php echo $renewal['小计']['income']=$renewal['续保商业险']['income']+$renewal['续保交强险']['income']; ?></td>
+			<td class="M127"><?php echo $renewal['小计']['margin']=$renewal['续保商业险']['income']+$renewal['续保交强险']['cost']; ?></td>
+			<td class="N127"><?php echo $renewal['小计']['marginprofit']=@round(($renewal['小计']['margin']/$renewal['小计']['income'])*100,2); ?>%</td>
+		</tr>
+		<tr>
+			<td>续保商业险台次</td>
+			<td class="edit13" data-order="{$renewal['续保商业险台次']['id']}" data-key="expect_num" data-type="float">{$renewal['续保商业险台次']['expect_num']}</td>
+			<td class="edit13" data-order="{$renewal['续保商业险台次']['id']}" data-key="actual_num" data-type="float">{$renewal['续保商业险台次']['actual_num']}</td>
+			<td colspan="4">------</td>
+			<td class="edit13" data-order="{$renewal['续保商业险台次']['id']}" data-key="expect_carnum" data-type="float">{$renewal['续保商业险台次']['expect_carnum']}</td>
+			<td colspan="4">------</td>
+		</tr>
+                <?php } if(isset($renewal['上年同期商险台次'])){ ?>
+                
+		<tr>
+                    
+			<td>上年同期商险台次</td>
+			<td class="edit13" data-order="{$renewal['上年同期商险台次']['id']}" data-key="expect_num" data-type="float">{$renewal['上年同期商险台次']['expect_num']}</td>
+			<td class="edit13" data-order="{$renewal['上年同期商险台次']['id']}" data-key="expect_num" data-type="float">{$renewal['上年同期商险台次']['expect_num']}</td>
+			<td colspan="4">------</td>
+			<td class="edit13" data-order="{$renewal['上年同期商险台次']['id']}" data-key="expect_carnum" data-type="float">{$renewal['上年同期商险台次']['expect_carnum']}</td>
+			<td colspan="4">------</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="2">续保渗透率目标</td>
+			<td colspan="2">同品牌平均渗透率</td>
+			<td colspan="2">店面渗透率目标</td>
+			<td colspan="2">实际渗透率</td>
+			<td colspan="5">店面渗透率目标</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="edit12" data-order="{$renewal_pen['id']}" data-key="average" data-type="float">{$renewal_pen['average']}</td>
+			<td colspan="2" class="	F131">
+				<script>
+					$(document).ready(function(){
+						var D132 = $(".D132").html();
+						if(D132 == ''){
+							var D132 = 0;
+						}
+						$(".F131").html(D132);
+					})
+				</script>
+			</td>
+			<td colspan="2" class="H131">
+				<script>
+					$(document).ready(function(){
+						var E132 = $(".E132").html();
+						if(E132 == ''){
+							var E132 = 0;
+						}
+						$(".H131").html(E132);
+					})
+				</script>
+			</td>
+			<td colspan="5" class="J131">
+				<script>
+					$(document).ready(function(){
+						var J132 = $(".J132").html();
+						if(J132 == ''){
+							var J132 = 0;
+						}
+						$(".J131").html(J132);
+					})
+				</script>
+			</td>
+		</tr>
+		<tr>
+			<td>商业险渗透率(%)</td>
+			<td class="D132"><?php echo @round(($renewal['续保商业险台次']['expect_num']/$renewal['上年同期商险台次']['expect_num'])*100,2); ?>%</td>
+			<td class="E132"><?php echo @round(($renewal['续保商业险台次']['actual_num']/$renewal['上年同期商险台次']['actual_num'])*100,2); ?>%</td>
+			<td colspan="4">---------</td>
+			<td class="J132"><?php echo @round(($renewal['续保商业险台次']['expect_carnum']/$renewal['上年同期商险台次']['expect_carnum'])*100,2); ?>%</td>
+			<td colspan="4">---------</td>
+		</tr>
+                <?php } ?>
+		</tbody>
+	</table>
+</div>
+
+<!--非新车延保-->
+<div class="table_box10">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable10">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="7" colspan="2">非新车延保</td>
+			<td rowspan="2">分类</td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td>预测台次</td>
+			<td>实际台次</td>
+			<td>预测佣金收入</td>
+			<td>实际佣金收入</td>
+			<td>预测毛利</td>
+			<td>实际毛利</td>
+			<td>预测台次</td>
+			<td>人工成本</td>
+			<td>佣金收入</td>
+			<td>毛利</td>
+			<td>毛利率</td>
+		</tr>
+                <?php if(isset($non_newcar['非新车延保'])){ ?>
+		<tr>
+			<td>非新车延保</td>
+			<td class="edit14" data-order="{$non_newcar['非新车延保']['id']}" data-key="expect_num" data-type="float">{$non_newcar['非新车延保']['expect_num']}</td>
+			<td class="edit14" data-order="{$non_newcar['非新车延保']['id']}" data-key="actual_num" data-type="float">{$non_newcar['非新车延保']['actual_num']}</td>
+			<td class="edit14" data-order="{$non_newcar['非新车延保']['id']}" data-key="expect_income" data-type="float">{$non_newcar['非新车延保']['expect_income']}</td>
+			<td class="edit14" data-order="{$non_newcar['非新车延保']['id']}" data-key="actual_income" data-type="float">{$non_newcar['非新车延保']['actual_income']}</td>
+			<td><?php echo $non_newcar['非新车延保']['expect_income']-$non_newcar['人工成本']['expect_margin']; ?></td>
+			<td><?php echo $non_newcar['非新车延保']['actual_income']-$non_newcar['人工成本']['actual_income']; ?></td>
+			<td class="edit14" data-order="{$non_newcar['非新车延保']['id']}" data-key="expect_carnum" data-type="float">{$non_newcar['非新车延保']['expect_carnum']}</td>
+			<td>------------</td>
+			<td class="edit14" data-order="{$non_newcar['非新车延保']['id']}" data-key="income" data-type="float">{$non_newcar['非新车延保']['income']}</td>
+			<td rowspan="3"><?php echo $non_newcar['非新车延保']['margin'] = $non_newcar['非新车延保']['income']-$non_newcar['人工成本']['cost']; ?></td>
+			<td rowspan="3"><?php if($non_newcar['非新车延保']['income']!=0){ echo round($non_newcar['非新车延保']['margin']/$non_newcar['非新车延保']['income']*100,2).'%'; }else{ echo "0.00%"; } ?></td>
+		</tr>
+		<tr>
+			<td>人工成本</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td>------------</td>
+			<td class="edit14" data-order="{$non_newcar['人工成本']['id']}" data-key="expect_margin" data-type="float">{$non_newcar['人工成本']['expect_margin']}</td>
+			<td class="edit14" data-order="{$non_newcar['人工成本']['id']}" data-key="actual_margin" data-type="float">{$non_newcar['人工成本']['actual_margin']}</td>
+			<td>------------</td>
+			<td class="edit14" data-order="{$non_newcar['人工成本']['id']}" data-key="cost" data-type="float">{$non_newcar['人工成本']['cost']}</td>
+			<td>------------</td>
+		</tr>
+		<tr style="background-color: red;">
+			<td>小计</td>
+			<td>{$non_newcar['小计']['expect_num']}</td>
+			<td>{$non_newcar['小计']['actual_num']}</td>
+			<td>{$non_newcar['小计']['expect_income']}</td>
+			<td>{$non_newcar['非新车延保']['actual_income']}</td>
+			<td><?php echo $non_newcar['非新车延保']['expect_income']-$non_newcar['人工成本']['expect_margin']; ?></td>
+			<td><?php echo $non_newcar['非新车延保']['actual_income']-$non_newcar['人工成本']['actual_income']; ?></td>
+			<td>{$non_newcar['非新车延保']['expect_carnum']}</td>
+			<td>{$non_newcar['人工成本']['cost']}</td>
+			<td>{$non_newcar['非新车延保']['income']}</td>
+		</tr>
+		<tr>
+			<td>上一年同期展厅新车销量</td>
+			<td colspan="2" class="edit14" data-order="{$non_newcar['上一年同期展厅新车销量']['id']}" data-key="new_car_sales" data-type="float">{$non_newcar['上一年同期展厅新车销量']['new_car_sales']}</td>
+			<td colspan="4">------</td>
+			<td class="edit14" data-order="{$non_newcar['上一年同期展厅新车销量']['id']}" data-key="expect_carnum" data-type="float">{$non_newcar['上一年同期展厅新车销量']['expect_carnum']}</td>
+			<td colspan="4">------</td>
+		</tr>
+		<tr>
+			<td>非新车延保渗透率（%）</td>
+			<td colspan="2"><?php if(!empty($non_newcar['非新车延保']['expect_num']) && !empty($non_newcar['上一年同期展厅新车销量']['new_car_sales']) && $non_newcar['上一年同期展厅新车销量']['new_car_sales'] != 0){ echo round(($non_newcar['非新车延保']['expect_num']/$non_newcar['上一年同期展厅新车销量']['new_car_sales'])*100,2); }else{ echo '0.00%'; } ?></td>
+			<td colspan="4">------</td>
+			<td><?php if(!empty($non_newcar['非新车延保']['expect_carnum']) && !empty($non_newcar['上一年同期展厅新车销量']['expect_carnum']) && $non_newcar['上一年同期展厅新车销量']['expect_carnum'] != 0){ echo @round(($non_newcar['非新车延保']['expect_carnum']/$non_newcar['上一年同期展厅新车销量']['expect_carnum'])*100,2); }else{ echo '0.00%'; } ?></td>
+			<td colspan="4">------</td>
+		</tr>
+                <?php } ?>
+		</tbody>
+	</table>
+</div>
+
+<!--售后综合毛利（含续保）-->
+<div class="table_box11">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable11">
+		<tbody>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="3" colspan="3">售后综合毛利（含续保）</td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td colspan="2">预测毛利</td>
+			<td colspan="4">实际毛利</td>
+			<td colspan="2">成本</td>
+			<td>收入</td>
+			<td>毛利</td>
+			<td>毛利率</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="D142">
+				<script>
+					$(document).ready(function(){
+						var F113 = $(".F113").html();
+						if( F113 == ''){
+							var F113 = 0;
+						}
+						var H127 = $(".H127").html();
+						if(H127 == ''){
+							var H127 = 0;
+						}
+						var H137 = $(".H137").html();
+						if(H137 == ''){
+							var H137 = 0;
+						}
+						var count = Number(F113) + Number(H127) + Number(H137);
+						$(".D142").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td colspan="4" class="F142">
+				<script>
+					$(document).ready(function(){
+						var G113 = $(".G113").html();
+						if( G113 == ''){
+							var G113 = 0;
+						}
+						var I127 = $(".I127").html();
+						if(I127 == ''){
+							var I127 = 0;
+						}
+						var I137 = $(".I137").html();
+						if(I137 == ''){
+							var I137 = 0;
+						}
+						var count = Number(G113) + Number(I127) + Number(I137);
+						$(".F142").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td colspan="2" class="J142">
+				<script>
+					$(document).ready(function(){
+						var J113 = $(".J113").html();
+						if( J113 == ''){
+							var J113 = 0;
+						}
+						var K127 = $(".K127").html();
+						if(K127 == ''){
+							var K127 = 0;
+						}
+						var K137 = $(".K137").html();
+						if(K137 == ''){
+							var K137 = 0;
+						}
+						var count = Number(J113) + Number(K127) + Number(K137);
+						$(".J142").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td class="L142">
+				<script>
+					$(document).ready(function(){
+						var K113 = $(".K113").html();
+						if( K113 == ''){
+							var K113 = 0;
+						}
+						var L127 = $(".L127").html();
+						if(L127 == ''){
+							var L127 = 0;
+						}
+						var L137 = $(".L137").html();
+						if(L137 == ''){
+							var L137 = 0;
+						}
+						var count = Number(K113) + Number(L127) + Number(L137);
+						$(".L142").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td class="M142">
+				<script>
+					$(document).ready(function(){
+						var L142 = $(".L142").html();
+						if( L142 == ''){
+							var L142 = 0;
+						}
+						var J142 = $(".J142").html();
+						if(J142 == ''){
+							var J142 = 0;
+						}
+						var count = Number(L142) -Number(J142);
+						$(".M142").html(count.toFixed(2));
+					})
+				</script>
+			</td>
+			<td class="N142">
+				<script>
+					$(document).ready(function(){
+						var  M142 = $('.M142').html();
+						if(M142 == ''){
+							var M142 = 0;
+						}
+						var L142 = $(".L142").html();
+						if(L142 == '' || L142 == 0){
+							var count = 0;
+						}else{
+							var count = (Number(M142)/Number(L142))*100;
+						}
+
+						$(".N142").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<!--其他业务-->
+<?php if(!empty($other)){ ?>
+<div class="table_box12">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable12">
+		<tbody>
+		<!--其他业务-->
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td rowspan="10">其他业务</td>
+			<td colspan="2" rowspan="2">分类</td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td>预测台次</td>
+			<td>实际台次</td>
+			<td>预测收入</td>
+			<td>实际收入</td>
+			<td>预测毛利</td>
+			<td>实际毛利</td>
+			<td>置换台次</td>
+			<td>销售台次</td>
+			<td>销售成本</td>
+			<td>销售收入</td>
+			<td>毛利</td>
+		</tr>
+		{foreach $other as $k => $v}
+		<tr>
+			<td colspan="2">{$k}</td>
+			<td class="column column1 edit15" data-key="expect_num_last" data-type="float" data-order="{$v['id']}">{$v['expect_num_last']}</td>
+			<td class="column column2 edit15" data-key="actual_num_last" data-type="float" data-order="{$v['id']}">{$v['actual_num_last']}</td>
+			<td class="column column3 <?php if($k!='其它业务毛利'){ echo 'edit15'; } ?>" data-key="expect_income_last" data-type="float" data-order="{$v['id']}"><?php if($k!='其它业务毛利'){ echo $v['expect_income_last']; }else{ echo '---'; } ?></td>
+			<td class="column column4 <?php if($k!='其它业务毛利'){ echo 'edit15'; } ?>" data-key="actual_income_last" data-type="float" data-order="{$v['id']}"><?php if($k!='其它业务毛利'){ echo $v['actual_income_last']; }else{ echo '---'; } ?></td>
+			<td class="column column5" data-key="expect_income_last" data-type="float" data-order="{$v['id']}">{$v['expect_income_last']}</td>
+			<td class="column column6" data-key="actual_income_last" data-type="float" data-order="{$v['id']}">{$v['actual_income_last']}</td>
+			<td class="column column7 edit15" data-key="change_num" data-type="float" data-order="{$v['id']}">{$v['change_num']}</td>
+			<td class="column column8 edit15" data-key="sale_num" data-type="float" data-order="{$v['id']}">{$v['sale_num']}</td>
+			<td class="column column9 edit15" data-key="cost" data-type="float" data-order="{$v['id']}">{$v['cost']}</td>
+			<td class="column column10 edit15" data-key="income" data-type="float" data-order="{$v['id']}">{$v['income']}</td>
+			<td class="column column11" data-key="margin" data-type="float" data-order="{$v['id']}">{$v['margin']}</td>
+		</tr>
+		{/foreach}
+		<tr style="background-color: red;">
+			<td colspan="2">小计</td>
+			<td class="count1"></td>
+			<td class="count2"></td>
+			<td class="count3"></td>
+			<td class="count4"></td>
+			<td class="count5"></td>
+			<td class="count6"></td>
+			<td class="count7"></td>
+			<td class="count8"></td>
+			<td class="count9"></td>
+			<td class="count10"></td>
+			<td class="count11"></td>
+		</tr>
+		<script>
+			$(document).ready(function(){
+				var sum = 0;
+				for(var i=1; i<12;i++){
+					$("#MyTable12_tableColumnClone .column"+i).each(function(){
+						var cs = $(this).html();
+						if(cs == ''){
+							var cs = 0;
+						}
+						sum +=  Number(cs);
+					});
+
+					$("#MyTable12_tableColumnClone .count"+i).html(sum);
+
+				}
+				for(var a=2; a<12;a++){
+					var c = $("#MyTable12_tableColumnClone .count"+a).html();
+					var d = $("#MyTable12_tableColumnClone .count"+(a-1)).html();
+
+					$("#MyTable12 .count"+a).html((Number(c)-Number(d)).toFixed(2));
+				}
+				$("#MyTable12 .count1").html($("#MyTable12_tableColumnClone .count1").html());
+			})
+		</script>
+		<tr>
+			<td colspan="2">人工成本</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+			<td>---</td>
+			<td class="H151 edit16" data-key="forecast_last" data-type="float" data-order="{$other_cost['id']}">{$other_cost['forecast_last']}</td>
+			<td class="I151 edit16" data-key="actual_last" data-type="float" data-order="{$other_cost['id']}">{$other_cost['actual_last']}</td>
+			<td>---</td>
+			<td>---</td>
+			<td class="L151 edit16" data-key="forecast_this" data-type="float" data-order="{$other_cost['id']}">{$other_cost['forecast_this']}</td>
+			<td>---</td>
+			<td>---</td>
+		</tr>
+		<tr>
+			<td colspan="3">其它业务毛利</td>
+			<td class="D152">---</td>
+			<td class="E152">---</td>
+			<td class="F152">---</td>
+			<td class="G152">---</td>
+			<td class="H152">
+				<script>
+					$(document).ready(function(){
+						var H150 = $("#MyTable12 .count5").html();
+						if(H150 == ''){
+							var H150 = 0;
+						}
+						var H151 = $(".H151").html();
+						if(H151 == ''){
+							var H151 = 0;
+						}
+						var count = Number(H150) + Number(H151);
+						$(".H152").html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="I152">
+				<script>
+					$(document).ready(function(){
+							var I150 = $("#MyTable12 .count6").html();
+						if(I150 == ''){
+							var I150 = 0;
+						}
+						var I151 = $(".I151").html();
+						if(I151 == ''){
+							var I151 = 0;
+						}
+						var count = Number(I150) + Number(I151);
+						$(".I152").html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="J152">---</td>
+			<td class="K152">---</td>
+			<td class="L152">
+				<script>
+					$(document).ready(function(){
+						var L151 = $(".L151").html();
+						if(L151 == ''){
+							var L151 = 0;
+						}
+						$(".L152").html(L151);
+					});
+				</script>
+			</td>
+			<td class="M152">
+				<script>
+					$(document).ready(function(){
+						var m = $("#MyTable12 .column11").eq(0).html();
+						var M151 = $("#MyTable12 .count10").html();
+						var sum = 0;
+						$("#MyTable12 .column10").each(function(k,v){
+							if(k>1){
+								var cs = $(this).html();
+								if(cs == ''){
+									var cs = 0;
+								}
+								sum +=  Number(cs);
+							}
+						});
+						var count = Number(m) + Number(sum) +Number(M151);
+						$(".M152").html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="N152">
+				<script>
+					$(document).ready(function(){
+						var M152 = $(".M152").html();
+						if(M152 == ''){
+							M152 = 0;
+						}
+						var L152 = $(".L152").html();
+						if(L152 == ''){
+							L152 = 0;
+						}
+						var count = Number(M152) - Number(L152);
+						$(".N152").html(count.toFixed(2));
+					});
+				</script>
+			</td>
+		</tr>
+
+		</tbody>
+	</table>
+</div>
+<?php } ?>
+<!--店面运营综合毛利预测合计-->
+<div class="table_box13">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable13">
+		<tbody>
+		<!--店面运营综合毛利预测合计-->
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td colspan="3" rowspan="3">店面运营综合毛利预测合计</td>
+			<td colspan="6">上月</td>
+			<td colspan="5">本月预测</td>
+		</tr>
+		<tr style="background-color: rgb(245, 250, 254);">
+			<td colspan="2">预测毛利</td>
+			<td colspan="4">实际毛利</td>
+			<td colspan="2">成本</td>
+			<td>收入</td>
+			<td>毛利</td>
+			<td>毛利率</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="D155">
+				<script>
+					$(document).ready(function(){
+						var D96 = $('.D96').html();
+						if(D96 == ''){
+							var D96 = 0;
+						}
+						var D142 = $('.D142').html();
+						if(D142 == ''){
+							var D142 = 0;
+						}
+						var H152 = $('.H152').html();
+						if(H152 == ''){
+							var H152 = 0;
+						}
+						var count = Number(D96) + Number(D142) + Number(H152);
+						$('.D155').html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td colspan="4" class="F155">
+				<script>
+					$(document).ready(function(){
+						var F96 = $('.F96').html();
+						if(F96 == ''){
+							var D96 = 0;
+						}
+						var F142 = $('.F142').html();
+						if(F142 == ''){
+							var F142 = 0;
+						}
+						var I152 = $('.I152').html();
+						if(I152 == ''){
+							var I152 = 0;
+						}
+						var count = Number(F96) + Number(F142) +Number(I152);
+						$('.F155').html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td colspan="2" class="J155">
+				<script>
+					$(document).ready(function(){
+						var J96 = $('.J96').html();
+						if(J96 == ''){
+							var J96 = 0;
+						}
+						var J142 = $('.J142').html();
+						if(J142 == ''){
+							var J142 = 0;
+						}
+						var L152 = $('.L152').html();
+						if(L152 == ''){
+							var L152 = 0;
+						}
+						var count =Number(J96) + Number(J142) +Number(L152);
+						$('.J155').html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="L155">
+				<script>
+					$(document).ready(function(){
+						var L96 = $('.L96').html();
+						if(L96 == ''){
+							var L96 = 0;
+						}
+						var L142 = $('.L142').html();
+						if(L142 == ''){
+							var L142 = 0;
+						}
+						var M152 = $('.M152').html();
+						if(M152 == ''){
+							var M152 = 0;
+						}
+						var count = Number(L96) + Number(L142) +Number(M152);
+						$('.L155').html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="M155">
+				<script>
+					$(document).ready(function(){
+						var L155 = $('.L155').html();
+						if(L155 == ''){
+							var L155 = 0;
+						}
+						var J155 = $('.J155').html();
+						if(J155 == ''){
+							var J155 = 0;
+						}
+						var count = Number(L155) - Number(J155);
+						$('.M155').html(count.toFixed(2));
+					});
+				</script>
+			</td>
+			<td class="N155">
+				<script>
+					$(document).ready(function(){
+						var M155 = $('.M155').html();
+						if(M155 == ''){
+							var M155 = 0;
+						}
+						var L155 = $('.L155').html();
+						if(L155 == '' || L155 == 0){
+							var count = 0;
+						}else {
+							var count = (Number(M155)/Number(L155))*100;
+						}
+						$('.N155').html(count.toFixed(2)+"%");
+					});
+				</script>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3">本月新车销售毛利占比</td>
+			<td colspan="7">本月售后维修毛利占比</td>
+			<td colspan="2">本月增值业务毛利占比</td>
+			<td colspan="2">本月其他业务毛利占比</td>
+		</tr>
+		<tr>
+			<td colspan="3" class="A158">
+				<script>
+					$(document).ready(function(){
+						var M46 = $(".M46").html();
+						if(M46 == ''){
+							M46 = 0;
+						}
+						var M156 = $(".M155").html();
+						if(M156 == '' || M156 == 0){
+							var count = 0;
+						}else {
+							var count = (Number(M46)/Number(M156))*100;
+						}
+						$(".A158").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td colspan="7" class="D158">
+				<script>
+					$(document).ready(function(){
+						var L113 = $(".L113").html();
+						if(L113 == ''){
+							L113 = 0;
+						}
+						var M156 = $(".M155").html();
+						if(M156 == '' || M156 == 0){
+							var count = 0;
+						}else {
+							var count = (Number(L113)/Number(M156))*100;
+						}
+						$(".D158").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td colspan="2" class="K158">
+				<script>
+					$(document).ready(function(){
+						var M54 = $(".M53").html();
+						if(M54 == ''){
+							M54 = 0;
+						}
+						var M70 = $(".M69").html();
+						if(M70 == ''){
+							M70 = 0;
+						}
+						var M79 =$(".M78").html();
+						if(M79 == ''){
+							M79 = 0;
+						}
+						var M86 = $(".M85").html();
+						if(M86 == ''){
+							M86 = 0;
+						}
+						var hj = Number(M54)+Number(M70)+Number(M79)+Number(M86);
+						var M156 = $(".M155").html();
+						if(M156 == '' || M156 == 0){
+							var count = 0;
+						}else {
+							var count = (hj/Number(M156))*100;
+						}
+						$(".K158").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+			<td colspan="2" class="M158">
+				<script>
+					$(document).ready(function(){
+						var N153 = $(".N152").html();
+						if(N153 == ''){
+							N153 = 0;
+						}
+						var M156 = $(".M155").html();
+						if(M156 == '' || M156 == 0){
+							var count = 0;
+						}else {
+							var count = (Number(N153)/Number(M156))*100;
+						}
+						$(".M158").html(count.toFixed(2)+"%");
+					})
+				</script>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+	<!--移动端关键指标-->
+<div class="m_content_box">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0">
+		<thead>
+			<tr>
+				<th>关键KPI指标项目</th>
+				<th>上月实际</th>
+				<th>本月预测</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>整车销量（台）</td>
+				<td class="E22">
+					<script>
+						$(document).ready(function(){
+							key_index("E22");
+						})
+					</script>
+				</td>
+				<td class="J22">
+					<script>
+						$(document).ready(function(){
+							key_index("J22");
+						})
+					</script>
+				</td>
+			</tr>
+			<tr>
+				<td>新车投保率</td>
+				<td class="E72">
+					<script>
+						$(document).ready(function(){
+							key_index("E72");
+						})
+					</script>
+				</td>
+				<td class="J72">
+					<script>
+						$(document).ready(function(){
+							key_index("J72");
+						})
+					</script>
+				</td>
+			</tr>
+			<tr>
+				<td>金融渗透率</td>
+				<td class="G93">
+					<script>
+						$(document).ready(function(){
+							key_index("G93");
+						})
+					</script>
+				</td>
+				<td class="K93">
+					<script>
+						$(document).ready(function(){
+							key_index("K93");
+						})
+					</script>
+				</td>
+			</tr>
+			<tr>
+				<td>信息费ASP（万元）</td>
+				<td class="SAP">
+					<script>
+						$(document).ready(function(){
+							var F82 = $("#F82").text();
+							if(F82 == ''){
+								F82 = 0;
+							};
+							var F93 = $("#F93").text();
+							if(F93 == '' || F93 == "0" || F93 == 0){
+								var count = 0;
+							}else {
+								var count = (Number(F82)/Number(F93));
+							}
+							$(".m_content_box .SAP").html(count.toFixed(2));
+						})
+					</script>
+				</td>
+				<td class="L93">
+					<script>
+						$(document).ready(function(){
+							key_index("L93");
+						})
+					</script>
+				</td>
+			</tr>
+			<tr>
+				<td>装饰客单价(元)</td>
+				<td class="E54">
+					<script>
+						$(document).ready(function(){
+							key_index("E54");
+						})
+					</script>
+				</td>
+				<td class="L54">
+					<script>
+						$(document).ready(function(){
+							key_index("L54");
+						})
+					</script>
+				</td>
+			</tr>
+			<tr>
+				<td>整车综合毛利(万元)</td>
+				<td class="F96">
+					<script>
+						$(document).ready(function(){
+							key_index("F96");
+						})
+					</script>
+				</td>
+				<td class="M96">
+					<script>
+						$(document).ready(function(){
+							key_index("M96");
+						})
+					</script>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<?php } ?>
+
+<input type="hidden" value="<?php if(!empty($sid)) echo $sid; ?>" id="search_id"/>
+<input type="hidden" value="<?php if(!empty($year)) echo $year; ?>" id="search_year"/>
+<input type="hidden" value="<?php if(!empty($month)) echo $month; ?>" id="search_month"/>
+
+</body>
+<script>
+	$(document).ready(function(){
+
+		//新车业务->当期销售形成返利预测->本月占比
+		$(".new_proportion").each(function(){
+			var  proportion = $(this).parent().children(".this_month").html();
+			if(proportion == ''){
+				var proportion = 0;
+			}
+			var c = $(".new_car_subtotal").html();
+			if(c == '' || c == 0){
+				var p = 0;
+			}else{
+				var p = (proportion/c)*100;
+			}
+
+			$(this).html(p.toFixed(2)+"%");
+		});
+
+		//维修业务毛利占比
+		$(".proportion").each(function(){
+			var  proportion = $(this).parent().children(".profit").html();
+			var c = $(".gross-profits").html();
+			var p = (proportion/c)*100;
+			$(this).html(p.toFixed(2)+"%");
+		});
+
+
+	});
+	$(function(){
+		//年份
+		var current_date = new Date();
+		var cur_year = current_date.getFullYear()-2 ;
+		for(var i=0; i<5;i++){
+			var html = '</option><option value="'+(cur_year+i)+'">'+(cur_year+i)+'年</option>';
+			$("#store_year").append(html);
+		};
+		$("#store_year").val(current_date.getFullYear());
+		//月份
+		var cur_month = current_date.getMonth()+1;
+		$("#store_month").val(cur_month);
+
+	})
+
+	$(document).ready(function(){
+		var store_id = $("#search_id").val();
+		var store_year = $("#search_year").val();
+		var store_month = $("#search_month").val();
+		if (store_id != "") {
+			$("#store_id").val(store_id);
+		};
+		if(store_year != ''){
+			$("#store_year").val(store_year);
+		}
+		if(store_month != ''){
+			$("#store_month").val(store_month);
+		};
+		var store_name = $("#store_id").find("option:selected").text();
+		$("h1 > span").eq(0).html(store_name);
+
+
+	});
+
+
+	//新车业务当期销售形成返利预测占比
+	function yufanlizhanbi(thisclass){
+		var fz = $("#MyTable #yfl"+thisclass).prev("td").html();
+		if(fz == ''){
+			fz = 0;
+		}
+		var fm = $(".new_car_subtotal").html();
+		if(fm == '' || fm == 0){
+			var count = 0;
+		}else {
+			var count = (Number(fz)/Number(fm))*100;
+		}
+		$("#MyTable #yfl"+thisclass).html(count.toFixed(2)+"%");
+	}
+	$(document).ready(function(){
+		for( var i=0; i<7; i++){
+			yufanlizhanbi(i);
+		}
+	})
+	$(document).ready(function(){
+		//执行
+		var self;
+		var status = $("#status").val();
+		//鼠标经过需要修改的地方的效果
+		$("td.edit,td.edit1,td.edit2,td.edit3,td.edit4,td.edit5,td.edit6,td.edit7,td.edit8,td.edit9,td.edit10,td.edit11,td.edit12,td.edit13,td.edit14,td.edit15,td.edit16").hover(
+				function(){
+					if(status == 2 || status == ''){
+						$(this).css({"cursor":"url(/position/public/kpi/img/edit.png),default","background-color":"#eee"});
+					}
+				},
+				function(){
+					if(status == 2 || status == ''){
+						$(this).css({"cursor":"default","background-color":"#fff"});
+					}
+				}
+		);
+		//月销售正常毛利预测数据修改
+		$("td.edit").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_carprofit';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//需开票数据修改
+		$("td.edit1").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_carprofit_piao';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//装饰业务->部分数据修改
+		$("td.edit2").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_decorate_class';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//装饰业务->集中采购数据修改
+		$("td.edit3").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_decorate_focus';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//装饰业务->重点产品数据修改
+		$("td.edit4").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_decorate_emphasis';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//新保业务->分类数据修改
+		$("td.edit5").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_insurance';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//新保业务->新保渗透率目标数据修改
+		$("td.edit6").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_insurance_target';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//新车延保数据修改
+		$("td.edit7").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_newcar';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//车贷业务数据修改
+		$("td.edit8").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_carloan';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//车贷业务->厂家金融数据修改
+		$("td.edit9").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_mortgage_num';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//维修业务数据修改
+		$("td.edit10").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_repair';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//三卡业务数据修改
+		$("td.edit11").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_three_card_business';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+                //续保渗透率目标
+		$("td.edit12").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_penetrance';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+		//续保业务
+		$("td.edit13").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_renewal';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+                //非新车延保
+		$("td.edit14").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_non_newcar';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+                //其他业务数据修改
+		$("td.edit15").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_other';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+                //其他业务人工成本数据修改
+		$("td.edit16").on("dblclick",function(){
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'month_other_cost';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if(status == 2 || status == ''){
+				tip_function(datatype,table_name,key_name,con,1,order_num);
+			}
+		});
+
+                //审批状态判断
+//                $(function(){
+//                    var ct_status = $("#ct_status").val();
+//                    if(ct_status!=="1"){
+//                        $("div[class^='table_box']").addClass("hidden");
+//                    }
+//                });
+	})
+	function key_index(name){
+		var current_con = $("#"+name).text();
+		if(current_con == ''){
+			current_con = 0;
+		}
+		$(".m_content_box table td."+name).html(current_con);
+	}
+
+</script>
+</html>

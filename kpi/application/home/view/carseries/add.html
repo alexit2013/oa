@@ -1,0 +1,63 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<div class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-article-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车系：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请输入车系" id="revise_obj" name="carseries_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+                                
+				<select class="select" id="carbrand_id" name="carbrand_id">
+					<option>请选择</option>
+                                        <?php foreach($data_brand as $v){ ?>
+					<option  value="{$v['id']}">{$v['carbrand_name']}</option>
+                                        <?php } ?>
+				</select>
+                                
+				</span></div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>是否进口：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select class="select" id="is_import" name="is_import">
+					<option>请选择</option>
+					<option name='1' value="1">国产</option>
+					<option name='2' value="2">进口</option>
+				</select>
+				</span></div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+				<button id="ture_submit" style="display: none;" class="btn btn-primary radius" type="submit">提交</button>
+				<button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+	function article_save_submit(){
+		if ($("#revise_obj").val()=="") {
+			layer.msg("请填写车系"); 
+			return false;
+		}
+		if ($("#carbrand_id option:selected").text()=="请选择") {
+			layer.msg("请选择品牌"); 
+			return false;
+		}
+		if ($("#is_import option:selected").text()=="请选择") {
+			layer.msg("请选择是否进口"); 
+			return false;
+		}
+		$("#ture_submit").click();
+	}
+</script> 
+{/block}

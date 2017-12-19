@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>中致远考勤</title>
+		<link rel="stylesheet" href="__INS__/pui/css/planeui.min.css" />
+		<link rel="stylesheet" href="__INS__/Font-Awesome-3.2.1/css/font-awesome.min.css" />
+		<script type="text/javascript" src="__INS__/js/jquery-2.1.1.js" ></script>
+		<script type="text/javascript" src="__INS__/pui/js/planeui.min.js" ></script>
+		<style>
+			*{margin:0; padding:0; list-style:none; }
+			body{ background:#f5f5f5; font:normal 12px/22px 宋体;overflow-x: hidden;}
+			img{ border:0;}
+			a{ text-decoration:none; color:#333;}					
+			.navbar{
+				position:relative;
+				min-height:50px;				
+				border:1px solid transparent;
+			}
+			.navbar-default{
+				background-color:#f8f8f8;
+				border-color:#e7e7e7;
+			}	
+			.navbar-fixed-top{
+				position:fixed;
+				top:  0;
+				left: 0;
+				right: 0;
+				border-width:0 0 1px;
+				z-index: 10086;
+			}
+			.navbar-fixed-bottom{
+				position:fixed;
+				bottom:  0;
+				left: 0;
+				right: 0;
+				border-width:1px 0 0px;
+				z-index: 10086;
+			}
+			.nav-box{
+				margin-top:6px;
+				margin-left:25px;
+			}
+			.bot_icon{
+				font-size:18px;
+				margin-top:4px;
+			}
+		.pd5-three{padding:0 5px 5px;}
+		.fl{float: left;}
+		.mt-1r{margin-top:1rem}
+		.mt-5r{margin-top:0.9rem}		
+		.nav-entity{min-height:50px;}
+		.nav-entity-bottom{
+				min-height:65px;}		
+		.pd5{padding: 5px;}
+		.core_area{
+			width: 100%;
+			height: 193px;
+			background-color: #4fb180;
+		}
+		.core_area .core_area_time{
+			color: #fff;
+			text-align: center;
+			font-size: 3rem;
+			font-weight: bold;
+			padding-top: 1.8rem;
+		}
+		.core_area .core_area_status{
+			color: #ccf51f;
+			text-align: center;
+			font-size: 1.2rem;
+			font-weight: bold;
+			padding-top: .8rem;
+		}
+		.core_area .core_area_signin{
+			color: #fff;
+			text-align: center;
+			font-size: 1.5rem;
+			font-weight: 600;
+			margin: 1rem auto;
+			height:95px;
+			line-height: 86px;
+			width: 95px;
+			background-color: #319f66;
+			border-radius: 50%;
+			border: 5px solid #82c8a5;
+		}
+		.fc_area .fc_item{
+			background-color: #fff;
+			height: 100px;
+			/*line-height: 99px;*/			
+			border-bottom: 1px solid #EEEDED;
+			border-right: 1px solid #EEEDED;
+		}
+		.fc_area .fc_item a{
+			display: block;
+			margin:22px auto;
+		}
+		.icon_size{font-size: 25px;}
+		.icon_tip{margin-top:.8rem;color:#2f2f2f;font-size: 1.6rem;}
+		.icon1{color: #eca101;}
+		.icon2{color: #c96759;}	
+		.icon3{color: #eca101;}
+		.clear{clear: both;}
+		.shade{
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 2017;
+				background-color:#000000;
+				opacity:0.3;
+				display: none;				
+			}
+			.msg_box{
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				background-color:#fff;
+				box-shadow:1px 1px 50px rgba(0,0,0,.3);
+				border-radius:2px;
+				width:260px;
+				height: 150px;
+				z-index: 2018;
+				margin-left:-130px;margin-top:-75px;
+				display: none;
+			}
+			.msg_box .msg_tit{
+				padding:0 5px 0 20px;
+				height: 42px;
+				line-height: 42px;
+				border-bottom:1px solid #eee;
+				font-size:14px;
+				color:#333;
+				overflow:hidden;
+				background-color:#F8F8F8;
+				border-radius:2px 2px 0 0;
+			}
+			.msg_box .msg_tit a{
+				float: right;
+				cursor:pointer;				
+			}
+			.msg_box .msg_content{
+				padding:20px 20px 0px 20px;
+				line-height:24px;
+				font-size:14px;
+				overflow:hidden;
+			}
+			.msg_box .msg_btn{
+				text-align:right;
+				padding:0 28px 12px;
+			}
+			.close_icon{padding-right:0.6rem;height:42px;line-height: 42px;font-size: 14px;}
+			.hidden{display: none;}			
+			.path_title{
+				width: 100%;
+				height: 30px;
+				text-indent: 1em;
+				line-height: 30px;
+				background-color: #EEEDED;
+				color: #c0c0c0;
+			}
+			.icon_class{width: 2.5rem;}				
+		</style>
+	</head>
+	<body>
+		<div class="core_area">
+			<div id="timeShow" class="core_area_time"></div>
+                        <!-- 提示信息 start-->
+			<div id="content" class="core_area_status">正在定位中...</div>
+                        <!-- 提示信息 end-->
+                        <form id="pos_data" method="POST" action="{:U('commit')}">
+                            <input type="hidden" id="emp_no" name="emp_no" value="{$emp_no}"/>
+                            <input type="hidden" id="user_id" name="user_id" value="{$userinfo['user_id']}"/>
+                            <input type="hidden" id="dept_id" name="dept_id" value="{$userinfo['dept_id']}"/>
+                            <input type="hidden" id="pos_status" name="dept_id" value="{$is_del}"/>
+                            <input type="hidden" name="dept_name" value="{$userinfo['dept_name']}"/>
+                            
+                            <input type="hidden" name="com_id" value="{$userinfo['com_id']}"/>
+                            <input type="hidden" name="position" value="{$userinfo['position']}"/>
+                            <input type="hidden" name="user_name" value="{$userinfo['user_name']}"/>
+                            <input type="hidden" name="schedual_id" id="schedual_id" value=""/>
+                            <input type="hidden" id="lat" name="lat">
+                            <input type="hidden" id="lng" name="lng">
+                            <input type="hidden" id="address" name="address">
+                            <input type="submit" class="hidden" id="do_submit" value="submit">
+                            <div id="do" class="core_area_signin">打卡</div>
+                        </form>
+			<input type="hidden" id="status" value="0">
+			<input type="hidden" id="tips" value="<h3>是否确认<span style='color:green;font-size:3rem'>打卡</span></h3>">
+		</div>
+		
+		<div class="fc_area">
+			<div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="{:U('Posrank/index',['emp_no'=>$userinfo['emp_no']])}" id="dkph"><i class="icon-trophy icon1 icon_size"><div class="pui-text-center icon_tip">打卡排行</div></i></a>
+				<input id="user_name" type="hidden"  value="{$userinfo['user_name']}">
+				<input id="dept_name" type="hidden"  value="{$userinfo['dept_name']}">
+            </div>
+            <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="{:U('Myschedule/index',['emp_no'=>$userinfo['emp_no']])}"><i class="icon-calendar icon2 icon_size"><div class="pui-text-center icon_tip">我的排班</div></i></a> 
+            </div>
+            <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="#">
+                <!-- <img src="__INS__/img/zd_icon.png" class="icon_class" /> -->
+                <!-- <div class="pui-text-center icon_tip">考勤制度</div> --></a> 
+            </div>           
+        </div>
+
+        <div class="clear"></div>
+        <div class="path_title">申请与审批</div>
+        <div class="fc_area">
+            <div class="clear"></div>
+            <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="https://{$_SERVER['SERVER_NAME']}/index.php?m=&c=public&a=wxlogin&biao=51">
+                <img src="__INS__/img/yc_icon.png" class="icon_class" />
+                <div class="pui-text-center icon_tip">异常反馈</div></a>
+            </div>
+            <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="https://{$_SERVER['SERVER_NAME']}/index.php?m=&c=public&a=wxlogin&biao=52">
+                <img src="__INS__/img/jb_icon.png" class="icon_class" />
+                <div class="pui-text-center icon_tip">加班申请</div></a> 
+            </div>
+            <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="https://{$_SERVER['SERVER_NAME']}/index.php?m=&c=public&a=wxlogin&biao=53">
+                <img src="__INS__/img/tx_icon.png" class="icon_class" />
+                <div class="pui-text-center icon_tip">调休申请</div></a>
+            </div>
+            <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="https://{$_SERVER['SERVER_NAME']}/index.php?m=&c=public&a=wxlogin&biao=54">
+                <img src="__INS__/img/qj_icon.png" class="icon_class" />
+                <div class="pui-text-center icon_tip">请假申请</div></a>
+            </div>
+            <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="https://{$_SERVER['SERVER_NAME']}/index.php?m=&c=public&a=wxlogin&biao=55">
+                <img src="__INS__/img/wc_icon.png" class="icon_class" />
+                <div class="pui-text-center icon_tip">外出申请</div></a>
+            </div>
+            <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="https://{$_SERVER['SERVER_NAME']}/index.php?m=&c=public&a=wxlogin&biao=56">
+                <img src="__INS__/img/cc_icon.png" class="icon_class" />
+                <div class="pui-text-center icon_tip">出差申请</div></a>
+            </div>
+            <!-- <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="https://autotest.zzyauto.com/index.php?m=&c=public&a=wxlogin&biao=57">
+                <img src="__INS__/img/db_icon.png" class="icon_class" />
+                <div class="pui-text-center icon_tip">待我审批</div></a>
+            </div>
+            <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="https://autotest.zzyauto.com/index.php?m=&c=public&a=wxlogin&biao=58">
+                <img src="__INS__/img/sq_icon.png" class="icon_class" />
+                <div class="pui-text-center icon_tip">我的申请</div></a>
+            </div>
+            <div class="pui-grid-xs-4 pui-text-center fc_item">
+                <a href="https://autotest.zzyauto.com/index.php?m=&c=public&a=wxlogin&biao=59">
+                <img src="__INS__/img/jq_icon.png" class="icon_class" />
+                <div class="pui-text-center icon_tip">我的假期</div></a>
+            </div> -->
+		</div>
+		<div class="clear"></div>
+		<div class="nav-entity-bottom"></div>
+		<nav class="navbar navbar-default navbar-fixed-bottom">
+    			<div class="pui-grid-xs-4 pui-text-center">
+                <a href="javascript:;"><i class="fa fa-home bot_icon"></i><div class="pui-text-center">首页</div></a>
+                </div>
+                <div class="pui-grid-xs-4 pui-text-center">
+                <a href="{:U('Record/index',['emp_no'=>$userinfo['emp_no']])}"><i class="fa fa-file-text-o bot_icon"></i><div class="pui-text-center">考勤记录</div></a> 
+                </div>
+                <div class="pui-grid-xs-4 pui-text-center">
+                <!-- <a href="javascript:;"><i class="fa fa-twitch bot_icon"></i><div class="pui-text-center">消息</div></a> -->
+                </div>
+		</nav>
+ 		<div class="shade"></div>
+		<div class="msg_box">
+			<div class="msg_box">
+				<div class="msg_tit">重要提示<a id="msg_close" class="close_icon" href="javascript:;"><i class="fa fa-times-circle"></i></a></div>
+				<div class="msg_content">您的账号不存在或已被禁用，请联系管理员！</div>
+				<div class="msg_btn"><a id="msg_ensure" class="pui-btn pui-btn-secondary pui-btn-small" href="javascript:;">确定</a></div>
+			</div>
+		</div> 
+	</body>
+	<script type="text/javascript">
+			var h={:date('H',$time)};
+			var m={:date('i',$time)};
+			var s={:date('s',$time)};
+			setInterval(time,1000);			
+			function time(){
+			parseInt(h, 10);
+			parseInt(m, 10);
+			parseInt(s, 10);
+			 if(s<59){
+			 	s++;
+			 }else{
+			 	s=0;
+			 	if(m<59){
+			 		m++;
+			 	}else{
+			 		m=0;
+			 		if(h<23){
+			 			h++;
+			 		}else{
+			 			h=0;
+			 		}
+			 	}
+			 }
+				if(h<10&&m<10&&s<10){
+				 	document.getElementById("timeShow").innerHTML="0"+h+":0"+m+":0"+s;
+				}else if(h<10&&m<10){
+					document.getElementById("timeShow").innerHTML="0"+h+":0"+m+":"+s;
+				}else if(m<10&&s<10){
+					document.getElementById("timeShow").innerHTML=h+":0"+m+":0"+s;
+				}else if(h<10&&s<10){
+					document.getElementById("timeShow").innerHTML="0"+h+":"+m+":0"+s;
+				}else if(h<10){
+					document.getElementById("timeShow").innerHTML="0"+h+":"+m+":"+s;
+				}else if(m<10){
+					document.getElementById("timeShow").innerHTML=h+":0"+m+":"+s;
+				}else if(s<10){
+					document.getElementById("timeShow").innerHTML=h+":"+m+":0"+s;
+				}				
+				else{
+				 	document.getElementById("timeShow").innerHTML=h+":"+m+":"+s;
+				}			 
+			}			
+			function checkTime(i)
+			{
+			if (i<10) 
+			  {i="0" + i}
+			  return i
+			}
+		</script>
+<!--		<script type="text/javascript" src="__INS__/js/geolocation.min.js"></script>-->
+                <script type="text/javascript" src="https://apis.map.qq.com/tools/geolocation/min?key=WOEBZ-NNK3U-ZWHVF-253NS-C4ZNJ-ILBP5&referer=中致远定位"></script>
+<!--     	<script type="text/javascript" src="__INS__/js/getmapinfo.js"></script> -->
+    	<script>
+    				// var name = decodeURIComponent(getQueryStr('name'));
+        //             var addr = decodeURIComponent(getQueryStr('addr'));
+        //             var city = decodeURIComponent(getQueryStr('city'));
+        //             var module = decodeURIComponent(getQueryStr('module'));
+//                    	var geolocation = new qq.maps.Geolocation("WOEBZ-NNK3U-ZWHVF-253NS-C4ZNJ-ILBP5", "中致远定位");
+                        var geolocation = new qq.maps.Geolocation();
+		            	var lat;	//经度
+		            	var lng;	//纬度
+		            	var address; //地址
+//		            	$(geolocation.getLocation(showPosition, showErr, options));
+		            	var options = {timeout: 8000};
+                                geolocation.getLocation(showPosition, showErr, options);
+		            	/*显示坐标点*/
+		            	function showPosition(position) {
+			                 lat = position.lat;
+			                 lng = position.lng;
+			                 address = position.province+position.city+position.addr;
+			                 $("#address").val(address);
+                                         $("#lat").val(lat);
+			                 $("#lng").val(lng);
+
+                            check();    //检查是否能打卡
+                                         
+		            	};
+		            	function showErr(){
+		                	alert("定位失败，请重试！");
+		            	};
+		    //数据判断
+		    var emp_no =$("#emp_no").val();
+		    var user_id=$("#user_id").val();
+		    var dept_id=$("#dept_id").val();
+                    var pos_status = $("#pos_status").val();
+		     if( pos_status == "1"||emp_no ==""||user_id == ""||dept_id==""){
+		     	$(".shade").css("display","block");
+		     	$(".msg_box").css("display","block");
+			  	 $("#msg_ensure,#msg_close").click(
+			  	 	function(){
+			  	 		jump();
+			  	 	}
+			  	 );
+		     }
+                    
+                    // $("#do").click(function(){
+                    //     var status = $("#status").val();
+                    //     var str = $("#pos_data").serialize();
+                    //     if(status == 1){
+                    //     	$.ajax({
+                    //         	url: "{:U('commit')}",
+                    //             dataType: 'json',
+                    //             data : str,  
+                    //             type: 'POST',
+                    //             cache: false,
+                    //             success: function(data){
+                                    
+                    //             }
+                    //     	});
+                    //         alert('成功');
+                    //     }else{
+                    //         alert('不在打卡范围内');
+                    //     }
+                    // });
+                    $("#do").click(function(){
+                        var status = $("#status").val();
+                        var tips = $("#tips").val();
+                        $("#do").click("disabled","disabled");
+                        if(status == 1){
+                        	alerts(tips);                        	
+                        }else if(status == 2){
+                        	alert('尚未设置班次，无法打卡，请联系系统管理员！');
+                        }
+                        else{
+                            alert('不在打卡范围内');
+                        }
+                    });
+                    
+                    function check(){
+                        var lat1 = $("#lat").val();
+                        var lng1 = $('#lng').val();
+                        var emp = $('#emp_no').val();
+                        var form = "emp_no="+emp+"&lat="+lat1+"&lng="+lng1;
+                        $.ajax({
+                            url: "/index.php/Home/Pos/check",
+                                dataType: 'json',
+                                data : form,  
+                                type: 'POST',
+                                cache: false,
+                                success: function(data){
+                                    $("#content").html(data.content);
+                                    if(data.status == 1){
+                                        $('#status').val(1);
+                                        if(data.msg!=undefined){
+                                        	$("#tips").val(data.msg);
+                                        }
+                                        if(data.schedual_id==0||data.schedual_id==null){
+                                        	alert("尚未设置班次，无法打卡，请联系系统管理员！")
+                                        	$('#status').val(2);
+                                        	return false;
+                                        }
+                                        $("#schedual_id").val(data.schedual_id);
+                                    }else{
+                                        $('#status').val(0);
+                                    }
+                                }
+                        });
+                    }
+		    function jump(){
+				WeixinJSBridge.call('closeWindow');
+			}
+			/*弹窗程序*/
+	        function alerts(text){ 
+		            $.dialog({
+		            type : "confirm-app",
+		            content : text,
+		            buttons : {
+		                "class" : {
+		                    yes : "pui-btn-warning"
+		                }
+		            },
+		            yes : function(){ 
+		                $("#do_submit").click();
+		            },
+		            cancel : function(){ 
+		                return false;
+		            }
+		        });
+	        }s	
+    </script>
+
+</html>

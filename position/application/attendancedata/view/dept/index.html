@@ -1,0 +1,250 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<style>
+	.bt_blue{
+		background-color: #2CBB97;
+		border-radius: 5px;
+		color: #FFFFFF;
+	}
+	.bt_blue:hover{
+		background-color: #28AA89;
+	}
+	.bt_button{
+		background-color: #F3F3F3!important;
+	    background: -webkit-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: -o-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: -moz-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: linear-gradient(#FCFCFC, #EEEEEE)!important;
+	}
+	.bt_button:hover{
+		background: -webkit-gradient(linear, 0 0, 0 100%, from(#FCFCFC), to(#DDDDDD));
+		background: -webkit-linear-gradient(#FCFCFC, #DDDDDD);
+		background: -moz-linear-gradient(#FCFCFC, #DDDDDD);
+		background: -o-linear-gradient(#FCFCFC, #DDDDDD);
+		background: linear-gradient(#FCFCFC, #DDDDDD)!important;
+	}
+	a.come_time,a.end_time{
+		color: #4A90E2;
+	}
+	ul.pagination{
+		position: absolute;
+		bottom: -10px;
+		right: 50px;
+		margin-bottom: 20px;
+	}
+	.dataTables_wrapper .dataTables_info{
+		position: absolute;
+		bottom: -10px;
+		left: 50px;
+		margin-bottom: 20px;
+	}
+	table td, table th{
+		text-align: center !important;
+	}
+</style>
+
+<form method="POST" action="{:Url('index')}">
+<div class="page-container">
+	<div>
+                <span class="select-box inline">
+			<select name="com_id" class="select">
+				<option value="">--请选择公司--</option>
+                                <?php foreach($com_id as $k => $v){ ?>
+                                <option value="{$v['com_id']}" <?php if($v['com_id']==$where['com_id']){echo 'selected="selected"';}  ?> >{$v['name']}</option>
+                                <?php } ?>
+			</select>
+		</span>
+                日期范围：
+                <input type="month" id="starttime" class="input-text Wdate" style="width:120px;" name="starttime" value="<?php if(!empty($data['starttime'])){ echo $data['starttime']; } ?>">
+                -
+                <input type="month" id="endtime" class="input-text Wdate" style="width:120px;" name="endtime" value="<?php if(!empty($data['endtime'])){ echo $data['endtime']; } ?>">
+             
+		
+		
+		<button class="btn bt_blue" type="submit"> 查询</button>
+		<a name="" id="" class="btn bt_blue" onclick="export_excel()"> 导出部门报表</a>
+	</div>
+	
+	<div class="mt-20" style="overflow: auto; height: 500px;">
+		<table class="table table-border table-bordered table-bg" style="width: 1750px;">
+			<thead>
+                            <tr>
+                                <th rowspan="2"><div style="width: 100px;">公司</div></th>
+                                <th rowspan="2"><div style="width: 80px">工作时长（天）</div></th>
+                                <th rowspan="2">计薪时长（天）</th>
+                                <th rowspan="2"><div style="width: 50px;">迟到<br>（分钟）</div></th>
+                                <th rowspan="2"><div style="width: 50px;">早退<br>（分钟）</div></th>
+                                <th rowspan="2">旷工（次）</th>
+                                <th rowspan="2">旷工（天）</th>
+                                <th rowspan="2">调休（天）</th>
+                                <th rowspan="2">外出（天）</th>
+                                <th rowspan="2">出差（天）</th>
+                                <th rowspan="2">加班（天）</th>
+                                <th rowspan="2">病假（天）</th>
+                                <th rowspan="2">婚假（天）</th>
+                                <th rowspan="2">丧假（天）</th>
+                                <th rowspan="2">产假（天）</th>
+                                <th rowspan="2">事假（天）</th>
+                                <th rowspan="2">其他假期（天）</th>
+                                <!--<th rowspan="2">剩余调休（天）</th>-->
+                                <!--<th colspan="4">异常天数</th>-->
+                            </tr>
+<!--                            <tr>
+                                <th>异常天数</th>
+                                <th>占比</th>
+                                <th>异常天数</br>（纯异常）</th>
+                                <th>占比</th>
+                            </tr>-->
+			</thead>
+			<tbody>
+                            <tr>
+                                <td>{notempty name='count.dept_name'}{$count['dept_name']}{/notempty}</td>
+                                <td class="reportdetail">{notempty name='count.work_time'}{$count['work_time']}{/notempty}</td>
+                                <td class="reportdetail click">{notempty name='count.dept_name'}{$count['salary_time']}{/notempty}</td>
+                                <td class="reportdetail">{notempty name='count.salary_time'}{$count['late_time']}{/notempty}</td>
+                                <td class="reportdetail click">{notempty name='count.leave_early_time'}{$count['leave_early_time']}{/notempty}</td>
+                                <td class="reportdetail click">{notempty name='count.absent_times'}{$count['absent_times']}{/notempty}</td>
+                                <td class="reportdetail click">{notempty name='count.absent_time'}{$count['absent_time']}{/notempty}</td>
+                                <td class="reportdetail">{notempty name='count.adjust_time'}{$count['adjust_time']}{/notempty}</td>
+                                <td class="reportdetail click">{notempty name='count.out_time'}{$count['out_time']}{/notempty}</td>
+                                <td class="reportdetail click">{notempty name='count.business_time'}{$count['business_time']}{/notempty}</td>
+                                <td>{notempty name='count.over_time'}{$count['over_time']}{/notempty}</td>
+                                <td>{notempty name='count.sick_time'}{$count['sick_time']}{/notempty}</td>
+                                <td>{notempty name='count.marriage_time'}{$count['marriage_time']}{/notempty}</td>
+                                <td>{notempty name='count.death_time'}{$count['death_time']}{/notempty}</td>
+                                <td>{notempty name='count.maternity_time'}{$count['maternity_time']}{/notempty}</td>
+                                <td>{notempty name='count.thing_time'}{$count['thing_time']}{/notempty}</td>
+                                <td>{notempty name='count.other_time'}{$count['other_time']}{/notempty}</td>
+                                <!--<td>{notempty name='count.surplus_adjust_time'}{$count['surplus_adjust_time']}{/notempty}</td>-->
+<!--                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>-->
+                        
+                           </tr>
+                            <?php foreach($data_list as $k => $v){ ?>
+                            <tr>
+                                <td>{$v['dept_name']}</td>
+                                <td class="reportdetail">{$v['work_time']}</td>
+                                <td class="reportdetail click">{$v['salary_time']}</td>
+                                <td class="reportdetail">{$v['late_time']}</td>
+                                <td class="reportdetail click">{$v['leave_early_time']}</td>
+                                <td class="reportdetail click">{$v['absent_times']}</td>
+                                <td class="reportdetail click">{$v['absent_time']}</td>
+                                <td class="reportdetail">{$v['adjust_time']}</td>
+                                <td class="reportdetail click">{$v['out_time']}</td>
+                                <td class="reportdetail click">{$v['business_time']}</td>
+                                <td>{$v['over_time']}</td>
+                                <td>{$v['sick_time']}</td>
+                                <td>{$v['marriage_time']}</td>
+                                <td>{$v['death_time']}</td>
+                                <td>{$v['maternity_time']}</td>
+                                <td>{$v['thing_time']}</td>
+                                <td>{$v['other_time']}</td>
+                                <!--<td>{$v['surplus_adjust_time']}</td>-->
+<!--                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>-->
+                        
+                           </tr>
+                           <?php } ?>
+ 			</tbody>
+		</table>
+	</div>
+</div>
+</form>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+
+/*资讯-添加*/
+function article_add(title,url,w,h){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+/*资讯-编辑*/
+function article_edit(title,url,id,w,h){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+/*资讯-删除*/
+function article_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: '',
+			dataType: 'json',
+			success: function(data){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+
+/*资讯-审核*/
+function article_shenhe(obj,id){
+	layer.confirm('审核文章？', {
+		btn: ['通过','不通过','取消'], 
+		shade: false,
+		closeBtn: 0
+	},
+	function(){
+		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
+		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+		$(obj).remove();
+		layer.msg('已发布', {icon:6,time:1000});
+	},
+	function(){
+		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
+		$(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
+		$(obj).remove();
+    	layer.msg('未通过', {icon:5,time:1000});
+	});	
+}
+/*资讯-下架*/
+function article_stop(obj,id){
+	layer.confirm('确认要下架吗？',function(index){
+		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
+		$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
+		$(obj).remove();
+		layer.msg('已下架!',{icon: 5,time:1000});
+	});
+}
+
+/*资讯-发布*/
+function article_start(obj,id){
+	layer.confirm('确认要发布吗？',function(index){
+		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
+		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+		$(obj).remove();
+		layer.msg('已发布!',{icon: 6,time:1000});
+	});
+}
+/*资讯-申请上线*/
+function article_shenqing(obj,id){
+	$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">待审核</span>');
+	$(obj).parents("tr").find(".td-manage").html("");
+	layer.msg('已提交申请，耐心等待审核!', {icon: 1,time:2000});
+}
+
+/*导出excel*/
+function export_excel(){
+    var form =  $('form').serialize();
+    location.href = "/position/index.php/attendancedata/dept/export?"+form;
+}
+</script> 
+{/block}

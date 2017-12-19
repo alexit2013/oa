@@ -1,0 +1,75 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    .msg_content{
+        margin:25px 0px 0px 0px;
+        padding: 25px 0px;
+        box-sizing:border-box;
+        border: 1px solid #00ccff;
+        border-radius:15px;
+        position: relative;
+    }
+    .msg_del{
+        border-radius:5px;
+        color: #fff;
+        background-color:#3399ff;
+        width:auto;
+        height: 28px;
+        line-height: 28px;
+        padding: 0px 12px;
+        position: absolute;
+        top:-15px;
+        left:16px;
+        text-align: center;
+        font-size: 13px;
+        cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;margin-bottom:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">售后重点经营指标<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <a id="add_r" onclick="add('新增售后重点经营指标数据','{:Url('chart/runtarget/operateadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">售后重点经营指标数据</a>
+            <a id="add_r" onclick="add('新增售后重点经营指标数据','{:Url('chart/runtarget/proportionadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">售后重点经营指标->占比数据</a>
+            <a id="add_r" onclick="add('新增售后重点增值业务指标数据','{:Url('chart/runtarget/businessadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">售后重点增值业务指标数据</a>
+            <a id="add_r" onclick="add('新增售后重点管理指标数据','{:Url('chart/runtarget/managementadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">售后重点管理指标数据</a>
+        </div>
+    </div>
+</div>
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">三个月滚动库存（配件）<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <a id="add_r" onclick="add('新增三个月滚动库存（配件）数据','{:Url('chart/threerollparts/add')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">三个月滚动库存（配件）数据</a>
+            <a id="add_r" onclick="add('新增三个月滚动库存（配件）数据->上年期末库存','{:Url('chart/threerollparts/lastyearadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">三个月滚动库存（配件）数据->上年期末库存</a>
+        </div>
+    </div>
+</div>
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">月毛利预算表<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <a id="" onclick="add('维修业务','{:Url('chart/marginbudget/repairadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">维修业务</a>
+            <a id="" onclick="add('三卡业务','{:Url('chart/marginbudget/threecaradd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">三卡业务</a>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    /*新增车系*/
+    function add(title,url){
+        var index = layer.open({
+            type: 2,
+            content: url,
+            area: ['100%', '100%'],
+            title: title,
+            maxmin: true
+        });
+        layer.full(index);
+    }
+</script>
+{/block}

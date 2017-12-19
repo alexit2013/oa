@@ -1,0 +1,298 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+    <!--  {:W('PageHeader/simple',array('name'=>'新建：'.$flow_type['name']))} -->
+    <!--  功能操作区域  -->
+    <div class="operate panel panel-default">
+        <div class="panel-body">
+            <div class="pull-right">
+                <a class="btn btn-sm btn-primary" href="{:U('index')}">返回</a>
+            </div>
+        </div>
+    </div>
+    <!-- 功能操作区域结束 -->
+    <form method='post' id="form_data" class="well form-horizontal">
+        <input type="hidden" id="opmode" name="opmode" value="edit">
+        <input type="hidden" id="ajax" name="ajax" value="1">
+        <!-- <input type="hidden" id="confirm" name="confirm" >
+        <input type="hidden" id="confirm_name" name="confirm_name" >
+        <input type="hidden" id="consult" name="consult" >
+        <input type="hidden" id="consult_name" name="consult_name">
+        <input type="hidden" id="refer" name="refer">
+        <input type="hidden" id="refer_name" name="refer_name" > -->
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="dept">店名：</label>
+            <div class="col-sm-8">
+                <select class="form-control" disabled="disabled" name="dept_name" id="dept" check="require" msg="请选择店面">
+                    <option value="">请选择店面</option>
+                    {:fill_option($list['Alldept'],$list['Onlyloan']['dept_id'])}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="customer">客户名称*：</label>
+            <div class="col-sm-8">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['customer']}" type="text" id="customer" name="customer" check="require" msg="请输入姓名">
+            </div>
+        </div>
+        
+         <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="channel">渠道：</label>
+            <div class="col-sm-8">
+                <select class="form-control" name="channel_id" id="channel" check="require" msg="请选择渠道" disabled="disabled">
+                    <option value="">请选择渠道</option>
+                    {:fill_option($list['Allchannel'],$list['Onlyloan']['channel_id'])}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label leftpad" for="library">放款及咨询服务费类型：</label>
+            <div class="col-sm-8">
+                <select class="form-control" disabled="disabled" name="library_id" id="library" check="require" msg="请选择类型">
+                    <option value="">请选择类型：</option>
+                    {:fill_option($list['Alllibrary'],$list['Onlyloan']['library_id'])}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+          <label class="col-sm-4 control-label" for="mortgage">抵押状态：</label>
+          <div class="col-sm-8">
+            <select class="form-control" name="mortgage" id="mortgage" disabled="disabled">
+              <option value="0" <?php if($list['Onlyloan']['mortgage_status']==0){ echo "selected"; }?>>未抵押</option>
+              <option value="1" <?php if($list['Onlyloan']['mortgage_status']==1){ echo "selected"; }?>>已抵押</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="zxservice">咨询服务费*：</label>
+            <div class="col-sm-8">
+            	<div class="col-sm-10 leftpad">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['zxservice_cost']}" type="number" id="zxservice" name="zxservice_cost" check="require" msg="请输入咨询费">
+                </div>
+                <div class="clo-sm-2 toppad">元</div>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label" for="zxcost_time">咨询服务费交款日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-daterange input-group" >
+                        <input type="date" disabled="disabled" value="{:date('Y-m-d',$list['Onlyloan']['zxcost_time'])}" class="input-sm form-control text-center" name="zxcost_time"/>
+                    </div>
+                </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="collateral">保证金*：</label>
+            <div class="col-sm-8">
+            	<div class="col-sm-10 leftpad">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['collateral']}" type="number" id="collateral" name="collateral" check="require" msg="请输入保证金">
+                </div>
+                <div class="clo-sm-2 toppad">元</div>
+            </div>
+        </div>
+        
+        <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label" for="collateral_time">续保证金日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-daterange input-group" >
+                        <input type="date" disabled="disabled" value="{:date('Y-m-d',$list['Onlyloan']['collateral_time'])}" class="input-sm form-control text-center" name="collateral_time"/>
+                    </div>
+                </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="settle_mortgage_cost">落户抵押费*：</label>
+            <div class="col-sm-8">
+            	<div class="col-sm-10 leftpad">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['settle_mortgage_cost']}" type="number" id="settle_mortgage_cost" name="settle_mortgage_cost" check="require" msg="请输入落户抵押费">
+                </div>
+                <div class="clo-sm-2 toppad">元</div>
+            </div>
+        </div>
+        
+        <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label" for="settle_mortgage_time">落户抵押缴费日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-daterange input-group" >
+                        <input type="date" disabled="disabled" value="{:date('Y-m-d',$list['Onlyloan']['settle_mortgage_time'])}" class="input-sm form-control text-center" name="settle_mortgage_time"/>
+                    </div>
+                </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label" for="car_loan_time">车贷申请日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-daterange input-group" >
+                        <input type="date" disabled="disabled" value="{:date('Y-m-d',$list['Onlyloan']['car_loan_time'])}" class="input-sm form-control text-center" name="car_loan_time"/>
+                    </div>
+                </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label"  for="sales_user">销售顾问*：</label>
+            <div class="col-sm-8">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['sales_user']}" type="text" id="sales_user" name="sales_user" check="require" msg="请输入销售顾问">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="finance_service_manager">金融服务经理*：</label>
+            <div class="col-sm-8">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['finance_service_manager']}" type="text" id="finance_service_manager" name="finance_service_manager" check="require" msg="请输入金融服务经理">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="finance_company">金融公司：</label>
+            <div class="col-sm-8">
+                <select class="form-control" disabled="disabled" name="finance_company_id" id="finance_company" check="require" msg="请选择金融公司">
+                    <option value="">请选择金融公司</option>
+                    {:fill_option($list['Allcompany'],$list['Onlyloan']['finance_company_id'])}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="carbrand">车品牌：</label>
+            <div class="col-sm-8">
+                <select class="form-control" disabled="disabled" name="carbrand_name" id="carbrand" check="require" msg="请选择品牌">
+                    <option value="">请选择品牌</option>
+                    {:fill_option($list['Allcarbrand'],$list['Onlyloan']['carbrand_id'])}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="carseries">车系：</label>
+            <div class="col-sm-8">
+                <select class="form-control" disabled="disabled" name="carseries_name" id="carseries" check="require" msg="请选择车系">
+                    <option value="">请选择车系</option>
+                    {:fill_option($list['Allcarseries'],$list['Onlyloan']['carseries_id'])}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="carsize">车型：</label>
+            <div class="col-sm-8">
+                <select class="form-control" disabled="disabled" name="carsize_name" id="carsize" check="require" msg="请选择车型">
+                    <option value="">请选择车型</option>
+                    {:fill_option($list['Allcarsize'],$list['Onlyloan']['carsize_id'])}
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="car_money">进口与否：</label>
+            <div class="col-sm-8">
+                <?php if($list['seris_import']['is_import']==1){ ?>
+                    <span class="form-control" disabled="disabled">国产</span>
+                <?php } ?>
+                <?php if($list['seris_import']['is_import']==2){ ?>
+                    <span class="form-control" disabled="disabled">进口</span>
+                <?php } ?>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="car_money">车价格*：</label>
+            <div class="col-sm-8">
+            	<div class="col-sm-10 leftpad">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['car_money']}" type="number" id="car_money" name="car_money" check="require" msg="请输入价格">
+                </div>
+                <div class="clo-sm-2 toppad">元</div>
+            </div>
+        </div>
+        
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="loan_money">贷款金额*：</label>
+            <div class="col-sm-8">
+            	<div class="col-sm-10 leftpad">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['loan_money']}" type="text" id="loan_money" name="loan_money" check="require" msg="请输入金额">
+                </div>
+                <div class="clo-sm-2 toppad">元</div>
+            </div>
+        </div>
+
+         <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="deadline">贷款期限*：</label>
+            <div class="col-sm-8">
+            	<div class="col-sm-10 leftpad">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['deadline']}" type="text" id="deadline" name="deadline" check="require" msg="请输入期限">
+                </div>
+                <div class="clo-sm-2 toppad">月</div>
+            </div>
+        </div>
+        
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="permit_loan_money">准贷金额*：</label>
+            <div class="col-sm-8">
+            	<div class="col-sm-10 leftpad">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['permit_loan_money']}" type="number" id="permit_loan_money" name="permit_loan_money" check="require" msg="请输入金额">
+                </div>
+                <div class="clo-sm-2 toppad">元</div>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="loan_product_name">贷款产品名称*：</label>
+            <div class="col-sm-8">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['loan_product_name']}" type="text" id="loan_product_name" name="loan_product_name" check="require" msg="请输入名称">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="customer_telephone">客服联系电话*：</label>
+            <div class="col-sm-8">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['customer_telephone']}" type="text" id="customer_telephone" name="customer_telephone" check="require" msg="请输入电话号码">
+            </div>
+        </div>
+        
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="customer_telephone1">客服联系座机*：</label>
+            <div class="col-sm-8">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['customer_telephone1']}" type="text" id="customer_telephone1" name="customer_telephone1" check="require" msg="请输入号码">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="customer_telephone2">客服联系手机*：</label>
+            <div class="col-sm-8">
+                <input class="form-control" disabled="disabled"  value="{$list['Onlyloan']['customer_telephone2']}" type="number" id="customer_telephone2" name="customer_telephone2" check="require" msg="请输入号码">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="frame_number">车架号*：</label>
+            <div class="col-sm-8">
+                <input class="form-control" disabled="disabled"  value="{$list['Onlyloan']['frame_number']}"type="text" id="frame_number" name="frame_number" check="require" msg="请输入车架号">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label" for="entry_time">录入时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-daterange input-group" >
+                        <input type="date" disabled="disabled" value="{:date('Y-m-d',$list['Onlyloan']['entry_time'])}" class="input-sm form-control text-center" name="entry_time"/>
+                    </div>
+                </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label" for="remark">备注*：</label>
+            <div class="col-sm-8">
+                <input class="form-control" disabled="disabled" value="{$list['Onlyloan']['remark']}" type="text" id="remark" name="remark" check="require" msg="请输入备注">
+            </div>
+        </div>
+
+
+
+        <div class="clearfix"></div>
+    </form>
+</block>
+<block name="js">
+</block>

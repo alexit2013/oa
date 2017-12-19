@@ -1,0 +1,19 @@
+<aside class="Hui-aside">
+    <div class="menu_dropdown bk_2">
+
+        {foreach $menu as $v}
+            <dl id="menu-article">
+                <dt><i class="Hui-iconfont">{$v['icon']}</i>{$v['name']}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dd>
+                    <ul>
+                        {notempty name="v.sec"}
+                        {foreach $v['sec'] as $vo}
+                        <li><a data-href="{:Url($vo['url'])}" data-title="{$vo['name']}" href="javascript:void(0)">{$vo['name']}</a></li>
+                        {/foreach}
+                        {/notempty}
+                    </ul>
+                </dd>
+            </dl>
+        {/foreach}
+    </div>
+</aside>

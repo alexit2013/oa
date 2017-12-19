@@ -1,0 +1,334 @@
+<extend name="Layout/ins_popup" />
+<block name="content">	
+		<div class="popup-container" style="width: 560px;">
+			
+	<style>
+		#form_data select {
+			padding: 5px;
+		}
+	</style>
+	<div class="popup-fixed">
+		<div class="popup-header clearfix">
+			<div class="pull-left">
+				<h1>跳转条件</h1>
+			</div>
+			<div class="pull-right">
+				<a onclick="save();" class="btn btn-sm btn-primary">确定</a>
+				<a onclick="myclose();" class="btn btn-sm btn-default">关闭</a>
+			</div>
+		</div>
+		<div class="popup-body" style="height: 520px;overflow-y: auto;">
+			<form method="post" name="form_data" id="form_data">
+				<input name="condition_name" id="condition_name" type="hidden">
+				<input name="step_id" id="step_id" type="hidden" value="1">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<strong>第一组</strong>
+					</div>
+					<div class="panel-body">
+						<div class="row form-group">
+							<div class="col-xs-2"></div>
+							<div class="col-xs-4">
+								<select class="form-control" name="key_11" id="key_11">
+									<option value="">请选择</option>
+									<option value="59">姓名</option><option value="60">申请日期</option><option value="61">所属部门</option><option value="62">所属科室</option><option value="227">ssss</option><option value="228">sad0s000</option><option value="240">弹窗选择</option>								</select>
+							</div>
+							<div class="col-xs-2">
+								<select class="form-control" name="filter_11" id="filter_11">
+									<option value="eq">=</option>
+									<option value="neq">&lt;&gt;</option>
+									<option value="gt">&gt;</option>
+									<option value="egt">&gt;=</option>
+									<option value="lt">&lt;</option>
+									<option value="elt">&lt;=</option>
+									<option value="like">包含</option>
+									<option value="nolike">不包含</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<input class="form-control" type="text" id="val_11" name="val_11">
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-xs-2">
+								<select class="form-control" name="logic_12" id="logic_12">
+									<option value="and">并且</option>
+									<option value="or">或</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<select class="form-control" name="key_12" id="key_12">
+									<option value="">请选择</option>
+									<option value="59">姓名</option><option value="60">申请日期</option><option value="61">所属部门</option><option value="62">所属科室</option><option value="227">ssss</option><option value="228">sad0s000</option><option value="240">弹窗选择</option>								</select>
+							</div>
+							<div class="col-xs-2">
+								<select class="form-control" name="filter_12" id="filter_12">
+									<option value="eq">=</option>
+									<option vaue="neq">&lt;&gt;</option>
+									<option value="gt">&gt;</option>
+									<option value="egt">&gt;=</option>
+									<option value="lt">&lt;</option>
+									<option value="elt">&lt;=</option>
+									<option value="like">包含</option>
+									<option value="nolike">不包含</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<input class="form-control" type="text" id="val_12" name="val_12">
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-2">
+								<select class="form-control" name="logic_13" id="logic_13">
+									<option value="and">并且</option>
+									<option value="or">或</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<select class="form-control" name="key_13" id="key_13">
+									<option value="">请选择</option>
+									<option value="59">姓名</option><option value="60">申请日期</option><option value="61">所属部门</option><option value="62">所属科室</option><option value="227">ssss</option><option value="228">sad0s000</option><option value="240">弹窗选择</option>								</select>
+							</div>
+							<div class="col-xs-2">
+								<select class="form-control" name="filter_13" id="filter_13">
+									<option value="eq">=</option>
+									<option value="neq">&lt;&gt;</option>
+									<option value="gt">&gt;</option>
+									<option value="egt">&gt;=</option>
+									<option value="lt">&lt;</option>
+									<option value="elt">&lt;=</option>
+									<option value="like">包含</option>
+									<option value="nolike">不包含</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<input class="form-control" type="text" id="val_13" name="val_13">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-xs-2 col-xs-offset-5 text-center ">
+						<select class="form-control" name="logic_group" id="logic_group">
+							<option value="and">并且</option>
+							<option value="or">或</option>
+						</select>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<strong>第二组</strong>
+					</div>
+					<div class="panel-body">
+						<div class="row form-group">
+							<div class="col-xs-2"></div>
+							<div class="col-xs-4">
+								<select class="form-control" name="key_21" id="key_21">
+									<option value="">请选择</option>
+									<option value="59">姓名</option><option value="60">申请日期</option><option value="61">所属部门</option><option value="62">所属科室</option><option value="227">ssss</option><option value="228">sad0s000</option><option value="240">弹窗选择</option>								</select>
+							</div>
+							<div class="col-xs-2">
+								<select class="form-control" name="filter_21" id="filter_21">
+									<option value="eq">=</option>
+									<option value="neq">&lt;&gt;</option>
+									<option value="gt">&gt;</option>
+									<option value="egt">&gt;=</option>
+									<option value="lt">&lt;</option>
+									<option value="elt">&lt;=</option>
+									<option value="like">包含</option>
+									<option value="nolike">不包含</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<input class="form-control" type="text" id="val_21" name="val_21">
+							</div>
+						</div>
+						<div class="row  form-group">
+							<div class="col-xs-2">
+								<select class="form-control" name="logic_22" id="logic_22">
+									<option value="and">并且</option>
+									<option value="or">或</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<select class="form-control" name="key_22" id="key_22">
+									<option value="">请选择</option>
+									<option value="59">姓名</option><option value="60">申请日期</option><option value="61">所属部门</option><option value="62">所属科室</option><option value="227">ssss</option><option value="228">sad0s000</option><option value="240">弹窗选择</option>								</select>
+							</div>
+							<div class="col-xs-2">
+								<select class="form-control" name="filter_22" id="filter_22">
+									<option value="eq">=</option>
+									<option value="neq">&lt;&gt;</option>
+									<option value="gt">&gt;</option>
+									<option value="egt">&gt;=</option>
+									<option value="lt">&lt;</option>
+									<option value="elt">&lt;=</option>
+									<option value="like">包含</option>
+									<option value="nolike">不包含</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<input class="form-control" type="text" id="val_22" name="val_22">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-2">
+								<select class="form-control" name="logic_23" id="logic_23">
+									<option value="and">并且</option>
+									<option value="or">或</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<select class="form-control" name="key_23" id="key_23">
+									<option value="">请选择</option>
+									<option value="59">姓名</option><option value="60">申请日期</option><option value="61">所属部门</option><option value="62">所属科室</option><option value="227">ssss</option><option value="228">sad0s000</option><option value="240">弹窗选择</option>								</select>
+							</div>
+							<div class="col-xs-2">
+								<select class="form-control" name="filter_23" id="filter_23">
+									<option value="eq">=</option>
+									<option value="neq">&lt;&gt;</option>
+									<option value="gt">&gt;</option>
+									<option value="egt">&gt;=</option>
+									<option value="lt">&lt;</option>
+									<option value="elt">&lt;=</option>
+									<option value="like">包含</option>
+									<option value="nolike">不包含</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<input class="form-control" type="text" id="val_23" name="val_23">
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+		</div>
+</block>
+    <block name="js">
+		
+	<script>
+		function save() {
+			$val_11 = $('#val_11').val();
+			$val_12 = $('#val_12').val();
+			$val_13 = $('#val_13').val();
+			$val_21 = $('#val_21').val();
+			$val_22 = $('#val_22').val();
+			$val_23 = $('#val_23').val();
+
+			$str_condition_1 = '';
+			if ($val_11 != '') {
+				$key_val = $('#key_11 option:checked').val();
+				if ($key_val == '') {
+					ui_error('请选择字段');
+					$('#key_11').focus();
+					return false;
+				}
+				$key_name = $('#key_11 option:checked').text();
+				$filter_name = $('#filter_11 option:checked').text();
+				$str_condition_1 = ' ' + $key_name + $filter_name + $val_11;
+			}
+
+			if ($val_12 != '') {
+				$key_val = $('#key_12 option:checked').val();
+				if ($key_val == '') {
+					ui_error('请选择字段');
+					$('#key_12').focus();
+					return false;
+				}
+				$logic_name = $('#logic_12 option:checked').text();
+				$key_name = $('#key_12 option:checked').text();
+				$filter_name = $('#filter_12 option:checked').text();
+				$str_condition_1 += ' ' + $logic_name + ' ' + $key_name + $filter_name + $val_12;
+			}
+
+			$str_condition_2 = '';
+			if ($val_13 != '') {
+				$key_val = $('#key_13 option:checked').val();
+				if ($key_val == '') {
+					ui_error('请选择字段');
+					$('#key_13').focus();
+					return false;
+				}
+				$logic_name = $('#logic_13 option:checked').text();
+				$key_name = $('#key_13 option:checked').text();
+				$filter_name = $('#filter_13 option:checked').text();
+				$str_condition_1 += ' ' + $logic_name + ' ' + $key_name + $filter_name + $val_13;
+			}
+
+			if ($val_21 != '') {
+				$key_val = $('#key_21 option:checked').val();
+				if ($key_val == '') {
+					ui_error('请选择字段');
+					$('#key_21').focus();
+					return false;
+				}
+				$key_name = $('#key_21 option:checked').text();
+				$filter_name = $('#filter_21 option:checked').text();
+				$str_condition_2 = ' ' + $key_name + $filter_name + $val_21;
+			}
+
+			if ($val_22 != '') {
+				$key_val = $('#key_22 option:checked').val();
+				if ($key_val == '') {
+					ui_error('请选择字段');
+					$('#key_22').focus();
+					return false;
+				}
+				$logic_name = $('#logic_22 option:checked').text();
+				$key_name = $('#key_22 option:checked').text();
+				$filter_name = $('#filter_22 option:checked').text();
+				$str_condition_2 += ' ' + $logic_name + ' ' + $key_name + $filter_name + $val_22;
+			}
+
+			if ($val_23 != '') {
+				$key_val = $('#key_23 option:checked').val();
+				if ($key_val == '') {
+					ui_error('请选择字段');
+					$('#key_23').focus();
+					return false;
+				}
+				$logic_name = $('#logic_23 option:checked').text();
+				$key_name = $('#key_23 option:checked').text();
+				$filter_name = $('#filter_23 option:checked').text();
+				$str_condition_2 += ' ' + $logic_name + ' ' + $key_name + $filter_name + $val_23;
+			}
+
+			$logic_group = $("#logic_group option:checked").text();
+
+			if ($str_condition_2 == '') {
+				if ($str_condition_1 == '') {
+					ui_error('请选择');
+				} else {
+					$str_condition = $str_condition_1;
+				}
+			} else {
+				$str_condition = '(' + $str_condition_1 + ') ' + $logic_group + ' (' + $str_condition_2 + ')';
+			}
+
+			$('#condition_name').val($str_condition);
+			var vars = $("#form_data").serialize();
+			sendAjax("/index.php?m=&c=FlowType&a=condition", vars, function(data) {
+				if (data.status) {
+					$("#condition_name", parent.document).html($str_condition);
+					myclose();
+				}
+			});
+		}
+	</script>
+
+		<script>
+			$(document).ready(function() {
+				$(".popup-container").width($("#dialog", parent.document).width());
+				if (is_mobile()) {
+					$(".popup-container").height(window.screen.height - 40);					
+					$(".popup-container").css('overflow', 'auto');
+					
+					$(".popup-body").height(window.screen.height - 94);
+				}
+			});
+		</script>
+    </block>

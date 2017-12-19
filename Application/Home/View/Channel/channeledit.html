@@ -1,0 +1,27 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+    {:W('PageHeader/simple',array('name'=>'修改：'.$flow_type['name']))}
+    <form method='post' id="form_data" name="form_data" enctype="multipart/form-data" class="well form-horizontal">
+        <input type="hidden" id="ajax" name="ajax" value="1">
+        <input type="hidden" id="opmode" name="opmode" value="edit">
+        <div class="form-group">
+            <label class="col-sm-2 control-label phone-font-s pc-tit" for="name">渠道方式*：</label>
+            <div class="col-sm-10">
+                <input class="form-control pc-tit-input" value="{$list['channel_name']}" type="text" id="name" name="channel_name" check="require" msg="请输入名称">
+            </div>
+        </div>
+        <input type="hidden" name="id" value="{$list['id']}">
+    </form>
+                <div class="pull-right">
+                <a onclick="save();"  id="post" class="btn btn-sm btn-primary post-define btn-special res-btn-pc">提交</a>
+                </div>
+
+</block>
+<block name="js">
+    <script type="text/javascript">
+        function save() {
+                      sendForm("form_data", "{:U('save')}", "{:U('Channel/index')}");
+
+            }
+    </script>
+</block>

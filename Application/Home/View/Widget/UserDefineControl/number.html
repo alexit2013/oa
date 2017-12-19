@@ -1,0 +1,6 @@
+<eq name="readonly" value="true">
+	<input class="hidden" type="number" name="udf_field_{$id}" id="udf_field_{$id}" value="{$val}" >
+	<input disabled="disabled" class="col-sm-10 col-xs-11" type="number" name="disabled_udf_field_{$id}" id="udf_field_{$id}" value="{$val}" <notempty name="validate">check="{$validate}" msg="{$msg}"</notempty>><notempty name="unit"><span class="unitclass">{$unit}<span></notempty>
+	<else/>
+        <input class="col-sm-10 col-xs-11" type="number" name="udf_field_{$id}" id="udf_field_{$id}" value="{$val}" <notempty name="validate">check="{$validate}" msg="{$msg}"</notempty>><notempty name="unit"><span class="unitclass">{$unit}<span></notempty>
+</eq>

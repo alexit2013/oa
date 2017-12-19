@@ -1,0 +1,77 @@
+<extend name="Layout/ins_popup" />
+<block name="content">
+	<input type="hidden" name="val" id="val">
+	<input type="hidden" name="name" id="name">
+	<input type="hidden" name="comid" id="comid">
+	<div class="popup-header clearfix">
+		<div class="pull-left">
+			<h1>选择部门</h1>
+		</div>
+		<div class="pull-right">
+			<a onclick="save();" class="btn btn-sm btn-primary">确定</a>
+			<a onclick="myclose();" class="btn btn-sm btn-default">关闭</a>
+		</div>
+	</div>
+	<div class="popup-body" style="height: 420px;overflow-y: auto;">
+		<div class="popup_tree_menu">
+			<ul class="tree_menu">
+				<li>
+					<a node="0"><i class="fa fa-angle-right"></i> <span>根节点</span> </a>
+					{$menu}
+				</li>
+			</ul>
+		</div>
+	</div>
+</block>
+<block name="js">
+    <script type="text/javascript">
+		$(document).ready(function(){
+                    $("ul.level2").find("a").last();
+                });				
+                $("ul.level2").find("a").bind("click",function(){
+                    if ($(this).hasClass("open")){
+                        if ($(this).next().find(".active").size()===0){
+                            $(this).next().slideUp(500,function(){
+                                $(this).prev().removeClass("open");
+                            }); 
+                        }else{
+                            $(this).next().slideUp(500,function(){
+                            $(this).prev().removeClass("open");		                    
+                            });
+                        }
+                    }else{
+                        $(this).addClass("open").next().slideDown(500,function(){
+                            if ($(this).nextAll("a").size()>0){
+                                $(this).parent().find("a").last();
+                            }else{
+                                $(this).parent().find("a").last();
+                            }                
+                        });
+                    }            
+                });
+	</script>
+	<script type="text/javascript">
+		function save() {
+			if ($("#name").val().length > 0) {
+				$("#dept_name", parent.document).val($("#name").val());
+				$("#dept_id", parent.document).val($("#val").val());
+				$("#com_id", parent.document).val($("#comid").val());
+			} else {
+				ui_error("请选择部门");
+				return false;
+			}
+			myclose();
+		}
+                
+
+		$(document).ready(function() {
+			$(".popup_tree_menu a").click(function() {
+				$("#val").val($(this).attr("node"));
+				$("#name").val($(this).children("span").text());
+				$("#comid").val($(this).parent().parent().siblings("a").attr("node"));
+				$(".popup_tree_menu .tree_menu  a.active").removeClass("active");
+				$(this).addClass("active");
+			});
+		});
+	</script>
+</block>

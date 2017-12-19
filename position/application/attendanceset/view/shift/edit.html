@@ -1,0 +1,281 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<style>
+	.mt-20{
+		margin-top:20px;
+	}
+	.ml1r{
+		margin-left:1rem;
+	}
+	.row .row_content{
+		width: 770px;
+		overflow: hidden;
+		margin: 0 auto;
+	}
+	.row_title{
+		width: 100%;
+		height: 62px;
+		
+	}
+	.row_title > .top_title{
+		width: 325px;
+		height: 100%;
+		float: left;
+	}
+	.title_words{
+		width: 100px;
+		height: 34px;
+		line-height: 34px;
+		font-weight: bold;
+		float: left;
+	}
+	.title_words span{
+		color: #e02222;
+		font-size: 18px;
+	}
+	.titlt_input{
+		width: 220px;
+		height: 62px;
+		overflow: hidden;
+		float: left;
+	}
+	.titlt_input > input{
+		width: 198px;
+		padding: 0 10px;
+		height: 32px;
+		outline: none;
+		border: 1px solid #E5E5E5;
+	}
+	.titlt_input > div{
+		width: 100%;
+		height: 30px;
+		line-height: 30px;
+		font-size: 12px;
+		color: #a94442;
+	}
+	.top_jc{
+		width: 400px;
+		height: 100%;
+	}
+	.top_jc > .jc{
+		width: 60px;
+		height: 34px;
+		line-height: 34px;
+		font-weight: bold;
+		float: left;
+	}
+	.top_jc > i{
+		font-size: 18px;
+		margin-left: 10px;
+		cursor: pointer;
+	}
+	.row_type{
+		width: 770px;
+		margin: 0 auto;
+		margin-top: 15px;
+	}
+	.type_top{
+		width: 100%;
+		height: 34px;
+		line-height: 34px;
+	}
+	.type_content{
+		padding: 30px;
+	    padding-bottom: 10px;
+	    width: 580px;
+	    border: 1px solid #ddd;
+	    background-color: #fafafa;
+	    margin: 10px auto;
+	   
+	}
+	.type_content .column{
+		width: 100%;
+		height: 35px;
+		line-height: 35px;
+		margin-bottom: 20px;
+	}
+	.type_content .column .column_title{
+		width: 70px;
+		font-weight: bold;
+		float: left;
+	}
+	.type_content .column .column_icon{
+		width: 110px;
+		height: 35px;
+		background-color: #2CBB97;
+		color: #FFFFFF;
+		float: left;
+		text-align: center;
+		font-size: 14px;
+		margin-left: 5px;
+	}
+	.type_content .column > input.column_time{
+		width: 95px;
+		height: 20px;
+		padding: 6px;
+		font-size: 16px;
+		margin: 0 5px;
+	}
+	.select-box, .select-box.size-M {
+    	padding: 0 !important;
+	}
+	.check_no-cont{
+		width: 450px;
+		padding: 20px;
+		margin-left: 75px;
+		position: relative;
+		border: 1px solid #9ac9bd;
+	}
+	.check_row{
+		width: 15px;
+		height: 15px;
+		border-top: 1px solid #9ac9bd;
+		border-left: 1px solid #9ac9bd;
+		background-color: #FFFFFF;
+		transform: rotate(45deg);
+		-webkit-transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		position: absolute;
+		left: 10px;
+		top: -8px;		
+		z-index: 10;		
+	}
+	.ckeck_radio{
+		width: 100%;
+		height: 35px;
+    	line-height: 35px;
+    	margin-bottom: 20px;	
+    }
+</style>
+
+<div class="page-container">
+	<div class="row" style="width:800px; margin: 0 auto; padding-top: 20px;">
+		<div class="row_content">
+			<form id='formedit'>
+			<div class="row_title">
+				<div class="top_title">
+					<div class="title_words">
+						班次名称
+						<span>*</span>						
+					</div>
+					<div class="titlt_input">
+						<input type="text" name="shift_name" maxlength="100" value="{$list['shift_name']}" class="form-control required" placeholder="请输入班次名称">
+					
+						<div>必选字段</div>
+					</div>
+				</div>
+				<div class="top_jc" style="float: right;">
+					<div class="jc">
+						简称
+					</div>
+					<div class="titlt_input">
+						<input type="text" name="short" maxlength="6" value="{$list['short']}" class="form-control input-xxsmall" placeholder="不超过6个汉字" >					
+					</div>					
+				</div>
+			</div>
+			
+			<div class="row_type">
+				
+					<div class="type_top">
+						<div class="title_words" style="padding-left: 28px; width: 72px;">
+							类型
+							<span>*</span>						
+						</div>
+						<input type="radio" checked="checked" value="固定班次" />
+						固定班次
+					</div>
+					<div class="type_content"> 
+						<div class="column">
+							<div class="column_title">工作时间</div>
+							<input class="column_time" type="time" value="{$list['work_start_time']}" name="work_start_time" />到
+							 <span class="select-box inline">
+								<select name="is_work_theday" class="select">
+									<option value="1" <?php if($list['is_work_theday']==1){echo "selected";} ?>>当天</option>
+									<option value="2" <?php if($list['is_work_theday']==2){echo "selected";} ?> >次日</option>
+								</select>
+							</span> 		
+							<input class="column_time" type="time" name="work_end_time" value="{$list['work_end_time']}" />
+						</div>
+						<div class="column">
+							<div class="column_title">休息时间</div>
+							<input type="checkbox" name="is_rest" <?php if(!empty($list['rest_start_time'])){ echo 'checked';} ?> />休息时间
+							<input class="column_time" value="{$list['rest_start_time']}" type="time" name="rest_start_time"/>到
+							<input class="column_time" value="{$list['rest_end_time']}" type="time" name="rest_end_time" />
+						</div>
+						<div class="column">
+							<div class="column_title">记薪时长</div>
+							<input class="column_time" type="text" name="workhours" value="{$list['workhours']}" />小时
+							<i class="icon Hui-iconfont">&#xe633;</i>
+						</div>
+						<div class="column">
+							<div class="column_title">考勤设置</div>
+							<div class="column_icon">
+								<i class="icon Hui-iconfont" style="margin-right: 10px;">&#xe6a7;</i>
+								打卡
+							</div>
+						</div>
+						<div class="check_no-cont">
+							<div class="check_row"></div>
+							<div class="column">
+								<div class="column_title" style="width: 100px;">
+									<span>打卡范围</span>
+								</div>
+								<input class="column_time" value="{$list['clockin_start_time']}"  type="time" name="clockin_start_time"/>到
+								 <span class="select-box inline">
+									<select name="is_clock_theday" class="select">
+										<option value="1" <?php if($list['is_clock_theday']==1){echo "selected";} ?>>当天</option>
+										<option value="2" <?php if($list['is_clock_theday']==2){echo "selected";} ?> >次日</option>
+									</select>
+								</span> 		
+								<input class="column_time" value="{$list['clockin_end_time']}" type="time" name="clockin_end_time" />
+							</div>
+						</div>
+					</div>
+					<div class="row cl mt-20">
+							<div class="col-xs-8 col-sm-9 col-xs-offset-2 col-sm-offset-1">
+								<a id="submit" class="btn btn-primary radius">提交</a>		
+								<a onClick="layer_close();" class="btn btn-default radius ml1r">取消</a>
+							</div>
+					</div>
+					<input type="hidden" name="id" value="{$list['id']}">
+				</form>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+	$("#submit").click(function(){
+		$.ajax({
+			url: "{:Url('edit')}",
+            dataType: 'json',
+            data :$('#formedit').serialize(),		
+            type: 'POST',
+            cache: false,
+            success: function(data){
+        		if(data.status=='1'){
+        			layer.msg(data.msg);
+        			setTimeout(function(){
+        				parent. location.reload();
+        			},1000);      			
+        		}           		
+            },
+            error:function(data){
+	    		layer.msg(data.msg);
+				return;
+            }
+		});
+	});
+
+	function layer_close(){
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引 
+			parent.layer.close(index);
+
+	}
+</script>
+
+{/block}

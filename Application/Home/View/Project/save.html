@@ -1,0 +1,262 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+    <link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+    <style>
+        .page-container {
+            padding: 20px;
+        }
+        .text-c {
+            text-align: center;
+        }
+        .mt-20 {
+            margin-top: 20px;
+        }
+        .table-border.table-bordered {
+            border-bottom: 0;
+        }
+        table {
+            width: 100%;
+            empty-cells: show;
+            background-color: transparent;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        th{
+            text-align: center !important;
+        }
+        .table-bordered {
+            border-collapse: collapse !important;
+        }
+        .table-bordered {
+            border: 1px solid #ddd;
+            border-collapse: separate;
+            border-left: 0;
+        }
+        .table td {
+            padding: 0px !important;
+            line-height: 50px !important;
+            word-break: break-all !important;
+        }
+        table tr td > input{
+            display: block;
+            outline:none !important;
+            border:none !important;
+            width: 100% !important;
+            height: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+        #remark > textarea{
+            display: block;
+            outline:none;
+            border:none;
+            width: 100%;
+            height: 200px;
+            line-height: 20px !important;
+        }
+        .switch_box,.switch_box1{
+            width: 80px;
+            height: 30px;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 4px;
+            border: 1px solid;
+            border-color: #ccc;
+            position: relative;
+            text-align: left;
+            overflow: hidden;
+            line-height: 8px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            vertical-align: middle;
+            min-width: 100px;
+            -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            color: #000;
+            background: #eee;
+            color: #333;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+            background-color: #f0f0f0;
+            background-image: -moz-linear-gradient(top,#e6e6e6,#fff);
+            background-image: -webkit-gradient(linear,0 0,0 100%,from(#e6e6e6),to(#fff));
+            background-image: -webkit-linear-gradient(top,#e6e6e6,#fff);
+            background-image: -o-linear-gradient(top,#e6e6e6,#fff);
+            background-image: linear-gradient(to bottom,#e6e6e6,#fff);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe6e6e6',endColorstr='#ffffffff',GradientType=0);
+            border-color: #fff #fff #d9d9d9;
+            border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+            float: left;
+        }
+        .switch_box .switch_btn,.switch_box1 .switch_btn{
+            width: 102px;
+            height: 30px;
+            line-height: 30px;
+            background-color: #2cbb97;
+            position: absolute;
+            top: 0;
+            left: -66px;
+        }
+        .switch_box .switch_btn span,.switch_box1 .switch_btn span{
+            display: block;
+            background-color: #FFFFFF;
+            width: 35px;
+            height: 35px;
+            text-align: center;
+            float: right;
+            border-right: 1px solid #ccc;
+        }
+        .applaction_time{
+            width: auto;
+            height: 32px;
+            float: left;
+            margin-left: 10px;
+        }
+
+    </style>
+    <div class="page-container">
+        <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 个人 <span class="c-gray en">&gt;</span> 计划 <span class="c-gray en">&gt;</span> 完成情况跟进</nav>
+        <form id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
+            <input type="hidden" value="{$id}" name="id">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">姓名：</label>
+                <div class="col-sm-5">
+                    <input value="{$project['name']}" class="form-control" type="text" check="require" msg="请输入标题" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">部门：</label>
+                <div class="col-sm-5">
+                    <input value="{$project['dept_name']}" class="form-control" type="text" check="require" msg="请输入标题" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">计划事项：</label>
+                <div class="col-xs-5">
+                    <textarea  class="editor" id="" style="width:100%;height:auto; background-color: #eee;" readonly>{$project['content']}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">开始时间：</label>
+                <div class="col-sm-5">
+                    <input value="{:date('Y-m-d',$project['start_time'])}" class="form-control" type="text" check="require" msg="请输入标题" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">结束时间：</label>
+                <div class="col-sm-5">
+                    <input value="{:date('Y-m-d',$project['end_time'])}" class="form-control" type="text" check="require" msg="请输入标题" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">实际完成时间：</label>
+                <div class="col-sm-5">
+                    <input value="" class="form-control Wdate" id="actual_time" type="text" name="actual_time" onfocus="WdatePicker()" check="require" msg="请输入标题">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">完成情况/未完成原因：</label>
+                <div class="col-sm-5">
+                    <textarea id="remark"  name="remark" style="width:100%; height: 100px;"  onfocus="if(value=='请填写完成情况/未完成原因'){value=''}" onblur="if (value ==''){value='请填写完成情况/未完成原因'}"><?php if(!empty($project['remark'])){ echo $project['remark']; }else{ echo '请填写完成情况/未完成原因'; } ?></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否完结：</label>
+                <div class="col-sm-5" id="img_text">
+                    <div class="switch_box">
+                        <div class="switch_btn">
+                            <span>否</span>
+                        </div>
+                        <input id="switch_input" name="is_finish" type="hidden" value="0" />
+                    </div>
+                    <!--<span style="display: inline-block; position: relative; top: 4px; left: 10px;font-size: 13px!important; color: #a0a0a0!important;">默认规则只允许有一个，当前为默认后其它的规则将取消默认</span>-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="action" style="width: 200px; margin: 0 auto">
+                    <input class="btn btn-sm btn-primary" type="button" value="保存" onClick="return article_save_submit();">
+                    <a class="btn btn-sm btn-primary" href="{:U('index')}">取消</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</block>
+
+<block name="js">
+    <script type="text/javascript" src="/position/public/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/position/public/lib/My97DatePicker/4.8/test.js"></script>
+    <script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+
+    <script>
+        $(function(){
+            $(".switch_box").on("click",function(){
+                var actual_time = $("#actual_time").val();
+                if(actual_time == ''){
+                    layer.msg("请先填写实际完成时间");
+                }else {
+                    if ($("#switch_input").val() == 0) {
+                        $(this).children("div").animate({left: '0px'}, 500);
+                        $(this).children("div").children("span").html("是");
+                        $(this).children("input").val('1');
+                    } else {
+                        $(this).children("div").animate({left: '-66px'}, 500);
+                        $(this).children("div").children("span").html("否");
+                        $(this).children("input").val('0');
+                    }
+                }
+            });
+        })
+        //提交
+        function article_save_submit(){
+            var num = $("#remark").val();
+            var statu = $("#switch_input").val();
+            if(num == '请填写完成情况/未完成原因')
+            {
+                layer.msg("请先填写完成情况/未完成原因");
+                return false;
+            }else if(statu == 0){
+                layer.msg('计划还未完结，确认提交？', {
+                    time: 0 //不自动关闭
+                    ,btn: ['确认', '取消']
+                    ,yes: function(index){
+                        layer.close(index);
+                        save_data();
+                    }
+                });
+            }
+            else
+            {
+                save_data();
+            }
+            function save_data(){
+                var str = $("#form_data").serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '{:U("save")}',
+                    data:str,
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.status=='1'){
+                            layer.msg(data.msg);
+                            setTimeout("location.href='{:U('index')}';",3000);
+                        }
+                        if(data.status=='0'){
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error:function(data) {
+                        if(data.status=='0'){
+                            layer.msg(data.msg);
+                        }
+                    },
+                });
+            }
+        }
+
+    </script>
+
+</block>

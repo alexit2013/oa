@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>整车毛利测算表</title>
+	<script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/kpi/table.js"></script>
+	<link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="/position/public/lib/self_tip.css" />
+	<script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" src="/position/public/lib/pubjs.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var w = $(".table_box").width();
+			var h = $(".table_box").height();
+			$("#MyTable thead tr th").css({"padding":"10px 10px","height":"20px"});
+			$("table").css({"text-align":"center","font-size":"0.5rem","width":w,"height":h});
+			$("table td").css({"padding":"10px","color":"rgb(70, 70, 70)"});
+			FixTable("MyTable",3, w, h);
+		});
+		// ]]>
+	</script>
+	<style>
+		body{
+			font-size: 62.5%;
+		}
+		a{
+			text-decoration: none;;
+		}
+
+		.table_box{
+			width: 100%;
+			height: 500px;
+			margin: 0 auto;
+		}
+		.top_bar{
+			width: 100%;
+			height: 40px;
+		}
+		.top_bar .btn{
+			width: auto;
+			height: 20px;
+			padding: 4px 12px;
+			margin-top: 6px;
+			background-color: #5a98de;
+			border-radius: 8px;
+			-webkit-border-radius: 8px;
+			color: #fff;
+			font-size: 14px;
+			font-weight: 400;
+		}
+		.search_box{
+			width: 100%;
+			height: 40px;
+			margin: 10px auto;
+			border: 1px solid #eaeaea;
+		}
+		.search_box >span{
+			display: block;
+			float: left;
+			width: 40px;
+			height: 40px;
+			float: left;
+			text-align: right;
+			line-height: 40px;
+			font-size: 14px;
+		}
+		.select_box{
+			border: solid 1px #ddd;
+			box-sizing: border-box;
+			vertical-align: middle;
+			width: 250px;
+			padding: 4px 5px;
+			display: inline-block;
+			margin-top: 5px;
+			margin-left: 20px;
+			float: left;
+			height: 30px;
+		}
+		.select{
+			border: 0;
+			font-size: 14px;
+			box-sizing: border-box;
+			cursor: pointer;
+			line-height: normal;
+			font-weight: normal;
+			width: 100%;
+			white-space: nowrap;
+			outline: none;
+		}
+		.search_btn{
+			background-color: #5a98de;
+			border-radius: 5px;
+			color: #FFFFFF;
+			float: left;
+			display: inline-block;
+			box-sizing: border-box;
+			cursor: pointer;
+			text-align: center;
+			font-weight: 400;
+			white-space: nowrap;
+			vertical-align: middle;
+			-moz-padding-start: npx;
+			-moz-padding-end: npx;
+			width: auto;
+			border: none;
+			outline: none;
+			height: 30px;
+			margin-left: 20px;
+			margin-top: 5px;
+			padding: 0 10px;
+		}
+	</style>
+</head>
+
+<body>
+<form action="{:Url('index')}" method="post">
+	<div class="search_box">
+		<span>门店:</span>
+		<div class="select_box">
+			<select class="select" name="store_id" id="store_id">
+
+				<?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+				<option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+				<?php } ?>
+			</select>
+		</div>
+		<span>年份:</span>
+		<div class="select_box">
+			<select class="select" name="year" id="store_year">
+				<option value="">请选择年份</option>
+			</select>
+		</div>
+		<span>月份:</span>
+		<div class="select_box">
+			<select class="select" name="month" id="store_month">
+				<option value="">请选择月份</option>
+				<option value="1">1月</option>
+				<option value="2">2月</option>
+				<option value="3">3月</option>
+				<option value="4">4月</option>
+				<option value="5">5月</option>
+				<option value="6">6月</option>
+				<option value="7">7月</option>
+				<option value="8">8月</option>
+				<option value="9">9月</option>
+				<option value="10">10月</option>
+				<option value="11">11月</option>
+				<option value="12">12月</option>
+			</select>
+		</div>
+		<button name="" id="" class="search_btn" type="submit"> 查询</button>
+		<!--清除数据-->
+		<input type="hidden" id="table_name" value="carprofit">
+		<?php $clear_button = session("clear_button"); if($clear_button == "1"){ echo '<button name="" id="clear_button" style="background-color:orange;" class="search_btn" type="button" onclick="clearbutton()">清空数据</button>';} ?>
+		<!--清除数据-->
+		<!--审批状态-->
+		<input type="hidden" id="status" value="<?php if(!empty($data_status)){ if(get_emp_no()==$data_status['emp_no']){echo $data_status['status']; }else{echo 0;}} ?>">
+		<!--审批状态-->
+	</div>
+</form>
+<h1 style="width:100%;text-align: center;"><span></span>整车毛利测算表{:is_pass($data_status)}</h1>
+
+<div class="table_box">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable">
+		<thead>
+		<tr>
+			<th><div style="width: 50px;">车系</div></th>
+			<th><div style="width: 100px;">车型</div></th>
+			<th><div style="width: 100px;">厂家指导价<br>（元）</div></th>
+			<th><div style="width: 100px;">厂家开票进货价格<br>（元）</div></th>
+			<th><div style="width: 100px;">批售折扣率</div></th>
+			<th><div style="width: 100px;">基本毛利<br>（元）</div></th>
+			<th><div style="width: 100px;">前装加价金额<br>（元）</div></th>
+			<th><div style="width: 100px;">前装车销售价格<br>（元）</div></th>
+			<th><div style="width: 100px;">前装成本金额<br>（元）</div></th>
+			<th><div style="width: 100px;">赠送礼包金额<br>（元）</div></th>
+			<th><div style="width: 100px;">现金折让<br>（元）</div></th>
+			<th><div style="width: 100px;">其中：赠送成本金额<br>（元）</div></th>
+			<th><div style="width: 100px;">销售价格<br>（元）</div></th>
+			<th><div style="width: 100px;">单车毛利额<br>（元）</div></th>
+			<th><div style="width: 100px;">单车毛利率<br>（%）</div></th>
+			<th><div style="width: 100px;">预计销售台数<br>（辆）</div></th>
+			<th><div style="width: 100px;">收入<br>（除税）</div></th>
+			<th><div style="width: 100px;">成本<br>（除税）</div></th>
+			<th><div style="width: 100px;">毛利额<br>（元）</div></th>
+			<th><div style="width: 100px;">毛利率<br>（进销差率）</div></th>
+		</tr>
+		</thead>
+
+		<tbody>
+
+		<?php
+
+	                 foreach($data_list as $k => $val){
+		$guide_price = 0;
+		$invoice_price = 0;
+		$base_profit = 0;
+		$cash_transfer = 0;
+		$sale_price = 0;
+		$single = 0;
+		$single_lv = 0;
+		$expect_sales = 0;
+		$income = 0;
+		$cost = 0;
+		$profit = 0;
+		$profit_cha = 0;
+		?>
+
+		<tr>
+			<td rowspan="<?php echo count($val)+1; ?>">{$k}</td>
+			<?php foreach($val as $v){ ?>
+			<td>{$v['carsize_name']}</td>
+			<td>{$v['guide_price']}</td>
+			<td>{$v['invoice_price']}</td>
+			<td><?php if($v['guide_price'] != 0){ echo round((1-$v['invoice_price']/$v['guide_price']),4)*100; } ?>%</td>
+			<td>{$v['base_profit']}</td>
+			<td class="edit" data-order="{$v['id']}" data-key="qzjj" data-type="float">{$v['qzjj']}</td>					<!--前装加价金额-->
+			<td>{:$v['guide_price']+$v['qzjj']}</td>
+			<td class="edit" data-order="{$v['id']}" data-key="qzcb" data-type="float">{$v['qzcb']}</td>					<!--前装成本金额-->
+			<td class="edit" data-order="{$v['id']}" data-key="zslb" data-type="float">{$v['zslb']}</td>					<!--赠送礼包-->
+			<td class="edit" data-order="{$v['id']}" data-key="cash_transfer" data-type="float">{$v['cash_transfer']}</td>			<!--现金转让(元)-->
+			<td class="edit" data-order="{$v['id']}" data-key="zscb" data-type="float">{$v['zscb']}</td>					<!--赠送成本金额-->
+			<td>{$v['sale_price']}</td>
+			<td>{$v['single']}</td>
+			<td>{$v['single_lv']}</td>
+			<td class="edit" data-order="{$v['id']}" data-key="expect_sales" data-type="float">{$v['expect_sales']}</td>				<!--预计销售台次(俩)-->
+			<td>{$v['income']}</td>
+			<td>{$v['cost']}</td>
+			<td>{$v['profit']}</td>
+			<td><?php if(!empty($v['profit']) && $v['income'] != 0 ){ echo round(($v['profit']/$v['income'])*100,2).'%'; } ?></td>
+		</tr>
+		<?php
+							$guide_price += $v['guide_price'];
+							$invoice_price += $v['invoice_price'];
+							$base_profit += $v['base_profit'];
+							$cash_transfer += $v['cash_transfer'];
+							$sale_price += $v['sale_price'];
+							$single += $v['single'];
+							$single_lv += $v['single_lv'];
+							$expect_sales += $v['expect_sales'];
+							$income += $v['income'];
+							$cost += $v['cost'];
+							$profit += $v['profit'];
+
+	                     } ?>
+		<tr style="background-color: red;">
+			<td colspan="2">小计</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+                        <td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>{$expect_sales}</td>
+			<td>{$income}</td>
+			<td>{$cost}</td>
+			<td>{$profit}</td>
+			<td><?php if(!empty($profit) && $income != 0 ){ echo round(($profit/$income)*100,2).'%'; }  ?></td>
+		</tr>
+		<?php } ?>
+
+		<tr style="background-color: darkseagreen;">
+			<td colspan="3">合计</td>
+			<td colspan="12"></td>
+			<td>{$sum_data['sum_expect_sales']}</td>
+			<td>{$sum_data['sum_income']}</td>
+			<td>{$sum_data['sum_cost']}</td>
+			<td>{$sum_data['sum_profit']}</td>
+			<td>{$sum_data['sum_spread']}</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+<input type="hidden" value="<?php if(!empty($sid)) echo $sid; ?>" id="search_id"/>
+<input type="hidden" value="<?php if(!empty($year)) echo $year; ?>" id="search_year"/>
+<input type="hidden" value="<?php if(!empty($month)) echo $month; ?>" id="search_month"/>
+<input type="hidden" value="<?php if(!empty($search_id['store_id'])) echo $search_id['store_id']; ?>" id="search_id"/>
+<script type="text/javascript" src="__LIB__/layer/2.4/layer.js"></script>
+<script type="text/javascript">
+	/*新增车系*/
+	function car_add(title,url){
+		var index = layer.open({
+			type: 2,
+			content: url,
+			area: ['100%', '100%'],
+			title: title,
+			maxmin: true
+		});
+		layer.full(index);
+	}
+
+	//查询
+	function search(){
+		var sotre_id = $(".select").val();
+		$.ajax({
+			url: "",
+			dataType: 'json',
+			data : {emp_no:emp_no,time:dateNow},
+			type: 'POST',
+			cache: false,
+			success: function(){
+
+			}
+		})
+	}
+
+	$(document).ready(function(){
+		//年份
+		var current_date = new Date();
+		var cur_year = current_date.getFullYear()-2 ;
+		for(var i=0; i<5;i++){
+			var html = '</option><option value="'+(cur_year+i)+'">'+(cur_year+i)+'年</option>';
+			$("#store_year").append(html);
+		};
+		$("#store_year").val(current_date.getFullYear());
+		//月份
+		var cur_month = current_date.getMonth()+1;
+		$("#store_month").val(cur_month);
+	});
+	$(document).ready(function(){
+		var store_id = $("#search_id").val();
+		var store_year = $("#search_year").val();
+		var store_month = $("#search_month").val();
+		if (store_id != "") {
+			$("#store_id").val(store_id);
+		};
+		if(store_year != ''){
+			$("#store_year").val(store_year);
+		}
+		if(store_month != ''){
+			$("#store_month").val(store_month);
+		}
+
+		var store_name = $("#store_id").find("option:selected").text();
+		$("h1 > span").eq(0).html(store_name);
+
+	});
+	//执行
+	var self;
+	$(document).ready(function() {
+		var status = $("#status").val();
+		//鼠标经过需要修改的地方的效果
+		$("td.edit").hover(
+				function () {
+					if (status == 2 || status == '') {
+						$(this).css({
+							"cursor": "url(/position/public/kpi/img/edit.png),default",
+							"background-color": "#eee"
+						});
+					}
+				},
+				function () {
+					if (status == 2 || status == '') {
+						$(this).css({"cursor": "default", "background-color": "#fff"});
+					}
+				}
+		);
+		//表一数据修改
+		$("td.edit").on("dblclick", function () {
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'carprofit';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var order_num = self.attr("data-order");			//所点击要修改的序号id
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			if (status == 2 || status == '') {
+				tip_function(datatype, table_name, key_name, con, 1, order_num);
+			}
+		})
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title></title>
+		<link rel="stylesheet" href="__INS__/pui/css/planeui.min.css" />
+		<script type="text/javascript" src="__INS__/js/jquery-2.1.1.js" ></script>
+		<style>
+			*{margin:0; padding:0; list-style:none; }
+			body{ background:#fff; font:normal 12px/22px 宋体;overflow-x: hidden;}
+			img{ border:0;}
+			a{ text-decoration:none; color:#333;}
+			.mt-9{margin-top:9px}
+			.mt-20{margin-top:20px}
+			.mt-30{margin-top:30px}
+			.mt-40{margin-top:40px}
+			.success_icon{
+				width: 75px;
+				height: 75px;
+				border-radius: 50%;
+				background-color: red;
+				margin:0 auto;
+				line-height: 64px;
+				font-size: 48px;
+				text-align: center;
+				color: #fff;
+			}
+			.signin_status{
+				color: red;
+				text-align: center;
+				font-size: 27px;
+				font-weight: bold;
+			}
+			.signin_time{
+				color: #6c6c6c;
+				text-align: center;
+				font-size: 13px;
+				padding-left: 1rem;
+			}
+			.record{
+				text-align: center;
+				font-size: 14px;
+			}
+			.record a{
+				color: #6495ED;
+			}
+			.sus_img{
+				text-align: center;
+			}								
+		</style>
+	</head>
+	<body>
+		<div class="mt-30">
+			<div class="success_icon"><i class="fa fa-remove"></i></div>
+		</div>
+		<div class="mt-30">
+			<div class="signin_status">请勿重复打卡</div>
+		</div>
+		<div class="mt-9">
+			<div class="signin_time">3秒后系统将自动跳转到主页！</div>
+		</div>
+		<!--<div class="mt-40">
+			<div class="record"><a>考勤记录></a></div>
+		</div>
+		<div class="mt-30">
+			<div class="sus_img wow rollIn bg-yellow animated"><img src="img/sus.jpg" /></div>
+		</div>-->
+	</body>	
+	<script>
+		function jump(){
+			location.href="https://{$_SERVER['SERVER_NAME']}/index.php/Home/Pos/wx";
+		}
+		$(function(){
+			  	setTimeout(jump,1000);
+			});
+	</script>
+</html>

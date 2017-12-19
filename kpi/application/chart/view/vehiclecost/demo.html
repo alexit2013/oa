@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>车辆费用</title>
+		<link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="/position/public/lib/self_tip.css" />
+		<script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+		<script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript" src="/position/public/lib/pubjs.js"></script>
+
+		<script>
+			$(document).ready(function(){
+				var w = $(".table_box").width();
+				var h = $(".table_box").height();
+				$("table").css({"text-align":"center","font-size":"0.5rem","width":w});
+			})
+		</script>
+		<style>
+			body{
+				font-size: 62.5%;				
+			}
+                        table{border-collapse:collapse;}
+			.table_box{
+				width: 100%;
+				height: auto;
+				margin: 40px auto;
+				font-size: 0.5rem;
+			}
+			#MyTable thead{
+				background-color: rgb(209, 234, 255);
+			}
+			#MyTable thead tr th,#MyTable tbody tr td{
+				padding: 10px;
+				height: 20px;
+			}
+			.top_bar{
+				width: 100%;
+				height: 40px;
+			}
+			.top_bar .btn{
+				width: auto;
+				height: 20px;
+				padding: 4px 12px;
+				margin-top: 6px;
+				background-color: #5a98de;
+				border-radius: 8px;
+				-webkit-border-radius: 8px;
+				color: #fff;
+				font-size: 14px;
+				font-weight: 400;
+			}
+                       .search_box{
+				width: 100%;
+				height: 40px;
+				margin: 10px auto;
+				border: 1px solid #eaeaea;
+			}
+			.select_box{
+			    border: solid 1px #ddd;
+			    box-sizing: border-box;
+			    vertical-align: middle;
+			    width: 200px;
+			    padding: 4px 5px;
+			    display: inline-block;
+			    margin-top: 5px;
+			    margin-left: 20px;
+			    float: left;	
+			    height: 30px;			
+			}
+			.search_box >span{
+                            display: block;
+                            float: left;
+                            width: 40px;
+                            height: 40px;
+                            float: left;
+                            text-align: right;
+                            line-height: 40px;
+                            font-size: 14px;
+			}
+			.select{
+                            border: 0;
+                            font-size: 14px;
+                            box-sizing: border-box;
+			    cursor: pointer;
+			    line-height: normal;
+			    font-weight: normal;
+			    width: 100%;
+			    float: right;
+			    white-space: nowrap;
+			    outline: none;				
+			}
+			.search_btn{
+                            background-color: #5a98de;
+			    border-radius: 5px;
+			    color: #FFFFFF;
+			    float: left;
+                            display: inline-block;
+			    box-sizing: border-box;
+			    cursor: pointer;
+			    text-align: center;
+			    font-weight: 400;
+			    white-space: nowrap;
+			    vertical-align: middle;
+			    -moz-padding-start: npx;
+			    -moz-padding-end: npx;
+			    width: auto;
+			    border: none;
+   				outline: none;
+   				height: 30px;
+   				margin-left: 20px;
+   				margin-top: 5px;
+   				padding: 0 10px;
+			}
+		</style>		
+	</head>
+	
+	<body>
+                <form action="{:Url('demo')}" method="post">
+			<div class="search_box">
+				<span>门店:</span>
+				<div class="select_box">                                    
+                    <select class="select" name="store_id" id="store_id">                                            
+						<?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+						<option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+						<?php } ?>
+                	</select>
+				</div>
+				<span>年份:</span>
+				<div class="select_box">
+					<select class="select" name="year" id="store_year">                                            
+					</select>
+				</div>
+                    <span>月份:</span>
+                    <div class="select_box">
+					<select class="select" name="month" id="store_month">
+                        <option value="">请选择月份</option>
+                        <option value="1">1月</option>
+                        <option value="2">2月</option>
+                        <option value="3">3月</option>
+                        <option value="4">4月</option>
+                        <option value="5">5月</option>
+                        <option value="6">6月</option>
+                        <option value="7">7月</option>
+                        <option value="8">8月</option>
+                        <option value="9">9月</option>
+                        <option value="10">10月</option>
+                        <option value="11">11月</option>
+                        <option value="12">12月</option>
+ 					</select>
+				</div>
+				<button name="" id="" class="search_btn" type="submit"> 查询</button>
+			</div>
+		</form>
+		<h1 style="width:100%;text-align: center;"><span></span>车辆费用表</h1>
+
+				<div class="table_box">
+					<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable" class="table6">
+
+						<thead>
+						<tr>
+							<th colspan="10">六、财务帐面用车和实际车辆情况</th>
+						</tr>
+						<tr>
+							<th rowspan="2"><div style="width: 50px;">序号</div></th>
+							<th colspan="4">财务帐面车辆</th>
+							<th colspan="3">实际车辆</th>
+							<th rowspan="2">差异及原因</th>
+							<th rowspan="2">备注</th>
+						</tr>
+						<tr>
+							<th><div style="width: 70px;">车牌号码</div></th>
+							<th><div style="width: 70px;">购进时间</div></th>
+							<th colspan="2">处置价格</th>
+							<th><div style="width: 70px;">车牌号码</div></th>
+							<th><div style="width: 70px;">购进时间</div></th>
+							<th><div style="width: 70px;">使用情况</div></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php $i=0; foreach($finance_drive as $k => $v){  $i++;?>
+						<tr>
+							<td>{$i}</td>
+							<td class="edit" data-order="{$v['id']}" data-key="finance_carnum" data-type="text">{$v['finance_carnum']}</td>
+							<td class="edit" data-order="{$v['id']}" data-key="finance_buycartime" data-type="date">{:date('Y-m-d',$v['finance_buycartime'])}</td>
+							<td class="edit" data-order="{$v['id']}" data-key="finance_price" data-type="float" colspan="2">{$v['finance_price']}</td>
+							<td class="edit" data-order="{$v['id']}" data-key="actual_carnum" data-type="text">{$v['actual_carnum']}</td>
+							<td class="edit" data-order="{$v['id']}" data-key="actual_buycartime" data-type="date">{:date('Y-m-d',$v['actual_buycartime'])}</td>
+							<td class="edit" data-order="{$v['id']}" data-key="use" data-type="text">{$v['use']}</td>
+							<td class="edit" data-order="{$v['id']}" data-key="difference" data-type="text">{$v['difference']}</td>
+							<td class="edit" data-order="{$v['id']}" data-key="remark" data-type="text">{$v['remark']}</td>
+						</tr>
+						<?php } ?>
+						</tbody>
+					</table>
+				</div>
+		<input type="hidden" value="<?php if(!empty($sid)) echo $sid; ?>" id="search_id"/>
+		<input type="hidden" value="<?php if(!empty($year)) echo $year; ?>" id="search_year"/>
+		<input type="hidden" value="<?php if(!empty($smonth)) echo $smonth; ?>" id="search_month"/>
+
+	<!--弹出框-->
+	<div class="shake"></div>
+	<div class="tip_box" id="tip_box">
+		<div class="tip_title">输入修改的新内容<div><i class="icon Hui-iconfont">&#xe706;</i></div></div>
+		<div class="cont_box">
+
+		</div>
+		<div class="btn_box">
+			<a class="layui-layer-btn0">确定</a>
+			<a class="layui-layer-btn1">取消</a>
+		</div>
+	</div>
+	<input type="hidden" id="status" value="2">
+	</body>
+
+	<script>
+			$(function(){
+				//年份
+				var current_date = new Date();
+				var cur_year = current_date.getFullYear()-2 ;
+				for(var i=0; i<5;i++){
+					var html = '</option><option value="'+(cur_year+i)+'">'+(cur_year+i)+'年</option>';
+					$("#store_year").append(html);
+				};
+				$("#store_year").val(current_date.getFullYear());
+				//月份
+				var cur_month = current_date.getMonth()+1;
+				$("#store_month").val(cur_month);
+
+			})
+
+              $(document).ready(function(){
+				var store_id = $("#search_id").val();
+				var store_year = $("#search_year").val();
+				var store_month = $("#search_month").val();
+				if (store_id != "") {
+					$("#store_id").val(store_id);
+				};
+				if(store_year != ''){
+					$("#store_year").val(store_year);
+				}
+				if(store_month != ''){
+					$("#store_month").val(store_month);
+				};
+				  var store_name = $("#store_id").find("option:selected").text();
+				  $("h1 > span").html(store_name);
+
+			  });
+
+			//demo3
+			//执行
+			var self;
+			$(document).ready(function(){
+				var status = $("#status").val();
+				$(".table6 td.edit").hover(
+						function(){
+							if(status == 2){
+								$(this).css({"cursor":"url(/position/public/kpi/img/edit.png),default","background-color":"#eee"});
+							}
+						},
+						function(){
+							if(status == 2){
+								$(this).css({"cursor":"default","background-color":"#fff"});
+							}
+						}
+				);
+				$(".table6 td.edit").on("dblclick",function(){
+					self = $(this);
+					var con = self.html();			//所点击要修改的原内容
+					var table_name = 'carfee_financedrive';			//所点击要修改的表名
+					var key_name = self.attr("data-key");			//所点击要修改的键名
+					var order_num = self.attr("data-order");			//所点击要修改的序号id
+					var datatype = self.attr("data-type");			//此处是何种类型格式
+					if(status == 2){
+						tip_function(datatype,table_name,key_name,con,1,order_num);
+					}
+				})
+			})
+
+	</script>
+</html>

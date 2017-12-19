@@ -1,0 +1,200 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+    <link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+    <style>
+        .page-container {
+            padding: 20px;
+        }
+        .text-c {
+            text-align: center;
+        }
+        .mt-20 {
+            margin-top: 20px;
+        }
+        .table-border.table-bordered {
+            border-bottom: 0;
+        }
+        table {
+            width: 100%;
+            empty-cells: show;
+            background-color: transparent;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        th{
+            text-align: center !important;
+        }
+        .table-bordered {
+            border-collapse: collapse !important;
+        }
+        .table-bordered {
+            border: 1px solid #ddd;
+            border-collapse: separate;
+            border-left: 0;
+        }
+        .table td {
+            padding: 0px !important;
+            line-height: 50px !important;
+            word-break: break-all !important;
+        }
+        table tr td > input{
+            display: block;
+            outline:none !important;
+            border:none !important;
+            width: 100% !important;
+            height: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+        table tr td > textarea{
+            display: block;
+            outline:none;
+            border:none;
+            width: 100%;
+            height: 50px;
+            line-height: 20px !important;
+        }
+        .delete > i{
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+    <div class="page-container">
+        <div class="text-c"><h1>中致远IT双周计划</h1></div>
+        <div class="text-c"><span class="year"></span>年<span class="month"></span>月第一、二周工作计划（<span class="month"></span>.4-<span class="month"></span>.17）</div>
+        <div class="mt-20" id="add_content">
+            <form  class="form form-horizontal" id="form-article-add">
+            <table class="table table-border table-bordered table-hover table-bg table-sort">
+                <thead>
+                <tr class="text-c">
+                    <th width="4%">序号</th>
+                    <th width="45%">计划事项</th>
+                    <th width="23%">计划开始时间</th>
+                    <th width="23%">计划完成时间</th>
+                    <th width="5%"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="text-c">
+                    <td class="order_num">1</td>
+                    <td class="content"><textarea type="text" name="add1[content]"></textarea></td>
+                    <td class="start_time"><input type="text" id="datemin" class="input-text Wdate" name="add1[start_time]" ></td>
+                    <td class="end_time"><input type="text" id="datemax" class="input-text Wdate" name="add1[end_time]"  ></td>
+                    <td class="delete"><a href="javascript:;" class="btn btn-primary radius add"><i class="Hui-iconfont">&#xe600;</i></a></td>
+                </tr>
+                </tbody>
+            </table>
+            </form>
+        </div>
+
+        <div class="form-group">
+            <div class="action" style="width: 200px; margin: 0 auto">
+                <input class="btn btn-sm btn-primary" type="button" value="保存" onClick="return article_save_submit();">
+                <a class="btn btn-sm btn-primary" href="{:U('index')}">取消</a>
+            </div>
+        </div>
+     </div>
+</block>
+
+<block name="js">
+    <script type="text/javascript" src="/position/public/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/position/public/lib/My97DatePicker/4.8/test.js"></script>
+    <script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".add").on('click',function(){
+                var a = $("tbody tr").last().clone();                              //复制上一栏的元素
+                var n = $(".order_num").last().html();                             //最后一个序号的值
+                var i = '<i class="icon Hui-iconfont remove">&#xe631;</i>';            //删除标签
+                $("table tbody").append(a);                                        //添加新的栏
+                $(".delete").last().html(i);                                        //向新加的栏中写入移除标签
+                $(".order_num").last().html(Number(n)+1);                           //向新加栏中赋予新的序号的值
+                $(".content textarea").last().attr("name","add"+(Number(n)+1)+"[content]").val("");     //改变新加元素的name
+                $(".start_time input").last().attr("name","add"+(Number(n)+1)+"[start_time]").attr("id","datemin"+(Number(n)+1)).val("");       //改变新加元素的name和id
+                $(".end_time input").last().attr("name","add"+(Number(n)+1)+"[end_time]").attr("id","datemax"+(Number(n)+1)).val("");           //改变新加元素的name和id
+
+                $(".start_time input").on("click",function(){                     //触发日历
+                    var id = $(this).parent().parent().children(".end_time").children("input").attr("id");
+                    start_time(id);
+                });
+                $(".end_time input").on("click",function(){                     //触发日历
+                    var id = $(this).parent().parent().children(".start_time").children("input").attr("id");
+                    end_time(id);
+                });
+                //删除新加的列
+                $('.remove').on("click",function(){
+                    $(this).parent().parent().remove();
+                    $(".order_num").each(function(k,v){
+                        $(this).html(k+1);
+                    });
+                })
+
+            });
+            $(".start_time input").on("click",function(){                     //触发日历
+                var id = $(this).parent().parent().children(".end_time").children("input").attr("id");
+                start_time(id);
+            })
+            $(".end_time input").on("click",function(){                     //触发日历
+                var id = $(this).parent().parent().children(".start_time").children("input").attr("id");
+                end_time(id);
+            })
+            $(function(){
+                //当前月份
+                var current_date = new Date();;
+                var cur_month = current_date.getMonth()+1;
+                if(cur_month<10){
+                    cur_month = '0'+cur_month;
+                }
+                var cur_year = current_date.getFullYear();
+                $(".year").html(cur_year);
+                $(".month").html(cur_month);
+            })
+        });
+
+        //提交
+        function article_save_submit(){
+            var num=0;
+            var str = '请填写完必填数据';
+            $("#add_content input,#add_content textarea").each(function () {
+                if ($(this).val() == "") {
+                    this.focus();
+                    num++;
+                    //str = $(this).attr("placeholder")+"</br>";
+                }
+
+            });
+            if(num>0)
+            {
+                layer.msg(str);
+                return false;
+            }
+            else
+            {
+                var str = $("#form-article-add").serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '{:U("add")}',
+                    data:str,
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.status=='1'){
+                            layer.msg(data.msg);
+                            setTimeout("location.href='{:U('index')}';",3000);
+                        }
+                        if(data.status=='0'){
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error:function(data) {
+                        if(data.status=='0'){
+                            layer.msg(data.msg);
+                        }
+                    },
+                });
+            }
+        }
+
+    </script>
+
+</block>

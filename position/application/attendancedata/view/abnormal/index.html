@@ -1,0 +1,141 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<style>
+	.bt_blue{
+		background-color: #2CBB97;
+		border-radius: 5px;
+		color: #FFFFFF;
+	}
+	.bt_blue:hover{
+		background-color: #28AA89;
+	}
+	.bt_button{
+		background-color: #F3F3F3!important;
+	    background: -webkit-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: -o-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: -moz-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: linear-gradient(#FCFCFC, #EEEEEE)!important;
+	}
+	.bt_button:hover{
+		background: -webkit-gradient(linear, 0 0, 0 100%, from(#FCFCFC), to(#DDDDDD));
+		background: -webkit-linear-gradient(#FCFCFC, #DDDDDD);
+		background: -moz-linear-gradient(#FCFCFC, #DDDDDD);
+		background: -o-linear-gradient(#FCFCFC, #DDDDDD);
+		background: linear-gradient(#FCFCFC, #DDDDDD)!important;
+	}
+	a.come_time,a.end_time{
+		color: #4A90E2;
+	}
+	tbody tr td a{
+		color: #5b9bd1;
+	}
+	
+</style>
+
+<form method="POST" action="{:Url('index')}">
+    
+<div class="page-container">
+	<div class="">
+<!--		<span class="select-box inline">
+			<select name="" class="select">
+				<option value="0">全部</option>
+				<option value="1" selected="selected">在职成员</option>
+				<option value="2">禁用成员</option>
+			</select>
+		</span>-->
+<!--		<span class="select-box inline">
+			<select name="" class="select">
+				<option value="0">异常状态</option>
+				<option value="1">迟到</option>
+				<option value="2">早退</option>
+				<option value="3">旷工</option>
+				<option value="4">未签到</option>
+				<option value="5">未签退</option>
+			</select>
+		</span>-->
+		日期范围：
+                <input type="date" id="logmin" class="input-text Wdate" style="width:120px;" name="start" value="<?php if(!empty($data['start'])){ echo $data['start']; } ?>">
+                -
+                <input type="date" id="logmax" class="input-text Wdate" style="width:120px;" name="end" value="<?php if(!empty($data['end'])){ echo $data['end']; } ?>">
+               
+                <input type="text" name="user_name" id="" placeholder="请输入员工姓名" style="width:150px" class="input-text" value="<?php if(!empty($data['user_name'])){ echo $data['user_name']; } ?>">
+		<button name="" id="" class="btn bt_blue" type="submit"> 查询</button>
+		<button name="" id="" class="btn bt_blue" type="submit"> 导出异常报表</button>
+		<!--<button name="" id="" class="btn bt_button" type="submit">补签</button>-->
+	</div>
+	
+	<div class="mt-20" style="overflow-x: auto;">
+		<table class="table table-border table-bordered table-bg table-sort" style="min-width: 900px;">
+			<thead>
+                            <tr>
+                                <th width="80">账号</th>
+                                <th width="130">姓名</th>
+                                <th width="100">部门</th>
+                                <th width="100">职位</th>
+                                <th width="100">日期 | 星期</th>
+                                <!-- <th width="60">日期类型</th> -->
+                                <th width="100">班次</th>
+                                <th width="100">考勤时间</th>
+                                <th width="100">打卡时间</th>
+                                <th width="100" class="question-bg">异常状态</th>
+<!--                                <th width="100">操作</th>-->
+                            </tr>
+			</thead>
+			<tbody>
+                            <?php foreach($data_list as $k => $v){ ?>
+                            <tr>
+                                <td>{$v['emp_no']}</td>
+                                <td>{$v['user_name']}</td>
+                                <td>{$v['dept_name']}</td>
+                                <td>{$v['position']}</td>
+                                <td><?php echo $v['year'].'/'.$v['month'].'/'.$v['day'].'|'.weekday(strtotime($v['year'].'/'.$v['month'].'/'.$v['day']));  ?></td>
+                                <!-- <td>{$v['type']}</td> -->
+                                <td>{$v['schedual']}</td>
+                                <td class="checktime">{$v['time']}</td>
+                                <!-- <td>{:strstr($v['punch_time'],"-",true)}</td> -->
+                                <td>{$v['punch_time']}</td>
+                                <td>{$v['status']}</td>
+<!--                                <td>
+                                    <span class="operation-btn">                                                            
+                                        <a class="layui-btn layui-btn-primary" href="javascript:;" onclick="bqk('{:Url('bqk',['id'=>$v['id']])}')">补签</a>
+                                         <em>|</em>
+                                        <a href="index.html">打卡记录</a> 
+                                    </span>
+                                </td>-->
+                            </tr>
+                            <?php } ?>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__LIB__/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript">
+/*前端分页*/
+$('.table-sort').dataTable({
+	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[0,8]}// 制定列不参与排序
+	]
+});
+	function bqk(url){
+		//iframe层-父子操作		
+		layer.open({
+			title: "补签卡",
+		  type: 2,
+		  area: ['700px', '450px'],
+		  fixed: false, //不固定
+		  maxmin: true,
+		  content: url
+		});		
+	}
+
+
+</script> 
+
+{/block}

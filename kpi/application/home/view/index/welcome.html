@@ -1,0 +1,41 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+	<p class="f-20 text-success">中致远KPI系统<span class="f-14">v1.0</span></p>
+	<table class="table table-border table-bordered table-bg mt-20">
+		<thead>
+			<tr>
+				<th colspan="2" scope="col">服务器信息</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>服务器域名</td>
+				<td>{:request()->domain()}</td>
+			</tr>
+			<tr>
+				<td>服务器端口 </td>
+				<td>80</td>
+			</tr>
+			<tr>
+				<td>服务器操作系统 </td>
+				<td>{:PHP_OS}</td>
+			</tr>
+			<tr>
+				<td>当前系统时间 </td>
+				<td>{:date("Y-m-d H:i:s")}</td>
+			</tr>
+			<tr>
+				<td>PHP.版本 </td>
+				<td>{:PHP_VERSION}</td>
+			</tr>
+			<tr>
+				<td>当前SessionID </td>
+				<td>{:session('user.id')}</td>
+			</tr>
+			<tr>
+				<td>当前系统用户名 </td>
+				<td>{:session('user.name')}</td>
+			</tr>
+		</tbody>
+	</table>
+{/block}

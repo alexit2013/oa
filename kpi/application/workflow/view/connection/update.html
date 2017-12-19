@@ -1,0 +1,203 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<style>
+    .ml1r{margin-left:1rem;}
+    .ridio_margin{margin:4px;}
+    .mt5{margin-top:5px}
+    .down_model{text-decoration:underline;color:#80B2DB;}
+    .down_tip{color: #a0a0a0!important;}
+    .upload_btn{cursor: pointer;}
+    .add_icon{color: #2abb97;position: absolute;top: -9px;right: 16px;font-size: 30px;cursor: pointer;}
+    #up_status{position: relative;display: none;font-weight: bold;}
+    .up_font{position: absolute;top:28px;left:18px;}
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;margin-bottom:1rem;}
+</style>
+           <!--  <?php 
+            dump($data_list); //修改数据
+            dump($list_dept);//部门列表
+            dump($flow_list);//报表列表
+             dump($data_chart);//流程列表
+             ?> -->
+            <form action="" method="post" class="form form-horizontal" id="form-article-add">                               
+                <div class="hidden" id="dept_id"></div>
+                <div class="hidden" id="emp_id"></div>  
+                <input type="hidden" name="id" val="{$data_list['id']}">
+                <input type="hidden" id="status">
+                <div class="hidden" id="dept_info">                    
+                    <ul>
+                        <?php foreach($data_list['depts'] as $k => $v ){ ?>
+                        <li data="<?php if(isset($v['id'])){echo $v['id'];}?>">
+                        <span><?php if(isset($v['name'])){echo $v['name'];}?></span>
+                        <a class="fa fa-times"></a>
+                        </li>
+                        <?php } ?>
+                    </ul>                            
+                </div>
+                <div class="hidden" id="emp_info">
+                    <ul>
+                        <?php foreach($data_list['emps'] as $k => $v ){ ?>
+                        <li data="<?php if(isset($v['id'])){echo $v['id'];}?>">
+                        <span><?php if(isset($v['name'])){echo $v['name'];}?></span>
+                        <a class="fa fa-times"></a>
+                        </li>
+                        <?php } ?>
+                    </ul>                            
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择部门</label>
+                     <div class="formControls col-xs-8 col-sm-9"> 
+                         <input id="dept_input" type="text" class="input-text" value="" placeholder="请选择部门">
+                        <i class="Hui-iconfont Hui-iconfont-add4 add_icon icon1"></i>
+                     </div> 
+                    <div class="obj_add"></div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择人员</label>
+                     <div class="formControls col-xs-8 col-sm-9"> 
+                         <input id="emp_input" type="text" class="input-text" value="" placeholder="请选择人员">
+                        <i class="Hui-iconfont Hui-iconfont-add4 add_icon icon2"></i>
+                     </div> 
+                    <div class="obj_add"></div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>报表类型</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <span class="select-box">
+                        <select class="select" name="chart_type_id" id="">
+                            <option value="">请选择</option>
+                            <?php foreach ($data_chart as $key => $value) { ?>
+                                <option value="<?php echo $value['id']; ?>" <?php if($data_list['chart_type_id']==$value['id']){ echo 'selected';} ?>><?php echo $value['name']; ?></option>
+                            <?php } ?>
+                           
+                        </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>审批流程</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <span class="select-box">
+                        <select class="select" name="flow_type_id" id="">
+                            <option value="">请选择</option>
+                            <?php foreach ($flow_list as $key => $value) { ?>
+                                <option value="<?php echo $value['id']; ?>" <?php if($data_list['flow_type_id']==$value['id']){ echo 'selected';} ?>><?php echo $value['name']; ?></option>
+                            <?php } ?>
+                           
+                        </select>
+                        </span>
+                    </div>
+                </div>
+<!--                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择审批节点</label>
+                    <div class="formControls col-xs-8 col-sm-9" id="branch">
+                        <input id="branch_input" type="text" class="input-text" value="" placeholder="请选择审批节点">
+                        <i class="Hui-iconfont Hui-iconfont-add4 add_icon"></i>
+                    </div>
+                    <div class="obj_add"></div>
+                </div>  -->
+                <div class="row cl">
+                    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                        <a id="dosubmit" class="btn btn-primary radius ml-20" disabled="disabled">提交</a>
+                        <a href="javascript:;" onclick="window.history.back()" class="btn btn-default radius ml1r">返回</a>
+                    </div>
+                </div>
+                <input type="hidden" name="id" value='<?php echo  $data_list['id']; ?>'>
+            </form>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(".icon1").click(function(){
+        $("#dept_input").click();
+    });
+    $(".icon2").click(function(){
+        $("#emp_input").click();
+    });
+    $("#dept_input").click(function(){
+        //iframe层-父子操作
+        layer.open({
+            type: 2,
+            title: '选择范围',
+            area: ['600px', '550px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: "{:Url('func/popup/read')}"
+        });
+        $("#status").val("3");
+    });
+    $("#emp_input").click(function(){
+        //iframe层-父子操作
+        layer.open({
+            type: 2,
+            title: '选择范围',
+            area: ['600px', '550px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: "{:Url('func/popup/read')}"
+        });
+        $("#status").val("4");
+    });
+    $("#dosubmit").click(function(){                        
+                        var str = $("#form-article-add").serialize();
+          
+                        $.ajax({
+                            type: 'POST',
+                            url: '{:Url("update")}',
+                            data:str,
+                            dataType: 'json',
+                            success: function(data){
+                                if(data.status=='1'){
+                                    layer.msg(data.info);
+                                    setTimeout("location.reload();",3000);
+                                }
+
+                            },
+                            error:function(data) {
+                            },
+                        });
+                        
+    });
+    $(function(){
+        var thtml ='';
+        var dept_info = "{$data_list['dept_id']}";
+        var dept_s =dept_info.split(",");
+        for(var i=0;i<dept_s.length;i++){
+                thtml ='<input type="hidden" name="depts[]" value="'+dept_s[i]+'" >';
+                $("#dept_id").append(thtml);
+        }
+        
+        var jhtml ='';
+        var emp_info = "{$data_list['emp_no']}";
+        var emp_s =emp_info.split(",");
+        for(var i=0;i<emp_s.length;i++){
+                jhtml ='<input type="hidden" name="emps[]" value="'+emp_s[i]+'" >';
+                $("#emp_id").append(jhtml);
+        }
+    });
+    $(function(){
+        var textitem='';
+        var text ='';
+        var referitem='';
+        var refer='';
+        $("#dept_info ul li").each(function(i){
+            textitem = $(this).children('span').text();
+            if(i==$("#dept_info ul li").length-1){
+                text += textitem;
+            }else{
+                text += textitem + '➨';
+            }
+        });
+        $("#dept_input").val(text);
+        
+        $("#emp_info ul li").each(function(i){
+            referitem = $(this).children('span').text();
+            if(i==$("#emp_info ul li").length-1){
+                refer += referitem;
+            }else{
+                refer += referitem + '➨';
+            }
+        });
+        $("#emp_input").val(refer);
+    });
+</script>
+{/block}

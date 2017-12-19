@@ -1,0 +1,675 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<link rel="stylesheet" href="__LIB__/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<style>
+.mod-tree-people__input {
+    border: 1px solid #eaeaea;
+    min-height: 34px;
+    height: auto;
+    max-height: 100px;
+    margin: 0px 40px;
+}	
+.token-input-list.input_text {
+    padding: 3px 5px 0;
+    line-height: normal;
+    overflow-y: auto;
+}
+.mod-tree-people__input .token-input-list {
+    width: 100% !important;
+    -mz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.token-input-list.input_text {
+    padding: 3px 5px 0;
+    line-height: normal;
+    overflow-y: auto;
+}
+.input_text {
+    width: 240px;
+    height: auto;
+    line-height: 20px;
+    padding: 4px 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px !important;
+    resize: none;
+}
+li.token-input-input-token {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+.input_group_add {
+    vertical-align: middle;
+    padding: 2px;
+    height: 20px;
+    border: none;
+    line-height: 20px;
+    color: #777;
+    outline: 0;
+    cursor: pointer;
+}
+.mod-lozenges__item {
+    background: #EEE;
+    height: 24px;
+    display: inline-block;
+    color: #222;
+    vertical-align: top;
+    margin-right: 5px;
+    margin-bottom: 3px;
+    position: relative;
+    font-size: 0;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+}
+.setgreenbtn .green.btn, .setgreenbtn.btn {
+    padding: 7px!important;
+    min-width: 58px;
+}
+.setgreenbtn .green.btn, .setgreenbtn.btn {
+    min-width: 78px;
+    background-color: #2CBB97;
+    border-radius: 3px;
+    padding: 7px 14px;
+    border-color: #2CBB97;
+    margin: 0;
+    color: #fff;
+    height: 34px;
+    /* line-height: 19px!important; */
+    max-height: 34px;
+    display: inline-block;
+}
+.green.btn {
+    color: white;
+    background-color: #2CBB97;
+    border: 2px solid #22CCBB;
+}
+.btn {
+    border-width: 0;
+    padding: 7px 14px;
+    font-size: 14px;
+    outline: none!important;
+    background-image: none!important;
+    filter: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    text-shadow: none;
+}
+.mod-lozenges__icon {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+}
+.mod-lozenges__text {
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    vertical-align: top;
+    margin: 0 7px;
+    font-size: 14px;
+}
+.mod-lozenges__close-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    background-image: url(/statics/common/admin/widget/img/style-old-global_4049cbbf.png);
+    background-position: -546px -323px;
+    cursor: pointer;
+}
+.mod-lozenges__icon i {
+    display: block;
+    height: 24px;
+    width: 24px;
+}
+.mod-lozenges__icon-org {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    background-image: url(static/h-ui/images/style-old-global_4049cbbf[1].png);
+    background-position: -709px -464px;
+}
+/*选项卡*/
+.tabCon{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	padding-bottom: 100px;
+}
+.tabBar{
+	border-top: 1px solid #e5e5e5;
+    position: relative;
+    padding: 0 10px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #d8d8d8;
+}
+.user-manage-href {
+    color: #999;
+    position: absolute;
+    right: 10px;
+    top: 0;
+}
+.tabBar span{
+	height: 39px;
+	line-height: 39px;
+	float: left;
+    padding: 0 10px;
+    list-style: none;
+    background-color: #FFFFFF;
+    margin: 0 10px;
+    color: #777;
+}
+.user-manage-href a {
+    color: #2CBB97;
+    text-decoration: underline;
+}
+.tabBar span.current {
+     border-bottom: 3px solid #4a90e2;
+    color: #222;
+    background-color: #FFFFFF !important;
+}
+
+.info_content{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.info_content ul li{
+	display: block;
+	width: 100%;
+	height: 20px;
+	padding: 10px;
+	list-style-type: none;
+    list-style-image: none;
+    white-space: nowrap;
+}
+.info_content ul li .biaoqian i{
+	font-size: 18px;
+	color: #00B7EE;
+	margin: 0 5px;
+}
+.info_content ul li div.biaoqian{
+	font-size: 16px;
+	float: left;
+	height: 20px;
+	line-height: 20px;
+	cursor: pointer;
+}
+.info_content ul li span.label_check{
+	width: 18px;
+	height: 18px;
+	border: 1px solid #EEEEEE;
+	float: right;
+	margin-right: 10px;
+	line-height: 18px;
+	text-align: center;
+	font-size: 18px;
+	cursor: pointer;
+}
+.info_content ul li span.label_check i{
+	display: none;
+}
+.tree_farm{
+	width: 56%;
+	height: 270px;
+	overflow: auto;
+	float: left;
+	
+}
+.personnel_info{
+	width: 40%;
+	height: 270px;
+	float: right;
+	overflow: auto;
+}
+.people_item{
+	width: 90%;
+	height: 29px;
+	padding: 5px;
+	overflow: hidden;
+	border-bottom: 1px solid #e5e5e5;
+	font-size: 18px;
+	line-height: 40px;
+	cursor: pointer;	
+}
+.people_item img{
+	display: block;
+	width: 28px;
+	height: 28px;
+	float: left;
+	margin-right: 10px;
+}
+.people_item span.label_check{
+	width: 27px;
+	height: 27px;
+	border: 1px solid #EEEEEE;
+	float: right;
+	margin-right: 10px;
+	line-height: 27px;
+	text-align: center;
+	font-size: 27px;
+	cursor: pointer;
+}
+.people_item span.label_check i{
+	display: none;
+}
+.nav_bar{
+	background-color: #EEEEEE;
+	padding: 0 5px;
+	margin-top: 5px;
+}
+.nav_bar span.icon_box{
+	display: inline-block;
+    height: 24px;
+    width: 24px;
+    line-height: 24px;
+    text-align: center;
+}
+.nav_bar span.icon_box:nth-child(1){
+	background-color: #0b7df1;
+	color: #FFFFFF;
+}
+.nav_bar span.close_btn{
+	cursor: pointer;
+}
+.nav_bar i.Hui-iconfont{
+	padding-top: 3px;
+}
+
+.treemenu li { list-style: none; }
+
+.treemenu .toggler {
+    cursor: pointer;
+}
+
+.treemenu .toggler:before {
+    display: inline-block;
+    margin-right: 2pt;
+}
+
+li.tree-empty > .toggler { color: #fff; }
+li.tree-empty > .toggler:before { content: "\2212"; font-weight: bold; font-size: 16px;}
+li.tree-closed > .toggler:before { content: "+"; font-weight: bold; font-size: 16px;}
+li.tree-opened > .toggler:before { content: "\2212"; font-weight: bold; font-size: 16px;}
+
+.tree {  color:#46CFB0;}
+.tree li,
+.tree li > a,
+.tree li > span {
+    padding: 4pt;
+    border-radius: 4px;
+}
+
+.tree li a {
+   color:#333;
+    text-decoration: none;
+    line-height: 20pt;
+    border-radius: 4px;
+}
+
+.tree li a:hover {
+    background-color: #34BC9D;
+    color: #fff;
+}
+
+.active {
+    background-color: #34495E;
+    color: white;
+}
+
+.active a {
+    color: #fff;
+}
+
+.tree li a.active:hover {
+    background-color: #34BC9D;
+}
+.people_item i.Hui-iconfont{
+	color: #46CFB0;
+	margin-right: 10px;
+	font-size: 12px;
+}
+.treemenu{
+	margin-left: 15px;
+}
+.current1{
+	background-color: #34BC9D !important;
+    color: #fff !important;
+}
+</style>	
+
+<div class="page-container" style="width: 100%; height: 500px; overflow-y: auto;">
+	<!-- 搜索框 -->
+	<div class="mod-tree-people__input" style="position:relative;max-height:84px;min-height:35px; margin-right: 100px;">
+		<ul class="token-input-list input_text" style="margin-bottom: 0; overflow-x: hidden; overflow-y: auto; max-height: 84px;">
+			<span id="nav_bar">
+			</span>       	
+        	<li class="token-input-input-token">
+				<input id="condition" type="text" class="input_group_add" placeholder="输入搜索条件" value="" style="outline: none; min-height: 25px; width: 114px;" readonly>
+        	</li>
+        </ul>
+        <ul class="search-box" style="display: none;">
+
+    	</ul>
+        <button type="button" data-dismiss="modal" class="btn green addr-submit" style="position: absolute; right:-70px; top: 50%; margin-top: -17px; min-width: 60px;">确定</button>
+    </div>
+    
+    <!--选项卡-->
+	<div class="page-container">		
+		<div id="tab-system" class="HuiTab">
+			<div class="tabBar cl">				
+				<span>部门</span>
+				<span>成员</span>
+			</div>
+			<div class="tabCon" onload="treeload();">
+            <?php foreach ($tree as $key => $value) { ?>
+				<ul class="tree" id="tree">
+				  <li><i style="color:#46CFB0; font-size: 14px; margin-right: 5px" class="icon Hui-iconfont">&#xe63e;</i><a title="<?php echo $value['name']; ?>" id="<?php echo $value['id']; ?>" data-id="<?php echo $value['id']; ?>" href="#about"><?php echo $value['name']; ?></a>
+                    <?php foreach ($value['_child'] as $k => $vo) { ?>
+				    <ul>   
+				      <li><i style="color:#46CFB0; font-size: 14px; margin-right: 5px" class="icon Hui-iconfont">&#xe63e;</i><a data-judge="1" com-id="<?php echo $vo['id']; ?>" id="<?php echo $vo['id']; ?>" title="<?php echo $vo['name']; ?>" href="#"><?php echo $vo['name']; ?></a>
+				        <ul>
+                            <?php foreach ($vo['_child'] as $ke => $val) { ?>
+				          <li>
+                            <i style="color:#46CFB0; font-size: 14px; margin-right: 5px" class="icon Hui-iconfont">&#xe63e;</i><a data-judge="1" dept-id="<?php echo $val['id']; ?>" id="<?php echo $val['id']; ?>" title="<?php echo $val['name']; ?>" href="#jobs1"><?php echo $val['name']; ?>
+                            </a>
+                          </li>
+                          <?php } ?>
+				        </ul>				      	
+				      </li> 
+				    </ul>
+                    <?php } ?>
+				  </li>
+				</ul>
+                <?php } ?>
+			</div>
+
+			<div class="tabCon">
+				<div class="tree_farm">
+		            <?php foreach ($tree as $key => $value) { ?>
+						<ul class="tree" id="tree1">
+						  <li><i style="color:#46CFB0; font-size: 14px; margin-right: 5px" class="icon Hui-iconfont">&#xe63e;</i><a title="<?php echo $value['name']; ?>" data-id="<?php echo $value['id']; ?>" href="#about"><?php echo $value['name']; ?></a>
+		                    <?php foreach ($value['_child'] as $k => $vo) { ?>
+						    <ul>   
+						      <li><i style="color:#46CFB0; font-size: 14px; margin-right: 5px" class="icon Hui-iconfont">&#xe63e;</i><a com-id="<?php echo $vo['id']; ?>" title="<?php echo $vo['name']; ?>" href="#"><?php echo $vo['name']; ?></a>
+						        <ul>
+		                            <?php foreach ($vo['_child'] as $ke => $val) { ?>
+						          <li>
+						          	<i style="color:#46CFB0; font-size: 14px; margin-right: 5px" class="icon Hui-iconfont">&#xe63e;</i>
+		                            <a dept-id="<?php echo $val['id']; ?>" title="<?php echo $val['name']; ?>" href="#jobs1"><?php echo $val['name']; ?>
+		                            </a>
+		                          </li>
+		                          <?php } ?>
+						        </ul>				      	
+						      </li> 
+						    </ul>
+		                    <?php } ?>
+						  </li>
+						</ul>
+		                <?php } ?>
+					
+				</div>
+				<div class="personnel_info">
+
+				</div>
+			</div>
+			
+		</div>
+	</div>   
+</div>
+<div id="json_data" style="display: none;">{}</div>
+
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+$(function(){
+	//选项卡
+	$("#tab-system").Huitab({
+		index:0
+	});
+
+	// 接收数据
+	$(function(){
+		var dataNow = {$data};
+		$.each(dataNow[0],function(k,v){		//遍历公司部门这一数组
+
+			$.each(v,function(p,p1){
+
+				$(".treemenu a").each(function(){	//遍历公司部门树状图
+					var d_i = $(this).attr("id");	//树状图的id值
+					var dept_id = p1.id;			//遍历内容中的id值
+					if(dept_id == d_i){
+						var w = $(this).text();
+						$(this).attr("statu","1").css({"background-color":"#eeeeee"});
+						var html = '<li data-judge="1" class="token-input-input-token nav_bar" data-li="'+d_i+'"><span class="icon_box"><i class="icon Hui-iconfont">&#xe63e;</i></span><span class="mod-lozenges__text" id="testspan">'+w+'</span><span class="icon_box close_btn"><i class="icon Hui-iconfont">&#xe6a6;</i></span></li>';	
+		 				$("span#nav_bar").append(html);							
+					}
+					
+				});				
+			});
+		});
+		$.each(dataNow[1],function(t,u){		//遍历公司员工这一数组
+			$.each(u,function(e,e1){
+				var id = e1.emp_id;
+				var w = e1.emp_name;
+				var html = '<li data-judge="3" class="token-input-input-token nav_bar" data-li="'+id+'"><span class="icon_box"><i style="color:#ffffff;" class="icon Hui-iconfont">&#xe60a;</i></span><span class="mod-lozenges__text" id="testspan">'+w+'</span><span class="icon_box close_btn"><i class="icon Hui-iconfont">&#xe6a6;</i></span></li>';
+				$("span#nav_bar").append(html);
+
+			});
+		});
+	})
+
+});
+
+</script>
+<!-- 这里是部门折叠菜单 -->
+<script>
+(function($){
+    $.fn.openActive = function(activeSel) {
+        activeSel = activeSel || ".active";
+
+        var c = this.attr("class");
+
+        this.find(activeSel).each(function(){
+            var el = $(this).parent();
+            while (el.attr("class") !== c) {
+                if(el.prop("tagName") === 'UL') {
+                    el.show();
+                } else if (el.prop("tagName") === 'LI') {
+                    el.removeClass('tree-closed');
+                    el.addClass("tree-opened");
+                }
+
+                el = el.parent();
+            }
+        });
+
+        return this;
+    }
+
+    $.fn.treemenu = function(options) {
+        options = options || {};
+        options.delay = options.delay || 0;
+        options.openActive = options.openActive || false;
+        options.activeSelector = options.activeSelector || "";
+
+        this.addClass("treemenu");
+        this.find("> li").each(function() {
+            e = $(this);
+            var subtree = e.find('> ul');
+            var button = e.find('span').eq(0).addClass('toggler');
+
+            if( button.length == 0) {
+                var button = $('<span>');
+                button.addClass('toggler');
+                e.prepend(button);
+            } else {
+                button.addClass('toggler');
+            }
+
+            if(subtree.length > 0) {
+                subtree.hide();
+
+                e.addClass('tree-closed');
+
+                e.find(button).click(function() {
+                    var li = $(this).parent('li');
+                    li.find('> ul').slideToggle(options.delay);
+                    li.toggleClass('tree-opened');
+                    li.toggleClass('tree-closed');
+                    li.toggleClass(options.activeSelector);
+                });
+
+                $(this).find('> ul').treemenu(options);
+            } else {
+                $(this).addClass('tree-empty');
+            }
+        });
+
+        if (options.openActive) {
+            this.openActive(options.activeSelector);
+        }
+
+        return this;
+    }
+})(jQuery);
+$(function(){
+        $(".tree").treemenu({delay:300}).openActive();
+    });
+</script>
+
+<script type="text/javascript">
+	$(function(){
+		// 搜索确定
+		$("button.addr-submit").click(function(){
+			var html = '';
+			var condition = $("#condition").val();		//如果搜索框有内容的话
+			$("#nav_bar li span.mod-lozenges__text").each(function(k,v){
+				var cot = $(this).html();
+				html += cot+',';
+			});
+			html += condition;		//需要显示在添加页input框中看到的内容			
+
+			var valueN = "dept_";
+			var valueD = "emp_";
+			$("#nav_bar li").each(function(){		//遍历拼接字符串
+				var judge = $(this).attr("data-judge");
+				if(judge == 1){
+					var id = $(this).attr("data-li");					
+					valueN += id+",";
+				}else if(judge == 3){
+					var id = $(this).attr("data-li");
+					valueD += id+",";
+				}
+			});
+			var valueT = valueN+"|"+valueD+condition;	//隐藏域中的值，最终返回后台的数据
+
+			parent.myDate(html,valueT);		//传值到父窗口
+			//关闭窗口
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引 
+			parent.layer.close(index);
+
+		});
+
+		//成员选择ajax提交
+		$("#tree1 li ul a").on("click",function(){			//点击公司或者部门后右侧加载对应部门人员
+			var com_id = $(this).attr("com-id");
+			var dept_id = $(this).attr("dept-id");
+			var str="com_id="+com_id+"&dept_id="+dept_id;			
+			$.ajax({
+				url: "{:Url('userajax')}",
+		        dataType: 'json',
+		        data : str,		
+		        type: 'POST',
+		        cache: false,
+		        success: function(data){
+		        	var html ='';
+		        	$.each(data,function(k,v){		//请求成功后遍历后台数据添加对应人员
+		        		html += '<div  data-judge="3" class="people_item" title="'+v["name"]+'" id="'+v["id"]+'"><i class="icon Hui-iconfont">&#xe60a;</i><span class="people_name">'+v["name"]+'</span><span class="label_check"><i class="icon Hui-iconfont">&#xe6a7;</i></span></div>';			    
+		        	}); 
+		        	$(".personnel_info").html(html);
+			    	$("#nav_bar li[data-judge='3']").each(function(){		//点击公司或者部门后右侧遍历以选成员和部门人员，匹配相同id赋状态
+		    			var t_id = $(this).attr("data-li");
+		    			$(".personnel_info .people_item").each(function(){
+		    				var id = $(this).attr("id");
+			    			if(t_id == id){
+			    				$(this).attr("statu","1");
+			    				$(this).children(".label_check").children("i").show();
+			    			}		    				
+		    			});
+					});	
+					$(".people_item").on("click",function(){
+						$(this).children("span.label_check").children("i").toggle();
+						var w = $(this).attr("title");
+						var id = $(this).attr("id");
+						var statu = $(this).attr("statu");
+						var html = '<li data-judge="3" class="token-input-input-token nav_bar" data-li="'+id+'"><span class="icon_box"><i style="color:#ffffff;" class="icon Hui-iconfont">&#xe60a;</i></span><span class="mod-lozenges__text" id="testspan">'+w+'</span><span class="icon_box close_btn"><i class="icon Hui-iconfont">&#xe6a6;</i></span></li>';
+						$(this).attr("statu","1");
+						
+						if(statu ==1){
+							$(this).removeAttr("statu");
+							$(".nav_bar[data-li="+id+"]").remove();
+						}else{
+							$(this).attr("statu","1");
+							$("span#nav_bar").append(html);
+						}						
+					});			        		
+		        },
+		        error:function(data){
+		        		 alert("失败："+data.msg);
+		  				 return;
+		        }
+			});			
+		        		
+		});
+	})
+window.onload = function treeload(){
+	$(document).on("click","#tree li ul a",function(){		
+		var w = $(this).attr("title");
+		var id = $(this).attr("id");
+		var statu = $(this).attr("statu");
+		var judge = $(this).attr("data-judge");
+		if (judge == 1) {
+			var html = '<li data-judge="1" class="token-input-input-token nav_bar" data-li="'+id+'"><span class="icon_box"><i class="icon Hui-iconfont">&#xe63e;</i></span><span class="mod-lozenges__text" id="testspan">'+w+'</span><span class="icon_box close_btn"><i class="icon Hui-iconfont">&#xe6a6;</i></span></li>';
+
+		}else if(judge == 2){
+			var html = '<li data-judge="2" class="token-input-input-token nav_bar" data-li="'+id+'"><span class="icon_box"><i class="icon Hui-iconfont">&#xe63e;</i></span><span class="mod-lozenges__text" id="testspan">'+w+'</span><span class="icon_box close_btn"><i class="icon Hui-iconfont">&#xe6a6;</i></span></li>';
+
+		}
+		$(this).attr("statu","1");
+		
+		if(statu ==1){
+			$(this).removeAttr("statu");
+			$(".nav_bar[data-li="+id+"]").remove();
+		}else{
+			$(this).attr("statu","1");
+			$("span#nav_bar").append(html);
+		}
+	});
+}
+	
+	$(document).on("click","span.close_btn",function(){
+		var id = $(this).parent("li").attr("data-li");
+		$("#"+id).removeAttr("statu");
+		$(this).parent("li").remove();
+		$("#"+id+" span.label_check i").hide();
+	});
+$(document).on("click","#tree1 li ul a ",function(){
+	$("#tree1 a").removeClass("current1");
+	$(this).addClass("current1");
+});
+// $(document).ready(function(){
+// 	window.parent.myData();
+// })
+</script>
+
+{/block}

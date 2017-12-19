@@ -1,0 +1,104 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+	.clearfix {
+    	zoom: 1;
+	}
+	.pull-left {
+   	    float: left !important;
+	}
+	.layui-layer-custom {
+	    padding: 10px 6px 10px 0;
+	    border-top: 1px solid #eee;
+	    position: fixed;
+	    bottom: 0;
+	    right: 0;
+	    background-color: #FFFFFF;
+	    width: 100%;
+	}
+	.layui-layer-btn {
+	    text-align: right;
+	    padding: 0 10px 12px;
+	    pointer-events: auto;
+	}	
+	.layui-layer-btn .layui-layer-btn0 {
+	    border-color: #4898d5;
+	    background-color: #2e8ded;
+	    color: #fff;
+	}	
+	.layui-layer-btn a {
+	    height: 28px;
+	    line-height: 28px;
+	    margin: 0 6px;
+	    padding: 0 15px;
+	    border: 1px solid #dedede;
+	    background-color: #f1f1f1;
+	    color: #333;
+	    border-radius: 2px;
+	    font-weight: 400;
+	    cursor: pointer;
+	    text-decoration: none;
+	}	
+</style>	
+<div class="page-container">
+	
+	<div class="clearfix name-cont">
+        <p class="pull-left" style="padding-right:30px ;box-sizing: border-box;">
+        	日期：<span class="date">2017-07-05</span>&nbsp;&nbsp;
+        </p>
+        <p class="pull-left layername">
+        	姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：<span class="staffname">佟波</span>
+        </p>
+    </div>	
+    
+	<div class="statu-cont">
+		<p class="clearfix exception-statu">
+			异常状态：<span class="exception">未签到</span>
+		</p>
+		<div class="clearfix bor-b">
+			<p style="width:50%;float:left;padding-right:20px;box-sizing:border-box">
+				应签到时间：<span>8:50</span>
+			</p>
+			<p style="width:50%;float:left;">
+				补签为：<span>8:50</span>
+			</p>
+		</div>
+		<p class="clearfix exception-statu">
+			异常状态：
+			<span class="exception">未签退</span>
+		</p>
+		<div class="clearfix bor-b">
+			<p style="width:50%;float:left;padding-right:20px;box-sizing:border-box">
+				应签退时间：<span>17:30</span>
+			</p>
+			<p style="width:50%;float:left;">
+				补签为：<span>17:30</span>
+			</p>
+			<p></p>
+		</div>
+	</div> 
+	<p style="margin-bottom: 0;padding:0;">说&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明：</p>
+    <textarea class="reason" name="reason" maxlength="100" style="width: 100%;" placeholder="请填写补签说明"></textarea>
+    
+   <div class="layui-layer-btn layui-layer-custom">
+    	<a class="layui-layer-btn0">确定</a>
+    	<a class="layui-layer-btn1">取消</a>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+	
+	$(function(){
+		$(".layui-layer-btn0").click(function(){
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引 
+			parent.layer.close(index);
+		});
+		$(".layui-layer-btn1").click(function(){
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引 
+			parent.layer.close(index);
+		});
+	})
+</script> 
+
+{/block}

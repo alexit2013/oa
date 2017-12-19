@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>新增利润预算数据</title>
+    <script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/kpi/table.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function() {
+                    //预计表
+                    var w = $(".table_box").width();
+                    var h = $(".table_box").height();
+                    $("#MyTable thead tr th").css({"padding":"10px 10px","height":"20px"});
+                    $("#MyTable").css({"text-align":"center","font-size":"0.5rem","width":w,"height":h});
+                    $("#MyTable td").css({"padding":"2px","color":"rgb(70, 70, 70)"});
+                    FixTable("MyTable",  1, w, h);
+            });
+    </script>
+</head>
+
+<body>
+<style>
+    body{
+        font-size: 62.5%;
+    }
+    .table_box{
+        width: 100%;
+        height: 400px;
+        margin: 0 auto;
+        font-size: 0.5rem;
+    }
+    .c-red{color: red;}
+    a{
+        text-decoration: none;
+    }
+    .top_bar{
+        width: 100%;
+        height: 40px;
+    }
+    .top_bar .btn{
+        width: auto;
+        height: 20px;
+        padding: 4px 12px;
+        margin-top: 6px;
+        background-color: #5a98de;
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 400;
+    }
+    .search_box{
+        width: 100%;
+        height: 40px;
+        margin: 10px auto;
+        border: 1px solid #eaeaea;
+    }
+    .select_box{
+        border: solid 1px #ddd;
+        box-sizing: border-box;
+        vertical-align: middle;
+        width: 200px;
+        padding: 4px 5px;
+        display: inline-block;
+        margin-top: 5px;
+        margin-left: 20px;
+        float: left;
+        height: 30px;
+    }
+    .search_box >span{
+        display: block;
+        float: left;
+        width: 40px;
+        height: 40px;
+        float: left;
+        text-align: right;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .select{
+        border: 0;
+        font-size: 14px;
+        box-sizing: border-box;
+        cursor: pointer;
+        line-height: normal;
+        font-weight: normal;
+        width: 100%;
+        float: right;
+        white-space: nowrap;
+        outline: none;
+    }
+    .search_btn{
+        background-color: #5a98de;
+        border-radius: 5px;
+        color: #FFFFFF;
+        float: left;
+        display: inline-block;
+        box-sizing: border-box;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 400;
+        white-space: nowrap;
+        vertical-align: middle;
+        -moz-padding-start: npx;
+        -moz-padding-end: npx;
+        width: auto;
+        border: none;
+        outline: none;
+        height: 30px;
+        margin-left: 20px;
+        margin-top: 5px;
+        padding: 0 10px;
+    }
+    .top_infor{
+        width: 100%;
+        height: 40px;
+        font-size: 24px;
+        line-height: 40px;
+        text-align: center;
+    }
+    .top_infor > span{
+        color: red;
+    }
+    table tr td > input{
+        display: block;
+        outline:none;
+        border:none;
+        width: 100%;
+        height: 100%;
+        background-color: #f4f4ff;
+    }
+    table tr td > textarea{
+        display: block;
+        outline:none;
+        border:none;
+        width: 100%;
+        height: 100%;
+    }
+    .btn-primary{
+        width: 80px;
+        height: 35px;
+        display: block;
+        color: #fff;
+        background-color: #5a98de;
+        border-color: #5a98de;
+        padding: 4px 12px;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        margin: 10px auto;
+        cursor: pointer;
+    }
+    th{width:100px;}
+</style>
+<div class="page-container">
+        <form action="{:Url('index')}" method="post">
+            <div class="search_box">
+                <span>门店:</span>
+                <div class="select_box">
+                    <select class="select" name="store_id" id="store_id">
+                        <?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+                        <option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <span>年份:</span>
+                <div class="select_box">
+                    <select class="select" name="year" id="store_year">
+                        <option value="">请选择年份</option>
+                    </select>
+                </div>
+                <span>月份:</span>
+                <div class="select_box">
+                    <select class="select" name="month" id="store_month">
+                        <option value="">请选择月份</option>
+                        <option value="1">1月</option>
+                        <option value="2">2月</option>
+                        <option value="3">3月</option>
+                        <option value="4">4月</option>
+                        <option value="5">5月</option>
+                        <option value="6">6月</option>
+                        <option value="7">7月</option>
+                        <option value="8">8月</option>
+                        <option value="9">9月</option>
+                        <option value="10">10月</option>
+                        <option value="11">11月</option>
+                        <option value="12">12月</option>
+                    </select>
+                </div>
+                <button name="" id="" class="search_btn" type="submit"> 查询</button>
+            </div>
+        </form>
+        <!--利润预算表-->
+		<h1 style="width:100%;text-align: center;">利润预算表</h1>
+        <div class="table_box">
+			<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable">
+				<thead>
+					<tr>
+						<th rowspan="2"><div style="width: 120px;">项目</div></th>
+						<th colspan="6"><div style="width: 480px;">上月发生数</div></th>
+						<th colspan="4"><div style="width: 320px;">本月计划数</div></th>
+						<th colspan="6"><div style="width: 540px;">滚动预测数</div></th>
+                                                <th rowspan="2"><div style="width: 120px;">备注</div></th>     
+					</tr>
+					<tr>
+						<th>实际数</th>
+                                                <th>计划金额</th>
+                                                <th>实际－计划差异</th>
+                                                <th>完成率</th>
+                                                <th>月预算金额</th>
+                                                <th>完成率</th>
+                                                <th>计划金额</th>
+                                                <th>预算金额</th>
+                                                <th>计划－预算差异</th>
+                                                <th>完成</th>
+                                                <th>1-上上月实际</th>
+                                                <th>1-本月累计预测</th>
+                                                <th>1-本月累计预算</th>
+                                                <th>实际-预算差异</th>
+                                                <th><?php echo date('Y'); ?>年预算</th>
+                                                <th>完成率</th>
+					</tr>
+				</thead>
+				<tbody>	     
+                                    <tr>						
+                                        <td style="text-align: left"><strong>销售数量↓</strong></td>                      
+				    </tr>
+                                    <tr>						
+                                        <td>其中：整车<input type="hidden" name="profit[1][bproject_id]" value="1"></td>
+                                        <td><input type="text" name="profit[1][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[1][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[1][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[1][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[1][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[1][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[1][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[1][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                       
+                                    </tr>                                           
+                                    <tr>                       
+                                        <td>其中：维修台次<input type="hidden" name="profit[2][bproject_id]" value="2"></td>
+                                        <td><input type="text" name="profit[2][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[2][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[2][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[2][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[2][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[2][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[2][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[2][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                       
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left"><strong>主营业务收入↑</strong></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>                       
+                                    </tr>
+                                    <tr>                       
+                                        <td>1、整车<input type="hidden" name="profit[3][bproject_id]" value="3"></td>
+                                        <td><input type="text" name="profit[3][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[3][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[3][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[3][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[3][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[3][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[3][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[3][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                       
+                                    </tr>
+                                    <tr>                       
+                                        <td>2、维修<input type="hidden" name="profit[4][bproject_id]" value="4"></td>
+                                        <td><input type="text" name="profit[4][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[4][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[4][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[4][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[4][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[4][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[4][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[4][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                       
+                                    </tr>
+                                    <tr>                       
+                                        <td>3、装饰装潢<input type="hidden" name="profit[5][bproject_id]" value="5"></td>
+                                        <td><input type="text" name="profit[5][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[5][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[5][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[5][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[5][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[5][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[5][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[5][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                       
+                                    </tr>
+                                    <tr>                       
+                                        <td>4、佣金代理<input type="hidden" name="profit[6][bproject_id]" value="6"></td>
+                                        <td><input type="text" name="profit[6][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[6][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[6][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[6][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[6][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[6][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[6][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[6][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                       
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left"><strong>主营业务成本↑</strong></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>                       
+                                    </tr>
+                                    <tr>                       
+                                        <td>1、整车<input type="hidden" name="profit[7][bproject_id]" value="7"></td>
+                                        <td><input type="text" name="profit[7][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[7][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[7][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[7][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[7][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[7][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[7][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[7][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2、维修</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>                       
+                                    </tr>
+                                    <tr>
+                                        <td>其中: 零部件<input type="hidden" name="profit[8][bproject_id]" value="8"></td>
+                                        <td><input type="text" name="profit[8][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[8][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[8][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[8][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[8][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[8][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[8][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[8][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                      
+                                    </tr>
+                                    <tr>
+                                        <td>工费<input type="hidden" name="profit[9][bproject_id]" value="9"></td>
+                                        <td><input type="text" name="profit[9][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[9][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[9][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[9][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[9][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[9][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[9][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[9][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                       
+                                    </tr>
+                                    <tr>
+                                        <td>车间费用<input type="hidden" name="profit[10][bproject_id]" value="10"></td>
+                                        <td><input type="text" name="profit[10][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[10][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[10][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[10][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[10][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[10][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[10][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[10][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                       
+                                    </tr>
+                                    <tr>
+                                        <td>3、装饰装潢<input type="hidden" name="profit[11][bproject_id]" value="11"></td>
+                                        <td><input type="text" name="profit[11][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[11][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[11][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[11][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[11][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[11][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[11][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[11][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                       
+                                    </tr>
+                                    <tr>
+                                        <td>4、佣金代理<input type="hidden" name="profit[12][bproject_id]" value="12"></td>
+                                        <td><input type="text" name="profit[12][pm_actualNum]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td><input type="text" name="profit[12][pm_expectAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[12][pm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[12][tm_budgetAmount]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[12][1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[12][1_tmtot_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                 
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[12][ty_budget]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                                        <td>自动计算</td>
+                                        <td><input type="text" name="profit[12][remark]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>                       
+                                    </tr>
+                                    <tr>
+                                            <td style="text-align: left"><strong>主营业务毛利</strong></td> <!--主营业务毛利-->
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr> 
+                                        <tr>
+                                            <td>整车</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>维修</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>装饰装潢</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>佣金</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left"><strong>毛利率%</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>整车</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>维修</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>装饰装潢</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>佣金</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left"><strong>主营业务税金及附加</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>主营业务附加税后毛利</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>其他业务收入</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>其他业务利润</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>营业费用</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>管理费用</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left"><strong>息税前利润（EBIT）</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>财务费用</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left"><strong>营业利润</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>加：营业外收支净额</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>投资收益</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left"><strong>利润总额</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>减：所得税</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left"><strong>税后净利润</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td>其中：归属母公司净利润</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left"><strong>少数股东权益</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>                       
+                                        </tr>
+                                </tbody>			
+			</table>
+		</div>
+</div>
+
+<script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript">
+    function article_save_submit(){
+        var num=0;
+        var str = '请填写完必填数据';
+        $("#MyTable input").each(function () {
+            if ($(this).val() == "") {
+                this.focus();
+                num++;
+                //str = $(this).attr("placeholder")+"</br>";
+            }
+
+        });
+        if(num>0)
+        {
+            layer.msg(str);
+            return false;
+        }
+        else
+        {
+            var str = $("#form-article-add").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("add")}',
+                data:str,
+                dataType: 'json',
+                success: function(data){
+                    if(data.status=='1'){
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+                error:function(data) {
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+            });
+        }
+    }
+
+    $(function(){
+        //当前月份
+        var current_date = new Date();
+        var cur_month = current_date.getMonth()+1;
+        var year=current_date.getFullYear();
+        $(".top_infor span.current_month").html(cur_month);
+        $("#iyear").val(year);
+        $("#month").val(cur_month);        
+    });
+
+    $("tr td > input").on("change",function(){
+        if($(this).val() == ""){
+            $(this).css("background-color","#f4f4ff");
+        }else{
+            $(this).css({"background-color":"#ffffff","text-align":"center"});
+        }
+
+    });
+    //只能输入数字
+    function clearNoNum(obj)
+    {
+        //先把非数字的都替换掉，除了数字和.
+        obj.value = obj.value.replace(/[^\d.-]/g,"");
+        //必须保证第一个为数字而不是.
+        obj.value = obj.value.replace(/^\./g,"");
+        //保证只有出现一个.而没有多个.
+        obj.value = obj.value.replace(/\.{2,}/g,".");
+        //保证.只出现一次，而不能出现两次以上
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+    }
+</script>
+
+</body>
+</html>

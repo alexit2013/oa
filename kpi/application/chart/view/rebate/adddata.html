@@ -1,0 +1,160 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    .c-red{color: red;}
+    .re_icon{font-size: 19px;line-height: 31px;cursor:pointer;}
+    .ml1r{margin-left: 1rem;}
+    .mt-20{margin-top:20px;}
+</style>
+<div class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-article-add">
+        <div class="rebate_box">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>数据类型：</label>
+                <div class="formControls col-xs-8 col-sm-3 mt-3">
+                    <label><input name="rebate_data" type="radio" value="1" />上月实际</label>
+                    <label class="ml1r"><input name="rebate_data" type="radio" value="2" />本月预计</label>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>年月：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="month" class="input-text" value="" placeholder="请输入月份" id="month" readonly>
+                    <input type="hidden" class="input-text" value="" id="iyear" name="iyear">
+                    <input type="hidden" class="input-text" value="" id="imonth" name="imonth">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>门店：</label>
+                <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                                <select class="select" name="store_id" id="store_id">
+                                    <?php foreach($store as $k => $v){ ?>
+                                    <option value="{$v['ID']}">{$v['NAME']}</option>
+                                    <?php } ?>
+                                </select>
+				</span></div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>当期市场推广类预估返利：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text rebate_input" msg="当期市场推广类预估返利" private="required" value="" placeholder="请输入当期市场推广类预估返利" id="market_promotion_data" name="market_promotion_data">
+                </div>
+                <span class="c-red">元</span>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>当期满意度类预估返利：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text rebate_input" msg="当期满意度类预估返利" private="required" value="" placeholder="请输入当期满意度类预估返利" id="satisfaction_data" name="satisfaction_data">
+                </div>
+                <span class="c-red">元</span>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>当期日常检查类预估返利：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text rebate_input" msg="当期日常检查类预估返利" private="required" value="" placeholder="请输入当期日常检查类预估返利" id="check_data" name="check_data">
+                </div>
+                <span class="c-red">元</span>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>当期大客户类预估返利：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text rebate_input" msg="当期大客户类预估返利" private="required" value="" placeholder="请输入当期大客户类预估返利" id="big_customer_data" name="big_customer_data">
+                </div>
+                <span class="c-red">元</span>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>当期其他类预估返利：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text rebate_input" msg="当期其他类预估返利" private="required" value="" placeholder="请输入当期其他类预估返利" id="other_data" name="other_data">
+                </div>
+                <span class="c-red">元</span>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>前期未预估的补估返利：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text rebate_input" msg="前期未预估的补估返利" private="required" value="" placeholder="请输入前期未预估的补估返利" id="not_estimate_data" name="not_estimate_data">
+                </div>
+                <span class="c-red">元</span>
+            </div>
+        </div>
+        <div class="row cl mt-20">
+            <div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-3">
+                <button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+                <button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function(){
+        $(":radio").click(function(){
+            var val =$(this).val();
+            var date=new Date;
+            var year=date.getFullYear();
+            var month=date.getMonth();
+            var nextmonth = month + 1;
+            if(month<10){
+                var data_month ="0"+ month;
+            }else{
+                var data_month =month;
+            }
+            if(nextmonth<10){
+                var data_nextmonth ="0"+ nextmonth;
+            }else{
+                var data_nextmonth = nextmonth;
+            }
+            if(val=="1"){
+                var y_m =year+"-"+data_month;
+                var imonth = data_month;
+            }
+            if(val=="2"){
+                var y_m =year+"-"+data_nextmonth;
+                var imonth = data_nextmonth;
+            }
+            $("#imonth").val(imonth);
+            $("#iyear").val(year);
+            $("#month").val(y_m);
+        });
+    });
+    function article_save_submit(){
+        var num=0;
+        var str="";
+        $("input[type$='text'][private='required']").each(function(n){
+            if($.trim($(this).val())=="")
+            {
+                num++;
+                str+=$(this).attr("msg")+"不能为空！\r\n";
+            }
+        });
+        if(num>0)
+        {
+            layer.msg(str);
+        }
+        else
+        {
+            var str = $("#form-article-add").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("adddata")}',
+                data:str,
+                dataType: 'json',
+                success: function(data){
+                    if(data.status=='1'){
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                },
+                error:function(data) {
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+            });
+        }
+    }
+</script>
+{/block}

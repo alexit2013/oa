@@ -1,0 +1,435 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<style>
+/*选项卡*/
+.tabBar{
+    position: relative;
+    padding: 0 10px;
+    height: 40px;
+    line-height: 40px;
+    color: #d8d8d8;
+}
+.user-manage-href {
+    color: #999;
+    position: absolute;
+    right: 10px;
+    top: 0;
+}
+.tabBar span{
+	height: 39px;
+	line-height: 39px;
+	float: left;
+    padding: 0 10px;
+    list-style: none;
+    background-color: #FFFFFF;
+    margin: 0 10px;
+    color: #777;
+}
+.user-manage-href a {
+    color: #2CBB97;
+    text-decoration: underline;
+}
+.tabBar span.current {
+     border-bottom: 3px solid #4a90e2;
+    color: #222;
+    background-color: #FFFFFF !important;
+}
+	.form-group {
+	    margin-right: -15px;
+	    margin-left: -15px;
+	    margin-bottom: 15px;
+	    margin-top: 30px;
+	    width: 100%;
+	    height: 40px;
+	}
+	.form-group > label.col-md-2 {
+	    width: 180px!important;
+	    text-align: right;
+	    height: 39px;
+	    line-height: 38px;
+	    float: left;
+	}
+	.col-md-4 {
+	    width: 33.33333333%;
+	    float: left;
+	}
+	.col-md-4 input{
+		padding: 0 10px;
+	}
+	.form-control.select2-container {
+	    border: 0;
+	    height: auto!important;
+	    padding: 0px;
+	}	
+	select.form-control {
+	    border-radius: 0px!important;
+	    min-height: 34px;
+	    width: 320px;
+	}	
+	.control-label .required {
+	    color: #e02222;
+	    font-size: 12px;
+	    padding-left: 2px;
+	}
+	.input-large {
+	    width: 320px!important;
+	    border-radius: 0px!important;
+    	min-height: 34px;
+	    font-size: 14px;
+	    font-weight: normal;
+	    color: rgb(51, 51, 51);
+	    background-color: white;
+	    border: 1px solid rgb(229, 229, 229);
+	    border-image-source: initial;
+	    border-image-slice: initial;
+	    border-image-width: initial;
+	    border-image-outset: initial;
+	    border-image-repeat: initial;
+	    box-shadow: none;
+	    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  	}
+  	.h20 {
+	    height: 20px!important;
+	    border-bottom: 1px solid #eee;
+	}
+	.col-md-offset-1 {
+	    margin-left: 170px;
+	    padding-left: 0px;
+	    margin-top: 20px;
+	}
+	.green.btn, .setgreenbtn.btn {
+	    min-width: 78px;
+	    background-color: #2CBB97;
+	    border-radius: 3px;
+	    padding: 7px 14px;
+	    border-color: #2CBB97;
+	    margin: 0;
+	    color: #fff;
+	    height: 34px;
+	    /* line-height: 19px!important; */
+	    max-height: 34px;
+	    display: inline-block;
+	}
+	.newgray-btn.btn {
+	    min-width: 78px!important;
+	    height: 34px!important;
+	    padding: 7px 14px!important;
+	    background-color: #F3F3F3!important;
+	    background: -webkit-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: -o-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: -moz-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: linear-gradient(#FCFCFC, #EEEEEE)!important;
+	    color: #666!important;
+	    border-left: 0 none;
+	    border-radius: 3px;
+	    margin-left: 10px;
+	}
+	.formControls{
+		width: 33.33%;
+	}
+	.help-block {
+	    font-size: 13px!important;
+	    color: #a0a0a0!important;
+	}
+	.switch_box,.switch_box1{
+		width: 80px;
+		height: 30px;
+		display: inline-block;
+	    cursor: pointer;
+	    border-radius: 4px;
+	    border: 1px solid;
+	    border-color: #ccc;
+	    position: relative;
+	    text-align: left;
+	    overflow: hidden;
+	    line-height: 8px;
+	    -webkit-user-select: none;
+	    -moz-user-select: none;
+	    -ms-user-select: none;
+	    user-select: none;
+	    vertical-align: middle;
+	    min-width: 100px;
+	    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+		color: #000;
+	    background: #eee;
+	    color: #333;
+	    text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+	    background-color: #f0f0f0;
+	    background-image: -moz-linear-gradient(top,#e6e6e6,#fff);
+	    background-image: -webkit-gradient(linear,0 0,0 100%,from(#e6e6e6),to(#fff));
+	    background-image: -webkit-linear-gradient(top,#e6e6e6,#fff);
+	    background-image: -o-linear-gradient(top,#e6e6e6,#fff);
+	    background-image: linear-gradient(to bottom,#e6e6e6,#fff);
+	    background-repeat: repeat-x;
+	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe6e6e6',endColorstr='#ffffffff',GradientType=0);
+	    border-color: #fff #fff #d9d9d9;
+	    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+	    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+	    float: left;
+	}
+	.switch_box .switch_btn,.switch_box1 .switch_btn{
+		width: 102px;
+		height: 30px;
+		line-height: 30px;
+		background-color: #2cbb97;
+		position: absolute;
+		top: 0;
+		left: -66px;
+	}
+	.switch_box .switch_btn span,.switch_box1 .switch_btn span{
+		display: block;
+		background-color: #FFFFFF;
+		width: 35px;
+		height: 35px;
+		text-align: center;
+		float: right;
+		border-right: 1px solid #ccc;
+	}
+	.applaction_time{
+		width: auto;
+		height: 32px;
+		float: left;
+		margin-left: 10px;
+	}
+
+</style>
+
+<form class="form form-horizontal" id="form-admin-add">
+<div class="page-container">
+    <!--选项卡-->
+	<div class="page-container">		
+		<div id="tab-system" class="HuiTab">
+			<div class="tabBar cl">
+				<span>编辑考勤人员</span>
+				<span>编辑打卡方式</span>
+				<span>编辑休息日方案</span>
+				<span>编辑排班</span>
+			</div>
+			<div class="tabCon">
+				<div class="form-group">
+                    <label class="col-md-2 control-label">
+                    	<strong>名称<span class="required" aria-required="true">*</span></strong>
+                    </label>
+                    <div class="col-md-4">
+                        <input id="name" type="text" name="name" value="<?php echo $rule['name']; ?>" placeholder="请输入考勤规则名称" class="form-control input-large">
+                        <div class="help-block"></div>
+                    </div>
+                </div>                
+				<div class="form-group">
+                    <label class="col-md-2 control-label">
+                    	<strong>应用范围<span class="required" aria-required="true">*</span></strong>
+                    </label>
+
+                    <div class="col-md-4">
+                        <input id="branch" type="text" name="" value="<?php foreach ($rule['dept'] as $vd) {
+                        		echo $vd['dept_name'].',';
+                        }	foreach ($rule['emp'] as $ve) {
+                        			echo $ve['emp_name'].',';
+                        		} ?>" placeholder="请选择部门或员工"  class="form-control input-large" readonly>
+                        <input type="hidden" id="seach_must" name="range" value="<?php echo $rule['range']; ?>">
+                        <div class="help-block"></div>
+                    </div>
+                </div>           
+				<div class="form-group row cl" id="img_btn">
+				<!-- 	<label class="col-md-2 control-label">
+						<strong>是否默认<span class="required" aria-required="true">*</span></strong>
+					</label>
+					<div class="formControls col-xs-8 col-sm-9" id="img_text">
+						<div class="switch_box">
+							<div class="switch_btn">
+								<span>关</span>
+							</div>
+							<input id="switch_input" name="" type="hidden" value="0" />
+						</div>
+						<span style="display: inline-block; position: relative; top: 4px; left: 10px;font-size: 13px!important; color: #a0a0a0!important;">默认规则只允许有一个，当前为默认后其它的规则将取消默认</span>
+					</div> -->
+				</div>              
+			</div>
+			
+			<div class="tabCon">
+				<div class="form-group" style="margin-bottom: 0 !important;">
+                    <?php if(!empty($allways)){ ?>
+                    <label class="col-md-2 control-label">
+                    	<strong><i class="icon Hui-iconfont">&#xe67e;</i>已有打卡方式</strong>
+                    </label>
+                    <?php } ?>
+                </div>
+                <?php foreach ($allways as $key => $value) { ?>
+				<div class="form-group" style="margin: 0 5px !important;">
+                    <label class="col-md-2 control-label" style="width: 70% !important; text-align: left;">
+                    	<input class="way_ids" type="checkbox"  name="way_ids[]" <?php foreach ($rule['ways'] as $va) {
+                    		if($va['id']==$value['id']){ echo "checked";}
+                    	} ?> value="<?php echo $value['id']; ?>">
+                    	<?php echo $value['name']."(地理位置打卡（微信）)"; ?>
+                    </label>
+                </div>
+                <?php } ?>                
+			</div>
+			
+			<div class="tabCon">
+				<div class="form-group" style="margin-bottom: 0 !important;">
+                    <?php if(!empty($allplaydays)){ ?>
+                    <label class="col-md-2 control-label">
+                    	<strong><i class="icon Hui-iconfont">&#xe67e;</i>已有休息日</strong>
+                    </label>
+                    <?php } ?>
+               </div>
+               <?php foreach ($allplayday as $key => $value) {?>
+				<div class="form-group" style="margin: 0 5px !important;">
+                    <label class="col-md-2 control-label">
+                    	<input type="radio"	<?php if($rule['playday_id']==$value['id']){ echo "checked";} ?> value="<?php echo $value['id']; ?>" name="playday_id">
+                        <?php echo $value['name']; ?>
+                    </label>
+                </div>
+                <?php } ?>             
+			</div>
+			
+			<div class="tabCon" style="padding-top: 20px">
+                <?php foreach ($allschedual as $key => $value) { ?>
+				<div class="form-group" style="margin: 0 5px !important;">
+                    <label class="col-md-2 control-label" style="width: 70% !important; text-align: left;">
+                    	<input type="radio" <?php if($rule['schedual_ids']==$value['id']){ echo 'checked';} ?> value="<?php echo $value['id']; ?>" name="schedual_ids">
+                    	   <?php echo $value['work_start_time'].'-'.$value['work_end_time'].'&nbsp;&nbsp;'.$value['shift_name'].'('.$value['short'].')';  ?>
+                    </label>
+                </div>
+                <?php } ?>
+
+			 	<div class="row cl">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+						<input id="submit" class="btn btn-primary radius" type="button" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>    
+</div>
+<input type="hidden" name="id" value="<?php echo $rule['id']; ?>">
+</form>
+{/block}
+
+{block name="js"}
+<script>
+	//提交
+	$("#submit").click(function(){
+		var name = $("#name").val();
+		var range = $("#seach_must").val();
+		var way = $('input[class="way_ids"]:checked').map(function(){return this.value}).get().join();
+		var playday = $("input:radio[name='playday_id']:checked").val();
+		var schedual = $("input:radio[name='schedual_ids']:checked").val();
+		if(name == ''){
+			layer.msg('请输入考勤规则名称');
+			return false;			
+		}
+		if(range == ''){
+			layer.msg('请选择部门或员工');
+			return false;			
+		}
+		if(way == ''){
+			layer.msg('请选择打卡方式');
+			return false;			
+		}
+		if(playday == null){
+			layer.msg('请设置休息日方案');
+			return false;			
+		}
+		if(schedual == null){
+			layer.msg('请设置排班');
+			return false;			
+		}else{
+			$.ajax({
+				url: "{:Url('ruleedit')}",
+		        dataType: 'json',
+		        data :$('#form-admin-add').serialize(),		
+		        type: 'POST',
+		        cache: false,
+		        success: function(data){
+	        		if(data.status=='1'){
+	        			layer.msg('修改成功!');
+	        			setTimeout(function(){
+	        				parent. location.reload();
+	        			},1000);	        			
+	        		}	
+					if(data.status=='0'){
+	        			layer.msg('内容未发生变化!');
+	        			setTimeout(function(){
+	        				parent. location.reload();
+	        			},1000);
+	        		}	        		        		
+		        },
+		        error:function(data){
+		        		 ayer.msg(data.msg);
+		  				 return;
+		        }
+			});			
+		}
+
+	});
+
+	//选项卡
+	$(function(){
+		$('.skin-minimal input').iCheck({
+			checkboxClass: 'icheckbox-blue',
+			radioClass: 'iradio-blue',
+			increaseArea: '20%'
+		});
+		$("#tab-system").Huitab({
+			index:0
+		});
+	});
+//子窗口	
+	$(function(){
+		$(".layui-layer-btn0").click(function(){
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引 
+			parent.layer.close(index);
+		});
+	})
+// 开关
+$(function(){
+	$(".switch_box").on("click",function(){	
+		if($("#switch_input").val() == 0){
+			$(this).children("div").animate({left:'0px'},500);
+			$(this).children("div").children("span").html("开");
+			$(this).children("input").val('1');
+		}else{
+			$(this).children("div").animate({left:'-66px'},500);
+			$(this).children("div").children("span").html("关");
+			$(this).children("input").val('0');
+		}
+	});
+})
+$('#branch').click(function(){
+	var data = $('#seach_must').val();
+	data = data.replace('|','*');
+	var url = "/position/index.php/attendanceset/rule/popupedit/range/"+data;
+	popup(url);
+
+});
+// 选择部门员工
+	//选择部门范围
+
+	function popup(url){
+		//iframe层-父子操作
+		layer.open({
+		  type: 2,
+		  title: '选择范围',
+		  area: ['600px', '500px'],
+		  fixed: false, //不固定
+		  maxmin: true,
+		  content: url
+		});	
+	}
+	function myDate(s,h){
+		$("#branch").val(s);	
+		$("#seach_must").val(h);
+	};
+	
+	// function myData(valueNow){
+	// 	var valueNow = $("#seach_must").val();
+	// 	alert(valueNow);
+	// };
+
+</script>
+
+{/block}

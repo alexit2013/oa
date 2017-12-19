@@ -1,0 +1,102 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    .msg_content{
+        margin:25px 0px 0px 0px;
+        padding: 25px 0px;
+        box-sizing:border-box;
+        border: 1px solid #00ccff;
+        border-radius:15px;
+        position: relative;
+    }
+    .msg_del{
+        border-radius:5px;
+        color: #fff;
+        background-color:#3399ff;
+        width:auto;
+        height: 28px;
+        line-height: 28px;
+        padding: 0px 12px;
+        position: absolute;
+        top:-15px;
+        left:16px;
+        text-align: center;
+        font-size: 13px;
+        cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;margin-bottom:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">整车毛利测算表<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <a id="add_r" onclick="add('新增整车毛利测算表数据','{:Url('chart/carprofit/add')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增数据</a>
+        </div>
+    </div>
+</div>
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">三月滚动库存（整车）<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <a id="add_r" onclick="add('新增三月滚动库存（整车）数据','{:Url('chart/threerollcar/add')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增数据</a>
+            <a id="add_r" onclick="add('新增超期及需求','{:Url('chart/threerollcar/dateadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增超期及需求</a>
+        </div>
+    </div>
+</div>
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">返利计算表<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <a id="add_r" onclick="add('新建返利信息','{:Url('chart/rebate/add')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新建返利信息</a>
+            <a id="add_r" onclick="add('新建返利预估数据','{:Url('chart/rebate/adddata')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新建返利预估数据</a>
+        </div>
+    </div>
+</div>
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">车型库龄表<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <a id="add_r" onclick="add('新增车型库龄表数据','{:Url('chart/carseriesposage/add')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增车型库龄表数据</a>
+            <a id="add_r" onclick="add('新增在途表数据','{:Url('chart/carseriesposage/wayadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增在途表数据</a>
+            <a id="add_r" onclick="add('新增库存差异数据','{:Url('chart/carseriesposage/difadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增库存差异数据</a>
+        </div>
+    </div>
+</div>
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">厂家任务表<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <a id="" onclick="add('新增月度数据','{:Url('chart/vendor/monthadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增月度数据</a>
+            <!--				<a id="" onclick="add('新增季度数据','{:Url('chart/vendor/quarteradd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增季度数据</a>-->
+        </div>
+    </div>
+</div>
+<div class="de-container">
+    <div class="msg_content">
+        <div class="msg_del">月毛利预算表<i class="Hui-iconfont"></i></div>
+        <div class="addbox cl">
+            <a id="" onclick="add('新增月销售正常毛利预测','{:Url('chart/marginbudget/normaladd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增月销售正常毛利预测</a>
+            <a id="" onclick="add('新增虚开票数据','{:Url('chart/marginbudget/invoiceadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增虚开票数据</a>
+            <a id="" onclick="add('其它业务','{:Url('chart/marginbudget/otherbusinessadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">其它业务</a>
+            <a id="" onclick="add('其它业务->人工成本','{:Url('chart/marginbudget/othercostadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">其它业务->人工成本</a>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    /*新增车系*/
+    function add(title,url){
+        var index = layer.open({
+            type: 2,
+            content: url,
+            area: ['100%', '100%'],
+            title: title,
+            maxmin: true
+        });
+        layer.full(index);
+    }
+</script>
+{/block}

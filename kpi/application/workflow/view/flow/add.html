@@ -1,0 +1,151 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<style>
+    .pr_input{width: 90px;text-align: center;background-color: #eeeeee;}
+    .breadcrumb{
+        background-color: #f5fafe;
+        border: solid 1px #eee;
+        border-radius: 10px;
+    }
+    .bar_box{
+        width: 20%;
+        height: 112px;
+        border: 1px solid #eeeeee;
+        background-color: #FFFFFF;
+        border-radius: 15px;
+        float: left;
+        margin: 10px 2%;
+        overflow: hidden;
+        color: #5eb95e;
+        box-shadow: 4px 5px rgba(0,80,13,.3);
+        cursor: default;
+    }
+    .bar_box > .manager{
+        width: 94%;
+        padding-left: 7%;
+        height: 30px;
+        border-bottom: 1px solid #eeeeee;
+        line-height: 30px;
+        font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 0.8em;
+        background-color: #5d5d5d;
+        color: #FFFFFF;
+    }
+    .bar_box > .manager > span{
+        display: block;
+        width: auto;
+        height: 30px;
+        float: left;
+        padding: 0 10px;
+    }
+    .bar_box > .manager > div.heard_img{
+        width: 14px;
+        height: 14px;
+        border-top: 1px solid #01ccb8;
+        border-bottom: 1px solid #f9de53;
+        border-left: 1px solid #9b43bb;
+        border-right: 1px solid #c6b04d;
+        float: left;
+        overflow: hidden;
+        border-radius: 100%;
+        margin-top: 7px;
+    }
+    .bar_box > .manager > div.heard_img >img{
+        border: none;
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        margin-top: -18px;
+    }
+    .table_name{
+        width: 88%;
+        height: 40px;
+        margin: 5px 6%;
+        line-height: 40px;
+        text-align: center;
+        color: #333333;
+        font-size: 0.8em;
+    }
+    .start_btn{
+        width: 55px;
+        height: 20px;
+        border: 1px solid #1aac88;
+        background-color: #5a98de;
+        float: right;
+        margin-right: 20px;
+        color: #FFFFFF;
+        font-size: 12px;
+        text-align: center;
+        line-height: 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .start_btn:hover{
+        background-color: #486d97;
+    }
+</style>
+
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 流程管理 <span class="c-gray en">&gt;</span> 流程发起 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="cl pd-5 bg-1 bk-gray mt-20" style="padding-bottom: 20px">
+<?php foreach ($data_pri as $key => $value) { ?>
+    <div class="bar_box">
+        <div class=" manager">
+            <span>发起人:</span>
+            <div class="heard_img"><img src="<?php echo $userinfo['pic']; ?>"></div>
+            <span style="padding-left: 5px">{$userinfo['name']}</span>
+        </div>
+        <div class="table_name"><?php echo $value['name']; ?></div>
+        <input type="hidden" id="chart_type_id" value="{$value['chart_type_id']}">
+        <input type="hidden" id="flow_id" value="{$value['flowtype']['flow_type_id']}">
+        <div class="start_btn">发起<i class="icon Hui-iconfont">&#xe603;</i></div>
+    </div>
+    <?php } ?>
+</div>
+{/block}
+
+{block name="js"}
+
+<script type="text/javascript">
+    function member_add(url){
+        layer.open({
+            type: 2,
+            title: '流程发起说明',
+            area: ['600px', '500px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: url
+        });
+    }
+    $(function(){
+        $(".start_btn").on("click",function(){
+            var chart_type_id = $(this).parent('.bar_box').children('input#chart_type_id').val();
+            var flow_type_id =  $(this).parent('.bar_box').children('input#flow_id').val();
+            var str = '/kpi/index.php/func/check/check/flow_type_id/'+flow_type_id+'/chart_type_id/'+chart_type_id;
+            if(flow_type_id == ''){
+                layer.msg('流程还未配置');
+            }else {
+
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("func/check/is_fillout")}',
+                data:{"chart_type_id":chart_type_id},
+                dataType: 'json',
+                success: function(data){
+                    console.log(data);
+                    if(data.status=='1'){
+                        member_add(str);
+                    }
+                    if(data.status=='0'){
+                        layer.msg(data.info);
+                        setTimeout("location.reload();",2000);
+                    }
+                 },
+                error:function(data) {
+                }
+            });
+            }
+        });
+    })
+</script>
+{/block}

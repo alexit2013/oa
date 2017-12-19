@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>市占率和满意度</title>
+	<script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/kpi/table.js"></script>
+	<link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="/position/public/lib/self_tip.css" />
+	<script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" src="/position/public/lib/pubjs.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var w = $(".table_box").width();
+			var h = $(".table_box").height();
+			$("#MyTable thead tr th").css({"padding":"10px 10px","height":"40px"});
+			$("table").css({"text-align":"center","font-size":"0.5rem","width":w});
+			$("table td").css({"padding":"10px"});
+			FixTable("MyTable",  2, w, h);
+		});
+		// ]]>
+	</script>
+	<style>
+		body{
+			font-size: 62.5%;
+		}
+                @media (min-width: 766px) {
+		table{border-collapse:collapse;}
+		.table_box{
+			width: 100%;
+			height: 500px;
+			margin: 0 auto;
+			font-size: 0.5rem;
+		}
+		.search_box{
+			width: 100%;
+			height: 40px;
+			margin: 10px auto;
+			border: 1px solid #eaeaea;
+		}
+		.select_box{
+			border: solid 1px #ddd;
+			box-sizing: border-box;
+			vertical-align: middle;
+			width: 250px;
+			padding: 4px 5px;
+			display: inline-block;
+			margin-top: 5px;
+			margin-left: 20px;
+			float: left;
+			height: 30px;
+		}
+		.select{
+			border: 0;
+			font-size: 14px;
+			box-sizing: border-box;
+			cursor: pointer;
+			line-height: normal;
+			font-weight: normal;
+			width: 100%;
+			white-space: nowrap;
+			outline: none;
+		}
+		.search_btn{
+			background-color: #5a98de;
+			border-radius: 5px;
+			color: #FFFFFF;
+			float: left;
+			display: inline-block;
+			box-sizing: border-box;
+			cursor: pointer;
+			text-align: center;
+			font-weight: 400;
+			white-space: nowrap;
+			vertical-align: middle;
+			-moz-padding-start: npx;
+			-moz-padding-end: npx;
+			width: auto;
+			border: none;
+			outline: none;
+			height: 30px;
+			margin-left: 20px;
+			margin-top: 5px;
+			padding: 0 10px;
+		}
+		.cut_out,.m_search_bar,.select_box > i,.m_content_box{
+			display: none;
+		}
+	}
+	</style>
+</head>
+
+<body>
+<form action="{:Url('index')}" method="post">
+        <!--移动端->搜索按钮-->
+	<div class="m_search_bar" style="line-height: 20px;font-size: 14px;">选择</br>公司</div>
+	<!--移动端->搜索按钮-->
+	<div class="search_box">
+		<div class="select_box">
+			<select class="select" name="store_id" id="store_id">
+				<?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+				<option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+				<?php } ?>
+			</select>
+			<i class="icon Hui-iconfont">&#xe6d5;</i>
+		</div>
+		<button name="" id="" class="search_btn" type="submit"> 查询</button>
+		<!--清除数据-->
+		<input type="hidden" id="table_name" value="marketsatisfield">
+		<?php $clear_button = session("clear_button"); if($clear_button == "1"){ echo '<button name="" id="clear_button" style="background-color:orange;" class="search_btn" type="button" onclick="clearbutton()">清空数据</button>';} ?>
+		<!--清除数据-->
+		<!--审批状态-->
+		<?php foreach ($data_status['update_list'] as $key => $value) { ?>
+		<input type="hidden" id="<?php echo 'status'.$key; ?>" value="<?php echo  $value; ?>" class="status">
+		<?php } ?>
+		<!--审批状态-->
+                <!--移动端收起搜索框按钮-->
+                <button name="" id="" class="cut_out" type="button" onclick="cut_out()">收起</button>
+                <!--移动端收起搜索框按钮-->
+	</div>
+</form>
+
+<h1 style="width:100%;text-align: center;"><span></span>市占率和满意度{:is_pass($data_status['status_list'])}</h1>
+<div class="table_box">
+	<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable">
+		<thead>
+		<tr>
+			<th rowspan="2">项目</th>
+			<th rowspan="2" colspan="3">得分与排名</th>
+			<th colspan="3">一季度</th>
+			<th colspan="3">二季度</th>
+			<th colspan="3">三季度</th>
+			<th colspan="3">四季度</th>
+		</tr>
+		<tr>
+			<th>1月</th>
+			<th>2月</th>
+			<th>3月</th>
+			<th>4月</th>
+			<th>5月</th>
+			<th>6月</th>
+			<th>7月</th>
+			<th>8月</th>
+			<th>9月</th>
+			<th>10月</th>
+			<th>11月</th>
+			<th>12月</th>
+		</tr>
+		</thead>
+		<tbody>
+		<!--市场占有率-->
+		<tr>
+			<td rowspan="2">市场占有率</td>
+			<td colspan="3">厂家目标</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="manufacturer_target" data-type="float">
+				<?php if(!empty($data_list['manufacturer_target'][$year."-".$i])){
+                                                        echo $data_list['manufacturer_target'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td colspan="3">实际达成</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="actual_reach" data-type="float">
+				<?php if(!empty($data_list['actual_reach'][$year."-".$i])){
+                                                        echo $data_list['actual_reach'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+
+		<!--客户满意度-->
+		<tr>
+			<td rowspan="12">客户满意度</td>
+			<td rowspan="6">SSI(销售NPS)</td>
+			<td rowspan="3">电话（BMW）</td>
+			<td>得分</td>
+			{for start="1" end="13"}
+			<td class="info{$i} ssi{$i}" data-month="{$i}" data-class="" data-key="ssi_tel_score" data-type="float">
+				<?php if(!empty($data_list['ssi_tel_score'][$year."-".$i])){
+                                                        echo $data_list['ssi_tel_score'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td>分区排名</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="ssi_tel_regionrank" data-type="float">
+				<?php if(!empty($data_list['ssi_tel_regionrank'][$year."-".$i])){
+                                                        echo $data_list['ssi_tel_regionrank'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td>全国排名</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="ssi_tel_countryrank" data-type="float">
+				<?php if(!empty($data_list['ssi_tel_countryrank'][$year."-".$i])){
+                                                        echo $data_list['ssi_tel_countryrank'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td rowspan="3">神秘客(MINI)</td>
+			<td>得分</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="ssi_mystery_score" data-type="float">
+				<?php if(!empty($data_list['ssi_mystery_score'][$year."-".$i])){
+                                                        echo $data_list['ssi_mystery_score'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td>分区排名</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="ssi_mystery_regionrank" data-type="float">
+				<?php if(!empty($data_list['ssi_mystery_regionrank'][$year."-".$i])){
+                                                        echo $data_list['ssi_mystery_regionrank'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td>全国排名</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="ssi_mystery_countryrank" data-type="float">
+				<?php if(!empty($data_list['ssi_mystery_countryrank'][$year."-".$i])){
+                                                        echo $data_list['ssi_mystery_countryrank'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td rowspan="6">CSI(售后NPS)</td>
+			<td rowspan="3">电话(BMW)</td>
+			<td>得分</td>
+			{for start="1" end="13"}
+			<td class="info{$i} csi{$i}" data-month="{$i}" data-class="" data-key="csi_tel_score" data-type="float">
+				<?php if(!empty($data_list['csi_tel_score'][$year."-".$i])){
+                                                        echo $data_list['csi_tel_score'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td>分区排名</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="csi_tel_regionrank" data-type="float">
+				<?php if(!empty($data_list['csi_tel_regionrank'][$year."-".$i])){
+                                                        echo $data_list['csi_tel_regionrank'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td>全国排名</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="csi_tel_countryrank" data-type="float">
+				<?php if(!empty($data_list['csi_tel_countryrank'][$year."-".$i])){
+                                                        echo $data_list['csi_tel_countryrank'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td rowspan="3">神秘客(MINI)</td>
+			<td>得分</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="csi_mystery_score" data-type="float">
+				<?php if(!empty($data_list['csi_mystery_score'][$year."-".$i])){
+                                                        echo $data_list['csi_mystery_score'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td>分区排名</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="csi_mystery_regionrank" data-type="float">
+				<?php if(!empty($data_list['csi_mystery_regionrank'][$year."-".$i])){
+                                                        echo $data_list['csi_mystery_regionrank'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td>全国排名</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="csi_mystery_countryrank" data-type="float">
+				<?php if(!empty($data_list['csi_mystery_countryrank'][$year."-".$i])){
+                                                        echo $data_list['csi_mystery_countryrank'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+                <!--数据质量-->
+                <tr>
+                <td colspan="4">数据质量</td>
+                {for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="quality" data-type="float">
+				<?php if(!empty($data_list['quality'][$year."-".$i])){
+                                    echo $data_list['quality'][$year."-".$i];
+                                }?>
+			</td>
+		{/for}
+                </tr>
+                <!--SPQ-->
+                <tr>
+                <td colspan="4">SPQ</td>
+                {for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="spq" data-type="float">
+				<?php if(!empty($data_list['spq'][$year."-".$i])){
+                                    echo $data_list['spq'][$year."-".$i];
+                                }?>
+			</td>
+		{/for}
+                </tr>
+		<!--神秘调查-->
+		<tr>
+			<td rowspan="2">神秘调查</td>
+			<td>销售</td>
+			<td colspan="2">得分（X≥80、80＞X＞70、X≤70）</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="mystery_sale" data-type="float">
+				<?php if(!empty($data_list['mystery_sale'][$year."-".$i])){
+                                                        echo $data_list['mystery_sale'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		<tr>
+			<td>售后</td>
+			<td colspan="2">得分（X≥80、80＞X＞70、X≤70）</td>
+			{for start="1" end="13"}
+			<td class="info{$i}" data-month="{$i}" data-class="" data-key="mystery_after" data-type="float">
+				<?php if(!empty($data_list['mystery_after'][$year."-".$i])){
+                                                        echo $data_list['mystery_after'][$year."-".$i];
+                                                    }?>
+			</td>
+			{/for}
+		</tr>
+		</tbody>
+	</table>
+</div>
+<!--移动端关键指标-->
+<div class="m_content_box">
+        <table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0">
+            <thead>
+                    <tr>
+                            <th>关键KPI指标项目</th>
+                            <th>SSI(NPS销售)</th>
+                            <th>CSI(NPS售后)</th>
+                    </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                            <td>上月</td>
+                            <td class="kpi_m1"></td>
+                            <td class="kpi_m2"></td>
+                    </tr>                                   
+                </tbody>
+        </table>
+</div>
+<input type="hidden" value="<?php if(!empty($sid)) echo $sid; ?>" id="search_id"/>
+</body>
+<script>
+	var date = new Date;
+	var year=date.getFullYear();
+	var month=date.getMonth();
+	$(document).ready(function(){
+		var store_id = $("#search_id").val();
+		if (store_id != "") {
+			$("#store_id").val(store_id);
+		}
+		var store_name = $("#store_id").find("option:selected").text();
+		$("h1 > span").eq(0).html(store_name);
+	});
+
+	$(function(){
+
+		$(".status").each(function(){       //查找状态为2的情况，添加修改功能
+			var status  = $(this).val();
+			if(status == 2){
+				var edit_month = $(this).attr("id").substring(6,7);
+				if(edit_month == '1'){
+					$(".info1").addClass('edit');
+				}else{
+					var last_month = Number(edit_month)-1;
+					$(".info"+edit_month).addClass('edit');
+				}
+			}
+		});
+
+		//修改
+		var self;
+		var status = $("#status").val();
+		$("#MyTable td.edit").hover(
+				function(){
+					$(this).css({"cursor":"url(/position/public/kpi/img/edit.png),default","background-color":"#eee"});
+				},
+				function(){
+					$(this).css({"cursor":"default","background-color":"#fff"});
+				}
+		);
+		$("#MyTable td.edit").on("dblclick",function(){
+			var date = new Date;
+			var iyear=date.getFullYear();
+			var imonth= $(this).attr("data-month");
+			self = $(this);
+			var con = self.html();			//所点击要修改的原内容
+			var table_name = 'marketdegree';			//所点击要修改的表名
+			var key_name = self.attr("data-key");			//所点击要修改的键名
+			var datatype = self.attr("data-type");			//此处是何种类型格式
+			var year = iyear;
+			var month = imonth;
+			var store_id = $("#store_id").val();
+			var class_value = self.attr("data-class");
+			var class_name = '';
+				tip_function(datatype,table_name,key_name,con,2,"",year,month,store_id,'','');
+		});
+                $(".kpi_m1").html($(".ssi"+month).html());
+                $(".kpi_m2").html($(".csi"+month).html());
+	});
+</script>
+</html>

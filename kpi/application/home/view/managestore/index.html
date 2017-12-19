@@ -1,0 +1,84 @@
+
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+
+<style>
+    .pr_input{width: 90px;text-align: center;background-color: #eeeeee;}
+</style>
+
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="80">编号</th>
+                <th width="100">门店</th>
+                <th width="50">状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($depts as $k => $v){ ?>
+            <tr class="text-c">
+                <td class="table_order">{$v['ID']}</td>
+                <td class="store_name">{$v['NAME']}</td>
+                <td><?php if($v['kpi_is_del'] == 1){ echo '<a class="label label-danger  radius" onclick="edit_status(this,1)">未启用</a>';}else{ echo '<a class="label label-success radius" onclick="edit_status(this,0)">已启用</a>';} ?></td>
+            </tr>
+            </tbody>
+            <?php } ?>
+        </table>
+        <?php echo $page; ?>
+    </div>
+</div>
+{/block}
+{block name="js"}
+
+<script type="text/javascript">
+    function edit_status(current,kpi_is_del){
+        if(kpi_is_del == 1){
+            var edit_words = '启用';
+            var new_is_del = '0';
+        }
+        if(kpi_is_del == 0){
+            var edit_words = '禁用';
+            var new_is_del = '1';
+        }
+        var current_id = $(current).parent('td').parent('tr').children('.table_order').text();      //表序号
+        var store_name = $(current).parent('td').parent('tr').children('.store_name').text();      //表序号
+        $(".shake").show();			//背景层
+        $("#tip_box .tip_title").html('请确认修改<div><i class="icon Hui-iconfont">&#xe706;</i></div>');
+        $("#tip_box .cont_box").html("<div style='width: 100%;height: 70px;line-height:70px;'>是否确认<span style='color: red;'>"+edit_words+"</span>"+store_name+"</div>");
+        $("#tip_box").removeClass("bounceOut").show().addClass("bounceIn");			//弹窗内容层的动画
+        $(".layui-layer-btn0").click(function(){    //确定删除执行的操作
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("update")}',
+                data:{"id":current_id,"kpi_is_del":new_is_del},
+                dataType: 'json',
+                success: function(data){
+                    if(data.status=='1'){
+                        close_tip();
+                        layer.msg(data.info);
+                        setTimeout("location.reload();",2000);
+                    }
+                    if(data.status=='0'){
+                        close_tip();
+                        layer.msg(data.info);
+                        setTimeout("location.reload();",2000);
+                    }
+                },
+                error:function(data) {
+                    layer.msg("请求失败");
+                    //setTimeout("location.reload();",2000);
+                }
+            });
+        });
+        $(".tip_title > div > i,a.layui-layer-btn1").click(function(){			//点击关闭或者取消按钮关闭弹出层
+            close_tip();
+        });
+
+    }
+ </script>
+{/block}

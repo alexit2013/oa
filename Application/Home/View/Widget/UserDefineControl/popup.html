@@ -1,0 +1,18 @@
+<eq name="readonly" value="true">
+	<input name="udf_field_{$id}[]" class="form-control name" type="text" readonly="readonly" value="{$val[0]}" >
+	<input name="udf_field_{$id}[]" class="id" type="hidden" value="{$val[1]}">
+	<else/>
+	<div class="input-group {$data}">
+		<input name="udf_field_{$id}[]" class="form-control name" type="text" readonly="readonly" <notempty name="validate">check="{$validate}" msg="{$msg}"</notempty>>
+		<input name="udf_field_{$id}[]" class="id" type="hidden" <notempty name="validate">check="{$validate}" msg="{$msg}"</notempty>>
+		<span class="input-group-btn">
+			<button class="btn btn-sm btn-primary" onclick="select_{$data}()" type="button">
+				选择
+			</button></span>
+	</div>
+	<script>
+		function select_{$data}() {
+			winopen("{:U('popup/flow_'.$data)}",560, 470);
+		}
+	</script>
+</eq>

@@ -1,0 +1,83 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+	.msg_content{
+            margin:25px 0px 0px 0px;
+            padding: 25px 0px;
+            box-sizing:border-box;
+            border: 1px solid #00ccff;
+            border-radius:15px;
+            position: relative;
+    }
+    .msg_del{
+      border-radius:5px;
+      color: #fff;
+      background-color:#3399ff;
+      width:auto;
+      height: 28px;
+      line-height: 28px;
+      padding: 0px 12px;
+      position: absolute;
+      top:-15px;
+      left:16px;
+      text-align: center;
+      font-size: 13px;
+      cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;margin-bottom:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+<div class="de-container">
+		<div class="msg_content">
+			<div class="msg_del">费用预算表<i class="Hui-iconfont"></i></div>
+			<div class="addbox cl">
+				<a id="add_r" onclick="add('新增变动费用数据','{:Url('chart/costbudget/modificationadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">变动费用数据</a>
+				<a id="add_r" onclick="add('新增固定费用数据','{:Url('chart/costbudget/fixedAdd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">固定费用数据</a>
+				<a id="add_r" onclick="add('新增财务费用数据','{:Url('chart/costbudget/financeAdd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">财务费用数据</a>
+                                <a id="add_r" onclick="add('导入费用预算数据','{:Url('chart/costbudget/finace')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">导入数据</a>
+			</div>
+		</div>
+</div>
+<div class="de-container">
+		<div class="msg_content">
+			<div class="msg_del">利润预算表<i class="Hui-iconfont"></i></div>
+			<div class="addbox cl">
+				<a id="" onclick="add('新增利润预算数据','{:Url('chart/profitbudget/add')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增利润预算数据</a>
+                                <a id="add_r" onclick="add('导入利润预算数据','{:Url('chart/profitbudget/finace')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">导入数据</a>
+			</div>
+		</div>
+</div>
+<div class="de-container">
+		<div class="msg_content">
+			<div class="msg_del">税金测算表<i class="Hui-iconfont"></i></div>
+			<div class="addbox cl">
+				<a id="" onclick="add('新增税金测算数据','{:Url('chart/targetmeasure/add')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新增税金测算数据</a>
+			</div>
+		</div>
+</div>
+<div class="de-container">
+		<div class="msg_content">
+			<div class="msg_del">应收账款账龄表<i class="Hui-iconfont"></i></div>
+			<div class="addbox cl">
+                            <a id="add_r" onclick="add('新建账款账龄数据','{:Url('chart/account/add')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">新建账款账龄数据</a>
+                            <a id="add_r" onclick="add('导入应收账款账龄数据','{:Url('chart/account/finace')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">导入数据</a>
+			</div>
+		</div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+/*新增车系*/
+			function add(title,url){
+			    var index = layer.open({
+			      type: 2,
+			      content: url,
+			      area: ['100%', '100%'],
+			      title: title,
+			      maxmin: true
+			    });
+			    layer.full(index);      
+			}
+</script>
+{/block}

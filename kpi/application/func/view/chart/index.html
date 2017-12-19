@@ -1,0 +1,81 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    body,html{
+        width: 100%;
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .content_box{
+        width: 90%;
+        height: auto;
+        overflow: hidden;
+        margin: 0 auto;
+    }
+    .top_info{
+        width: 100%;
+        height:40px;
+        padding: 10px 0;
+        border-bottom: 3px solid #eeeeee;
+        text-align: center;
+    }
+    .button_box{
+        width: 100%;
+        margin-top: 20px;
+    }
+    @media (min-width: 1080px) {
+        .button_box > a {
+            width: 30%;
+            margin: 10px 1.5%;
+            display: block;
+            float: left;
+        }
+    }
+    @media screen and (min-width:725px) and (max-width:1080px){
+        .button_box > a {
+            width: 45%;
+            margin: 10px 2.5%;
+            display: block;
+            float: left;
+        }
+    }
+    @media (max-width: 725px) {
+        .button_box > a {
+            width: 80%;
+            margin: 10px 10%;
+            display: block;
+            float: left;
+        }
+    }
+</style>
+
+<div class="page-container">
+    <div class="content_box">
+        <div class="top_info">
+            <h3>管理报表</h3>
+        </div>
+        <div class="button_box">
+            <!--<a class="btn radius btn-secondary" href="/kpi/index.php/chart/marginbudget/index.html">月毛利预算表</a>-->
+            <!--<a class="btn radius btn-secondary" href="/kpi/index.php/chart/costbudget/index.html">费用预算表</a>-->
+            <!--<a class="btn radius btn-secondary" href="/kpi/index.php/chart/profitbudget/index.html">利润预算表</a>-->
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/vendor/index.html">厂家任务</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/vehiclecost/index.html">车辆费用表</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/targetmeasure/index.html">税金测算表</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/marketbudget/index.html">市场营销预算表</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/carseriesposage/index.html">车型库龄表</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/threerollparts/index.html">三月滚动库存(配件)</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/runtarget/index.html">售后重点经营指标</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/marketsatisfield/index.html">市占率和满意度表</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/account/index.html">应收账款账龄表</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/rebate/index.html">返利计算表</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/threerollcar/index.html">三月滚动库存(整车)</a>
+            <a class="btn radius btn-secondary" href="/kpi/index.php/chart/carprofit/index.html">整车毛利测算表</a>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+ </script>
+{/block}

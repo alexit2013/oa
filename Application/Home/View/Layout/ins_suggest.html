@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+		<title>{$title|default=get_system_config("system_name")}</title>
+		<link href="__INS__/css/bootstrap.min.css" rel="stylesheet">
+		<link href="__INS__/font-awesome/css/font-awesome.css" rel="stylesheet">
+		<link href="__INS__/css/animate.css" rel="stylesheet">
+		<link href="__INS__/css/fixed_table_rc.css" rel="stylesheet">
+		<link href="__INS__/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+		<link href="__INS__/css/plugins/gritter/jquery.gritter.css" />
+		<include file="Layout:ins_plugin_css"/>
+
+		<link href="__INS__/css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
+		<link href="__INS__/css/style.css" rel="stylesheet">
+		<link href="__INS__/css/zzy.css" rel="stylesheet">
+                <script src="__INS__/js/jquery-2.1.1.js"></script>
+                <script src="__INS__/js/fixed_table_rc.js"></script>
+        <script>
+			function fs() {  
+		            var sUserAgent = navigator.userAgent.toLowerCase();  
+		            var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";  
+		            var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";  
+		            var bIsMidp = sUserAgent.match(/midp/i) == "midp";  
+		            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";  
+		            var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";  
+		            var bIsAndroid = sUserAgent.match(/android/i) == "android";  
+		            var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";  
+		            var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";   
+		            if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {  
+		                WeixinJSBridge.call('closeWindow');
+		            } else {  
+		                location.replace(" {:U('public/logout')} ")
+		            }  
+			}  
+		</script>        
+	</head>
+	<include file="Layout:page_script"/>
+	<body style="background-color:#fff !important;">		
+		
+        <div>
+            <block name="content"></block>
+        </div>
+			
+		<iframe src="{:U('push/client')}" class="push" id="push"></iframe>
+		<script src="__INS__/js/bootstrap.min.js"></script>
+		<script src="__INS__/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+		<script src="__INS__/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		<script src="__INS__/js/bootstrap-suggest.min.js"></script>
+
+		<!-- Custom and plugin javascript -->
+		<script src="__INS__/js/inspinia.js"></script>
+		<script src="__INS__/js/common.js"></script>
+		<script src="__INS__/js/plugins/pace/pace.min.js"></script>
+		<include file="Layout:ins_plugin_js"/>
+		<block name="js"></block>
+	</body>
+</html>

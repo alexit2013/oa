@@ -1,0 +1,176 @@
+<extend name="Layout/ins_popup" />
+<block name="content">		
+	<input type="hidden" name="ajax" id="ajax" value="1">
+	<div class="popup-header clearfix">
+		<div class="pull-left">
+			<h1>添加</h1>
+		</div>
+		<div class="pull-right">
+			<a onclick="save();" class="btn btn-sm btn-primary">确定</a>
+			<a onclick="myclose();" class="btn btn-sm btn-default">关闭</a>
+		</div>
+	</div>
+	<div class="popup-body" style="height: 420px;overflow-y: auto;">
+		<form id="form_data" name="form_data" method="post" class="form-horizontal clearfix">
+			<input type="hidden" name="id" id="id">
+			<input type="hidden" name="flow_type_id" id="flow_type_id">
+			<input type="hidden" name="opmode" id="opmode" value="add">
+			<input type="hidden" id="confirm" name="confirm">
+			<input type="hidden" id="confirm_name" name="confirm_name">
+			<input type="hidden" id="consult" name="consult">
+			<input type="hidden" id="consult_name" name="consult_name">
+			
+			<div class="form-group col-xs-12">
+				<label class="col-xs-2 control-label" for="name">名称*：</label>
+				<div class="col-xs-10">
+					<input class="form-control" type="text" id="name" name="name" check="require" msg="请输入名称">
+				</div>
+			</div>
+			<div class="form-group col-xs-12">
+				<label class="col-xs-2 control-label" for="sort">审批：</label>
+				<div class="col-xs-10">
+					<div id="confirm_wrap" class="inputbox">
+						<a class="pull-right btn btn-link text-center" onclick="popup_flow();"> <i class="fa fa-user"></i> </a>
+						<div class="wrap">
+							<span class="address_list"></span>
+							<span class="text">
+								<input class="letter" type="text">
+							</span>
+						</div>
+						<div class="search dropdown ">
+							<ul class="dropdown-menu"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-xs-12">
+				<label class="col-xs-2 control-label" for="sort">协商：</label>
+				<div class="col-xs-10">
+					<div id="consult_wrap" class="inputbox">
+						<a class="pull-right btn btn-link text-center" onclick="popup_flow();"> <i class="fa fa-user"></i> </a>
+						<div class="wrap">
+							<span class="address_list"></span>
+							<span class="text">
+								<input class="letter" type="text">
+							</span>
+						</div>
+						<div class="search dropdown">
+							<ul class="dropdown-menu"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-xs-12">
+				<label class="col-xs-2 control-label" for="sort">排序：</label>
+				<div class="col-xs-10">
+					<input class="form-control" type="text" id="sort" name="sort">
+				</div>
+			</div>
+
+			<div class="form-group col-xs-12">
+				<label class="col-xs-2 control-label" for="is_del">状态：</label>
+				<div class="col-xs-10">
+					<select class="form-control" name="is_del" id="is_del">
+						<option value="0">启用</option>
+						<option value="1">禁用</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-xs-12">
+				<label class="col-xs-2 control-label" for="remark">备注：</label>
+				<div class="col-xs-10">
+					<textarea class="form-control" name="remark" rows="5"></textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+
+		</div>
+                </block>
+<block name="js">
+	<script type="text/javascript">
+		function popup_flow() {
+			winopen("__ROOT__/index.php?m=&c=popup&a=flow", 560, 470);
+		}
+
+		function popup_condition() {
+			$id = $("#id").val();
+			if ($id == "") {
+				ui_error('请选择工作步骤');
+			} else {
+				winopen(fix_url("__ROOT__/index.php?m=&c=FlowType&a=condition?step_id=" + $id), 704, 570);
+			}
+		}
+
+		function save() {
+			$("#opmode").val("add");
+			$("#id").val("");
+			$("#flow_type_id").val($('#flow_type_id', parent.document).val());
+
+			$("#confirm").val("");
+			$("#confirm_wrap  span.address_list span").each(function() {
+				$("#confirm").val($("#confirm").val() + $(this).attr("data") + '|');
+			});
+
+			$("#confirm_name").val("");
+			$("#confirm_name").val($("#confirm_wrap span.address_list").html());
+
+			$("#consult").val("");
+			$("#consult_wrap span.address_list span").each(function() {
+				$("#consult").val($("#consult").val() + $(this).attr("data") + '|');
+			});
+
+			$("#consult_name").val("");
+			$("#consult_name").val($("#consult_wrap span.address_list").html());
+			
+			if (check_form("form_data")) {
+				var vars = $("#form_data").serialize();
+				sendAjax("__ROOT__/index.php?m=&c=FlowType&a=flow_step", vars, function(data) {
+					if (data.status) {
+						ui_alert(data.info, function() {
+							parent.location.reload(true);
+							myclose();
+						});
+					} else {
+						ui_error(data.info);
+					}
+				});
+			}
+		};
+
+		function del() {
+			ui_confirm('确定要删除吗?', function() {
+				$("#opmode").val("del");
+				sendForm("form_data", "", "__ROOT__/index.php?m=&c=FlowType&a=add_step");
+			});
+		}
+
+		function showdata(result) {
+			for (var s in result.data) {
+				set_val(s, result.data[s]);
+			}
+			$("#confirm_wrap span.address_list").html(result.data['confirm_name']);
+			$("#consult_wrap span.address_list").html(result.data['consult_name']);
+			$('#condition_name').html(result.data['condition_name']);
+
+			$("#opmode").val("edit");
+		}
+
+
+		$(document).on("dblclick", ".inputbox .address_list b", function() {
+			$(this).parent().parent().remove();
+		});
+
+	</script>
+        <script>
+                $(document).ready(function() {
+                        $(".popup-container").width($("#dialog", parent.document).width());
+                        if (is_mobile()) {
+                                $(".popup-container").height(window.screen.height - 40);					
+                                $(".popup-container").css('overflow', 'auto');
+
+                                $(".popup-body").height(window.screen.height - 94);
+                        }
+                });
+        </script>
+</block>

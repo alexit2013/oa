@@ -1,0 +1,55 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+	.msg_content{
+            margin:25px 0px 0px 0px;
+            padding: 25px 0px;
+            box-sizing:border-box;
+            border: 1px solid #00ccff;
+            border-radius:15px;
+            position: relative;
+    }
+    .msg_del{
+      border-radius:5px;
+      color: #fff;
+      background-color:#3399ff;
+      width:auto;
+      height: 28px;
+      line-height: 28px;
+      padding: 0px 12px;
+      position: absolute;
+      top:-15px;
+      left:16px;
+      text-align: center;
+      font-size: 13px;
+      cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;margin-bottom:1rem;}
+    .de-container{padding:10px 20px}
+</style>	
+	<div class="de-container">
+		<div class="msg_content">
+			<div class="msg_del">月毛利预算表<i class="Hui-iconfont"></i></div>
+			<div class="addbox cl">				
+				<a id="" onclick="add('车贷业务','{:Url('chart/marginbudget/carloanadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">车贷业务</a>
+				<a id="" onclick="add('车贷业务->厂家金融及银行按揭台次','{:Url('chart/marginbudget/mortgagenumadd')}')" class="btn btn-danger-outline radius additem" href="javascript:void(0)">车贷业务->厂家金融及银行按揭台次</a>
+			</div>
+		</div>
+	</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+/*新增车系*/
+			function add(title,url){
+			    var index = layer.open({
+			      type: 2,
+			      content: url,
+			      area: ['100%', '100%'],
+			      title: title,
+			      maxmin: true
+			    });
+			    layer.full(index);      
+			}
+</script>
+{/block}

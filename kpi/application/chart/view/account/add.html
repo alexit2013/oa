@@ -1,0 +1,236 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+	.c-red{color: red;}
+        .AddIcon{font-size: 19px;line-height: 31px;cursor:pointer;}
+        .mt-3{margin-top:3px;}
+        .ml1r{margin-left:1rem;}
+        .file_upload{
+            border: 1px solid #dfdfdf;
+            width: 121px;
+            height: 36px;
+            line-height: 34px;
+            text-align: center;
+            color: #676795;
+            font-size: 16px;
+            position: relative;
+            padding-left:18px;
+        }
+        .file_upload i{
+            position: absolute;
+            top:0px;
+            left:19px;
+            font-size:19px;
+            color: #60b879;
+        }
+        .msg_content{
+            margin:25px 0px;
+            padding: 25px 0px;
+            box-sizing:border-box;
+            border: 1px solid #00ccff;
+            border-radius:15px;
+            position: relative;
+        }
+    .msg_del{
+      border-radius:5px;
+      color: #fff;
+      background-color:#3399ff;
+      width:auto;
+      height: 28px;
+      line-height: 28px;
+      padding: 0px 12px;
+      position: absolute;
+      top:-15px;
+      left:16px;
+      text-align: center;
+      font-size: 13px;
+      cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+<div class="page-container">
+	<form class="form form-horizontal" id="form-article-add">
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店：</label>
+                                <div class="formControls col-xs-8 col-sm-3">
+                                    <span class="select-box">
+                                        <select class="select" name="store_id" id="store_id1">
+                                            <?php foreach($stores as $k => $v){ ?>
+                                                <option value="{$v['ID']}">{$v['NAME']}</option>
+                                            <?php } ?>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>                      
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>应收账款名称：</label>
+                                <div class="formControls col-xs-8 col-sm-3">
+                                        <input type="text" class="input-text" value="" private="required"  msg="应收账款名称" placeholder="请输入应收账款名称" id="name" name="name">
+                                </div>
+                            </div>
+                            <div class="row cl">
+                            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>年月：</label>
+                            <div class="formControls col-xs-8 col-sm-3">
+                                <input type="month" class="input-text" value="" placeholder="请输入月份" id="month">
+                                    <input type="hidden" class="input-text" value="" id="iyear" name="year">
+                                    <input type="hidden" class="input-text" value="" id="imonth" name="month">
+                            </div>
+                            </div>
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>应收账款类型：</label>
+                                <div class="formControls col-xs-8 col-sm-3">
+                                    <span class="select-box">
+                                        <select class="select" name="class_id" id="class_id">
+                                                <option value="请选择">请选择</option>
+                                                <option value="2">应收账款-整车</option>
+                                                <option value="3">应收账款-维修</option>
+                                                <option value="4">首保索赔</option>
+                                                <option value="5">保险理赔</option>
+                                                <option value="6">协议客户</option>
+                                                <option value="7">应收账款-增值</option>
+                                                <option value="8">应收账款-POS机</option>
+                                                <option value="9">应收账款-整车-其他</option>
+                                                <option value="10">应收账款-维修-其他</option>
+                                                <option value="12">员工借款</option>
+                                                <option value="13">单位往来款</option>
+                                                <option value="14">保证金</option>
+                                                <option value="15">关联方往来</option>
+                                                <option value="16">分公司往来1</option>
+                                                <option value="17">其他</option>
+                                                <option value="18">坏账准备</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>3个月以内：</label>
+                                <div class="formControls col-xs-8 col-sm-3">
+                                        <input type="text" class="input-text" value="" private="least" placeholder="请输入3个月以内应收款" id="three_m" name="three_m" onkeyup="clearNoNum(this)">
+                                </div>
+                                <span class="c-red">元</span>
+                            </div>
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>4-6月：</label>
+                                <div class="formControls col-xs-8 col-sm-3">
+                                        <input type="text" class="input-text" value="" private="least" placeholder="请输入4-6月应收款" id="fourtosix_m" name="fourtosix_m" onkeyup="clearNoNum(this)">
+                                </div>
+                                <span class="c-red">元</span>
+                            </div>
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>7-12月：</label>
+                                <div class="formControls col-xs-8 col-sm-3">
+                                        <input type="text" class="input-text" value="" private="least" placeholder="请输入7-12月应收款" id="seventotwelve_m" name="seventotwelve_m" onkeyup="clearNoNum(this)">
+                                </div>
+                                <span class="c-red">元</span>
+                            </div>
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>1-2年：</label>
+                                <div class="formControls col-xs-8 col-sm-3">
+                                        <input type="text" class="input-text" value="" private="least" placeholder="请输入1-2年应收款" id="onetotwo_y" name="onetotwo_y" onkeyup="clearNoNum(this)">
+                                </div>
+                                <span class="c-red">元</span>
+                            </div>
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>2年以上：</label>
+                                <div class="formControls col-xs-8 col-sm-3">
+                                        <input type="text" class="input-text" value="" private="least" placeholder="请输入1-2年应收款" id="two_y" name="two_y" onkeyup="clearNoNum(this)">
+                                </div>
+                                <span class="c-red">元</span>
+                            </div>
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>3年以上：</label>
+                                <div class="formControls col-xs-8 col-sm-3">
+                                        <input type="text" class="input-text" value="" private="least" placeholder="请输入1-2年应收款" id="three_y" name="three_y" onkeyup="clearNoNum(this)">
+                                </div>
+                                <span class="c-red">元</span>
+                            </div>
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>备注：</label>
+                                <div class="formControls col-xs-8 col-sm-3">
+                                        <input type="text" class="input-text" value="" private="required"  msg="备注" placeholder="请输入备注" id="mark" name="mark">
+                                </div>
+                            </div>
+                            <div class="row cl">
+                                    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                                            <button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+                                            <button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+                                    </div>
+                            </div>
+	</form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">        
+        function article_save_submit(){
+                    var p_month = $("#month").val();
+                    if(!p_month){                        
+                        layer.msg("没有选择年月");
+                        return false;
+                    }
+                    if ($("#class_id option:selected").text()=="请选择") {
+                            layer.msg("请选择应收账款类型"); 
+                            return false;
+                    }
+                     var num=0;
+		     var str="";
+                     var tum = 0;
+                     $("input[private='least']").each(function(n){
+		          if($.trim($(this).val())=="")
+		          {
+		               tum++;
+		          }
+		     });
+                     if(tum==6){
+                        layer.msg("至少填写一个区间的应收款"); 
+                        return false;
+                     }
+		     $("input[private='required']").each(function(n){
+		          if($.trim($(this).val())=="")
+		          {
+		               num++;
+		               str+=$(this).attr("msg")+"不能为空！\r\n";
+		          }
+		     });
+		     if(num>0)
+		     {
+		          layer.msg(str);
+		     }
+		     else
+		     {	
+                        var month_val = $('#month').val();
+                        var my = month_val.split("-");
+                        var iyear = my[0];
+                        if(my[1]<10){
+                            var imonth = my[1].substring(1);
+                        }else{
+                            var imonth = my[1];
+                        }                        
+                        $("#iyear").val(iyear);
+                        $("#imonth").val(imonth);
+		        var str = $("#form-article-add").serialize();
+		        $.ajax({
+                            type: 'POST',
+                            url: '{:Url("add")}',
+                            data:str,
+                            dataType: 'json',
+                            success: function(data){
+                                if(data.status=='1'){
+                                    layer.msg(data.msg);
+                                    setTimeout("location.reload();",3000);
+                                }else{
+                                    layer.msg(data.msg);
+                                    setTimeout("location.reload();",3000);
+                                }                                
+                            },
+                            error:function(data) {
+                                  if(data.status=='0'){
+                                    layer.msg(data.msg);
+                                }
+                            },
+                        });		    	
+		     }
+	}
+</script>
+{/block}

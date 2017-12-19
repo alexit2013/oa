@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+		<title>{$title|default=get_system_config("system_name")}</title>
+		<link href="__INS__/css/bootstrap.min.css" rel="stylesheet">
+		<link href="__INS__/font-awesome/css/font-awesome.css" rel="stylesheet">
+		<link href="__INS__/css/animate.css" rel="stylesheet">
+                <link href="__INS__/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+		<link href="__INS__/css/plugins/gritter/jquery.gritter.css" />		
+		<include file="Layout:ins_plugin_css"/>
+		<link href="__INS__/css/style.css" rel="stylesheet">
+		<link href="__INS__/css/zzy.css" rel="stylesheet">
+		<script>			
+			function fs() {  
+		            var sUserAgent = navigator.userAgent.toLowerCase();  
+		            var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";  
+		            var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";  
+		            var bIsMidp = sUserAgent.match(/midp/i) == "midp";  
+		            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";  
+		            var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";  
+		            var bIsAndroid = sUserAgent.match(/android/i) == "android";  
+		            var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";  
+		            var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";   
+		            if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {  
+		                WeixinJSBridge.call('closeWindow');
+		            } else {  
+		                location.replace(" {:U('public/logout')} ")
+		            }  
+			} 
+		</script>
+		</head>
+	<include file="Layout:page_script"/>
+	<body class="{$Think.CONTROLLER_NAME} white-bg">
+		<nav class="navbar navbar-default row" role="navigation" id="top_menu">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-6">
+					<span class="sr-only">Toggle navigation</span>
+					<i class="fa fa-bars fa-lg"></i>
+				</button>
+				<div class="hidden-xs zzytitle">
+					<img src="__ROOT__/Public/Ins/img/logo1.png">
+				</div>
+                            <a href="{:U('index/index')}" class="navbar-brand zzytitle">{:get_system_config("system_name")}</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="navbar-collapse-6">
+                                <div class="nav navbar-nav navbar-right">
+                                    <a class="nav-app btn-danger" href="javascript:void(0);" onclick="fs()"><i class="fa fa-sign-out"></i>退出</a>
+                                </div>
+				<ul class="nav navbar-nav navbar-right">
+					<foreach name="top_menu" item="top_menu_vo">                                                
+						<a class="nav-app" href="#" url="{$top_menu_vo['url']|get_nav_url}" node="{$top_menu_vo.id}" onclick="click_top_menu(this)" ><i class="{$top_menu_vo.icon}"></i>{$top_menu_vo.name}
+                                                    <php>
+							if(!empty($badge_count[$top_menu_vo['id']])){
+							$html='';
+							$html='<span class="label label-danger">'.$badge_count[$top_menu_vo['id']].'</span>';
+							echo $html;
+							}
+                                                    </php>
+                                                </a>
+					</foreach>
+			</div>
+		</nav>
+		<div id="wrapper" >
+			<div id="home-wrapper" >
+				<div class="wrapper wrapper-content">					
+						<block name="content"></block>					
+				</div>
+			</div>
+		</div>
+		<iframe src="{:U('push/client')}" class="push" id="push"></iframe>
+		<!-- Mainly scripts -->
+		<script src="__INS__/js/jquery-2.1.1.js"></script>
+		<script src="__INS__/js/bootstrap.min.js"></script>
+		<script src="__INS__/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+		<script src="__INS__/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- Custom and plugin javascript -->
+		<script src="__INS__/js/inspinia.js"></script>
+		<script src="__INS__/js/common.js"></script>
+		<script src="__INS__/js/plugins/pace/pace.min.js"></script>
+		
+		<include file="Layout:ins_plugin_js"/>
+		<block name="js"></block>
+	</body>
+</html>

@@ -1,0 +1,76 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+    {:W('PageHeader/simple',array('name'=>'新建：'.$flow_type['name']))}
+    <form method='post' id="form_data" name="form_data" enctype="multipart/form-data" class="well form-horizontal">
+        <input type="hidden" id="ajax" name="ajax" value="1">
+        <input type="hidden" id="opmode" name="opmode" value="add">
+
+        <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="request_duty">门店*：</label>
+      <div class="col-sm-8">
+        <select class="form-control" name="dept_id" id="dept_ids1"check="require" msg="请选择门店">
+          <option value="">请选择门店</option>
+          {:fill_option($list)}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="name">展厅：</label>
+      <div class="col-sm-8">
+          <input class="form-control"  type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" id="showroom" name="showroom" check="require" msg="请输入展厅" placeholder="请输入数字">
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="name">自店二网：</label>
+      <div class="col-sm-8">
+        <input class="form-control"  type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" id="name" name="self_store" check="require" msg="请输入自店二网" placeholder="请输入数字">
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="name">电话组：</label>
+      <div class="col-sm-8">
+        <input class="form-control"  type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" id="name" name="tel_group" check="require" msg="请输入电话组台数" placeholder="请输入数字">
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="name">大客户：</label>
+      <div class="col-sm-8">
+        <input class="form-control"  type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" id="name" name="big_consumer" check="require" msg="请输入大客户台数" placeholder="请输入数字">
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="col-sm-4 control-label" for="name">外批：</label>
+      <div class="col-sm-8">
+        <input class="form-control"  type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" id="name" name="outer_permit" check="require" msg="请输入外批台数" placeholder="请输入数字">
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label" for="inputtime">请选择录入时间:</label>
+                <div class="col-sm-8">
+                    <div class="input-daterange input-group" >
+                        <input type="date" class="input-sm form-control text-center" name="inputtime"/>
+                    </div>
+                </div>
+        </div>
+
+    <div class="clearfix"></div>
+
+    </form>
+                <div class="pull-right">
+                <a onclick="save();"  id="post" class="btn btn-sm btn-primary post-define btn-special res-btn-pc">提交</a>
+                </div>
+
+</block>
+<block name="js">
+    <script type="text/javascript">
+        function save() {
+                sendForm("form_data", "{:U('save')}", "{:U('Channeldata/index')}");
+            }
+    </script>
+</block>

@@ -1,0 +1,295 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+		<style>
+			.leave_box{
+				width: 100%;
+				height: auto;
+				overflow: hidden;
+				background-color: #FBFBFB;
+			}
+			.leave_content{
+				width: 100%;
+				height: auto;
+				overflow: hidden;
+				margin: 0 auto;
+			}
+			.leave_category{
+				width: 100%;
+				height: auto;
+				border-top: 1px solid #cacaca;
+				border-bottom: 1px solid #cacaca;
+				margin-top: 15px;
+				background-color: #FFFFFF;
+			}
+			.category{
+				width: 96%;
+				height: 40px;
+				margin: 0 auto;
+				line-height: 40px;
+			}
+			.leave_explain{
+				width: 100px;
+				height: 40px;
+				font-size: 14px;
+				float: left;
+			}
+			.leave_explain sup{
+				color: red;
+			}
+			div.time{
+				float: right;
+			}
+			.when_long > span{
+				color: lightgreen;
+			}
+		</style>
+
+	{:W('PageHeader/simple',array('name'=>'新建：'.$flow_type['name']))}
+	<form method='post' id="form_data" name="form_data" enctype="multipart/form-data" class="well form-horizontal">
+		<input type="hidden" id="ajax" name="ajax" value="1">
+		<input type="hidden" id="type" name="type" value="{$flow_type.id}">
+		<input type="hidden" id="opmode" name="opmode" value="add">
+		<input type="hidden" id="confirm" name="confirm" value="">
+		<input type="hidden" id="confirm_name" name="confirm_name" value="">
+		<input type="hidden" id="consult" name="consult" value="">
+		<input type="hidden" id="consult_name" name="consult_name" value="">
+		<input type="hidden" id="refer" name="refer" value="">
+		<input type="hidden" id="refer_name" name="refer_name" value="">
+		<input type="hidden" id="step" name="step" value="">
+                <input type="hidden" id="pos_type" name="pos_type" value="{$flow_type['type']}">
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label phone-font-s pc-tit" for="name">标题*：</label>
+			<div class="col-sm-10">
+				<input class="form-control pc-tit-input" type="text" id="name" name="name" check="require" msg="请输入标题">
+			</div>
+		</div>
+
+<!-- 		<div class="form-group">
+			<label class="col-xs-12 control-label phone-font-s" >文件编号：{$flow_type.doc_no_format}
+			</label>
+			<div class="col-sm-10">
+				<p class="form-control-static">
+					
+				</p>
+			</div>
+		</div> -->
+
+		<div class="form-group hidden">
+			<label class="col-sm-2 control-label" >审批：</label>
+			<div class="col-sm-10 address_list_box">
+				<p id="confirm_wrap" class="form-control-static address_list">
+					{$flow_type.confirm_name}
+				</p>
+			</div>
+		</div>
+<!--
+		<div class="form-group">
+			<label class="col-sm-2 control-label" >协商：</label>
+			<div class="col-sm-10 address_list_box">
+				<p id="consult_wrap" class=" form-control-static address_list">
+					{$flow_type.consult_name}
+				</p>
+			</div>
+		</div>-->
+
+		<div class="form-group hidden">
+			<label class="col-sm-2 control-label" >抄送：</label>
+			<div class="col-sm-10">
+				<p id="refer_wrap" class="form-control-static address_list">
+					{$flow_type.refer_name}
+				</p>
+			</div>
+		</div>
+		<volist name="field_list" id="vo">
+			{:W('UserDefineField/edit',array($vo))}
+		</volist>
+
+                <?php if($flow_type['type'] == 3){
+                    $emp_no = get_emp_no();
+                    $month = (int)date('m');
+                    $months = $month.','.($month-1).','.($month-2);
+                    $map['emp_no'] = $emp_no;
+                    $map['year'] = date('Y');
+                    $map['month'] = ['IN',$months];
+                    $dat = M('pos_form')->field('sum(over_time) as over_time,sum(adjust_time) as adjust_time')->where($map)->find();
+                    $tian = round(($dat['over_time']-$dat['adjust_time'])/8,3);
+                    echo "剩余调休(天):". $tian."<br><br>"; 
+                } ?>
+                
+                <!--考勤计算-->
+                <in name="flow_type.type" value="4,5,6">
+                    					
+                </in>
+                <!--考勤计算end-->
+		<eq name="flow_type.is_show" value="1">
+			<div class="form-group">
+				<div class="col-xs-12">
+					<textarea  id="content" name="content" style="width:100%;height:150px;">{$flow_type.content}</textarea>
+				</div>
+			</div>
+		</eq>
+		<div class="form-group">
+			<label class="col-sm-2 control-label phone-font-s" >附件：</label>
+			<div class="col-sm-10">
+				{:W('FileUpload/add')}
+			</div>
+		</div>
+	</form>
+		<div class="operate panel panel-default">
+			<div class="panel-body">
+				<div class="pull-left">
+					<a onclick="go_return_url();" class="btn btn-sm btn-primary btn-special">返回</a>
+					<eq name="flow_type.is_lock" value="0">
+						<a onclick="popup_confirm();"  class="btn btn-sm btn-primary btn-special">选择审批流程</a>
+					</eq>
+				</div>
+<!--                            
+				<div class="pull-right">
+					<a onclick="save(10);"  class="btn btn-sm btn-primary btn-special">存草稿</a>					
+				</div>
+                            -->
+                <div class="pull-right">
+                <a onclick="save(20);"  id="post" class="btn btn-sm btn-primary post-define btn-special res-btn-pc">提交</a>
+                </div>
+			</div>
+		</div>
+			<nav class="navbar navbar-default navbar-fixed-bottom nav-bot" role="navigation">
+			     <div class="container-fluid">
+				      <div class="row2">
+							<div class="col-xs-12 nav-pad">
+							<a onclick="save(20);"  id="post" class="hidden-de post-define btn btn-primary btn-lg btn-block  res-btn-phone">提交</a>
+							</div>
+			 	      </div>
+			    </div>
+			</nav>
+	<script>
+			$(function(){  
+		            var sUserAgent = navigator.userAgent.toLowerCase();  
+		            var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";  
+		            var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";  
+		            var bIsMidp = sUserAgent.match(/midp/i) == "midp";  
+		            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";  
+		            var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";  
+		            var bIsAndroid = sUserAgent.match(/android/i) == "android";  
+		            var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";  
+		            var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";   
+		            if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {  
+		                $(".res-btn-phone").show();
+		                $(".res-btn-phone").css("display","block");
+		            } else {  
+		                
+		            }  
+			} );
+	</script>
+</block>
+<block name="js">
+	<script type="text/javascript">
+		$(document).ready(function() {
+			udf_field.init();
+
+			<php>if($flow_type['is_lock']==0){</php>
+			$('.address_list').on('mouseenter', 'span', function() {
+				$(this).find('i').remove();
+				$(this).append('<i class="fa fa-times"></i>');	 
+			});
+			$('.address_list').on('mouseleave', 'span', function() {
+				$i = $(this).find('i');
+				$i.removeClass('fa-times');
+				$i.addClass('fa-arrow-right');
+				$(".address_list span:last i").attr('class', 'fa');
+			});
+
+			$('.address_list').on('click', 'i', function() {
+				$(this).parents('span').remove();
+				$(".address_list span:last i").attr('class', 'fa');
+			});
+			<php>}</php>
+		});
+		
+		function save(step) {
+                        if ($("select.form-control").val()=="0") {
+                        alert("请选择班次后再提交");
+                        return false;
+                        }                        
+			$("#confirm").val("");
+			$("#confirm_wrap  span").each(function() {
+				$("#confirm").val($("#confirm").val() + $(this).attr("data") + '|');
+			});
+			$("#confirm_name").val($("#confirm_wrap").html());
+
+			$("#consult").val("");
+			$("#consult_wrap  span").each(function() {
+				$("#consult").val($("#consult").val() + $(this).attr("data") + '|');
+			});
+			$("#consult_name").val($("#consult_wrap").html());
+
+			$("#refer").val("");
+			$("#refer_wrap  span").each(function() {
+				$("#refer").val($("#refer").val() + $(this).attr("data") + '|');
+			});
+			$("#refer_name").val($("#refer_wrap").html());
+
+			if ($("#confirm").val().length < 2) {
+				ui_error('请选择审批流程');
+				return false;
+			}
+			$("#step").val(step);                        
+                        if( confirm("是否确定提交?")){
+                            var t=100;
+                            $(".res-btn-pc,.res-btn-phone").attr("disabled","disabled");
+                            var int=setInterval(function(){
+                            t--;
+                            if(t==0){                            		
+                                    $(".post-define").html("提交");
+                                    $(".res-btn-pc,.res-btn-phone").attr("disabled",false);
+                                    $(".post-define").attr("onclick","save(20)");
+                                     clearInterval(int);
+                            }else{
+                                    $(".post-define").attr("onclick","javascript:alert('不能重复提交！')");
+                                    $(".post-define").html("重新提交("+t+")");  
+                                    return;                   
+                            }
+                            },1000);
+                                    
+									// var start = $("input.start").val();		//接收后台传递的开始上班的时间
+									// var start_h = start.substring(0,2);
+									// var end = $("input.end").val();		//接收后台传递的下班的时间
+									// var end_h = end.substring(0,2);
+									// var start_time = $("input.leave_start").val();		//请假开始时间
+									// var start_time_year = String(start_time).substring(0,4);		//请假开始年份
+									// var start_time_month = String(start_time).substring(5,7);		//请假开始月份
+									// var start_time_day = String(start_time).substring(8,10);		//请假开始日
+									// var start_time_hour = String(start_time).substring(11,13);		//请假开始小时
+									// var start_time_m = String(start_time).substring(14,16);		//请假开始分钟
+									// var end_time = $("input.leave_end").val();		//请假结束时间
+									// var end_time_year = String(end_time).substring(0,4);		//请假结束年份
+									// var end_time_month = String(end_time).substring(5,7);		//请假结束月份
+									// var end_time_day = String(end_time).substring(8,10);		//请假结束日
+									// var end_time_hour = String(end_time).substring(11,13);		//请假结束小时
+									// var end_time_m = String(end_time).substring(14,16);		//请假结束分钟
+									// var leave_d = $("span.leave_day").html();
+									// var leave_t = $("span.leave_hour").html();
+         //                            if(leave_d <= 1){
+
+         //                            	$("#form_data").append('<input type="hidden" name="day[0][year]" value="'+end_time_year+'"><input type="hidden" name="day[0][month]" value="'+end_time_month+'"><input type="hidden" name="day[0][day]" value="'+end_time_day+'"><input type="hidden" name="day[0][hour]" value="'+leave_t+'">');
+         //                            }else{
+
+         //                            	for (var i = 1; i < leave_d; i++) {
+         //                            		$("#form_data").append('<input type="hidden" name="day['+i+'][year]" value="'+end_time_year+'"><input type="hidden" name="day['+i+'][month]" value="'+end_time_month+'"><input type="hidden" name="day['+i+'][day]" value="'+end_time_day+'"><input type="hidden" name="day['+i+'][hour]" value="'+leave_t+'">');
+         //                            	}
+         //                            }
+
+                                    sendForm("form_data", "{:U('save')}", "{:U('Flow/index')}");
+                            }
+            }
+		function popup_confirm() {
+			winopen("{:U('popup/confirm')}",560, 470);
+		}
+		$(document).ready(function(){
+		    $('.time_w').css('width',$('#name').css('width'));
+		    $('.time_w').css('width',$('#name').css('width'));
+		    $('input[type="datetime-local"]').removeAttr('readonly');                  
+		});
+	</script>
+</block>

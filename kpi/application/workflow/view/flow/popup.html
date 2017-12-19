@@ -1,0 +1,112 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    body,html{
+        width: 100%;
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .content_box{
+        width: 90%;
+        height: auto;
+        overflow: hidden;
+        margin: 0 auto;
+    }
+    .top_info{
+        width: 100%;
+        height:40px;
+        padding: 10px 0;
+        border-bottom: 3px solid #eeeeee;
+    }
+    .user_heard{
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+        margin-right: 5px;
+        float: left;
+    }
+    .user_heard > img{
+        display: block;
+        border: none;
+        width: 100%;
+        height:100%;
+    }
+    .tip_box{
+        width: 70%;
+        height: 40px;
+        line-height: 20px;
+        color: #000000;
+        font-size: 0.8em;
+    }
+    .tip_bar{
+        width: 100%;
+        height: 25px;
+        font-family: '微软雅黑';
+        font-size: 0.8em;
+        line-height: 30px;
+        text-indent: 2em;
+    }
+    .flow_content{
+        width: 468px;
+        height: auto;
+        overflow: hidden;
+        border: 1px solid #eeeeee;
+        border-radius: 10px;
+    }
+    .flow_content .flow_content_box{
+        width: 100%;
+        height:auto;
+        padding: 0 7px;
+        font-size: 0.8em;
+    }
+    .flow_content_box .words{
+        width: 20%;
+        height: 30px;
+        line-height: 30px;
+        text-align: right;
+        float: left;
+    }
+    .flow_content_box .fill_bar{
+        width: 70%;
+        height: 30px;
+        float: left;
+        margin-left: 2%;
+    }
+    .flow_content_box .fill_bar >input{
+        display: block;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        border: none;
+        outline: none;
+    }
+</style>
+
+<div class="page-container">
+    <form class="form form-horizontal" id="flow">
+        <div class="content_box">
+            <div class="top_info">
+                <div class="user_heard"><img src="http://www.qqw21.com/article/UploadPic/2012-9/20129184657343.jpg"></div>
+                <div class="tip_box">
+                    <div><span>{$data_list['user_name']}</span>发起的<span>{$data_list['chart_name']}</span>审批</div>
+                    <div style="color: #7e7e7e; font-size: 0.7em;">集团信息技术部</div>
+                </div>
+            </div>
+            <input type="hidden" name="type" value="{$data_list['type']}">
+            <div class="tip_bar">审批内容:</div>
+            <div class="flow_content">
+                <div class="flow_content_box">
+                    <div class="words">标题：</div>
+                    <div class="fill_bar"><input type="text" name="chart_name" value="{$data_list['chart_name']}"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+
+</script>
+{/block}

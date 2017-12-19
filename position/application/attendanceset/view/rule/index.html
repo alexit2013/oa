@@ -1,0 +1,204 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<style>
+    .pr_input{width: 90px;text-align: center;background-color: #eeeeee;}
+</style>
+
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 考勤设置 <span class="c-gray en">&gt;</span> 考勤规则 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="member_add('新建考勤规则','{:Url('add')}')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 新建考勤规则</a></span></div>
+    <div class="mt-20">
+    <table class="table table-border table-bordered table-hover table-bg table-sort">
+        <thead>
+            <tr class="text-c">
+                <th width="80">名称</th>
+                <th width="100">应用范围</th>
+                <th width="40">打卡方式</th>
+                <th width="90">休息日</th>
+                <th width="70">班次</th>
+                <th width="60">优先级</th>
+                <th width="50">操作</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php foreach ($data_list as $key => $v) { ?>
+            <tr class="text-c">
+                <td><?php echo $v['name']; ?></td>
+                <td>
+                    <?php foreach ($v['dept'] as $key => $vd) { ?>
+                    <u style="cursor:pointer" class="text-primary"><?php echo $vd['name']; ?></u>
+                    <?php } ?>
+                    <?php foreach ($v['emp'] as $key => $ve) { ?>
+                    <u style="cursor:pointer" class="text-primary"><?php echo $ve['name']; ?></u>
+                    <?php } ?>
+                </td>
+                <td class="text-l"><?php foreach ($v['ways'] as $key => $vw) {
+                        echo $vw['name'];
+                } ?></td>
+                <td>
+                    <?php foreach ($v['playday'] as $key => $vp) {
+                        echo $vp['name'];
+                    } ?>
+                </td>
+                <td class="td-status">
+                    <?php foreach ($v['schedual'] as $key => $vs) { ?>
+                    <span class="label label-success radius"><?php echo $vs['shift_name'].'('.$vs['short'].')'; ?></span>
+                    <?php } ?>
+                </td>
+                <td class="priority">
+                    <input class="input-text" style="width: 70%; background-color: #eee; cursor: not-allowed;" type="text" maxlength="3" name="priority" data-id="<?php echo $v['id']; ?>" value="<?php echo $v['priority']; ?>" readonly="readonly">
+                    <span class="edit_priority" style="cursor: pointer;">编辑</span>
+                </td>
+                <td>
+                   <span class="operation-btn">
+                        <a class="buildRestday" data-tit="编辑考勤规则" href="javascript:;" title="编辑" onclick="member_edit('编辑考勤规则','{:Url('edit',array('id'=>$v['id']))}')">编辑</a>
+                        <em>|</em>
+                        <a class="confirmBtn" onclick="member_del(this,'{$v['id']}')" data-msg="删除数据，是否继续？" title="删除">删除</a>                                
+                    </span> 
+                </td>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+//编辑优先级
+$(function(){
+    $("span.edit_priority").on("click",function(){
+        var th = $(this);
+        var edit = $(this).text();
+        if (edit == "编辑") {
+            var inp = $(this).parent("td").children("input");
+            inp.removeAttr("readonly").css({"background-color":"#ffffff","cursor":"pointer"});
+            $(this).html("保存");            
+        }
+        if (edit == "保存") {
+            var newVal = $(this).parent("td").children("input").val(); 
+            var id = $(this).parent("td").children("input").attr("data-id");
+            if(newVal.search("^-?\\d+$")!=0){
+                layer.msg("请输入数字");
+                return false;
+            }else{
+                $.ajax({
+                    url: "{:Url('priority')}",
+                    dataType: 'json',
+                    data : {id:id,priority:newVal},     
+                    type: 'POST',
+                    cache: false,
+                    success: function(data){
+                            if(data.status == '1'){
+                                layer.msg(data.msg); 
+                               th.parent("td").children("input").attr("readonly","readonly").css({"background-color":"#eeeeee","cursor":"not-allowed"}).val(newVal);
+                                th.html("编辑");          
+                            }if(data.status == '0'){
+                                layer.msg("优先级未改变"); 
+                               th.parent("td").children("input").attr("readonly","readonly").css({"background-color":"#eeeeee","cursor":"not-allowed"}).val(newVal);
+                                th.html("编辑"); 
+                            }                                           
+                    },
+                    error:function(data){
+                             ayer.msg(data.msg);
+                             return;
+                    }
+                });
+ 
+        }
+        }
+    });
+})
+
+/*用户-添加*/
+function member_add(title,url){
+    var index = layer.open({
+      type: 2,
+      content: url,
+      area: ['100%', '100%'],
+      title: title,
+      maxmin: true
+    });
+    layer.full(index);      
+}
+/*用户-编辑*/
+function member_edit(title,url){
+    var index = layer.open({
+      type: 2,
+      content: url,
+      area: ['100%', '100%'],
+      title: title,
+      maxmin: true
+    });
+    layer.full(index);      
+}
+/*用户-查看*/
+function member_show(title,url,id,w,h){
+    layer_show(title,url,w,h);
+}
+/*用户-停用*/
+function member_stop(obj,id){
+    layer.confirm('确认要停用吗？',function(index){
+        $.ajax({
+            type: 'POST',
+            url: '',
+            dataType: 'json',
+            success: function(data){
+                $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_start(this,id)" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
+                $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已停用</span>');
+                $(obj).remove();
+                layer.msg('已停用!',{icon: 5,time:1000});
+            },
+            error:function(data) {
+                console.log(data.msg);
+            },
+        });     
+    });
+}
+
+/*用户-启用*/
+function member_start(obj,id){
+    layer.confirm('确认要启用吗？',function(index){
+        $.ajax({
+            type: 'POST',
+            url: '',
+            dataType: 'json',
+            success: function(data){
+                $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
+                $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+                $(obj).remove();
+                layer.msg('已启用!',{icon: 6,time:1000});
+            },
+            error:function(data) {
+                console.log(data.msg);
+            },
+        });
+    });
+}
+
+/*密码-修改*/
+function change_password(title,url,id,w,h){
+    layer_show(title,url,w,h);  
+}
+/*用户-删除*/
+function member_del(obj,id){
+    layer.confirm('确认要删除吗？',function(index){
+       $.ajax({
+            type: 'POST',
+            url: "{:Url('del')}",
+            data: {'id':id},
+            dataType: 'json',
+            cache: false,
+            success: function(data){
+                $(obj).parents("tr").remove();
+                layer.msg('已删除!',{icon:1,time:1000});
+            },
+            error:function(data) {
+                console.log(data.msg);
+            },
+        });   
+    });
+}
+</script> 
+{/block}

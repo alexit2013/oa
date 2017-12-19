@@ -1,0 +1,152 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+    <h1>车贷业务</h1>
+    <form action="{:U('Loanbusiness/index')}" name="form_search" id="form_search" method="post">
+                  
+                    <div style="margin:2rem 0">
+                        <label class="control-label leftlabel">车贷申请日期：</label>
+                            <input  class="input-sm text-center" type="date" id="loan_start" name="loan_start"> 
+                            <span class="sp-pad text-center">——</span>                      
+                            <input  class="input-sm text-center"  type="date" id="loan_end" name="loan_end" >
+                        <label class="midlabel">咨询服务费交款日期：</label>
+                        <input  class="input-sm text-center" type="date" id="ser_start" name="zx_start" > 
+                        <span class="sp-pad text-center">——</span>                      
+                        <input  class="input-sm text-center" type="date" id="ser_end" name="zx_end" >                        
+                        <span class="text-right">
+                            <a  class="btn btn-sm btn-info btn-special" id="loanserch" onclick="submit_adv_search2();">搜索</a>
+                        </span>
+                    </div>
+        </form>
+        
+   <!--  <h1 class="col-sm-8">车贷业务</h1>
+    <div class="col-sm-4">
+        <form name="form_search" id="form_search" method="get" class="pull-right">
+            <div class="input-group col-20">
+    -->         <!--     <input  class="form-control" type="text" name="keyword" id="keyword"/>
+                <div class="input-group-btn">
+                    <a class="btn btn-sm btn-primary" onclick="submit_search();"><i class="fa fa-search" ></i></a>
+                </div>
+            </div>
+        </form>
+    </div> -->
+    <!--  功能操作区域  -->
+    <div class="operate panel panel-default">
+        <div class="panel-body">
+            <div class="pull-left">
+                <?php if(!empty($dao)){ ?>
+                            <a  class="btn btn-sm btn-info btn-special" href="{:U('Loanbusiness/laonexcel',array('import'=>'e'))}" >导出</a>
+                        
+                <?php } ?>
+            </div>
+            <div class="pull-left" style="margin-left: 1rem">
+                 <?php if(!empty($is_finace)){ ?>
+                <a class="btn btn-sm btn-danger" onclick="del();">删除</a>
+                <?php } ?>
+            </div >
+            <div class="pull-right">
+                <a  onclick="add();" class="btn btn-sm btn-primary">新建</a>
+            </div>
+        </div>
+    </div>
+    <!-- 功能操作区域结束 -->
+    <div class="ul_table border-bottom ul_table_responsive">
+        <ul>
+            <li class="thead">
+            <div class="row">
+                    <label class="inline pull-left dcol-sm-1 text-center">
+                        <input class="ace" type="checkbox" name="id-toggle-all" id="id-toggle-all" />
+                        <span class="lbl"></span>
+                    </label>
+                    <span class="dcol-sm-2 text-center">店名</span>                
+                    <span class="dcol-sm-3 text-center">客户名称</span>
+                    <span class="dcol-sm-4 text-center">品牌</span>
+                    <span class="dcol-sm-5 text-center">车系</span>
+                    <span class="dcol-sm-6 text-center">车型</span>
+                    <span class="dcol-sm-7 text-center">客户联系电话</span>
+                    <span class="dcol-sm-8 text-center">车贷申请日期</span>
+                    <span class="dcol-sm-9 text-center">咨询服务交款日期</span>
+                        <span class="text-center dcol-sm-10">修改</span>
+                        <span class="text-center dcol-sm-11">查看</span>
+            </div>
+            </li>
+            <empty name="list">
+                <li class="no-data">
+                    没找到数据
+                </li>
+                <else/>
+                <form method="post" action="" name="form_data" id="form_data">
+                    <foreach name="list" item="vo">
+                        <li class="tbody" >
+                            <label class="inline pull-left dcol-sm-1 text-center none-padding">
+                                <input class="ace" type="checkbox" name="id[]" value="{$vo.id}" />
+                                <span class="lbl"></span></label>
+                                <span class="dcol-sm-2 text-center">{$vo.dept_name}</span>        
+                                <span class="dcol-sm-3 text-center">{$vo.customer}</span>
+                                <span class="dcol-sm-4 text-center">{$vo.carbrand_name}</span>
+                                <span class="dcol-sm-5 text-center">{$vo.carseries_name}</span>
+                                <span class="dcol-sm-6 text-center">{$vo.carsize_name}</span>
+                                <span class="dcol-sm-7 text-center">{$vo.customer_telephone2}</span>
+                                <span class="dcol-sm-8 text-center">{:date('Y/m/d',$vo['car_loan_time'])}</span>
+                                <span class="dcol-sm-9 text-center">{:date('Y/m/d',$vo['zxcost_time'])}</span>
+                                <span class="dcol-sm-10 text-center">
+                                    <a class="Cedit" Cid="{$vo.id}" >修改</a>
+                                </span>
+                                <span class="dcol-sm-11 text-center">
+                                    <a class="view" Vid="{$vo.id}" href="{:U('read',array('id'=>$vo['id']))}" >查看</a>
+                                </span>
+                        </li>
+                    </foreach>
+                </form>
+                <div class="pagination">
+			{$page}
+		</div>
+            </empty>
+        </ul>
+    </div>
+    
+</block>
+<block name="js">
+    <script type="text/javascript">
+        function add() {
+            window.open("{:U('add')}", "_self");
+        }
+        $('.Cedit').bind('click',function(){
+            var id=$(this).attr('Cid');
+            window.open("/index.php?m=&c=Loanbusiness&a=edit&id="+id,"_self");
+        })
+        function submit_adv_search2() {
+            $("#form_search").submit();
+        }
+
+        function del() {
+            var vars = $("#form_data").serialize();
+            ui_confirm('确定要删除吗?', function() {
+                sendAjax("{:U('loandel')}", vars, function(data) {
+                    if (data.status) {
+                        ui_alert(data.info, function() {
+                            location.reload(true);
+                        });
+                    }
+                });
+            });
+        }
+
+        function move_to(val) {
+            var vars = $("#form_data").serialize();
+            sendAjax("{:U('move_to')}", "val=" + val + '&' + vars, function(data) {
+                if (data.status) {
+                    ui_alert(data.info, function() {
+                        location.reload(true);
+                    });
+                } else {
+                    ui_alert(data.info);
+                }
+            });
+        }
+
+
+        $(document).ready(function() {
+            set_return_url();
+        });
+    </script>
+</block>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title></title>
+		<link rel="stylesheet" href="__INS__/pui/css/planeui.min.css" />
+		<link rel="stylesheet" href="__INS__/css/animate.min.css" />
+		<script type="text/javascript" src="__INS__/js/jquery-2.1.1.js" ></script>
+		<script type="text/javascript" src="__INS__/js/wow.min.js" ></script>
+
+		<style>
+			*{margin:0; padding:0; list-style:none; }
+			body{ background:#fff; font:normal 12px/22px 宋体;overflow-x: hidden;}
+			img{ border:0;}
+			a{ text-decoration:none; color:#333;}
+			.mt-9{margin-top:9px}
+			.mt-20{margin-top:20px}
+			.mt-30{margin-top:30px}
+			.mt-40{margin-top:40px}
+			.success_icon{
+				width: 75px;
+				height: 75px;
+				border-radius: 50%;
+				background-color: #04c87b;
+				margin:0 auto;
+				line-height: 64px;
+				font-size: 48px;
+				text-align: center;
+				color: #fff;
+			}
+			.signin_status{
+				color: #04c87b;
+				text-align: center;
+				font-size: 27px;
+				font-weight: bold;
+			}
+			.signin_time{
+				color: #6c6c6c;
+				text-align: center;
+				font-size: 13px;
+			}
+			.record{
+				text-align: center;
+				font-size: 14px;
+			}
+			.record a{
+				color: #6495ED;
+			}
+			.sus_img{
+				text-align: center;
+			}								
+		</style>
+	</head>
+	<body>
+		<div class="mt-30">
+			<div class="success_icon"><i class="fa fa-check"></i></div>
+		</div>
+		<div class="mt-30">
+			<div class="signin_status">
+                            <switch name="type">
+                                <case value="1">签到成功</case>
+                                <case value="2">签到成功，你已迟到</case>
+                                <case value="3">签退成功</case>
+                                <case value="4">签退成功，你已早退</case>
+                            </switch>
+                        
+                        </div>
+		</div>
+		<div class="mt-9">
+			<div class="signin_time">{:date('Y-m-d H:i:s',$time)}</div>
+		</div>
+		<div class="mt-40">
+			<div class="record"><a href="{:U('Record/index',['emp_no'=>$emp_no])}">考勤记录></a></div>
+		</div>
+		<div class="mt-30">
+			<switch name="type">
+                                <case value="1">
+                                <div class="sus_img wow rollIn bg-yellow animated"><img src="__INS__/img/sus.jpg" /></div>
+                                </case>
+                                <case value="2"><div class="sus_img wow rollIn bg-yellow animated"><img src="__INS__/img/late.jpg" /></div></case>
+                                <case value="3"><div class="sus_img wow rollIn bg-yellow animated"><img src="__INS__/img/sus.jpg" /></div></case>
+                                <case value="4"><div class="sus_img wow rollIn bg-yellow animated"><img src="__INS__/img/late.jpg" /></div></case>
+            </switch>
+			
+		</div>
+	</body>	
+	<script>
+		
+	</script>
+</html>

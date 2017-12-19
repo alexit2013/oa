@@ -1,0 +1,147 @@
+;(function($, o) {
+	var uploaders = {};
+
+	$.fn.pluploadQueue = function(settings) {
+		if (settings) {
+			this.each(function() {
+				var uploader, target, id, contents_bak;
+
+				target = $(this);
+				id = target.attr('id');
+
+				contents_bak = target.html();
+
+				settings = {
+					runtimes : 'html5,flash',
+					browse_button : 'pickfiles', // you can pass in id...
+					container : document.getElementById('uploader'), // ... or DOM Element itself
+					url : upload_url,
+					flash_swf_url : app_path + '/Public/Static/plupload/Moxie.swf',
+					chunk_size : '2mb',
+					filters : {
+						max_file_size : '100mb'
+					}
+				};
+
+				uploader = new plupload.Uploader(settings);
+
+				uploaders[id] = uploader;
+
+				uploader.bind("Error", function(up, err) {
+					var file = err.file, message;
+
+					if (file) {
+						message = err.message;
+
+						if (err.details) {
+							message += " (" + err.details + ")";
+						}
+
+						if (err.code == plupload.FILE_SIZE_ERROR) {
+							alert(_("Error: File too large:") + " " + file.name);
+						}
+
+						if (err.code == plupload.FILE_EXTENSION_ERROR) {
+							alert(_("Error: Invalid file extension:") + " " + file.name);
+						}
+
+						file.hint = message;
+						$('#' + file.id).attr('class', 'plupload_failed').find('a').css('display', 'block').attr('title', message);
+					}
+				});
+
+				uploader.bind("PostInit", function() {
+					if ($("#uploader .tbody").length > 0) {
+						$("#uploader .tbody .loading").css("width", "100%");
+						$("#uploader .thead").show();
+						$("#uploader .tbody").each(function() {
+							id = $(this).attr("filename");
+							filename = $(this).attr("filename");
+							size = $(this).attr("size");
+							file = new plupload.File(id, filename, size);
+							file.status = plupload.DONE;
+							count = uploader.files.length;
+							uploader.files[count] = file;
+						});
+					}
+				});
+
+				uploader.init();
+
+				uploader.bind('FilesAdded', function(up, files) {
+					for (var i in files) {
+						html = '<li class="tbody" id="' + files[i].id + '">\n';
+						html += '<div class="loading"></div>\n';
+						html += '<div class="data">\n';
+						html += '<span class="del text-center"><a class="link del">删除</a></span>\n';
+						html += '<span class="size text-right">' + plupload.formatSize(files[i].size) + '</span>';
+						html += '<span class="auto autocut">' + files[i].name + '</span>';
+						html += '</li>';
+						html += '</div>\n';
+						$('#file_list').append(html);
+					}
+					up.start();
+				});
+
+				uploader.bind('FileUploaded', function(up, file, data) {
+					var myObject = eval('(' + data.response + ')');
+					if (myObject.status) {
+						if ($("#add_file").length != 0) {
+							$("#add_file").val($("#add_file").val() + myObject.sid + ";");
+						}
+						$("#" + file.id).attr("add_file", myObject.sid);
+						$new_upload = $("#file_list").attr("new_upload");
+						$("#file_list").attr("new_upload", $new_upload + myObject.sid + ";");
+						if ($("#save_name").length != 0) {
+							$("#save_name").val($("#save_name").val() + myObject.savename + ";");
+						}
+						$("#" + file.id).find("a.del").show();
+					} else {
+						ui_alert(myObject.info, function() {
+							$("#" + file.id).remove();
+						});
+					}
+				});
+
+			});
+
+			return this;
+		} else {
+			// Get uploader instance for specified element
+			return uploaders[$(this[0]).attr('id')];
+		}
+	};
+})(jQuery, mOxie);
+
+//绑定beforeunload事件
+$(window).bind('beforeunload', function() {
+	$(".plupload").each(function(){
+		
+	});
+	$new_upload = $("#file_list").attr("new_upload");
+	if ($new_upload !== undefined) {
+		if ($new_upload.length) {
+			return '您输入的内容尚未保存，确定离开此页面吗？';
+		}
+	}
+});
+
+$(document).on("click", "#uploader a.del", function() {
+	$obj = $(this).parents("li");
+	id = $obj.attr("id");
+	file = uploader.getFile(id);
+	ui_confirm("确定要删除吗？", function() {
+		$add_file = $obj.attr("add_file");
+		$new_upload = $("#file_list").attr("new_upload");
+		$("#add_file").val($("#add_file").val().replace($add_file + ";", ""));
+		$("#file_list").attr("new_upload", $new_upload.replace($add_file + ";", ""));
+
+		if ($add_file.length > 0) {
+			$obj.remove();
+			sendAjax(del_url, 'sid=' + $obj.attr("id"));
+		} else {
+			uploader.removeFile(file);
+			$obj.remove();
+		}
+	});
+});

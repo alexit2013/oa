@@ -1,0 +1,135 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+    <form action="{:U(index)}" method="post">
+        年份：
+        <select name="year">
+            <option value="">请选择年份</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+        </select>
+        月份：
+        <select name='month'>
+            <option value=''>请选择月份</option>
+            <option value='1'>1月</option>
+            <option value='2'>2月</option>
+            <option value='3'>3月</option>
+            <option value='4'>4月</option>
+            <option value='5'>5月</option>
+            <option value='6'>6月</option>
+            <option value='7'>7月</option>
+            <option value='8'>8月</option>
+            <option value='9'>9月</option>
+            <option value='10'>10月</option>
+            <option value='11'>11月</option>
+            <option value='12'>12月</option>
+        </select>
+        <button>同步</button>
+    </form>
+    
+</block>
+<block name="js">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            set_return_url();
+            total_init();
+        });
+
+        function total_init() {
+            for (var i = 1; i < 11; i++) {
+                total = 0;
+                item_selecter = ".data_item .data_" + i;
+
+                $(item_selecter).each(function() {
+                    total = dec_add(total, $(this).text());
+                });
+                total_selecter = ".data_total .data_" + i;
+                $(total_selecter).text(total);
+            }
+            $(".ul_table .data").each(function() {
+                $(this).text(formatMoney($(this).text()));
+            });
+        }
+
+        function dec_add(num1, num2) {
+            var reg = /\./i;
+            if (!reg.test(num1) && !reg.test(num2)) {
+                return parseInt(num1) + parseInt(num2);
+            }
+            var r1 = 0, r2 = 0, m;
+            var str1 = num1.toString(), str2 = num2.toString();
+            if (str1.indexOf('.') > -1) {
+                r1 = str1.split('.')[1].length;
+            }
+            if (str2.indexOf('.') > -1) {
+                r2 = str2.split('.')[1].length;
+            }
+            m = Math.pow(10, Math.max(r1, r2));
+            return (dec_mul(num1, m) + dec_mul(num2, m)) / m;
+        }
+
+        function dec_mul(num1, num2) {
+
+            var t1 = 0, t2 = 0, r1, r2;
+            try {
+                t1 = num1.toString().split(".")[1].length;
+            } catch(e) {
+                t1 = 0;
+            }
+            try {
+                t2 = num2.toString().split(".")[1].length;
+            } catch(e) {
+                t2 = 0;
+            }
+            with (Math) {
+                r1 = Number(num1.toString().replace(".", ""));
+                r2 = Number(num2.toString().replace(".", ""));
+                return (r1 * r2) / pow(10, t2 + t1);
+            }
+        }
+
+        function formatMoney(numStr, separator) {
+            s = numStr;
+            if (/[^0-9\.\-]/.test(s))
+                return "　";
+            s = s.replace(/^(-)?(\d*)$/, "$1$2.");
+            s = (s + "00").replace(/(-)?(\d*\.\d\d)\d*/, "$1$2");
+            s = s.replace(".", ",");
+            var re = /(\d)(\d{3},)/;
+            while (re.test(s))
+            s = s.replace(re, "$1,$2");
+            s = s.replace(/,(\d\d)$/, ".$1");
+            return s.replace(/^\./, "0.");
+        }
+
+        function formatQty(numStr, separator) {
+            s = numStr;
+            if (/[^0-9\.\-]/.test(s))
+                return "　";
+            s = s.replace(/^(-)?(\d*)$/, "$1$2.");
+            s = (s + "00").replace(/(-)?(\d*\.\d\d)\d*/, "$1$2");
+            s = s.replace(".", ",");
+            var re = /(\d)(\d{3},)/;
+            while (re.test(s))
+            s = s.replace(re, "$1,$2");
+            s = s.replace(/,(\d\d)$/, ".$1");
+            s = s.replace(/^\./, "0.");
+            if (s.split(".")[1] == "00")
+                s = s.split(".")[0];
+            return s;
+        }
+
+        function add_income() {
+            window.open("{:U('add_income')}", "_self");
+        }
+
+        function add_payment() {
+            window.open("{:U('add_payment')}", "_self");
+        }
+
+        function add_transfer() {
+            window.open("{:U('add_transfer')}", "_self");
+        }
+    </script>
+</block>

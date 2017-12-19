@@ -1,0 +1,298 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<style>
+    .c-red{color: red;}
+    .AddIcon{font-size: 19px;line-height: 31px;cursor:pointer;}
+    .mt-3{margin-top:3px;}
+    .ml1r{margin-left:1rem;}
+    .file_upload{
+        border: 1px solid #dfdfdf;
+        width: 121px;
+        height: 36px;
+        line-height: 34px;
+        text-align: center;
+        color: #676795;
+        font-size: 16px;
+        position: relative;
+        padding-left:18px;
+    }
+    .file_upload i{
+        position: absolute;
+        top:0px;
+        left:19px;
+        font-size:19px;
+        color: #60b879;
+    }
+    .msg_content{
+        margin:25px 0px;
+        padding: 25px 0px;
+        box-sizing:border-box;
+        border: 1px solid #00ccff;
+        border-radius:15px;
+        position: relative;
+    }
+    .msg_del{
+        border-radius:5px;
+        color: #fff;
+        background-color:#3399ff;
+        width:auto;
+        height: 28px;
+        line-height: 28px;
+        padding: 0px 12px;
+        position: absolute;
+        top:-15px;
+        left:16px;
+        text-align: center;
+        font-size: 13px;
+        cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+
+<div class="page-container">
+    <form class="form form-horizontal" id="form-article-add">
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店：</label>
+        <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                        <select class="select" name="store_id" id="store_id">
+                            <?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+                            <option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+                            <?php } ?>
+                        </select>
+				</span></div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌：</label>
+        <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                <select class="select" name="" id="carbrand">
+                    <option>请选择</option>
+                </select>
+				</span></div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车系：</label>
+        <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                <select class="select" name="carseries_id" id="carseries">
+                    <option>请选择</option>
+                </select>
+				</span></div>
+    </div>
+    <div class="de-container">
+        <div class="msg_content">
+            <div class="msg_del">财务帐面车辆</div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车牌号码：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text" value="" private="required" placeholder="请输入车牌号码" id="finance_carnum" name="finance_carnum">
+                </div>
+
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>购进时间：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="date" class="input-text" value="" private="required" placeholder="请输入购进时间" id="finance_buycartime" name="finance_buycartime">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>财务账面净值：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text" value="" placeholder="财务账面净值" id="finance_price" name="finance_price">
+                </div>
+                <span class="c-red">元</span>
+            </div>
+        </div>
+    </div>
+    <div class="de-container">
+        <div class="msg_content">
+            <div class="msg_del">实际车辆</div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车牌号码：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text" value="" private="required" placeholder="请输入车牌号码" id="actual_carnum" name="actual_carnum">
+                </div>
+
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>购进时间：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="date" class="input-text" value="" private="required" placeholder="请输入购进时间" id="actual_buycartime" name="actual_buycartime">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>使用情况：</label>
+                <div class="formControls col-xs-8 col-sm-3">
+                    <input type="text" class="input-text" value="" placeholder="请输入使用情况：" id="use" name="use">
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>差异及原因：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+            <input type="text" class="input-text" value="" placeholder="请输入差异及原因：" id="difference" name="difference">
+        </div>
+
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2">备注：</label>
+        <div class="formControls col-xs-8 col-sm-3">
+            <textarea cols="" rows="" class="textarea valid" name="remark" id="remark" placeholder="说点什么..."></textarea>
+        </div>
+    </div>
+    <div class="row cl">
+        <div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-2">
+            <button  onClick="return article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+        </div>
+    </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function article_save_submit(){
+        if ($("#carbrand option:selected").text()=="请选择") {
+                    layer.msg("请选择品牌");
+                    return false;
+        }
+        if ($("#carseries option:selected").text()=="请选择") {
+            layer.msg("请选择车系");
+            return false;
+        }
+        var num=0;
+        var str = '';
+        $("input").each(function () {
+            if ($(this).val() == "") {
+                this.focus();
+                num++;
+                str += $(this).attr("placeholder")+"</br>";
+            }
+
+        });
+        if(num>0)
+        {
+            layer.msg(str);
+            return false;
+        }
+        else
+        {
+            var str = $("#form-article-add").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("financsdriveadd")}',
+                data:str,
+                dataType: 'json',
+                success: function(data){
+                    if(data.status=='1'){
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }else{
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }
+                },
+                error:function(data) {
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+            });
+        }
+    }
+    //预加载获取品牌
+    $(document).ready(function(){
+        var store_id = "store_id=" + $("#store_id").val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    var html = '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                    $("#carbrand").append(html);
+                });
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+
+    //获取品牌（通过选择）
+    $("#store_id").change(function(){
+        $("#carbrand > option").remove();
+        $("#carseries > option").remove();
+        $("#carsize > option").remove();
+        var store_id = "store_id=" + $(this).val();
+
+        $("#carseries").html("<option value=''>请先选择品牌</option>");
+        $("#carsize").html("<option value=''>请先选择车系</option>");
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+                var html = '<option>请选择</option>';
+                $.each(data,function(k,v){
+                    html += '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                });
+                $("#carbrand").append(html);
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取车系
+    $("#carbrand").change(function(){
+        $("#carseries > option").remove();
+        $("#carsize > option").remove();
+        var carbrand_id = "carbrand_id=" + $(this).val();
+        $("#carsize").html("<option value=''>请先选择车系</option>");
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carseries")}',
+            data: carbrand_id,
+            dataType: 'json',
+            success: function(data){
+                var html = '<option>请选择</option>';
+                $.each(data,function(k,v){
+                    html += '<option class="carseries" value="'+v.id+'">'+v.carseries_name+'</option>';
+                });
+                $("#carseries").append(html);
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取车型
+    $("#carseries").change(function(){
+        $("#carsize > option").remove();
+
+        var carseries_id = "carseries_id=" + $(this).val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carsize")}',
+            data: carseries_id,
+            dataType: 'json',
+            success: function(data){
+                var html = '<option>请选择</option>';
+                $.each(data,function(k,v){
+                    html += '<option class="carsize" value="'+v.id+'">'+v.carsize_name+'</option>';
+                });
+                $("#carsize").append(html);
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+
+</script>
+{/block}

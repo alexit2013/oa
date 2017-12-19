@@ -1,0 +1,161 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+{:W('PageHeader/adv_search',array('name'=>$folder_name,'search'=>'M'))}
+<form method="post" name="form_adv_search" id="form_adv_search">
+	<div class="adv_search panel panel-default hidden" id="adv_search">
+		<div class="panel-heading">
+			<div class="row">
+				<h4 class="col-xs-6">高级搜索</h4>
+				<div class="col-xs-6 text-right">
+					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+					<a  class="btn btn-sm" onclick="close_adv_search();">关闭</a>
+				</div>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="li_name">标题：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="li_name" name="li_name" >
+				</div>
+			</div>
+
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="eq_type">流程类型：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_type" id="eq_type">
+						<option value="">全部</option>
+						{:fill_option($flow_type_list)}
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="eq_doc_no">编号：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="eq_doc_no" name="eq_doc_no" >
+				</div>
+			</div>
+			
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="eq_user_name">发起人：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="eq_user_name" name="eq_user_name" >
+				</div>
+			</div>
+			
+	<!-- 		<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="eq_doc_no">正在审批人：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="eq_emp_no" name="eq_emp_no" >
+				</div>
+			</div> -->
+
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="be_create_time">发起时间：</label>
+				<div class="col-sm-8">
+					<div class="input-daterange input-group" >
+					    <input type="text" class="input-sm form-control text-center" name="be_create_time" readonly="readonly"/>
+						<span class="input-group-addon">-</span>
+						<input type="text" class="input-sm form-control text-center" name="en_create_time" readonly="readonly" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<div class="ul_table ul_table_responsive table-define">
+	<ul>
+		<li class="thead" style="padding-left:10px">
+			<div class="pull-left">
+				<span class="col-13 ">编号</span>
+				<span class="col-13 ">类型</span>				
+			</div>
+			<div class="pull-right">
+				<span  class="col-12">提单时间</span>				
+				<span  class="col-6 "> 发起人</span>
+				<span class="col-6 ">状态</span>
+			</div>
+			<div class="autocut auto">
+				标题
+			</div>
+		</li>
+	</ul>
+	<empty name="list">
+		<ul>
+			<li class="no-data">
+				没找到数据
+			</li>
+		</ul>
+		<else/>
+		<form method="post" action="" name="form_data" id="form_data">
+			<ul>
+				<foreach name="list" item="vo">
+					<li class="tbody <eq name='folder' value='receive'>{:get_flow_receive_is_read($vo['id'])}</eq>">
+						<div class="pull-left">
+							<span class="col-13 inline-bk">{$vo.doc_no}</span>
+							<span class="col-13 inline-bk"> {$vo.type_name}</span>
+						</div>
+						<div class="pull-right">
+							<span class="col-12   "> {$vo.create_time|to_date='Y-m-d H:i'} </span>
+							<span class="col-6   ">{$vo.user_name}</span>
+							<span class="col-6   ">{$vo.step|show_step}</span>
+						</div>
+						<div class="autocut auto">
+							<in name="folder" value="darft">
+								<a href="{:U('edit','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
+								<else/>
+								<a href="{:U('read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
+							</in>
+							<eq name="vo.name|strlen" value="0">
+								无标题
+							</eq></a> </div>
+					</li>
+				</foreach>				
+			</ul>
+		</form>
+		<div class="pagination">
+			{$page}
+		</div>
+	</empty>
+</div>
+<script>
+			$(function(){  
+		            var sUserAgent = navigator.userAgent.toLowerCase();  
+		            var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";  
+		            var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";  
+		            var bIsMidp = sUserAgent.match(/midp/i) == "midp";  
+		            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";  
+		            var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";  
+		            var bIsAndroid = sUserAgent.match(/android/i) == "android";  
+		            var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";  
+		            var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";   
+		            if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {  
+		                $(".ul_table li span").css("display","none");		                
+		                $(".ul_table_responsive .auto").css("width","286px");
+		            } else {  
+		                $(".flow-a-3").removeClass("text-center");
+		                $(".gly-define").css("margin-left","4px");
+		                $(".gly-define").css("margin-top","4px");
+		                $(".spn-content").css("margin-left","-21rem");
+		                $(".fine-a").removeClass("text-right");
+		                $(".mar-2").css("margin-top","1rem");
+		                $(".colcation").css({"margin-top":"2rem","margin-left":"-8rem"});
+		                $(".das").css("height","141px");
+		                $(".fine-a").css("font-size","16px");
+		                $(".spn-content").css("font-size","16px");
+		                $(".fine-a").css("padding-left","22px");
+		                $(".con-define").css("margin-left","6rem");
+		                $(".span-define").css("margin-left","2rem");
+		                $(".con-define").css("margin-top","5px");
+		            }  
+			} );
+</script>
+</block>
+<block name="js">
+<script type="text/javascript">
+	$(document).ready(function() {
+		set_return_url();
+	}); 
+</script>
+</block>

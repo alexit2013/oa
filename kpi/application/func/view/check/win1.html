@@ -1,0 +1,276 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    body,html{
+        width: 100%;
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background-color: #efefef;
+    }
+    .page-container{
+        padding: 0 !important;
+    }
+    .content_box{
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        margin: 0 auto;
+    }
+    .top_box{
+        width: 100%;
+        overflow: hidden;
+        background-color: #FFFFFF;
+        padding-bottom: 3px;
+        border-bottom: 1px solid #9a9a9a;
+    }
+    .top_info{
+        width: 90%;
+        height:40px;
+        padding: 10px 0;
+        border-bottom: 1px solid #eeeeee;
+        margin: 0 auto;
+    }
+    .user_heard{
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+        margin-right: 5px;
+        float: left;
+    }
+    .user_heard > img{
+        display: block;
+        border: none;
+        width: 100%;
+        height:100%;
+    }
+    .tip_box_new{
+        width: 100%;
+        height: 40px;
+        line-height: 20px;
+        color: #000000;
+        font-size: 0.8em;
+        position: relative;
+    }
+    .tip_box_new > .ap_status{
+        position: absolute;
+        top: 35px;
+        right: 6%;
+        width: 60px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        color: orange;
+        font-size: 0.8em;
+        border: 1px solid orange;
+        transform: rotate(30deg);
+        -webkit-transform: rotate(30deg);
+        -moz-transform: rotate(30deg);
+        -ms-transform: rotate(30deg);
+    }
+    .top_details{
+        width: 90%;
+        overflow: hidden;
+        margin: 10px auto 0 auto;
+        font-size: 0.8em;
+    }
+    .tip_bar{
+        width: 90%;
+        height: 25px;
+        margin: 0 auto;
+        font-family: '微软雅黑';
+        font-size: 0.8em;
+        line-height: 30px;
+    }
+    .flow_content{
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        border: 1px solid #eeeeee;
+        border-radius: 10px;
+    }
+    .flow_content_box{
+        width: 100%;
+        height:auto;
+        overflow: hidden;
+        font-size: 0.9em;
+    }
+    .flow_content_box .words{
+        width: 15%;
+        height: 20px;
+        line-height: 20px;
+        text-align: right;
+        float: left;
+        color: #7a7a7a;
+    }
+    .flow_content_box .fill_bar{
+        width: 70%;
+        height:auto;
+        float: left;
+        line-height: 20px;
+        margin-left: 2%;
+    }
+    .process_box .receive{
+        width: 90%;
+        height: auto;
+        overflow: hidden;
+        margin: 0 auto;
+        line-height: 20px;
+        padding: 10px 0;
+        border: 1px rgb(165, 42, 42) dashed;
+        border-radius: 20px;
+        background: rgba(121, 181, 28, .1);
+        box-shadow: 4px 4px rgba(0,0,0,.2);
+
+    }
+    .process_box .start{
+        /*background-image: url('/position/public/kpi/img/start.png');*/
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+    .process_box .bosom{
+        /*background-image: url('/position/public/kpi/img/bosom.png');*/
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+    .process_box .end{
+        /*background-image: url('/position/public/kpi/img/end.png');*/
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+    .process_box .receive img{
+        display: block;
+        border: none;
+        width: 40px;
+        height:40px;
+        border-radius: 5px;
+        float: left;
+        margin-left: 30px;
+    }
+
+    .process_box{
+        width: 100%;
+        overflow: hidden;
+        background-color: #FFFFFF;
+        border-bottom: 1px solid #9a9a9a;
+        border-top: 1px solid #9a9a9a;
+        padding: 20px 0;
+    }
+    .ps_box{
+        width: 60%;
+        height: auto;
+        overflow: hidden;
+        float: left;
+        margin: 0 5px;
+        font-size: 0.8em;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #5a98de;
+        border-color: #5a98de;
+        display: block;
+        float: left;
+        margin: 10px;
+    }
+    .submit_btn{
+        width: 170px;
+        height: auto;
+        overflow: hidden;
+        margin: 0 auto;
+        margin-bottom: 40px;
+    }
+    .next_step{
+        width: 30px;
+        height: 30px;
+        display: block;
+        border: none;
+        margin: 5px auto;
+    }
+
+</style>
+
+<form class="form form-horizontal" id="flow">
+    <div class="content_box">
+        <div class="top_box">
+            <div class="top_info">
+                <div class="user_heard"><img src="{$flow_own['pic']}"></div>
+                <div class="tip_box_new">
+                    <div><span>{$flow_own['user_name']}</span>发起的<span>{$flow_own['chart']}</span>审批</div>
+                    <div style="color: #7e7e7e; font-size: 0.7em;">{:date('Y-m-d H:i:s',$flow_own['createtime'])}</div>
+                    <?php if($flow_own['status'] == '0'){ ?>
+                    <div class="ap_status" style="color: orange;border: 1px solid orange;">待审批</div>
+                    <?php }elseif($flow_own['status'] == '1'){ ?>
+                    <div class="ap_status" style="color: #2ab033;border: 1px solid #2ab033;">已审批</div>
+                    <?php }elseif($flow_own['status'] == '2'){ ?>
+                    <div class="ap_status" style="color: #dd514c;border: 1px solid #dd514c;">已退回</div>
+                    <?php }elseif($flow_own['status'] == '3'){ ?>
+                    <div class="ap_status" style="color: #0f9ae0;border: 1px solid #0f9ae0;">代办</div>
+                    <?php } ?>
+
+                </div>
+            </div>
+            <div class="top_details">
+                
+                <div class="flow_content_box">{$flow_own['chart']}审批单:</div>
+                <div class="flow_content_box">
+                    <div class="words">发起人：</div>
+                    <div class="fill_bar">{$flow_own['user_name']}</div>
+                </div>
+                <div class="flow_content_box">
+                    <div class="words">部门：</div>
+                    <div class="fill_bar">{$flow_own['dept_name']}</div>
+                </div>
+                <div class="flow_content_box">
+                    <div class="words">报表：</div>
+                    <div class="fill_bar"><a href="" target="_blank">{$flow_own['chart']}</a></div>
+                </div>
+                <div class="flow_content_box">
+                    <div class="words">说明：</div>
+                    <div class="fill_bar">{$flow_own['content']}</div>
+                </div>
+            </div>
+        </div>
+        <div class="tip_bar">审批进程:</div>
+        <div class="process_box">
+            <div class="receive">
+                <img src="{$flow_own['pic']}">
+                <div class="ps_box">
+                    <div>{$flow_own['user_name']}</div>
+                    <?php if(!empty($flow_own['content'])){ ?>
+                    <div>批示:{$flow_own['content']}</div>
+                    <?php } ?>
+                    <?php if(!empty($flow_own['createtime'])){ ?>
+                    <div>{:date('Y-m-d H:i:s',$flow_own['createtime'])}</div>
+                    <?php } ?>
+                </div>
+                <div>已发起</div>
+            </div>
+            <?php $count = count($flow_own["confirm"]); ?>
+            {foreach $flow_own["confirm"] as $k => $v}
+            <img class="next_step" src="/position/public/kpi/img/next_step.png">
+            <div class="receive <?php if($k == 0){ echo 'start'; }else if($k == $count-1){ echo 'end'; }else{ echo 'bosom'; } ?>">
+                {foreach $v as $ko => $vo}
+                <img src="{$vo['pic']}">
+                <div class="ps_box">
+                    <div>{$vo['user_name']}</div>
+                    <?php if(!empty($vo['content'])){ ?>
+                    <div>批示:{$vo['content']}</div>
+                    <?php } ?>
+                    <?php if(!empty($vo['updatetime'])){ ?>
+                    <div>{:date('Y-m-d H:i:s',$vo['updatetime'])}</div>
+                    <?php } ?>
+                </div>
+                <div><?php if(empty($vo['status'])){ echo '待审批';}elseif($vo['status'] == '1'){ echo '已审批';}elseif($vo['status'] == '2'){ echo '已退回'; } ?></div>
+                {/foreach}
+            </div>
+            {/foreach}
+        </div>
+    </div>
+</form>
+
+{/block}
+{block name="js"}
+<script type="text/javascript">
+
+</script>
+{/block}

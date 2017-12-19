@@ -1,0 +1,107 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<div class="page-container">
+  
+	<form action="" class="form form-horizontal" id="form-data">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">门店名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				
+				<select name="store_id" id="store_id">
+					<?php foreach ($stores as $key => $value) { ?>
+					<option value="{$value['ID']}">{$value['NAME']}</option>
+					 <?php } ?>
+				</select>
+                          
+			</div>
+		</div>
+ 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<ul>
+                    <?php foreach ($carbrand as $k => $v){ ?>
+					<li class="col-xs-4">
+						<input name="carbrands[{$k}]" type="checkbox" value="{$v['id']}" />
+                                        {$v['carbrand_name']}
+					</li>
+					<?php } ?>
+				</ul>
+			</div>
+		</div> 
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+				<button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+        $(function(){
+            var store_id = "store_id="+$("#store_id option:selected").val();
+            $.ajax({
+                type : 'POST' ,
+                url: '{:Url("carbrand")}',
+                data: store_id,
+                dataType: 'json',
+                success: function(data){
+                    $.each(data,function(k,v){
+                    var id = v.id
+                    $('input[value='+id+']').prop('checked', true);
+               }); 
+                },
+                error:function(data) {
+                        console.log(data.msg);
+                }
+            });
+        });
+        $("#store_id").change(function(){
+            $('input[type="checkbox"]').attr('checked',false);
+            var store_id = "store_id="+$(this).val();
+            $.ajax({
+                type : 'POST' ,
+                url: '{:Url("carbrand")}',
+                data: store_id,
+                dataType: 'json',
+                success: function(data){
+                    $.each(data,function(k,v){
+                    var id = v.id
+                    $('input[value='+id+']').prop('checked', true);
+               }); 
+                },
+                error:function(data) {
+                        console.log(data.msg);
+                }
+            });
+        });
+	function article_save_submit(){
+            var checked =$("input:checkbox[name^='carbrands']:checked").length;
+            if (checked < 1){
+                layer.msg('请至少选择一个品牌！');
+                return false;
+            }
+            var data = $("#form-data").serialize();
+            console.log(data);
+			$.ajax({
+                            type: 'POST',
+                            url: '{:Url("brandstore")}',
+                            data:data,
+                            dataType: 'json',
+                            success: function(data){
+                            	if(data.status=='1'){
+                            		layer.msg(data.msg);
+                            		 setTimeout("location.reload();",3000);
+                            	}
+                                  
+
+                            },
+                            error:function(data) {
+                                layer.msg(data.msg);
+                            },
+                        });
+	}        		
+</script>
+{/block}

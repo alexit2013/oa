@@ -1,0 +1,285 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+    <link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <style>
+        .page-container {
+            padding: 20px;
+        }
+        .text-c {
+            text-align: center;
+        }
+        .mt-20 {
+            margin-top: 20px;
+        }
+        .table-border.table-bordered {
+            border-bottom: 0;
+        }
+        table {
+            width: 100%;
+            empty-cells: show;
+            background-color: transparent;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        th{
+            text-align: center !important;
+        }
+        .table-bordered {
+            border-collapse: collapse !important;
+        }
+        .table-bordered {
+            border: 1px solid #ddd;
+            border-collapse: separate;
+            border-left: 0;
+        }
+        .table td {
+            padding: 10px 0px !important;
+            word-break: break-all !important;
+        }
+        table tr td > input{
+            display: block;
+            outline:none !important;
+            border:none !important;
+            width: 100% !important;
+            height: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+        table tr td > textarea{
+            display: block;
+            outline:none;
+            border:none;
+            width: 100%;
+            height: 50px;
+            line-height: 20px !important;
+        }
+        .delete > i{
+            font-size: 16px;
+        }
+        .search_box{
+            width: 100%;
+            height: 40px;
+            margin: 10px auto;
+            border: 1px solid #eaeaea;
+        }
+        .select_box{
+            border: solid 1px #ddd;
+            box-sizing: border-box;
+            vertical-align: middle;
+            width: 200px;
+            padding: 4px 5px;
+            display: inline-block;
+            margin-top: 5px;
+            margin-left: 20px;
+            float: left;
+            height: 30px;
+        }
+        .search_box >span{
+            display: block;
+            float: left;
+            width: 40px;
+            height: 40px;
+            float: left;
+            text-align: right;
+            line-height: 40px;
+            font-size: 14px;
+        }
+        .select{
+            border: 0;
+            font-size: 14px;
+            box-sizing: border-box;
+            cursor: pointer;
+            line-height: normal;
+            font-weight: normal;
+            width: 100%;
+            float: right;
+            white-space: nowrap;
+            outline: none;
+        }
+        .select_box > input{
+            border: 0;
+            font-size: 14px;
+            box-sizing: border-box;
+            cursor: pointer;
+            line-height: normal;
+            font-weight: normal;
+            width: 100%;
+            float: right;
+            white-space: nowrap;
+            outline: none;
+        }
+        .search_btn{
+            background-color: #5a98de;
+            border-radius: 5px;
+            color: #FFFFFF;
+            float: left;
+            display: inline-block;
+            box-sizing: border-box;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 400;
+            white-space: nowrap;
+            vertical-align: middle;
+            -moz-padding-start: npx;
+            -moz-padding-end: npx;
+            width: auto;
+            border: none;
+            outline: none;
+            height: 30px;
+            margin-left: 20px;
+            margin-top: 5px;
+            padding: 0 10px;
+        }
+        table tr {
+            font-size: 0.6em !important;
+        }
+        tr.bg{
+            background-color: rgb(251,248,225);
+        }
+        #DataTables_Table_0_length,#DataTables_Table_0_filter{
+            display: none !important;
+        }
+        .dataTables_wrapper .dataTables_info {
+            clear: both;
+            float: left;
+            padding-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        .dataTables_wrapper .dataTables_paginate {
+            float: right;
+            padding-top: 10px;
+            text-align: right;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            background: #5a98de;
+            color: #fff;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border: 1px solid #ccc;
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 2px;
+            text-align: center;
+            text-decoration: none;
+            color: #666;
+            height: 26px;
+            line-height: 26px;
+            text-decoration: none;
+            margin: 0 0 6px 6px;
+            padding: 0 10px;
+            font-size: 14px;
+        }
+        a:hover, a:focus, .maincolor, .maincolor a {
+            color: #06c;
+        }
+    </style>
+    <div class="page-container">
+        <form action="{:U('index')}" method="post">
+            <div class="search_box">
+                <span>公司:</span>
+                <div class="select_box">
+                    <select class="select" name="com_id" id="com_id">
+                        <?php foreach($comlist as $k => $v){  ?>
+                        <option value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <span>日期:</span>
+                <div class="select_box">
+                    <input type="text" id="time" class="input-text Wdate" name="time" value="<?php if(!empty($time)){ echo $time; } ?>"  >
+                </div>
+                <?php if($user_id == "1"){ ?>
+                <span>姓名:</span>
+                <div class="select_box">
+                    <input type="text" id="emp_no" class="input-text" name="emp_no" value="<?php if(!empty($emp_no)){ echo $emp_no; } ?>"  >
+                </div>
+                <?php } ?>
+                <button name="" id="" class="search_btn" type="submit"> 查询</button>
+            </div>
+        </form>
+        <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="{:U('add')}" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加计划</a></span></div>
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-hover table-bg table-sort">
+                <thead>
+                <tr class="text-c">
+                    <th width="4%">序号
+                    <th width="8%">姓名</th>
+                    <th width="10%">部门</th>
+                    <th width="18%">计划事项</th>
+                    <th width="8%">计划开始时间</th>
+                    <th width="8%">计划完成时间</th>
+                    <th width="8%">实际完成时间</th>
+                    <th width="12%">完成情况/未完成原因</th>
+                    <th xwidth="10%">录入时间</th>
+                    <th width="10%">修改时间</th>
+                    <th width="5%">完结</th>
+                </tr>
+                </thead>
+                <tbody>
+                    
+                    <?php $i=1; foreach($list as $v){ ?>
+                <tr <?php if(($i%2)==0){ echo 'style="background-color: rgb(251,248,225);"'; } ?> class="text-c" data-id="{$v['id']}">
+                    <td class="order_num">{:$i++}</td>
+                    <td class="name">{$v['name']}</td>
+                    <td class="position">{$v['dept_name']}</td>
+                    <td class="content">{$v['content']}</td>
+                    <td class="start_time">{:date('Y-m-d',$v['start_time'])}</td>
+                    <td class="end_time">{:date('Y-m-d',$v['end_time'])}</td>
+                    <td class="actual_time"><?php if(!empty($v['actual_time'])){ echo date('Y-m-d',$v['actual_time']); } ?></td>
+                    <td class="remark"><?php if(!empty($v['remark'])){ echo $v['remark']; } ?></td>
+                    <td><?php if(!empty($v['add_time'])){ echo date('Y-m-d H:i:s',$v['add_time']); } ?></td>
+                    <td><?php if(!empty($v['update_time'])){ echo date('Y-m-d H:i:s',$v['update_time']); } ?></td>
+                    <td class="statu"><?php if($v['is_finish'] == 1){ echo '<i style="color:green;" class="icon Hui-iconfont">&#xe6e1;</i>'; }else{ echo '<i style="color:orangered;" class="icon Hui-iconfont">&#xe6dd;</i>'; } ?></td>
+                </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</block>
+
+<block name="js">
+    <script type="text/javascript" src="/position/public/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/position/public/lib/My97DatePicker/4.8/test.js"></script>
+    <script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="/position/public/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(function(){
+                //当前月份
+                var current_date = new Date();;
+                var cur_month = current_date.getMonth()+1;
+                if(cur_month<10){
+                    cur_month = '0'+cur_month;
+                }
+                var cur_year = current_date.getFullYear();
+                $(".year").html(cur_year);
+                $(".month").html(cur_month);
+            })
+            $(".actual_time,.remark").on("dblclick",function(){     //触发跳转填写完成时间
+                var statu = $(this).html();
+                if(statu == ''){
+                    var id = $(this).parent().attr('data-id');
+                    location.href='/index.php/Home/Project/save/id/'+id;
+                }
+            });
+            $("#time").on("click",function(){                     //触发日历
+                search_time();
+            })
+            $(function(){
+                $('.table-sort').dataTable({
+                    //"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+                    //"bStateSave": true,//状态保存
+                    "aoColumnDefs": [
+///                    {"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+                        {"orderable":false,"aTargets":[0,1,2,3,4,5,6,7,8,9,10]}// 制定列不参与排序
+                    ]
+                });
+
+            });
+
+        });
+     </script>
+
+</block>

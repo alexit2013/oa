@@ -1,0 +1,162 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<div class="page-container">
+	<div class="">
+			<a href="javascript:;" onclick="tip_pop()" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 新建班次
+			</a>			
+	</div>
+	
+	<div class="mt-20">
+	<table class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr class="text-c">				
+				<th width="100">名称</th>
+				<th width="100">简称</th>
+				<th width="80">类型</th>
+				<th width="80">上班时间</th>
+				<th width="80">下班时间</th>
+				<th width="80">休息时间</th>
+				<th width="60">打卡范围</th>
+				<th width="60">工作时长</th>
+				<th width="60">计薪时长</th>
+				<th width="120">操作</th>				
+			</tr>
+		</thead>
+		<tbody>
+            <?php foreach ($list as $key => $vo) { ?>
+			<tr>
+                <td>{$vo['shift_name']}</td>
+                <td>{$vo['short']}</td>
+                <td>固定班次</td>
+                <td>{$vo['work_start_time']}</td> 
+                <td>{$vo['work_end_time']}</td> 
+                <td>{$vo['rest_start_time']}-{$vo['rest_end_time']}</td>
+                <td>{$vo['clockin_start_time']}-{$vo['clockin_end_time']}</td>
+                <td>--</td>
+                <td>{$vo['workhours']}</td>
+                <td>                            
+                    <span class="operation-btn">
+                        <a class="buildRestday" data-tit="编辑班次" href="javascript:;" title="编辑" onclick="edip_pop('{:Url('edit',array('id'=>$vo['id']))}')">编辑</a>
+                        <em>|</em>
+                        <a class="confirmBtn" onclick="member_del(this,'{$vo['id']}')" data-msg="删除数据，是否继续？" title="删除">删除</a>                                
+                    </span> 
+                 </td>
+            </tr>
+            <?php } ?>
+		</tbody>
+	</table>
+	</div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+	function tip_pop(){
+		var index = layer.open({
+		  type: 2,
+		  content: 'add.html',
+		  area: ['100%', '100%'],
+		  title: "新建班次",
+		  maxmin: true
+		});
+		layer.full(index);		
+	};
+
+	function edip_pop(url){
+		var index = layer.open({
+		  type: 2,
+		  content: url,
+		  area: ['100%', '100%'],
+		  title: "编辑班次",
+		  maxmin: true
+		});
+		layer.full(index);		
+	};
+	
+$(function(){
+	$('.table-sort').dataTable({
+		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+		"bStateSave": true,//状态保存
+		"aoColumnDefs": [
+		//  {"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+		  {"orderable":false,"aTargets":[3,4,5,6,7,8,9]}// 制定列不参与排序
+		]
+	});
+	
+});
+/*用户-添加*/
+function member_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*用户-查看*/
+function member_show(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*用户-停用*/
+function member_stop(obj,id){
+	layer.confirm('确认要停用吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: '',
+			dataType: 'json',
+			success: function(data){
+				$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_start(this,id)" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已停用</span>');
+				$(obj).remove();
+				layer.msg('已停用!',{icon: 5,time:1000});
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+
+/*用户-启用*/
+function member_start(obj,id){
+	layer.confirm('确认要启用吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: '',
+			dataType: 'json',
+			success: function(data){
+				$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+				$(obj).remove();
+				layer.msg('已启用!',{icon: 6,time:1000});
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});
+	});
+}
+/*用户-编辑*/
+function member_edit(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*密码-修改*/
+function change_password(title,url,id,w,h){
+	layer_show(title,url,w,h);	
+}
+/*用户-删除*/
+function member_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: "{:Url('del')}",
+            data: {'id':id},
+			dataType: 'json',
+            cache: false,
+			success: function(data){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+</script> 
+{/block}

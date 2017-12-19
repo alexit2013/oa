@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>市场营销预算表</title>
+        <script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/kpi/table.js"></script>
+        <link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+        <link rel="stylesheet" type="text/css" href="/position/public/lib/self_tip.css" />
+        <script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+        <script type="text/javascript" src="/position/public/lib/pubjs.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var w = $(".table_box").width();
+                var h = $(".table_box").height();
+                $("#MyTable thead tr th").css({"padding":"10px 10px","height":"40px"});
+                $(".table_box table").css({"text-align":"center","font-size":"0.5rem","width":w,"height":h});
+                $(".table_box table td").css({"padding":"10px","color":"rgb(70, 70, 70)"});
+                 FixTable("MyTable",  0, w, h);
+
+                var w1 = $(".table_box1").width();
+                var h1 = $(".table_box1").height();
+                $("#MyTable1 thead tr th").css({"padding":"10px 10px","height":"40px"});
+                $(".table_box1 table").css({"text-align":"center","font-size":"0.5rem","width":w1,"height":h1});
+                $(".table_box1 table td").css({"padding":"10px","color":"rgb(70, 70, 70)"});
+                FixTable("MyTable1",  0, w1, h1);
+
+                var w2 = $(".table_box2").width();
+                var h2 = $(".table_box2").height();
+                $(".table_box2 thead tr th").css({"padding":"10px 10px","height":"40px"});
+                $(".table_box2 table").css({"text-align":"center","font-size":"0.5rem","width":w2,"height":h2});
+                $(".table_box2 table td").css({"padding":"10px","color":"rgb(70, 70, 70)"});
+
+            });
+            // ]]>
+        </script>
+        <style>
+            body{
+                font-size: 62.5%;
+            }
+            a{
+                text-decoration: none;;
+            }
+            table{border-collapse:collapse;}
+            .table_box{
+                width: 100%;
+                height: 450px;
+                margin: 0 auto;
+            }
+            .table_box1{
+                width: 100%;
+                height: 250px;
+                margin: 0 auto;
+            }
+            .table_box2{
+                width: 100%;
+                height: auto;
+                margin: 0 auto;
+            }
+            .table_box2 thead{
+                background-color: rgb(209, 234, 255);
+            }
+            .top_bar{
+                width: 100%;
+                height: 40px;
+            }
+            .top_bar .btn{
+                width: auto;
+                height: 20px;
+                padding: 4px 12px;
+                margin-top: 6px;
+                background-color: #5a98de;
+                border-radius: 8px;
+                -webkit-border-radius: 8px;
+                color: #fff;
+                font-size: 14px;
+                font-weight: 400;
+            }
+            .search_box{
+                width: 100%;
+                height: 40px;
+                margin: 10px auto;
+                border: 1px solid #eaeaea;
+            }
+            .select_box{
+                border: solid 1px #ddd;
+                box-sizing: border-box;
+                vertical-align: middle;
+                width: 200px;
+                padding: 4px 5px;
+                display: inline-block;
+                margin-top: 5px;
+                margin-left: 20px;
+                float: left;
+                height: 30px;
+            }
+            .search_box >span{
+                display: block;
+                float: left;
+                width: 40px;
+                height: 40px;
+                float: left;
+                text-align: right;
+                line-height: 40px;
+                font-size: 14px;
+            }
+            .select{
+                border: 0;
+                font-size: 14px;
+                box-sizing: border-box;
+                cursor: pointer;
+                line-height: normal;
+                font-weight: normal;
+                width: 100%;
+                float: right;
+                white-space: nowrap;
+                outline: none;
+            }
+            .search_btn{
+                background-color: #5a98de;
+                border-radius: 5px;
+                color: #FFFFFF;
+                float: left;
+                display: inline-block;
+                box-sizing: border-box;
+                cursor: pointer;
+                text-align: center;
+                font-weight: 400;
+                white-space: nowrap;
+                vertical-align: middle;
+                -moz-padding-start: npx;
+                -moz-padding-end: npx;
+                width: auto;
+                border: none;
+                outline: none;
+                height: 30px;
+                margin-left: 20px;
+                margin-top: 5px;
+                padding: 0 10px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+                        
+        <form action="{:Url('index')}" method="post">
+            <div class="search_box">
+                <span>门店:</span>
+                <div class="select_box">
+                    <select class="select" name="store_id" id="store_id">
+                        <?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+                        <option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <span>年份:</span>
+                <div class="select_box">
+                    <select class="select" name="year" id="store_year">
+                        <option value="">请选择年份</option>
+                    </select>
+                </div>
+                <span>月份:</span>
+                <div class="select_box">
+                    <select class="select" name="month" id="store_month">
+                        <option value="">请选择月份</option>
+                        <option value="1">1月</option>
+                        <option value="2">2月</option>
+                        <option value="3">3月</option>
+                        <option value="4">4月</option>
+                        <option value="5">5月</option>
+                        <option value="6">6月</option>
+                        <option value="7">7月</option>
+                        <option value="8">8月</option>
+                        <option value="9">9月</option>
+                        <option value="10">10月</option>
+                        <option value="11">11月</option>
+                        <option value="12">12月</option>
+                    </select>
+                </div>
+                <button name="" id="" class="search_btn" type="submit"> 查询</button>
+                <!--清除数据-->
+                <input type="hidden" id="table_name" value="marketbudget">
+                <?php $clear_button = session("clear_button"); if($clear_button == "1"){ echo '<button name="" id="clear_button" style="background-color:orange;" class="search_btn" type="button" onclick="clearbutton()">清空数据</button>';} ?>
+                <!--清除数据-->
+                <!--审批状态-->
+                <input type="hidden" id="status" value="<?php if(!empty($data_status)){ if(get_emp_no()==$data_status['emp_no']){echo $data_status['status']; }else{echo 0;}} ?>">
+                <!--审批状态-->
+
+            </div>
+        </form>
+        <h1 style="width:100%;text-align: center;"><span></span>市场营销预算表{:is_pass($data_status)}</h1>
+
+        <div class="table_box">
+            <table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable">
+                <thead>
+                    <tr>
+                        <th colspan="8">本月市场营销费用预算</th>
+                    </tr>
+                    <tr>
+                       <th><div style="width: 100px;">类型</div></th>
+                       <th><div style="width: 100px;">年度计划<br />/万元</div></th>
+                       <th><div style="width: 100px;">累计支出<br />/万元</div></th>
+                       <th><div style="width: 100px;">年度盈余<br />/万元</div></th>
+                       <th><div style="width: 100px;">费用<br />使用率</div></th>
+                       <th><div style="width: 100px;">本月计划<br />/万元</div></th>
+                       <th><div style="width: 100px;">主机厂支持<br />/万元</div></th>
+                       <th><div style="width: 100px;">备注</div></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {foreach $mark as $k => $v}
+                    <?php if($k != '合计'){ ?>
+                    <tr>
+                        <td>{$k}</td>
+                        <td class="edit" data-order="{$v['id']}" data-key="plan_y" data-type="float">{$v['plan_y']}</td>
+                        <td class="edit" data-order="{$v['id']}" data-key="pay_y" data-type="float">{$v['pay_y']}</td>
+                        <td>{$v['surplus']}</td>
+                        <td>{$v['use']}%</td>
+                        <td class="edit" data-order="{$v['id']}" data-key="plan_m" data-type="float">{$v['plan_m']}</td>
+                        <td class="edit" data-order="{$v['id']}" data-key="pay_m" data-type="float">{$v['pay_m']}</td>
+                        <td class="edit" data-order="{$v['id']}" data-key="mark" data-type="text">{$v['mark']}</td>
+                    </tr>
+                    <?php } ?>
+                    {/foreach}
+                    <tr style="background-color: darkseagreen;">
+                        <td>合计</td>
+                        <td><?php if(!empty($mark['合计']['plan_y'])){echo $mark['合计']['plan_y'];} ?></td>
+                        <td><?php if(!empty($mark['合计']['pay_y'])){echo $mark['合计']['pay_y'];} ?></td>
+                        <td><?php if(!empty($mark['合计']['plan_y'])&&!empty($mark['合计']['pay_y'])){echo $mark['合计']['plan_y']-$mark['合计']['pay_y'];} ?></td>
+                        <td><?php if(!empty($mark['合计']['plan_y'])&&!empty($mark['合计']['pay_y'])){echo round($mark['合计']['pay_y']/$mark['合计']['plan_y'],4)*100;} ?>%</td>
+                        <td><?php if(!empty($mark['合计']['plan_m'])){echo $mark['合计']['plan_m'];} ?></td>
+                        <td><?php if(!empty($mark['合计']['pay_m'])){echo $mark['合计']['pay_m'];} ?></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" rowspan="" headers="">
+                            <div style="width:100%;height:40px;">
+                            填报说明：⑴年度计划项仅一次填写；累计支出、本月计划、主机厂支持为每月预算填写项，备注栏为选填项；<br>
+                           ⑵促销品、赠送礼品不再列入市场费用类，归入精品成本帐；<br > ⑶其他媒介、其他促销活动、其他广宣费用三项均需在备注栏中予以注明。
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+             </table>
+        </div>
+
+        <div style="width:100%; height:40px;"></div>
+        <div class="table_box1">
+            <table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable1">
+                <thead>
+                    <tr>
+                        <th>本月客流目标</th>
+                        <th colspan="9"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div style="width:100px;">展厅客流目标/批次</div></td>
+                            <td>
+                                <div style="width:100px;">
+                                    <?php if(isset($custom['sale_one']) && $custom['deal_y'] !=0 && $custom['file_y'] != 0){ echo round(($custom['sale_one']/$custom['deal_y']*100)/($custom['file_y']/100),2); } ?>
+
+                                </div>
+                            </td>
+                        <td><div style="width:100px;">本月展厅销售目标/台</div></td>
+                        <td>
+                            <div style="width:100px;" class="edit" data-order="{$custom['id']}" data-key="sale_one" data-type="float">
+                                {$custom['sale_one']}
+                            </div>
+                        </td>
+                        <td><div style="width:100px;">本月二级销售目标/台</div></td>
+                        <td>
+                            <div style="width:100px;" class="edit" data-order="{$custom['id']}" data-key="sale_two" data-type="float">
+                                {$custom['sale_two']}
+                            </div>
+                        </td>
+                        <td><div style="width:100px;">本年平均成交率</div></td>
+                        <td>
+                            <div style="width:100px;" class="edit" data-order="{$custom['id']}" data-key="deal_y" data-type="float">
+                                {$custom['deal_y']}%
+                            </div>
+                        </td>
+                        <td><div style="width:100px;">本年平均留档率</div></td>
+                        <td>
+                            <div style="width:100px;" class="edit" data-order="{$custom['id']}" data-key="file_y" data-type="float">
+                                {$custom['file_y']}%
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div style="width:100px;">展厅留档目标/批次</div></td>
+                        <td>
+                            <div style="width:100px;">
+                                <?php if($custom['deal_y'] != 0){ echo round($custom['sale_one']/$custom['deal_y']*100,2); } ?>
+
+                            </div>
+                        </td>
+                        <td><div style="width:100px;">本月展厅占比</div></td>
+                        <td>
+                            <div style="width:100px;">
+                                <?php if(($custom['sale_one']+$custom['sale_two']) != 0){ echo (round($custom['sale_one']/($custom['sale_one']+$custom['sale_two']),4)*100).'%';} ?>
+                            </div>
+                        </td>
+                        <td><div style="width:100px;">本月二级占比</div></td>
+                        <td>
+                            <div style="width:100px;">
+                                <?php if(($custom['sale_one']+$custom['sale_two']) != 0){ echo (round($custom['sale_two']/($custom['sale_one']+$custom['sale_two']),4)*100).'%'; } ?>
+
+                            </div>
+                        </td>
+                        <td><div style="width:100px;">同品牌平均成交率</div></td>
+                        <td>
+                            <div style="width:100px;" class="edit" data-order="{$custom['id']}" data-key="deal_gh" data-type="float">
+                                {$custom['deal_gh']}%
+                            </div>
+                        </td>
+                        <td><div style="width:100px;">同品牌平均留档率</div></td>
+                        <td>
+                            <div style="width:100px;" class="edit" data-order="{$custom['id']}" data-key="file_gh" data-type="float">
+                                {$custom['file_gh']}%
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="width:100%; height:40px;"></div>
+         <div class="table_box2">
+            <table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable2">
+                <thead>
+                    <tr>
+                        <th colspan="2">上月市场营销费用回顾</th>
+                    </tr>
+                    <tr>
+                        <th>媒介类型</th>
+                        <th>上月实投/万元</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $mlast_tot = 0; ?>
+                    {foreach $mlast as $k => $v}
+                    <?php $mlast_tot += $v; ?>
+                    <tr>
+                        <td>{$k}</td>
+                        <td class="edit" data-order="{$mlast2[$k]}" data-key="investment" data-type="float">{$v}</td>
+                    </tr>
+                    {/foreach}
+                    
+                    <tr style="background-color: darkseagreen;">
+                        <td>合计</td>
+                        <td>{$mlast_tot}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div style="width:100%; height:40px;"></div>
+         <div class="table_box2">
+            <table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable3">
+                <thead>
+                    <tr>
+                        <th colspan="2">上月客户来源</th>
+                    </tr>
+                    <tr>
+                        <th>客户来源</th>
+                        <th>留档/批次</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $cuslast_tot = 0; ?>
+                    {foreach $cuslast as $k => $v}
+                    <?php $cuslast_tot += $v; ?>
+                    <tr>
+                        <td>{$k}</td>
+                        <td class="edit" data-order="{$cuslast2[$k]}" data-key="file" data-type="float">{$v}</td>
+                    </tr>
+                    {/foreach}
+                    <tr style="background-color: darkseagreen;">
+                        <td>合计</td>
+                        <td>{$cuslast_tot}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" value="<?php if(!empty($sid)) echo $sid; ?>" id="search_id"/>
+<script>
+    $(function(){
+        //年份
+        var current_date = new Date();
+        var cur_year = current_date.getFullYear()-2 ;
+        for(var i=0; i<5;i++){
+            var html = '</option><option value="'+(cur_year+i)+'">'+(cur_year+i)+'年</option>';
+            $("#store_year").append(html);
+        };
+        $("#store_year").val(current_date.getFullYear());
+        //月份
+        var cur_month = current_date.getMonth()+1;
+        $("#store_month").val(cur_month);
+
+    })
+    $(document).ready(function(){
+        var store_id = $("#search_id").val();
+        if (store_id != "") {
+            $("#store_id").val(store_id);
+        }
+        var store_name = $("#store_id").find("option:selected").text();
+        $("h1 > span").eq(0).html(store_name);
+
+    });
+    $(function(){                  
+                    //修改
+                    var self;
+                    var status = $("#status").val();
+                    $(".edit").hover(
+                        function(){
+                                if(status == 2 || status == ''){
+                                        $(this).css({"cursor":"url(/position/public/kpi/img/edit.png),default","background-color":"#eee"});
+                                }
+                        },
+                        function(){
+                                if(status == 2 || status == ''){
+                                        $(this).css({"cursor":"default","background-color":"#fff"});
+                                }
+                        }
+                    );
+                    //本月市场营销费用预算数据修改
+                    $("#MyTable td.edit").on("dblclick",function(){
+                        self = $(this);
+                        var con = self.html();			//所点击要修改的原内容
+                        var table_name = 'market';			//所点击要修改的表名
+                        var key_name = self.attr("data-key");	//所点击要修改的键名
+                        var order_num = self.attr("data-order");	//所点击要修改的序号id
+                        var datatype = self.attr("data-type");	//此处是何种类型格式
+                        if(status == 2 || status == ''){
+                                tip_function(datatype,table_name,key_name,con,1,order_num);
+                        }
+                    });
+                    //本月客流目标数据修改
+                    $("#MyTable1 td div.edit").on("dblclick",function(){
+                        self = $(this);
+                        var con = self.html();			//所点击要修改的原内容
+                        var table_name = 'market_custom';			//所点击要修改的表名
+                        var key_name = self.attr("data-key");	//所点击要修改的键名
+                        var order_num = self.attr("data-order");	//所点击要修改的序号id
+                        var datatype = self.attr("data-type");	//此处是何种类型格式
+                        if(status == 2 || status == ''){
+                                tip_function(datatype,table_name,key_name,con,1,order_num);
+                        }
+                    });
+                    //上月市场营销费用回顾数据修改
+                    $("#MyTable2 td.edit").on("dblclick",function(){
+                        self = $(this);
+                        var con = self.html();			//所点击要修改的原内容
+                        var table_name = 'market_last';			//所点击要修改的表名
+                        var key_name = self.attr("data-key");	//所点击要修改的键名
+                        var order_num = self.attr("data-order");	//所点击要修改的序号id
+                        var datatype = self.attr("data-type");	//此处是何种类型格式
+                        if(status == 2 || status == ''){
+                                tip_function(datatype,table_name,key_name,con,1,order_num);
+                        }
+                    });
+                    //上月客户来源
+                    $("#MyTable3 td.edit").on("dblclick",function(){
+                        self = $(this);
+                        var con = self.html();			//所点击要修改的原内容
+                        var table_name = 'market_customlast';			//所点击要修改的表名
+                        var key_name = self.attr("data-key");	//所点击要修改的键名
+                        var order_num = self.attr("data-order");	//所点击要修改的序号id
+                        var datatype = self.attr("data-type");	//此处是何种类型格式
+                        if(status == 2 || status == ''){
+                                tip_function(datatype,table_name,key_name,con,1,order_num);
+                        }
+                    });
+                });
+</script>
+     </body>
+</html>

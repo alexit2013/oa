@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>返利计算表数据添加</title>
+    <script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+    <script type="text/javascript">
+        // <![CDATA[
+        function FixTable(TableID, FixColumnNumber, width, height) {
+            /// <summary>
+            /// 锁定表头和列
+            /// <para> sorex.cnblogs.com </para>
+            /// </summary>
+            /// <param name="TableID" type="String">
+            /// 要锁定的Table的ID
+            /// </param>
+            /// <param name="FixColumnNumber" type="Number">
+            /// 要锁定列的个数
+            /// </param>
+            /// <param name="width" type="Number">
+            /// 显示的宽度
+            /// </param>
+            /// <param name="height" type="Number">
+            /// 显示的高度
+            /// </param>
+            if($("#" + TableID + "_tableLayout").length != 0) {
+                $("#" + TableID + "_tableLayout").before($("#" + TableID));
+                $("#" + TableID + "_tableLayout").empty();
+            } else {
+                $("#" + TableID).after("<div id='" + TableID + "_tableLayout' style='overflow:hidden;height:" + height + "px; width:" + width + "px;'></div>");
+            }
+            $('<div id="' + TableID + '_tableFix"></div>' +
+                    '<div id="' + TableID + '_tableHead"></div>' +
+                    '<div id="' + TableID + '_tableColumn"></div>' +
+                    '<div id="' + TableID + '_tableData"></div>').appendTo("#" + TableID + "_tableLayout");
+            var oldtable = $("#" + TableID);
+            var tableFixClone = oldtable.clone(true);
+            tableFixClone.attr("id", TableID + "_tableFixClone");
+            $("#" + TableID + "_tableFix").append(tableFixClone);
+            var tableHeadClone = oldtable.clone(true);
+            tableHeadClone.attr("id", TableID + "_tableHeadClone");
+            $("#" + TableID + "_tableHead").append(tableHeadClone);
+            var tableColumnClone = oldtable.clone(true);
+            tableColumnClone.attr("id", TableID + "_tableColumnClone");
+            $("#" + TableID + "_tableColumn").append(tableColumnClone);
+            $("#" + TableID + "_tableData").append(oldtable);
+            $("#" + TableID + "_tableLayout table").each(function() {
+                $(this).css("margin", "0");
+            });
+            var HeadHeight = $("#" + TableID + "_tableHead thead").height();
+            HeadHeight += 2;
+            $("#" + TableID + "_tableHead").css("height", HeadHeight);
+            $("#" + TableID + "_tableFix").css("height", HeadHeight);
+            var ColumnsWidth = 0;
+            var ColumnsNumber = 0;
+            $("#" + TableID + "_tableColumn thead tr:first th:lt(" + FixColumnNumber + ")").each(function() {		//判断宽度
+                ColumnsWidth += $(this).outerWidth(true);
+                ColumnsNumber++;
+
+            });
+            ColumnsWidth += 2;
+            if($.browser.msie) {
+                switch($.browser.version) {
+                    case "7.0":
+                        if(ColumnsNumber >= 3) ColumnsWidth--;
+                        break;
+                    case "8.0":
+                        if(ColumnsNumber >= 2) ColumnsWidth--;
+                        break;
+                }
+            }
+            $("#" + TableID + "_tableColumn").css("width", ColumnsWidth-FixColumnNumber);		//固定列得显示宽度
+            $("#" + TableID + "_tableFix").css("width", ColumnsWidth-FixColumnNumber);		//固定表头得显示宽度
+            $("#" + TableID + "_tableData").scroll(function() {
+                $("#" + TableID + "_tableHead").scrollLeft($("#" + TableID + "_tableData").scrollLeft());
+                $("#" + TableID + "_tableColumn").scrollTop($("#" + TableID + "_tableData").scrollTop());
+            });
+            $("#" + TableID + "_tableFix").css({
+                "overflow": "hidden",
+                "position": "relative",
+                "z-index": "50",
+                "font-weight":"blod",
+                "background-color": "rgb(209, 234, 255)",
+                "border-right":"1.5px solid #ddd"
+            });
+            $("#" + TableID + "_tableHead").css({
+                "overflow": "hidden",
+                "width": width - 17,
+                "position": "relative",
+                "z-index": "45",
+                "background-color": "rgb(209, 234, 255)",
+                "border-right":"1.5px solid #ddd"
+            });
+            $("#" + TableID + "_tableColumn").css({
+                "overflow": "hidden",
+                "height": height - 20,
+                "position": "relative",
+                "z-index": "40",
+                "background-color": "#f5fafe",
+                "border-right":"1.5px solid #ddd"
+            });
+            $("#" + TableID + "_tableData").css({
+                "overflow": "scroll",
+                "width": width,
+                "height": height,
+                "position": "relative",
+                "z-index": "35"
+            });
+            if($("#" + TableID + "_tableHead").width() > $("#" + TableID + "_tableFix table").width()) {
+                $("#" + TableID + "_tableHead").css("width", $("#" + TableID + "_tableFix table").width());
+                $("#" + TableID + "_tableData").css("width", $("#" + TableID + "_tableFix table").width() + 17);
+            }
+            if($("#" + TableID + "_tableColumn").height() > $("#" + TableID + "_tableColumn table").height()) {
+                $("#" + TableID + "_tableColumn").css("height", $("#" + TableID + "_tableColumn table").height());
+                $("#" + TableID + "_tableData").css("height", $("#" + TableID + "_tableColumn table").height() + 17);
+            }
+            $("#" + TableID + "_tableFix").offset($("#" + TableID + "_tableLayout").offset());
+            $("#" + TableID + "_tableHead").offset($("#" + TableID + "_tableLayout").offset());
+            $("#" + TableID + "_tableColumn").offset($("#" + TableID + "_tableLayout").offset());
+            $("#" + TableID + "_tableData").offset($("#" + TableID + "_tableLayout").offset());
+        }
+        $(document).ready(function() {
+            var w = $(".table_box").width();
+            var h = $(".table_box").height();
+            $("#MyTable thead tr th").css({"padding":"10px 10px","height":"20px"});
+            $("table").css({"text-align":"center","font-size":"0.5rem","width":w,"height":h});
+            $("table td").css({"padding":"0","color":"rgb(70, 70, 70)"});
+            FixTable("MyTable",  3, w, h);
+        });
+        // ]]>
+    </script>
+</head>
+
+<body>
+<style>
+    body{
+        font-size: 62.5%;
+    }
+    .unitinfo{float:right;margin-right:29%;font-family: STKaiti;font-size:0.9rem;margin-bottom: 0.3rem;}
+    .mt16m{margin-top:1.6rem;}
+    .table_box{
+        width: 100%;
+        height: 600px;
+        margin: 0 auto;
+        font-size: 0.5rem;
+    }
+    .c-red{color: red;}
+    a{
+        text-decoration: none;;
+    }
+    .top_bar{
+        width: 100%;
+        height: 40px;
+    }
+    .top_bar .btn{
+        width: auto;
+        height: 20px;
+        padding: 4px 12px;
+        margin-top: 6px;
+        background-color: #5a98de;
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 400;
+    }
+    .search_box{
+        width: 100%;
+        height: 40px;
+        margin: 10px auto;
+        border: 1px solid #eaeaea;
+    }
+    .select_box{
+        border: solid 1px #ddd;
+        box-sizing: border-box;
+        vertical-align: middle;
+        width: 200px;
+        padding: 4px 5px;
+        display: inline-block;
+        margin-top: 5px;
+        margin-left: 20px;
+        float: left;
+        height: 30px;
+    }
+    .search_box >span{
+        display: block;
+        float: left;
+        width: 40px;
+        height: 40px;
+        float: left;
+        text-align: right;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .select{
+        border: 0;
+        font-size: 14px;
+        box-sizing: border-box;
+        cursor: pointer;
+        line-height: normal;
+        font-weight: normal;
+        width: 100%;
+        float: right;
+        white-space: nowrap;
+        outline: none;
+    }
+    .search_btn{
+        background-color: #5a98de;
+        border-radius: 5px;
+        color: #FFFFFF;
+        float: left;
+        display: inline-block;
+        box-sizing: border-box;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 400;
+        white-space: nowrap;
+        vertical-align: middle;
+        -moz-padding-start: npx;
+        -moz-padding-end: npx;
+        width: auto;
+        border: none;
+        outline: none;
+        height: 30px;
+        margin-left: 20px;
+        margin-top: 5px;
+        padding: 0 10px;
+    }
+    .top_infor{
+        width: 100%;
+        height: 40px;
+        font-size: 24px;
+        line-height: 40px;
+        text-align: center;
+    }
+    .top_infor > span{
+        color: red;
+    }
+    table tr td > input{
+        display: block;
+        outline:none;
+        border:none;
+        width: 100%;
+        height: 100%;
+        background-color: #f4f4ff;
+    }
+    table tr td > textarea{
+        display: block;
+        outline:none;
+        border:none;
+        width: 100%;
+        height: 100%;
+    }
+    .btn-primary{
+        width: 80px;
+        height: 35px;
+        display: block;
+        color: #fff;
+        background-color: #5a98de;
+        border-color: #5a98de;
+        padding: 4px 12px;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        margin: 10px auto;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="page-container">
+    <div class="top_infor">当前添加数据月份:<span class="current_month"></span>月</div><div class='unitinfo'>单位：万元</div>
+    <form  class="form form-horizontal mt16m" id="form-article-add">
+        <input type="hidden" name="classify_id" value="1">
+        <div class="search_box">
+            <span>门店:</span>
+            <div class="select_box">
+                <select class="select" name="store_id" id="store_id">
+                    <?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+                    <option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="table_box">
+            <table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable">
+                <thead>
+                <tr>
+                    <th rowspan="2"></th>
+                    <th rowspan="2"><div style="width: 30px;">序号</div></th>
+                    <th rowspan="2"><div style="width: 80px;">项目</div></th>
+                    <th colspan="2">上月</th>
+                    <th colspan="2">累计数</th>
+                    <th>本月数</th>
+                    <th colspan="9">其中</th>
+                    <th rowspan="2"><div style="width: 100px;">备注</div></th>
+                </tr>
+                <tr>
+                    <th><div style="width: 80px;">预测</div></th>
+                    <th><div style="width: 80px;">实际</div></th>
+                    <th><div style="width: 80px;">1-上上月实际</div></th>
+                    <th><div style="width: 80px;">1-本月预算</div></th>
+                    <th><div style="width: 80px;">预算金额</div></th>
+                    <th><div style="width: 80px;">销售部</div></th>
+                    <th><div style="width: 80px;">维修部</div></th>
+                    <th><div style="width: 80px;">装潢部</div></th>
+                    <th><div style="width: 80px;">行政部</div></th>
+                    <th><div style="width: 80px;">财务部</div></th>
+                    <th><div style="width: 80px;">总经理</div></th>
+                    <th><div style="width: 80px;">客服部</div></th>
+                    <th><div style="width: 80px;">市场部</div></th>
+                    <th><div style="width: 80px;">其它</div></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td rowspan="10"><div style="width: 80px">职工薪酬</div> </td>
+                    <td>1</td>
+                    <td>{$project[0]['name']}<input type="hidden" name="wages[project_id]" value="{$project[0]['id']}"></td>
+                    <td><input type="text" name="wages[pm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[pm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[1_tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[tm_salesDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[tm_repairDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[tm_ornDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[tm_adminDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[tm_financeDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[tm_gmDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[tm_serviceDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[tm_market_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="wages[tm_other_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><textarea type="text" name="wages[remark]"></textarea></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>{$project[1]['name']}<input type="hidden" name="welfare[project_id]" value="{$project[1]['id']}"></td>
+                    <td><input type="text" name="welfare[pm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[pm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[1_tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[tm_salesDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[tm_repairDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[tm_ornDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[tm_adminDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[tm_financeDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[tm_gmDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[tm_serviceDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[tm_market_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="welfare[tm_other_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><textarea type="text" name="welfare[remark]"></textarea></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>{$project[2]['name']}<input type="hidden" name="union[project_id]" value="{$project[2]['id']}"></td>
+                    <td><input type="text" name="union[pm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[pm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[1_tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[tm_salesDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[tm_repairDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[tm_ornDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[tm_adminDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[tm_financeDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[tm_gmDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[tm_serviceDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[tm_market_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="union[tm_other_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><textarea type="text" name="union[remark]"></textarea></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>{$project[3]['name']}<input type="hidden" name="educate[project_id]" value="{$project[3]['id']}"></td>
+                    <td><input type="text" name="educate[pm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[pm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[1_tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[tm_salesDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[tm_repairDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[tm_ornDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[tm_adminDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[tm_financeDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[tm_gmDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[tm_serviceDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[tm_market_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="educate[tm_other_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><textarea type="text" name="educate[remark]"></textarea></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>{$project[4]['name']}<input type="hidden" name="safe[project_id]" value="{$project[4]['id']}"></td>
+                    <td><input type="text" name="safe[pm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[pm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[1_tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[tm_salesDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[tm_repairDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[tm_ornDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[tm_adminDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[tm_financeDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[tm_gmDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[tm_serviceDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[tm_market_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="safe[tm_other_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><textarea type="text" name="safe[remark]"></textarea></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>{$project[5]['name']}<input type="hidden" name="labour[project_id]" value="{$project[5]['id']}"></td>
+                    <td><input type="text" name="labour[pm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[pm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[1_tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[tm_salesDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[tm_repairDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[tm_ornDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[tm_adminDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[tm_financeDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[tm_gmDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[tm_serviceDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[tm_market_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="labour[tm_other_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><textarea type="text" name="labour[remark]"></textarea></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>{$project[6]['name']}<input type="hidden" name="housing[project_id]" value="{$project[6]['id']}"></td>
+                    <td><input type="text" name="housing[pm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[pm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[1_tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[tm_salesDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[tm_repairDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[tm_ornDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[tm_adminDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[tm_financeDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[tm_gmDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[tm_serviceDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[tm_market_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="housing[tm_other_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><textarea type="text" name="housing[remark]"></textarea></td>
+                </tr>
+                <tr>
+                    <td>{$project[7]['name']}</td>
+                    <td>奖金<input type="hidden" name="bonus[project_id]" value="{$project[7]['id']}"></td>
+                    <td><input type="text" name="bonus[pm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[pm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[1_tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[tm_salesDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[tm_repairDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[tm_ornDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[tm_adminDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[tm_financeDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[tm_gmDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[tm_serviceDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[tm_market_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="bonus[tm_other_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><textarea type="text" name="bonus[remark]"></textarea></td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>{$project[8]['name']}<input type="hidden" name="charges[project_id]" value="{$project[8]['id']}"></td>
+                    <td><input type="text" name="charges[pm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[pm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[1_tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[tm_salesDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[tm_repairDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[tm_ornDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[tm_adminDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[tm_financeDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[tm_gmDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[tm_serviceDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[tm_market_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="charges[tm_other_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><textarea type="text" name="charges[remark]"></textarea></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>{$project[9]['name']}<input type="hidden" name="dismiss[project_id]" value="{$project[9]['id']}"></td>
+                    <td><input type="text" name="dismiss[pm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[pm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[1_ppm_actual]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[1_tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[tm_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[tm_salesDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[tm_repairDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[tm_ornDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[tm_adminDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[tm_financeDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[tm_gmDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[tm_serviceDept_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[tm_market_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><input type="text" name="dismiss[tm_other_expect]" placeholder="" value="" onkeyup="clearNoNum(this)"></td>
+                    <td><textarea type="text" name="dismiss[remark]"></textarea></td>
+                </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-2">
+                <button  onClick="return article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript">
+    function article_save_submit(){
+        var num=0;
+        var str = '请填写完必填数据';
+        $("#MyTable input").each(function () {
+            if ($(this).val() == "") {
+                this.focus();
+                num++;
+                //str = $(this).attr("placeholder")+"</br>";
+            }
+
+        });
+        if(num>0)
+        {
+            layer.msg(str);
+            return false;
+        }
+        else
+        {
+            var str = $("#form-article-add").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("add")}',
+                data:str,
+                dataType: 'json',
+                success: function(data){
+                    if(data.status=='1'){
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+                error:function(data) {
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+            });
+        }
+    }
+    $(function(){
+        //当前月份
+        var current_date = new Date();;
+        var cur_month = current_date.getMonth()+1;
+        $(".top_infor span.current_month").html(cur_month);
+    })
+
+    $("tr td > input").on("change",function(){
+        if($(this).val() == ""){
+            $(this).css("background-color","#f4f4ff");
+        }else{
+            $(this).css({"background-color":"#ffffff","text-align":"center"});
+        }
+
+    });
+    $('input[type="text"]').each(function(){
+        $(this).val(0);
+    });
+    //只能输入数字
+    function clearNoNum(obj)
+    {
+        //先把非数字的都替换掉，除了数字和.
+        obj.value = obj.value.replace(/[^\d.-]/g,"");
+        //必须保证第一个为数字而不是.
+        obj.value = obj.value.replace(/^\./g,"");
+        //保证只有出现一个.而没有多个.
+        obj.value = obj.value.replace(/\.{2,}/g,".");
+        //保证.只出现一次，而不能出现两次以上
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+    }
+</script>
+
+</body>
+</html>

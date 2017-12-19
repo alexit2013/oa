@@ -1,0 +1,240 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<style>
+	.bt_blue{
+		background-color: #2CBB97;
+		border-radius: 5px;
+		color: #FFFFFF;
+	}
+	.bt_blue:hover{
+		background-color: #28AA89;
+	}
+	.bt_button{
+            background-color: #F3F3F3!important;
+	    background: -webkit-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: -o-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: -moz-linear-gradient(#FCFCFC, #EEEEEE);
+	    background: linear-gradient(#FCFCFC, #EEEEEE)!important;
+	}
+	.bt_button:hover{
+		background: -webkit-gradient(linear, 0 0, 0 100%, from(#FCFCFC), to(#DDDDDD));
+		background: -webkit-linear-gradient(#FCFCFC, #DDDDDD);
+		background: -moz-linear-gradient(#FCFCFC, #DDDDDD);
+		background: -o-linear-gradient(#FCFCFC, #DDDDDD);
+		background: linear-gradient(#FCFCFC, #DDDDDD)!important;
+	}
+	a.come_time,a.end_time{
+		color: #4A90E2;
+	}
+	.custom_tip{
+		background-image: url(answer-bg.png);
+		background-repeat: no-repeat;
+		background-position: right top;
+		position: relative;
+	}
+	.custom_tip_box{
+		width: 250px;
+		height: auto;
+		overflow: hidden;
+		position: absolute;
+		left: 95%;
+		top: 0%;
+		z-index: 999;
+
+	}
+	.custom_tip_box div.triangle{
+		width: 15px;
+		height: 15px;
+		border-top: 1px solid #B3B3B3;
+		border-left: 1px solid #B3B3B3;
+		background-color: #FFFFFF;
+		transform: rotate(-45deg);
+		-webkit-transform: rotate(-45deg);
+		-moz-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		position: absolute;
+		left: 10px;
+		top: 50%;
+		z-index: 10;
+	}
+	.custom_tip_box div.tip_content{
+		width: 230px;
+		height: auto;
+		overflow: hidden;
+		float: right;
+		border: 1px solid #B3B3B3;
+		font-size: 12px;
+	}
+	.tip_content div.tip_title{
+		width: 100%;
+		height: 30px;
+		line-height: 30px;
+		background-color: #f5f5f5;
+		border-bottom: 1px solid #B3B3B3;
+	}
+	.tip_content div.tip_words{
+		text-align: left !important;
+		font-size: 12px;
+		font-weight: normal;
+		background-color: #FFFFFF;
+		width: 88%;
+		height: auto;
+		line-height: 24px;
+		padding: 0 6%;
+	}
+	.dataTables_wrapper .dataTables_paginate{
+		position: absolute;
+		bottom: -30px;
+		right: 50px;
+		margin-bottom: 20px;
+	}
+	.dataTables_wrapper .dataTables_info{
+		position: absolute;
+		bottom: -10px;
+		left: 50px;
+		margin-bottom: 20px;
+	}
+</style>
+
+<form method="POST" action="{:Url('index')}">
+    
+<div class="page-container">
+	<div class="text-c">
+<!--	 <span class="select-box inline">
+		<select name="" class="select">
+			<option value="0">全部</option>
+			<option value="1">在职成员</option>
+			
+		</select>
+	</span>-->
+	日期范围：
+		<input type="date" id="logmin" class="input-text Wdate" style="width:120px;" name="starttime" value="<?php if(!empty($data['starttime'])){ echo $data['starttime']; } ?>">
+		-
+                <input type="date" id="logmin" class="input-text Wdate" style="width:120px;" name="endtime" value="<?php if(!empty($data['endtime'])){ echo $data['endtime']; } ?>">
+<!--		<input type="text" name="" id="branch" placeholder=" 请选择部门或员工" style="width:150px" class="input-text">-->
+                <input type="text" name="dept_name" id="" placeholder="部门名称" style="width:150px" class="input-text" value="<?php if(!empty($data['dept_name'])){ echo $data['dept_name']; } ?>">
+		<input type="text" name="user_name" id="" placeholder="员工姓名" style="width:150px" class="input-text" value="<?php if(!empty($data['user_name'])){ echo $data['user_name']; } ?>">
+                <input type="text" name="emp_no" id="" placeholder="账号" style="width:150px" class="input-text" value="<?php if(!empty($data['emp_no'])){ echo $data['emp_no']; } ?>">
+		<button  class="btn bt_blue" type="submit"> 查询</button>
+		<a  class="btn bt_blue" onclick="export_excel()"> 导出报表</a>
+                <?php if(session('user.id')==1){ ?>
+                <a  class="btn bt_blue" onclick="buqian('打卡补签','{:Url('buqian')}')">补签</a>
+                <?php } ?>
+		<!-- <button name="" id="" class="btn bt_button" type="submit"> 重新计算</button>
+		<button name="" id="" class="btn bt_button" type="submit"> 报表设置</button> -->
+	</div>
+
+	<div class="mt-20" style="overflow-x: auto;">
+		<table class="table table-border table-bordered table-bg table-sort" style="width: 3000px;">
+			<thead>
+				<tr class="text-c" height="57">
+					<th width="80">账号</th>
+					<th width="130">姓名</th>
+					<th width="100">部门</th>
+					<th width="100">职位</th>
+					<th width="60">日期</th>
+					<th width="40">星期</th>
+					<th width="60">日期类型</th>
+					<th width="100">班次</th>
+					<th width="100">上班时间</th>
+					<th width="100" class="custom_tip" data-content="固定班次：该时间表示下班时间<br />弹性班次：该时间表示签退范围" data-original-title="下班时间">下班时间</th>
+					<th width="100">签到打卡</th>
+					<th width="100">签退打卡</th>
+					<th width="100" class="custom_tip" data-content="考勤周期内，早晚打卡时间相减，扣除休息时间部分，为工作时长" data-original-title="工作时长计算规则">工作时长<br>(小时)</th>
+					<th width="100" class="custom_tip" data-content="默认（下班时间－上班时间）包含请假、出差、外出等虽然不在公司但仍然计薪部分（包含所有排班的工作日和休息日）" data-original-title="计薪时长计算规则">计薪时长<br>(小时)</th>
+					<th width="100">迟到<br>(次)</th>
+					<th width="100">迟到<br>(分钟)</th>
+					<th width="100">早退<br>(次)</th>
+					<th width="100">早退<br>(分钟)</th>
+					<th width="100" class="custom_tip" data-content="1.签到正常、签退卡漏刷记旷工<br>2.签到卡漏刷、签退正常记旷工<br>3.签到卡和签退卡均漏刷记旷工<br>4.迟到或早退超过规定时间上限记旷工" data-original-title="旷工计算规则">旷工<br>(次)</th>
+					<th width="100" class="custom_tip" data-content="1.签到正常、签退卡漏刷记旷工<br>2.签到卡漏刷、签退正常记旷工<br>3.签到卡和签退卡均漏刷记旷工<br>4.迟到或早退超过规定时间上限记旷工" data-original-title="旷工计算规则">旷工<br>(小时)</th>
+					<th width="100" class="custom_tip" data-content="调休申请与班次重合的时间部分，记为调休时间" original-title="调休计算规则">调休<br>(次)</th>
+					<th width="100" class="custom_tip" data-content="调休申请与班次重合的时间部分，记为调休时间" original-title="调休计算规则">调休<br>(小时)</th>
+					<th width="100" class="custom_tip" data-content="外出申请与班次重合的时间部分，记为外出时间" data-original-title="外出计算规则">外出<br>(次)</th>
+					<th width="100" class="custom_tip" data-content="外出申请与班次重合的时间部分，记为外出时间" data-original-title="外出计算规则">外出<br>(小时)</th>
+                                        <th width="100">加班<br>(次)</th>
+                                        <th width="100">加班<br>(小时)</th>
+					<th width="100">婚假<br>(小时)</th>
+                                        <th width="100">病假<br>(小时)</th>
+                                        <th width="100">产假<br>(小时)</th>
+                                        <th width="100">丧假<br>(小时)</th>
+                                        <th width="100">事假<br>(小时)</th>
+                                        <th width="100">出差<br>(小时)</th>
+                                        <th width="100">其他假期<br>(小时)</th>
+				</tr>
+			</thead>
+			<tbody>
+                            <?php foreach($data_list as $k => $v){ ?>
+				<tr class="text-c">
+					<td>{$v['emp_no']}</td>
+					<td>{$v['user_name']}</td>
+					<td>{$v['dept_name']}</td>
+					<td>{$v['position']}</td>
+                                        <td>{$v['year']}-{$v['month']}-{$v['day']}</td>
+                                        <td>{:weekday(strtotime($v['year'].'-'.$v['month'].'-'.$v['day']))}</td>
+					<td>{$v['type']}</td>
+					<td>{$v['schedule']}</td>
+					<td>{$v['on_work_time']}</td>
+					<td>{$v['out_work_time']}</td>
+					<td>{$v['sign_in']}</td>
+					<td>{$v['sign_out']}</td>
+					<td>{$v['work_time']}</td>
+					<td>{$v['salary_time']}</td>
+					<td>{$v['late_times']}</td>
+					<td>{$v['late_time']}</td>
+					<td>{$v['leave_early_times']}</td>
+					<td>{$v['leave_early_time']}</td>
+                                        <td>{$v['absent_times']}</td>
+                                        <td>{$v['absent_time']}</td>
+					<td>{$v['adjust_times']}</td>
+                                        <td>{$v['adjust_time']}</td>
+                                        <td>{$v['out_times']}</td>
+                                        <td>{$v['out_time']}</td>
+                                        <td>{$v['over_times']}</td>
+                                        <td>{$v['over_time']}</td>
+					<td>{$v['marriage_time']}</td>
+                                        <td>{$v['sick_time']}</td>
+                                        <td>{$v['maternity_time']}</td>
+                                        <td>{$v['death_time']}</td>
+                                        <td>{$v['thing_time']}</td>
+                                        <td>{$v['business_time']}</td>
+                                        <td>{$v['other_time']}</td>
+				</tr>
+                                <?php } ?>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__LIB__/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript">
+/*前端分页*/
+$('.table-sort').dataTable({
+	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[0,8]}// 制定列不参与排序
+	]
+});
+/*导出excel*/
+function export_excel(){
+    var form =  $('form').serialize();
+    location.href = "/position/index.php/attendancedata/daily/export?"+form;
+}
+/*补签*/
+function buqian(title,url){
+    var index = layer.open({
+      type: 2,
+      content: url,
+      area: ['100%', '100%'],
+      title: title,
+      maxmin: true
+    });
+    layer.full(index);      
+}
+</script>
+{/block}

@@ -1,0 +1,185 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    .c-red{color: red;}
+    .AddIcon{font-size: 19px;line-height: 31px;cursor:pointer;}
+    .mt-3{margin-top:3px;}
+    .ml1r{margin-left:1rem;}
+    .file_upload{
+        border: 1px solid #dfdfdf;
+        width: 121px;
+        height: 36px;
+        line-height: 34px;
+        text-align: center;
+        color: #676795;
+        font-size: 16px;
+        position: relative;
+        padding-left:18px;
+    }
+    .file_upload i{
+        position: absolute;
+        top:0px;
+        left:19px;
+        font-size:19px;
+        color: #60b879;
+    }
+    .msg_content{
+        margin:25px 0px;
+        padding: 25px 0px;
+        box-sizing:border-box;
+        border: 1px solid #00ccff;
+        border-radius:15px;
+        position: relative;
+    }
+    .msg_del{
+        border-radius:5px;
+        color: #fff;
+        background-color:#3399ff;
+        width:auto;
+        height: 28px;
+        line-height: 28px;
+        padding: 0px 12px;
+        position: absolute;
+        top:-15px;
+        left:16px;
+        text-align: center;
+        font-size: 13px;
+        cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+<div class="page-container">
+    <form class="form form-horizontal" id="form-article-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                                    <span class="select-box">
+                                        <select class="select" name="store_id" id="store_id1">
+                                            <?php foreach($stores as $k => $v){ ?>
+                                            <option value="{$v['ID']}">{$v['NAME']}</option>
+                                            <?php } ?>
+                                        </select>
+                                    </span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>年月：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="month" class="input-text" value="" placeholder="请输入月份" id="month">
+                <input type="hidden" class="input-text" value="" id="iyear" name="year">
+                <input type="hidden" class="input-text" value="" id="imonth" name="month">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>费用类型：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                                    <span class="select-box">
+                                        <select class="select" name="type_id" id="type_id">
+                                            <option value="请选择">请选择</option>
+                                            <option value="1">报纸</option>
+                                            <option value="2">杂志</option>
+                                            <option value="3">电视</option>
+                                            <option value="4">电台</option>
+                                            <option value="5">网络</option>
+                                            <option value="6">户外广告</option>
+                                            <option value="7">外展活动</option>
+                                            <option value="8">其他媒介</option>
+                                            <option value="9">公关费</option>
+                                            <option value="10">宣传物料</option>
+                                            <option value="11">其他促销活动</option>
+                                            <option value="12">其他广宣费用</option>
+                                            <option value="13">基盘维护</option>
+                                        </select>
+                                    </span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上月实投：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" onkeyup="clearNoNum(this)" value="" placeholder="请输入上月实投" msg="上月实投" private="required" id="investment" name="investment">
+            </div>
+            <span class="c-red">万元</span>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-2">
+                <button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+                <button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="page-container" style="border: 1px dashed red; border-radius: 20px;">
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2" style="text-align: right;"><span class="c-red">填写说明：</span></label>
+        <div class="formControls col-xs-8 col-sm-8">
+            正常情况下，请选择当前月份，例：录入9月份数据，年月请选择2017年10月。<br>
+            如补充历史数据请选择数据所在月的次月，例：若补录8月份数据，年月请选择2017年09月。
+        </div>
+    </div>
+</div>
+
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function article_save_submit(){
+        var p_month = $("#month").val();
+        if(!p_month){
+            layer.msg("没有选择年月");
+            return false;
+        }
+        if ($("#type_id option:selected").text()=="请选择") {
+            layer.msg("请选择费用类型");
+            return false;
+        }
+        var num=0;
+        var str="";
+        $("input[private='required']").each(function(n){
+            if($.trim($(this).val())=="")
+            {
+                num++;
+                str+=$(this).attr("msg")+"不能为空！\r\n";
+            }
+        });
+        if(num>0)
+        {
+            layer.msg(str);
+        }
+        else
+        {
+            var month_val = $('#month').val();
+            var my = month_val.split("-");
+            var iyear = my[0];
+            if(my[1]<10){
+                var imonth = my[1].substring(1);
+            }else{
+                var imonth = my[1];
+            }
+            $("#iyear").val(iyear);
+            $("#imonth").val(imonth);
+            var str = $("#form-article-add").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("marlastadd")}',
+                data:str,
+                dataType: 'json',
+                success: function(data){
+                    if(data.status=='1'){
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }else{
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }
+                },
+                error:function(data) {
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+            });
+        }
+    }
+</script>
+{/block}

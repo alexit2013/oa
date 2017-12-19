@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>售后重点经营指标</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/kpi/table.js"></script>
+		<link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="/position/public/lib/self_tip.css" />
+		<script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript" src="/position/public/lib/pubjs.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var w = $(".table_box").width();
+				var h = $(".table_box").height();
+				$("#MyTable thead tr th").css({"padding":"10px 10px","height":"20px"});
+				$(".table_box table").css({"text-align":"center","font-size":"0.5rem","width":w,"height":h});
+				$("table td").css({"padding":"10px","color":"rgb(70, 70, 70)"});
+				FixTable("MyTable",  1, w, h);
+				
+				var w = $(".table_box1").width();
+				var h = $(".table_box1").height();
+				$("#MyTable1 thead tr th").css({"padding":"10px 10px","height":"20px"});
+				$(".table_box1 table").css({"text-align":"center","font-size":"0.5rem","width":w,"height":h});
+				$("table td").css({"padding":"10px","color":"rgb(70, 70, 70)"});
+				FixTable("MyTable1",  1, w, h);
+				
+				var w = $(".table_box2").width();
+				var h = $(".table_box2").height();
+				$(".table_box2 table").css({"text-align":"center","font-size":"0.5rem","width":w,"height":h});
+				
+			});
+			// ]]>
+		</script>			
+		<style>
+			body{
+				font-size: 62.5%;				
+			}
+                        @media (min-width: 766px) {
+                            .table_box{
+                                    width: 100%;
+                                    height: 380px;
+                                    margin: 0 auto;
+                                    font-size: 0.5rem;
+                            }
+                            .table_box1{
+                                    width: 100%;
+                                    height: 300px;
+                                    margin: 0 auto;
+                                    font-size: 0.5rem;
+                            }
+                            .table_box2{
+                                    width: 100%;
+                                    height: 500px;
+                                    margin: 0 auto;
+                                    font-size: 0.5rem;
+                            }
+
+                            #MyTable2 thead{
+                                    background-color: rgb(209, 234, 255);
+                            }
+                            #MyTable2 thead tr th,#MyTable2 tbody tr td{
+                                    padding: 10px;
+                                    height: 20px;
+                            }
+                            .top_bar{
+                                    width: 100%;
+                                    height: 40px;
+                            }
+                            .top_bar .btn{
+                                    width: auto;
+                                    height: 20px;
+                                    padding: 4px 12px;
+                                    margin-top: 6px;
+                                    background-color: #5a98de;
+                                    border-radius: 8px;
+                                    -webkit-border-radius: 8px;
+                                    color: #fff;
+                                    font-size: 14px;
+                                    font-weight: 400;
+                            }
+                            .search_box{
+                                    width: 100%;
+                                    height: 40px;
+                                    margin: 10px auto;
+                                    border: 1px solid #eaeaea;
+                            }
+                            .select_box{
+                                    border: solid 1px #ddd;
+                                    box-sizing: border-box;
+                                    vertical-align: middle;
+                                    width: 250px;
+                                    padding: 4px 5px;
+                                    display: inline-block;
+                                    margin-top: 5px;
+                                    margin-left: 20px;
+                                    float: left;
+                                    height: 30px;
+                            }
+                            .select{
+                                    border: 0;
+                                    font-size: 14px;
+                                    box-sizing: border-box;
+                                    cursor: pointer;
+                                    line-height: normal;
+                                    font-weight: normal;
+                                    width: 100%;
+                                    white-space: nowrap;
+                                    outline: none;
+                            }
+                            .search_btn{
+                                    background-color: #5a98de;
+                                    border-radius: 5px;
+                                    color: #FFFFFF;
+                                    float: left;
+                                    display: inline-block;
+                                    box-sizing: border-box;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    font-weight: 400;
+                                    white-space: nowrap;
+                                    vertical-align: middle;
+                                    -moz-padding-start: npx;
+                                    -moz-padding-end: npx;
+                                    width: auto;
+                                    border: none;
+                                    outline: none;
+                                    height: 30px;
+                                    margin-left: 20px;
+                                    margin-top: 5px;
+                                    padding: 0 10px;
+                            }
+                            .search_box >span{
+                                    display: block;
+                                    float: left;
+                                    width: 40px;
+                                    height: 40px;
+                                    float: left;
+                                    text-align: right;
+                                    line-height: 40px;
+                                    font-size: 14px;
+                            }
+                            .cut_out,.m_search_bar,.select_box > i,.m_content_box{
+				display: none;
+			}
+                        }                        
+		</style>
+		
+	</head>
+
+	<body>
+	<form action="{:Url('index')}" method="post">
+        <!--移动端->搜索按钮-->
+	<div class="m_search_bar" style="line-height: 20px;font-size: 14px;">选择</br>公司</div>
+	<!--移动端->搜索按钮-->
+		<div class="search_box">
+			<span>门店:</span>
+			<div class="select_box">
+				<select class="select" name="store_id" id="store_id">
+
+					<?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+					<option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+					<?php } ?>
+				</select>
+				<i class="icon Hui-iconfont">&#xe6d5;</i>
+			</div>
+			<span>年份:</span>
+			<div class="select_box">
+				<select class="select" name="year" id="store_year">
+					<option value="">请选择年份</option>
+				</select>
+				<i class="icon Hui-iconfont">&#xe6d5;</i>
+			</div>
+			<span>月份:</span>
+			<div class="select_box">
+				<select class="select" name="month" id="store_month">
+					<option value="">请选择月份</option>
+					<option value="1">1月</option>
+					<option value="2">2月</option>
+					<option value="3">3月</option>
+					<option value="4">4月</option>
+					<option value="5">5月</option>
+					<option value="6">6月</option>
+					<option value="7">7月</option>
+					<option value="8">8月</option>
+					<option value="9">9月</option>
+					<option value="10">10月</option>
+					<option value="11">11月</option>
+					<option value="12">12月</option>
+				</select>
+				<i class="icon Hui-iconfont">&#xe6d5;</i>
+			</div>
+			<button name="" id="" class="search_btn" type="submit"> 查询</button>
+			<!--清除数据-->
+			<input type="hidden" id="table_name" value="runtarget">
+			<?php $clear_button = session("clear_button"); if($clear_button == "1"){ echo '<button name="" id="clear_button" style="background-color:orange;" class="search_btn" type="button" onclick="clearbutton()">清空数据</button>';} ?>
+			<!--清除数据-->
+			<!--审批状态-->
+			<input type="hidden" id="status" value="<?php if(!empty($data_status)){ if(get_emp_no()==$data_status['emp_no']){echo $data_status['status']; }else{echo 0;}} ?>">
+			<!--审批状态-->
+                        <!--移动端收起搜索框按钮-->
+                        <button name="" id="" class="cut_out" type="button" onclick="cut_out()">收起</button>
+                        <!--移动端收起搜索框按钮-->
+		</div>
+	</form>
+
+	<h1 style="width:100%;text-align: center;"><span></span>售后重点经营指标{:is_pass($data_status)}</h1>
+
+		<div class="table_box">
+			<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable">
+				<thead>
+					<tr>
+						<th rowspan="3"><div style="width: 100px;">售后重点经营指标</div></th>
+						<th colspan="3">保养</th>
+						<th colspan="3">一般修理</th>
+						<th colspan="3">索赔</th>
+						<th colspan="3">钣喷</th>
+						<th rowspan="3"><div style="width: 100px;">其它</div></th>
+						<th rowspan="3"><div style="width: 100px;">上月预测合计</div></th>
+						<th rowspan="3"><div style="width: 100px;">上月实际合计</div></th>
+						<th rowspan="3"><div style="width: 100px;">本月预测合计</div></th>
+						<th rowspan="3"><div style="width: 100px;">上月同比</div></th>
+						<th rowspan="3"><div style="width: 100px;">上月环比</div></th>
+						<th rowspan="3"><div style="width: 100px;">当年累计</div></th>
+						<th rowspan="3"><div style="width: 100px;">累计同比</div></th>
+					</tr>
+					<tr>
+						<th colspan="2"><div style="width: 200px;">上月</div></th>
+						<th rowspan="2"><div style="width: 100px;">本月预测</div></th>
+						<th colspan="2"><div style="width: 200px;">上月</div></th>
+						<th rowspan="2"><div style="width: 100px;">本月预测</div></th>
+						<th colspan="2"><div style="width: 200px;">上月</div></th>
+						<th rowspan="2"><div style="width: 100px;">本月预测</div></th>
+						<th colspan="2"><div style="width: 200px;">上月</div></th>
+						<th rowspan="2"><div style="width: 100px;">本月预测</div></th>
+					</tr>
+					<tr>
+						<th>预测</th>
+						<th>实际</th>
+						<th>预测</th>
+						<th>实际</th>
+						<th>预测</th>
+						<th>实际</th>
+						<th>预测</th>
+						<th>实际</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr>
+						<td>台次</td>
+						<td class="edit" data-order="<?php if(!empty($data_run['保养']['id'])){ echo $data_run['保养']['id']; } ?>" data-key="expect_sellnum" data-type="float"><?php if(!empty($data_run['保养']['expect_sellnum'])){ echo $data_run['保养']['expect_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['保养']['id'])){ echo $data_run['保养']['id']; } ?>" data-key="actual_sellnum" data-type="float"><?php if(!empty($data_run['保养']['actual_sellnum'])){ echo $data_run['保养']['actual_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['保养']['id'])){ echo $data_run['保养']['id']; } ?>" data-key="thatmonth_expext_sellnum" data-type="float"><?php if(!empty($data_run['保养']['thatmonth_expext_sellnum'])){ echo $data_run['保养']['thatmonth_expext_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['一般修理']['id'])){ echo $data_run['一般修理']['id']; } ?>" data-key="expect_sellnum" data-type="float"><?php if(!empty($data_run['一般修理']['expect_sellnum'])){ echo $data_run['一般修理']['expect_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['一般修理']['id'])){ echo $data_run['一般修理']['id']; } ?>" data-key="actual_sellnum" data-type="float"><?php if(!empty($data_run['一般修理']['actual_sellnum'])){ echo $data_run['一般修理']['actual_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['一般修理']['id'])){ echo $data_run['一般修理']['id']; } ?>" data-key="thatmonth_expext_sellnum" data-type="float"><?php if(!empty($data_run['一般修理']['thatmonth_expext_sellnum'])){ echo $data_run['一般修理']['thatmonth_expext_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['索赔']['id'])){ echo $data_run['索赔']['id']; } ?>" data-key="expect_sellnum" data-type="float"><?php if(!empty($data_run['索赔']['expect_sellnum'])){ echo $data_run['索赔']['expect_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['索赔']['id'])){ echo $data_run['索赔']['id']; } ?>" data-key="actual_sellnum" data-type="float"><?php if(!empty($data_run['索赔']['actual_sellnum'])){ echo $data_run['索赔']['actual_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['索赔']['id'])){ echo $data_run['索赔']['id']; } ?>" data-key="thatmonth_expext_sellnum" data-type="float"><?php if(!empty($data_run['索赔']['thatmonth_expext_sellnum'])){ echo $data_run['索赔']['thatmonth_expext_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['钣喷']['id'])){ echo $data_run['钣喷']['id']; } ?>" data-key="expect_sellnum" data-type="float"><?php if(!empty($data_run['钣喷']['expect_sellnum'])){ echo $data_run['钣喷']['expect_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['钣喷']['id'])){ echo $data_run['钣喷']['id']; } ?>" data-key="actual_sellnum" data-type="float"><?php if(!empty($data_run['钣喷']['actual_sellnum'])){ echo $data_run['钣喷']['actual_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['钣喷']['id'])){ echo $data_run['钣喷']['id']; } ?>" data-key="thatmonth_expext_sellnum" data-type="float"><?php if(!empty($data_run['钣喷']['thatmonth_expext_sellnum'])){ echo $data_run['钣喷']['thatmonth_expext_sellnum']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['其他']['id'])){ echo $data_run['其他']['id']; } ?>" data-key="other_sellnum" data-type="float"><?php if(!empty($data_run['其他']['other_sellnum'])){ echo $data_run['其他']['other_sellnum']; } ?></td>
+						<td><?php if(!empty($prem_expect_selltot)){ echo $prem_expect_selltot; } ?></td>
+						<td class="kpi_p1"><?php if(!empty($prem_actual_selltot)){ echo $prem_actual_selltot; } ?></td>
+						<td class="kpi_p2"><?php if(!empty($thatm_expect_selltot)){ echo $thatm_expect_selltot; } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="num_premonth_yoy" data-type="float"><?php if(!empty($runrateres['num_premonth_yoy'])){ echo $runrateres['num_premonth_yoy'].'%'; } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="num_premonth_chain" data-type="float"><?php if(!empty($runrateres['num_premonth_chain'])){ echo $runrateres['num_premonth_chain'].'%'; } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="num_thatyear_total" data-type="float"><?php if(!empty($runrateres['num_thatyear_total'])){ echo $runrateres['num_thatyear_total']; } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="num_total_chain" data-type="float"><?php if(!empty($runrateres['num_total_chain'])){ echo $runrateres['num_total_chain'].'%'; } ?></td>
+					</tr>
+					<tr>
+						<td>台次占比</td>
+						<td><?php if(!empty($data_run['保养']['expect_sellnum']) && !empty($prem_expect_selltot)){ echo @round($data_run['保养']['expect_sellnum']/$prem_expect_selltot*100,2).'%'; }?></td>
+						<td><?php if(!empty($data_run['保养']['actual_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['保养']['actual_sellnum']/$prem_actual_selltot*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['thatmonth_expext_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['保养']['thatmonth_expext_sellnum']/$thatm_expect_selltot*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['一般修理']['expect_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['一般修理']['expect_sellnum']/$prem_expect_selltot*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['一般修理']['actual_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['一般修理']['actual_sellnum']/$prem_actual_selltot*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['一般修理']['thatmonth_expext_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['一般修理']['thatmonth_expext_sellnum']/$thatm_expect_selltot*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['索赔']['expect_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['索赔']['expect_sellnum']/$prem_actual_selltot*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['索赔']['actual_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['索赔']['actual_sellnum']/$prem_actual_selltot*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['索赔']['thatmonth_expext_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['索赔']['thatmonth_expext_sellnum']/$thatm_expect_selltot*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['钣喷']['expect_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['钣喷']['expect_sellnum']/$prem_expect_selltot*100,2).'%'; }?></td>
+						<td><?php if(!empty($data_run['钣喷']['actual_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['钣喷']['actual_sellnum']/$prem_actual_selltot*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['钣喷']['thatmonth_expext_sellnum']) && !empty($prem_actual_selltot)){ echo @round($data_run['钣喷']['thatmonth_expext_sellnum']/$thatm_expect_selltot*100,2).'%';} ?></td>
+						<td>--</td>
+						<td>--</td>
+						<td>--</td>
+						<td>--</td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="numrate_premonth_yoy" data-type="float"><?php echo empty($runrateres['numrate_premonth_yoy'])? 0 : $runrateres['numrate_premonth_yoy']; ?>%</td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="numrate_premonth_chain" data-type="float"><?php echo empty($runrateres['numrate_premonth_chain'])? 0 :$runrateres['numrate_premonth_chain']; ?>%</td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="numrate_thatyear_total" data-type="float"><?php echo empty($runrateres['numrate_thatyear_total'])? 0 :$runrateres['numrate_thatyear_total']; ?>%</td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="numrate_total_chain" data-type="float"><?php echo empty($runrateres['numrate_total_chain'] ? 0 : $runrateres['numrate_total_chain']); ?>%</td>
+					</tr>
+					<tr>
+						<td>客单价（元）</td>
+						<td class="edit" data-order="<?php if(!empty($data_run['保养']['id'])){ echo $data_run['保养']['id']; } ?>" data-key="expect_guestprice" data-type="float"><?php if(!empty($data_run['保养']['expect_guestprice'])){ echo $data_run['保养']['expect_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['保养']['id'])){ echo $data_run['保养']['id']; } ?>" data-key="actual_guestprice" data-type="float"><?php if(!empty($data_run['保养']['actual_guestprice'])){ echo $data_run['保养']['actual_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['保养']['id'])){ echo $data_run['保养']['id']; } ?>" data-key="thatmonth_expect_guestprice" data-type="float"><?php if(!empty($data_run['保养']['thatmonth_expect_guestprice'])){ echo $data_run['保养']['thatmonth_expect_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['一般修理']['id'])){ echo $data_run['一般修理']['id']; } ?>" data-key="expect_guestprice" data-type="float"><?php if(!empty($data_run['一般修理']['expect_guestprice'])){ echo $data_run['一般修理']['expect_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['一般修理']['id'])){ echo $data_run['一般修理']['id']; } ?>" data-key="actual_guestprice" data-type="float"><?php if(!empty($data_run['一般修理']['actual_guestprice'])){ echo $data_run['一般修理']['actual_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['一般修理']['id'])){ echo $data_run['一般修理']['id']; } ?>" data-key="thatmonth_expect_guestprice" data-type="float"><?php if(!empty($data_run['一般修理']['thatmonth_expect_guestprice'])){ echo $data_run['一般修理']['thatmonth_expect_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['索赔']['id'])){ echo $data_run['索赔']['id']; } ?>" data-key="expect_guestprice" data-type="float"><?php if(!empty($data_run['索赔']['expect_guestprice'])){ echo $data_run['索赔']['expect_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['索赔']['id'])){ echo $data_run['索赔']['id']; } ?>" data-key="actual_guestprice" data-type="float"><?php if(!empty($data_run['索赔']['actual_guestprice'])){ echo $data_run['索赔']['actual_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['索赔']['id'])){ echo $data_run['索赔']['id']; } ?>" data-key="thatmonth_expect_guestprice" data-type="float"><?php if(!empty($data_run['索赔']['thatmonth_expect_guestprice'])){ echo $data_run['索赔']['thatmonth_expect_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['钣喷']['id'])){ echo $data_run['钣喷']['id']; } ?>" data-key="expect_guestprice" data-type="float"><?php if(!empty($data_run['钣喷']['expect_guestprice'])){ echo $data_run['钣喷']['expect_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['钣喷']['id'])){ echo $data_run['钣喷']['id']; } ?>" data-key="actual_guestprice" data-type="float"><?php if(!empty($data_run['钣喷']['actual_guestprice'])){ echo $data_run['钣喷']['actual_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['钣喷']['id'])){ echo $data_run['钣喷']['id']; } ?>" data-key="thatmonth_expect_guestprice" data-type="float"><?php if(!empty($data_run['钣喷']['thatmonth_expect_guestprice'])){ echo $data_run['钣喷']['thatmonth_expect_guestprice']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($data_run['其他']['id'])){ echo $data_run['其他']['id']; } ?>" data-key="other_guestprice" data-type="float"><?php if(!empty($data_run['其他']['other_guestprice'])){ echo $data_run['其他']['other_guestprice']; } ?></td>
+						<td><?php if(!empty($data_run['保养']['premonth_expect_output']) && !empty($data_run['一般修理']['premonth_expect_output']) && !empty($data_run['索赔']['premonth_expect_output']) && !empty($data_run['钣喷']['premonth_expect_output'])){ echo round(($data_run['保养']['premonth_expect_output']+$data_run['一般修理']['premonth_expect_output']+$data_run['索赔']['premonth_expect_output']+$data_run['钣喷']['premonth_expect_output'])/$prem_expect_selltot,2);} ?></td>
+						<td class="kpi_p3"><?php if(!empty($data_run['保养']['premonth_actual_output']) && !empty($data_run['一般修理']['premonth_actual_output']) && !empty($data_run['索赔']['premonth_actual_output']) && !empty($data_run['钣喷']['premonth_actual_output']) && !empty($prem_actual_selltot)){ echo round(($data_run['保养']['premonth_actual_output']+$data_run['一般修理']['premonth_actual_output']+$data_run['索赔']['premonth_actual_output']+$data_run['钣喷']['premonth_actual_output'])/$prem_actual_selltot,2); } ?></td>
+						<td class="kpi_p4"><?php if(!empty($data_run['保养']['thatmonth_expect_output']) && !empty($data_run['一般修理']['thatmonth_expect_output']) && !empty($data_run['索赔']['thatmonth_expect_output']) && !empty($data_run['钣喷']['thatmonth_expect_output']) && !empty($thatm_expect_selltot)){ echo round(($data_run['保养']['thatmonth_expect_output']+$data_run['一般修理']['thatmonth_expect_output']+$data_run['索赔']['thatmonth_expect_output']+$data_run['钣喷']['thatmonth_expect_output'])/$thatm_expect_selltot,2);} ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="guestprice_premonth_yoy" data-type="float"><?php if(!empty($runrateres['guestprice_premonth_yoy'])){ echo $runrateres['guestprice_premonth_yoy'].'%'; } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="guestprice_premonth_chain" data-type="float"><?php if(!empty($runrateres['guestprice_premonth_chain'])){ echo $runrateres['guestprice_premonth_chain'].'%'; } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="guestprice_thatyear_total" data-type="float"><?php if(!empty($runrateres['guestprice_thatyear_total'])){ echo $runrateres['guestprice_thatyear_total']; } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="guestprice_total_chain" data-type="float"><?php if(!empty($runrateres['guestprice_total_chain'])){ echo $runrateres['guestprice_total_chain']; } ?></td>
+					</tr>
+					<tr>
+						<td>产值(万元）</td>
+						<td><?php if(!empty($data_run['保养']['premonth_expect_output'])){ echo @round($data_run['保养']['premonth_expect_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['保养']['premonth_actual_output'])){ echo @round($data_run['保养']['premonth_actual_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['保养']['thatmonth_expect_output'])){ echo @round($data_run['保养']['thatmonth_expect_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['一般修理']['premonth_expect_output'])){ echo @round($data_run['一般修理']['premonth_expect_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['一般修理']['premonth_actual_output'])){ echo @round($data_run['一般修理']['premonth_actual_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['一般修理']['thatmonth_expect_output'])){ echo @round($data_run['一般修理']['thatmonth_expect_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['索赔']['premonth_expect_output'])){ echo @round($data_run['索赔']['premonth_expect_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['索赔']['premonth_actual_output'])){ echo @round($data_run['索赔']['premonth_actual_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['索赔']['thatmonth_expect_output'])){ echo @round($data_run['索赔']['thatmonth_expect_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['钣喷']['premonth_expect_output'])){ echo @round($data_run['钣喷']['premonth_expect_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['钣喷']['premonth_actual_output'])){ echo @round($data_run['钣喷']['premonth_actual_output']/10000,2); } ?></td>
+						<td><?php if(!empty($data_run['钣喷']['thatmonth_expect_output'])){ echo @round($data_run['钣喷']['thatmonth_expect_output']/10000,2); } ?></td>
+						<td></td>
+						<td><?php if(!empty($data_run['保养']['premonth_expect_output']) && !empty($data_run['一般修理']['premonth_expect_output']) && !empty($data_run['索赔']['premonth_expect_output']) && !empty($data_run['钣喷']['premonth_expect_output'])){ echo round(($data_run['保养']['premonth_expect_output']+$data_run['一般修理']['premonth_expect_output']+$data_run['索赔']['premonth_expect_output']+$data_run['钣喷']['premonth_expect_output'])/10000,2); } ?></td>
+						<td class="kpi_p5"><?php if(!empty($data_run['保养']['premonth_actual_output']) && !empty($data_run['一般修理']['premonth_actual_output']) && !empty($data_run['索赔']['premonth_actual_output']) && !empty($data_run['钣喷']['premonth_actual_output'])){ echo round(($data_run['保养']['premonth_actual_output']+$data_run['一般修理']['premonth_actual_output']+$data_run['索赔']['premonth_actual_output']+$data_run['钣喷']['premonth_actual_output'])/10000,2); } ?></td>
+						<td class="kpi_p6"><?php if(!empty($data_run['保养']['thatmonth_expect_output']) && !empty($data_run['一般修理']['thatmonth_expect_output']) && !empty($data_run['索赔']['thatmonth_expect_output']) && !empty($data_run['钣喷']['thatmonth_expect_output'])){ echo round(($data_run['保养']['thatmonth_expect_output']+$data_run['一般修理']['thatmonth_expect_output']+$data_run['索赔']['thatmonth_expect_output']+$data_run['钣喷']['thatmonth_expect_output'])/10000,2); } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="output_premonth_yoy" data-type="float"><?php if(!empty($runrateres['output_premonth_yoy'])){ echo $runrateres['output_premonth_yoy'].'%'; } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="output_premonth_chain" data-type="float"><?php if(!empty($runrateres['output_premonth_chain'])){ echo $runrateres['output_premonth_chain'].'%'; } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="output_thatyear_total" data-type="float"><?php if(!empty($runrateres['output_thatyear_total'])){ echo $runrateres['output_thatyear_total']; } ?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="output_total_chain" data-type="float"><?php if(!empty($runrateres['output_total_chain'])){ echo $runrateres['output_total_chain'].'%'; } ?></td>
+					</tr>
+					<tr>
+						<td>产值占比</td>
+						<td><?php if(!empty($data_run['保养']['premonth_expect_output']) && !empty($data_run['一般修理']['premonth_expect_output']) && !empty($data_run['索赔']['premonth_expect_output']) && !empty($data_run['钣喷']['premonth_expect_output'])){ echo round($data_run['保养']['premonth_expect_output']/($data_run['保养']['premonth_expect_output']+$data_run['一般修理']['premonth_expect_output']+$data_run['索赔']['premonth_expect_output']+$data_run['钣喷']['premonth_expect_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['premonth_actual_output']) && !empty($data_run['一般修理']['premonth_actual_output']) && !empty($data_run['索赔']['premonth_actual_output']) && !empty($data_run['钣喷']['premonth_actual_output'])){ echo round($data_run['保养']['premonth_actual_output']/($data_run['保养']['premonth_actual_output']+$data_run['一般修理']['premonth_actual_output']+$data_run['索赔']['premonth_actual_output']+$data_run['钣喷']['premonth_actual_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['thatmonth_expect_output']) && !empty($data_run['一般修理']['thatmonth_expect_output']) && !empty($data_run['索赔']['thatmonth_expect_output']) && !empty($data_run['钣喷']['thatmonth_expect_output'])){ echo round($data_run['保养']['thatmonth_expect_output']/($data_run['保养']['thatmonth_expect_output']+$data_run['一般修理']['thatmonth_expect_output']+$data_run['索赔']['thatmonth_expect_output']+$data_run['钣喷']['thatmonth_expect_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['premonth_expect_output']) && !empty($data_run['一般修理']['premonth_expect_output']) && !empty($data_run['索赔']['premonth_expect_output']) && !empty($data_run['钣喷']['premonth_expect_output'])){ echo round($data_run['一般修理']['premonth_expect_output']/($data_run['保养']['premonth_expect_output']+$data_run['一般修理']['premonth_expect_output']+$data_run['索赔']['premonth_expect_output']+$data_run['钣喷']['premonth_expect_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['premonth_actual_output']) && !empty($data_run['一般修理']['premonth_actual_output']) && !empty($data_run['索赔']['premonth_actual_output']) && !empty($data_run['钣喷']['premonth_actual_output'])){ echo round($data_run['一般修理']['premonth_actual_output']/($data_run['保养']['premonth_actual_output']+$data_run['一般修理']['premonth_actual_output']+$data_run['索赔']['premonth_actual_output']+$data_run['钣喷']['premonth_actual_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['thatmonth_expect_output']) && !empty($data_run['一般修理']['thatmonth_expect_output']) && !empty($data_run['索赔']['thatmonth_expect_output']) && !empty($data_run['钣喷']['thatmonth_expect_output'])){ echo round($data_run['一般修理']['thatmonth_expect_output']/($data_run['保养']['thatmonth_expect_output']+$data_run['一般修理']['thatmonth_expect_output']+$data_run['索赔']['thatmonth_expect_output']+$data_run['钣喷']['thatmonth_expect_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['premonth_expect_output']) && !empty($data_run['一般修理']['premonth_expect_output']) && !empty($data_run['索赔']['premonth_expect_output']) && !empty($data_run['钣喷']['premonth_expect_output'])){ echo round($data_run['索赔']['premonth_expect_output']/($data_run['保养']['premonth_expect_output']+$data_run['一般修理']['premonth_expect_output']+$data_run['索赔']['premonth_expect_output']+$data_run['钣喷']['premonth_expect_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['premonth_actual_output']) && !empty($data_run['一般修理']['premonth_actual_output']) && !empty($data_run['索赔']['premonth_actual_output']) && !empty($data_run['钣喷']['premonth_actual_output'])){ echo round($data_run['索赔']['premonth_actual_output']/($data_run['保养']['premonth_actual_output']+$data_run['一般修理']['premonth_actual_output']+$data_run['索赔']['premonth_actual_output']+$data_run['钣喷']['premonth_actual_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['thatmonth_expect_output']) && !empty($data_run['一般修理']['thatmonth_expect_output']) && !empty($data_run['索赔']['thatmonth_expect_output']) && !empty($data_run['钣喷']['premonth_actual_output'])){ echo round($data_run['索赔']['thatmonth_expect_output']/($data_run['保养']['thatmonth_expect_output']+$data_run['一般修理']['thatmonth_expect_output']+$data_run['索赔']['thatmonth_expect_output']+$data_run['钣喷']['thatmonth_expect_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['premonth_expect_output']) && !empty($data_run['一般修理']['premonth_expect_output']) && !empty($data_run['索赔']['premonth_expect_output']) && !empty($data_run['钣喷']['premonth_expect_output'])){ echo round($data_run['钣喷']['premonth_expect_output']/($data_run['保养']['premonth_expect_output']+$data_run['一般修理']['premonth_expect_output']+$data_run['索赔']['premonth_expect_output']+$data_run['钣喷']['premonth_expect_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['premonth_actual_output']) && !empty($data_run['一般修理']['premonth_actual_output']) && !empty($data_run['索赔']['premonth_actual_output']) && !empty($data_run['钣喷']['premonth_actual_output'])){ echo round($data_run['钣喷']['premonth_actual_output']/($data_run['保养']['premonth_actual_output']+$data_run['一般修理']['premonth_actual_output']+$data_run['索赔']['premonth_actual_output']+$data_run['钣喷']['premonth_actual_output'])*100,2).'%';} ?></td>
+						<td><?php if(!empty($data_run['保养']['thatmonth_expect_output']) && !empty($data_run['一般修理']['thatmonth_expect_output']) && !empty($data_run['索赔']['thatmonth_expect_output']) && !empty($data_run['钣喷']['thatmonth_expect_output'])){ echo round($data_run['钣喷']['thatmonth_expect_output']/($data_run['保养']['thatmonth_expect_output']+$data_run['一般修理']['thatmonth_expect_output']+$data_run['索赔']['thatmonth_expect_output']+$data_run['钣喷']['thatmonth_expect_output'])*100,2).'%';} ?></td>
+						<td>--</td>
+						<td>--</td>
+						<td>--</td>
+						<td>--</td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="outputrate_premonth_yoy" data-type="float"><?php echo empty($runrateres['outputrate_premonth_yoy'])? 0 : $runrateres['outputrate_premonth_yoy'];?>%</td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="outputrate_premonth_chain" data-type="float"><?php echo empty($runrateres['outputrate_premonth_chain'])? 0 : $runrateres['outputrate_premonth_chain'];?>%</td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="outputrate_thatyear_total" data-type="float"><?php echo empty($runrateres['outputrate_thatyear_total'])? 0 : $runrateres['outputrate_thatyear_total'];?></td>
+						<td class="edit1" data-order="<?php if(!empty($runrateres['id'])){ echo $runrateres['id']; } ?>" data-key="outputrate_total_chain" data-type="float"><?php echo empty($runrateres['outputrate_total_chain'])? 0 : $runrateres['outputrate_total_chain'];?>%</td>
+					</tr>
+				</tbody>
+				
+			</table>
+		</div>
+		
+		<div style="height: 40px;"></div>
+		<div class="table_box1">
+			<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable1">
+				<thead>
+					<tr>
+						<th rowspan="2"><div style="width: 100px;">售后重点增值业务指标</div></th>
+						<th colspan="5">备件外销</th>
+						<th colspan="5">养护产品</th>
+						<th colspan="5">售后装饰美容精品</th>
+					</tr>
+					<tr>
+						<th><div style="width: 100px;">当月完成</div></th>
+						<th><div style="width: 100px;">月同比</div></th>
+						<th><div style="width: 100px;">月环比</div></th>
+						<th><div style="width: 100px;">当年累计</div></th>
+						<th><div style="width: 100px;">累计同比</div></th>
+						<th><div style="width: 100px;">当月完成</div></th>
+						<th><div style="width: 100px;">月同比</div></th>
+						<th><div style="width: 100px;">月环比</div></th>
+						<th><div style="width: 100px;">当年累计</div></th>
+						<th><div style="width: 100px;">累计同比</div></th>
+						<th><div style="width: 100px;">当月完成</div></th>
+						<th><div style="width: 100px;">月同比</div></th>
+						<th><div style="width: 100px;">月环比</div></th>
+						<th><div style="width: 100px;">当年累计</div></th>
+						<th><div style="width: 100px;">累计同比</div></th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr>
+						<td>产值（万元）</td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['备件外销']['id'])){ echo $MVASres['备件外销']['id']; } ?>" data-key="thatmonth_complete" data-type="float"><?php if(!empty($MVASres['备件外销']['thatmonth_complete'])){ echo $MVASres['备件外销']['thatmonth_complete']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['备件外销']['id'])){ echo $MVASres['备件外销']['id']; } ?>" data-key="month_yoy" data-type="float"><?php if(!empty($MVASres['备件外销']['month_yoy'])){ echo $MVASres['备件外销']['month_yoy'].'%'; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['备件外销']['id'])){ echo $MVASres['备件外销']['id']; } ?>" data-key="month_chain" data-type="float"><?php if(!empty($MVASres['备件外销']['month_chain'])){ echo $MVASres['备件外销']['month_chain'].'%'; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['备件外销']['id'])){ echo $MVASres['备件外销']['id']; } ?>" data-key="thatyear_total" data-type="float"><?php if(!empty($MVASres['备件外销']['thatyear_total'])){ echo $MVASres['备件外销']['thatyear_total']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['备件外销']['id'])){ echo $MVASres['备件外销']['id']; } ?>" data-key="total_yoy" data-type="float"><?php if(!empty($MVASres['备件外销']['total_yoy'])){ echo $MVASres['备件外销']['total_yoy'].'%'; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['养护产品']['id'])){ echo $MVASres['养护产品']['id']; } ?>" data-key="thatmonth_complete" data-type="float"><?php if(!empty($MVASres['养护产品']['thatmonth_complete'])){ echo $MVASres['养护产品']['thatmonth_complete']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['养护产品']['id'])){ echo $MVASres['养护产品']['id']; } ?>" data-key="month_yoy" data-type="float"><?php if(!empty($MVASres['养护产品']['month_yoy'])){ echo $MVASres['养护产品']['month_yoy']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['养护产品']['id'])){ echo $MVASres['养护产品']['id']; } ?>" data-key="month_chain" data-type="float"><?php if(!empty($MVASres['养护产品']['month_chain'])){ echo $MVASres['养护产品']['month_chain'].'%'; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['养护产品']['id'])){ echo $MVASres['养护产品']['id']; } ?>" data-key="thatyear_total" data-type="float"><?php if(!empty($MVASres['养护产品']['thatyear_total'])){ echo $MVASres['养护产品']['thatyear_total']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['养护产品']['id'])){ echo $MVASres['养护产品']['id']; } ?>" data-key="total_yoy" data-type="float"><?php if(!empty($MVASres['养护产品']['total_yoy'])){ echo $MVASres['养护产品']['total_yoy'].'%'; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['售后装饰美容精品']['id'])){ echo $MVASres['售后装饰美容精品']['id']; } ?>" data-key="thatmonth_complete" data-type="float"><?php if(!empty($MVASres['售后装饰美容精品']['thatmonth_complete'])){ echo $MVASres['售后装饰美容精品']['thatmonth_complete']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['售后装饰美容精品']['id'])){ echo $MVASres['售后装饰美容精品']['id']; } ?>" data-key="month_yoy" data-type="float"><?php if(!empty($MVASres['售后装饰美容精品']['month_yoy'])){ echo $MVASres['售后装饰美容精品']['month_yoy']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['售后装饰美容精品']['id'])){ echo $MVASres['售后装饰美容精品']['id']; } ?>" data-key="month_chain" data-type="float"><?php if(!empty($MVASres['售后装饰美容精品']['month_chain'])){ echo $MVASres['售后装饰美容精品']['month_chain'].'%'; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['售后装饰美容精品']['id'])){ echo $MVASres['售后装饰美容精品']['id']; } ?>" data-key="thatyear_total" data-type="float"><?php if(!empty($MVASres['售后装饰美容精品']['thatyear_total'])){ echo $MVASres['售后装饰美容精品']['thatyear_total']; } ?></td>
+						<td class="edit" data-order="<?php if(!empty($MVASres['售后装饰美容精品']['id'])){ echo $MVASres['售后装饰美容精品']['id']; } ?>" data-key="total_yoy" data-type="float"><?php if(!empty($MVASres['售后装饰美容精品']['total_yoy'])){ echo $MVASres['售后装饰美容精品']['total_yoy'].'%'; } ?></td>
+					</tr>
+					<tr>
+						<td>客单价（元）</td>
+						<td><?php if(!empty($MVASres['备件外销']['thatmonth_complete']) && !empty($prem_actual_selltot)){ echo @round($MVASres['备件外销']['thatmonth_complete']/$prem_actual_selltot*10000,2); } ?></td>
+						<td>--</td>
+						<td>--</td>
+						<td>--</td>
+						<td>--</td>
+						<td><?php if(!empty($MVASres['养护产品']['thatmonth_complete']) && !empty($prem_actual_selltot)){ echo @round($MVASres['养护产品']['thatmonth_complete']/$MVASres['养护产品']['thatmonth_complete']/$prem_actual_selltot*10000,2);} ?></td>
+						<td>--</td>
+						<td>--</td>
+						<td>--</td>
+						<td>--</td>
+						<td><?php if(!empty($MVASres['售后装饰美容精品']['thatmonth_complete']) && !empty($prem_actual_selltot)){ echo @round($MVASres['售后装饰美容精品']['thatmonth_complete']/$prem_actual_selltot*10000,2);} ?></td>
+						<td>--</td>
+						<td>--</td>
+						<td>--</td>
+						<td>--</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div style="height: 40px;"></div>
+		<div class="table_box2">
+			<table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable2">
+				<thead style="background-color: rgb(209, 234, 255);">
+					<th colspan="2">售后重点管理指标</th>
+					<th>当月</th>
+					<th>月环比</th>
+					<th>月同比</th>
+				</thead>
+			
+			<tbody>
+				<tr>
+					<td colspan="2">一次性修复率</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="onetime_repair_rate_thatmonth" data-type="float">{$manageres['onetime_repair_rate_thatmonth']}%</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="onetime_repair_rate_monthchain" data-type="float">{$manageres['onetime_repair_rate_monthchain']}%</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="onetime_repair_rate_monthyoy" data-type="float">{$manageres['onetime_repair_rate_monthyoy']}%</td>
+				</tr>
+				<tr>
+					<td colspan="2">准时交车率</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="ontime_turncar_rate_thatmonth" data-type="float">{$manageres['ontime_turncar_rate_thatmonth']}%</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="ontime_turncar_rate_monthchain" data-type="float">{$manageres['ontime_turncar_rate_monthchain']}%</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="ontime_turncae_rate_monthyoy" data-type="float">{$manageres['ontime_turncae_rate_monthyoy']}%</td>
+				</tr>
+				<tr>
+					<td colspan="2">备件周转率</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="parts_turnore_rete_thatmonth" data-type="float">{$manageres['parts_turnore_rete_thatmonth']}%</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="parts_turnore_rate_monthchain" data-type="float">{$manageres['parts_turnore_rate_monthchain']}%</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="parts_turnore_rate_monthyoy" data-type="float">{$manageres['parts_turnore_rate_monthyoy']}%</td>
+				</tr>
+				<tr>
+					<td colspan="2">一次供货率</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="onetime_supply_rate_thatmonth" data-type="float">{$manageres['onetime_supply_rate_thatmonth']}%</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="onetime_supply_rate_monthchain" data-type="float">{$manageres['onetime_supply_rate_monthchain']}%</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="onetime_supply_rate_monthyoy" data-type="float">{$manageres['onetime_supply_rate_monthyoy']}%</td>
+				</tr>
+				<tr>
+					<td rowspan="2">工位周转率</td>
+					<td>机电（台/日）</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="station_turnore_rate_electrical_thatmonth" data-type="float">{$manageres['station_turnore_rate_electrical_thatmonth']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="station_turnore_rate_electrical_monthchain" data-type="float">{$manageres['station_turnore_rate_electrical_monthchain']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="station_turnore_rate_electrical_monthyoy" data-type="float">{$manageres['station_turnore_rate_electrical_monthyoy']}</td>
+				</tr>
+				<tr>
+					<td>钣喷（台/月）</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="station_turnore_rate_coinspray_thatmonth" data-type="float">{$manageres['station_turnore_rate_coinspray_thatmonth']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="station_turnore_rate_coinspray_monthchain" data-type="float">{$manageres['station_turnore_rate_coinspray_monthchain']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="station_turnore_rate_coinspray_monthyoy" data-type="float">{$manageres['station_turnore_rate_coinspray_monthyoy']}</td>
+				</tr>
+				<tr>
+					<td rowspan="4">人工效率</td>
+					<td>前台机电（台/日）</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_receptionele_thatmonth" data-type="float">{$manageres['aftificial_rate_receptionele_thatmonth']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_receptionele_monthchain" data-type="float">{$manageres['aftificial_rate_receptionele_monthchain']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_receptionele_monthyoy" data-type="float">{$manageres['aftificial_rate_receptionele_monthyoy']}</td>
+				</tr>
+				<tr>
+					<td>前台事故（台/日）</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_reception_accident_thatmonth" data-type="float">{$manageres['aftificial_rate_reception_accident_thatmonth']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_reception_accident_monthchain" data-type="float">{$manageres['aftificial_rate_reception_accident_monthchain']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_reception_accident_monthyoy" data-type="float">{$manageres['aftificial_rate_reception_accident_monthyoy']}</td>
+				</tr>
+				<tr>
+					<td>机电（台/日）</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_electrical_thatmonth" data-type="float">{$manageres['aftificial_rate_electrical_thatmonth']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_electrical_monthchain" data-type="float">{$manageres['aftificial_rate_electrical_monthchain']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_electrical_monthyoy" data-type="float">{$manageres['aftificial_rate_electrical_monthyoy']}</td>
+				</tr>
+				<tr>
+					<td>钣喷（台/月）</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_coinspray_thatmonth" data-type="float">{$manageres['aftificial_rate_coinspray_thatmonth']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_coinspray_monthchain" data-type="float">{$manageres['aftificial_rate_coinspray_monthchain']}</td>
+					<td class="edit" data-order="{$manageres['id']}" data-key="aftificial_rate_coinspray_monthyoy" data-type="float">{$manageres['aftificial_rate_coinspray_monthyoy']}</td>
+				</tr>
+				
+			</tbody>
+				
+			</table>
+		</div>
+	<?php if($data_status['status']==1){ ?>
+                <!--移动端关键指标-->
+                <div class="m_content_box">
+                        <table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0">
+                            <thead>
+                                    <tr>
+                                            <th>关键KPI指标项目</th>
+                                            <th>上月实际</th>
+                                            <th>本月预计</th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                                    <tr>
+                                            <td>台次</td>
+                                            <td class="kpi_m1"></td>
+                                            <td class="kpi_m2"></td>
+                                    </tr>
+                                    <tr>
+                                            <td>客单价</td>
+                                            <td class="kpi_m3"></td>
+                                            <td class="kpi_m4"></td>
+                                    </tr>
+                                    <tr>
+                                            <td>产值</td>
+                                            <td class="kpi_m5"></td>
+                                            <td class="kpi_m6"></td>
+                                    </tr>                                   
+                                </tbody>
+                        </table>
+                </div>
+		<div style="height: 40px;"></div>
+	<?php } ?>
+		<input type="hidden" value="<?php if(!empty($sid)) echo $sid; ?>" id="search_id"/>
+	<input type="hidden" value="<?php if(!empty($year)) echo $year; ?>" id="search_year"/>
+	<input type="hidden" value="<?php if(!empty($month)) echo $month; ?>" id="search_month"/>
+
+	</body>
+	<script>
+
+		$(document).ready(function(){
+			//年份
+			var current_date = new Date();
+			var cur_year = current_date.getFullYear()-2 ;
+			for(var i=0; i<5;i++){
+				var html = '</option><option value="'+(cur_year+i)+'">'+(cur_year+i)+'年</option>';
+				$("#store_year").append(html);
+			};
+			$("#store_year").val(current_date.getFullYear());
+			//月份
+			var cur_month = current_date.getMonth()+1;
+			$("#store_month").val(cur_month);
+
+			var store_year = $("#search_year").val();
+			var store_month = $("#search_month").val();
+			if(store_year != ''){
+				$("#store_year").val(store_year);
+			}
+			if(store_month != ''){
+				$("#store_month").val(store_month);
+			}
+
+
+		});
+
+		//            $("#store_id option:first-child").attr("selected",true);
+		$(document).ready(function(){
+			var store_id = $("#search_id").val();
+			if (store_id != "") {
+				$("#store_id").val(store_id);
+			}
+			var store_name = $("#store_id").find("option:selected").text();
+			$("h1 > span").eq(0).html(store_name);
+
+		});
+                $(function(){                  
+                                //修改
+                                var self;
+                                var status = $("#status").val();
+                                $(".edit,.edit1").hover(
+                                    function(){
+                                            if(status == 2 || status == ''){
+                                                    $(this).css({"cursor":"url(/position/public/kpi/img/edit.png),default","background-color":"#eee"});
+                                            }
+                                    },
+                                    function(){
+                                            if(status == 2 || status == ''){
+                                                    $(this).css({"cursor":"default","background-color":"#fff"});
+                                            }
+                                    }
+                                );
+								//车型库龄表数据修改
+								$("#MyTable td.edit").on("dblclick",function(){
+									self = $(this);
+									var con = self.html();			//所点击要修改的原内容
+									var table_name = 'runtarget';		//所点击要修改的表名
+									var key_name = self.attr("data-key");	//所点击要修改的键名
+									var order_num = self.attr("data-order");	//所点击要修改的序号id
+									var datatype = self.attr("data-type");	//此处是何种类型格式
+									if(status == 2 || status == ''){
+										tip_function(datatype,table_name,key_name,con,1,order_num);
+									}
+								});
+								//占比表
+								$("#MyTable td.edit1").on("dblclick",function(){
+									self = $(this);
+									var con = self.html();			//所点击要修改的原内容
+									var table_name = 'runrate';		//所点击要修改的表名
+									var key_name = self.attr("data-key");	//所点击要修改的键名
+									var order_num = self.attr("data-order");	//所点击要修改的序号id
+									var datatype = self.attr("data-type");	//此处是何种类型格式
+									if(status == 2 || status == ''){
+										tip_function(datatype,table_name,key_name,con,1,order_num);
+									}
+								});
+                                //售后重点增值业务指标修改
+                                $("#MyTable1 td.edit").on("dblclick",function(){
+                                    self = $(this);
+                                    var con = self.html();			//所点击要修改的原内容
+                                    var table_name = 'targetmvas';	//所点击要修改的表名
+                                    var key_name = self.attr("data-key");	//所点击要修改的键名
+                                    var order_num = self.attr("data-order");	//所点击要修改的序号id
+                                    var datatype = self.attr("data-type");	//此处是何种类型格式
+                                    if(status == 2 || status == ''){
+                                            tip_function(datatype,table_name,key_name,con,1,order_num);
+                                    }
+                                });
+                                //售后重点管理指标修改
+                                $("#MyTable2 td.edit").on("dblclick",function(){
+                                    self = $(this);
+                                    var con = self.html();			//所点击要修改的原内容
+                                    var table_name = 'target_manage';	//所点击要修改的表名
+                                    var key_name = self.attr("data-key");	//所点击要修改的键名
+                                    var order_num = self.attr("data-order");	//所点击要修改的序号id
+                                    var datatype = self.attr("data-type");	//此处是何种类型格式
+                                    if(status == 2 || status == ''){
+                                            tip_function(datatype,table_name,key_name,con,1,order_num);
+                                    }
+                                });
+                                $(".kpi_m1").html($(".kpi_p1").html());
+                                $(".kpi_m2").html($(".kpi_p2").html());
+                                $(".kpi_m3").html($(".kpi_p3").html());
+                                $(".kpi_m4").html($(".kpi_p4").html());
+                                $(".kpi_m5").html($(".kpi_p5").html());
+                                $(".kpi_m6").html($(".kpi_p6").html());
+                });
+	</script>
+
+</html>

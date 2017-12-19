@@ -1,0 +1,86 @@
+<extend name="Layout/ins_base" />
+<block name="content">
+	<input type="hidden" name="ajax" id="ajax" value="1">
+	<div class="popup-header clearfix">
+			<div class="pull-left">
+				<h1>新建自定义文件夹</h1>
+			</div>
+			<div class="pull-right">
+				<a onclick="save();" class="btn btn-sm btn-primary">确定</a>
+				<a onclick="myclose();" class="btn btn-sm btn-default">关闭</a>
+			</div>
+		</div>
+	<div class="row">
+		
+		<div class="col-sm-9">
+			<form id="form_data" name="form_data" method="post" class="well form-horizontal clearfix">
+				<input type="hidden" name="id" id="id">
+				<input type="hidden" name="opmode" id="opmode" value="">
+				
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="name">名称*：</label>
+					<div class="col-sm-9">
+						<input class="form-control" type="text" id="name" name="name" check="require" msg="请输入名称">
+					</div>
+				</div>
+				
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="sort">排序：</label>
+					<div class="col-sm-9">
+						<input class="form-control" type="text" id="sort" name="sort" >
+					</div>
+				</div>
+
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="is_del">状态：</label>
+					<div class="col-sm-9">
+						<select  class="form-control" name="is_del" id="is_del">
+							<option  value="0">启用</option>
+							<option value="1">禁用</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group col-xs-12">
+					<label class="col-sm-3 control-label" for="remark" >备注：</label>
+					<div class="col-sm-9" >
+						<textarea class="form-control" name="remark" rows="5" class="col-xs-12" ></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</block>
+<block name="js">
+	<script type="text/javascript">
+		// function add() {
+			 // $("#opmode").val("add");
+			 // $("#id").val("");
+			 // sendForm("form_data", "", "__SELF__");
+		// };
+		function save() {
+			//3.14 自定义文件夹添加修改---------------------------------------------------------------
+			 $("#opmode").val("add");
+			 $("#id").val("");
+			var vars=$("#form_data").serialize();
+			sendAjax("{:U('folder_manage')}",vars,function(data){
+				if(data.status){
+					ui_alert("新增成功",function() {
+						parent.location.reload(true);
+						myclose();
+						}
+						);
+				}else{
+					ui_error("新增失败");
+				}		
+			})
+			//----------------------------------------------------------------------------------
+		};
+
+
+		$(document).ready(function() {
+			
+			
+		});
+
+	</script>
+</block>

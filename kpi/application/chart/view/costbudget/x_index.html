@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>费用预算表</title>
+    <script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/kpi/table.js"></script>
+    <link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="/position/public/lib/self_tip.css" />
+    <script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="/position/public/lib/pubjs.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //预计表
+            var w = $(".table_box").width();
+            var h = $(".table_box").height();
+            $("#MyTable thead tr th").css({"padding":"10px 10px","height":"20px"});
+            $("#MyTable").css({"text-align":"center","font-size":"0.5rem","width":w,"height":h});
+            $("#MyTable td").css({"padding":"10px 2px","color":"rgb(70, 70, 70)"});
+            FixTable("MyTable",  3, w, h);
+        });
+        // ]]>
+    </script>
+
+    <style>
+        body{
+            font-size: 62.5%;
+        }
+        .unitinfo{float:right;margin-right:29%;font-family: STKaiti;font-size:0.9rem;}
+        @media (min-width: 766px) {
+            .table_box{
+                width: 100%;
+                height: 460px;
+                margin: 0 auto;
+                font-size: 0.5rem;
+            }
+            .table_box2{
+                width: 100%;
+                height: 460px;
+                margin: 0 auto;
+                font-size: 0.5rem;
+            }
+            a{
+                text-decoration: none;;
+            }
+            .top_bar{
+                width: 100%;
+                height: 40px;
+            }
+            .top_bar .btn{
+                width: auto;
+                height: 20px;
+                padding: 4px 12px;
+                margin-top: 6px;
+                background-color: #5a98de;
+                border-radius: 8px;
+                -webkit-border-radius: 8px;
+                color: #fff;
+                font-size: 14px;
+                font-weight: 400;
+            }
+            .search_box{
+                width: 100%;
+                height: 40px;
+                margin: 10px auto;
+                border: 1px solid #eaeaea;
+            }
+            .select_box{
+                border: solid 1px #ddd;
+                box-sizing: border-box;
+                vertical-align: middle;
+                width: 200px;
+                padding: 4px 5px;
+                display: inline-block;
+                margin-top: 5px;
+                margin-left: 20px;
+                float: left;
+                height: 30px;
+            }
+            .search_box >span{
+                display: block;
+                float: left;
+                width: 40px;
+                height: 40px;
+                float: left;
+                text-align: right;
+                line-height: 40px;
+                font-size: 14px;
+            }
+            .select{
+                border: 0;
+                font-size: 14px;
+                box-sizing: border-box;
+                cursor: pointer;
+                line-height: normal;
+                font-weight: normal;
+                width: 100%;
+                float: right;
+                white-space: nowrap;
+                outline: none;
+            }
+            .search_btn{
+                background-color: #5a98de;
+                border-radius: 5px;
+                color: #FFFFFF;
+                float: left;
+                display: inline-block;
+                box-sizing: border-box;
+                cursor: pointer;
+                text-align: center;
+                font-weight: 400;
+                white-space: nowrap;
+                vertical-align: middle;
+                -moz-padding-start: npx;
+                -moz-padding-end: npx;
+                width: auto;
+                border: none;
+                outline: none;
+                height: 30px;
+                margin-left: 20px;
+                margin-top: 5px;
+                padding: 0 10px;
+            }
+            .hidden{display:none;}
+            .cut_out,.m_search_bar,.select_box > i,.m_content_box{
+		display: none;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <form action="{:Url('index')}" method="post">
+        <input type="hidden" name="type" value="6">
+        <!--移动端->搜索按钮-->
+	<div class="m_search_bar"><i class="icon Hui-iconfont">&#xe665;</i></div>
+	<!--移动端->搜索按钮-->
+        <div class="search_box">
+            <span>门店:</span>
+            <div class="select_box">
+                <select class="select" name="store_id" id="store_id">
+                    <?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+                    <option <?php if(!empty($search_data) && $search_data['store_id']==$v['ID']){ echo 'selected';} ?> value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+                    <?php } ?>
+                </select>
+                <i class="icon Hui-iconfont">&#xe6d5;</i>
+            </div>
+            <span>年份:</span>
+            <div class="select_box">
+                <select class="select" name="year" id="store_year">
+                </select>
+                <i class="icon Hui-iconfont">&#xe6d5;</i>
+            </div>
+            <span>月份:</span>
+            <div class="select_box">
+                <select class="select" name="month" id="store_month">
+                    <option value="">请选择月份</option>
+                    <option value="1">1月</option>
+                    <option value="2">2月</option>
+                    <option value="3">3月</option>
+                    <option value="4">4月</option>
+                    <option value="5">5月</option>
+                    <option value="6">6月</option>
+                    <option value="7">7月</option>
+                    <option value="8">8月</option>
+                    <option value="9">9月</option>
+                    <option value="10">10月</option>
+                    <option value="11">11月</option>
+                    <option value="12">12月</option>
+                </select>
+                <i class="icon Hui-iconfont">&#xe6d5;</i>
+            </div>
+            <button name="" id="" class="search_btn" type="submit"> 查询</button>
+            <!--清除数据-->
+            <input type="hidden" id="table_name" value="costbudget">
+            <?php $clear_button = session("clear_button"); if($clear_button == "1"){ echo '<button name="" id="clear_button" style="background-color:orange;" class="search_btn" type="button" onclick="clearbutton()">清空数据</button>';} ?>
+            <!--清除数据-->
+            <!--审批状态-->
+            <input type="hidden" id="status" value="<?php if(!empty($data_dan)){ if(get_emp_no()==$data_dan['emp_no']){echo $data_dan['status']; }else{echo 0;}} ?>">
+            <!--审批状态-->
+            <!--移动端收起搜索框按钮-->
+            <button name="" id="" class="cut_out" type="button" onclick="cut_out()">收起</button>
+            <!--移动端收起搜索框按钮-->
+        </div>
+    </form>
+<!--车系库龄表-->
+<h1 style="width:100%;text-align: center;"><span></span>费用预算表{:is_pass($data_dan)}</h1><div class='unitinfo'>单位：万元</div>
+<input type="hidden" id="ct_status" value="{$data_status['status']}" />
+<div class="table_box">
+    <table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable">
+        <thead>
+        <tr>
+            <th rowspan="2"><div style="width: 60px;">类型</div></th>
+            <th rowspan="2"><div style="width: 60px;">序号</div></th>
+            <th rowspan="2"><div style="width: 120px;">项目</div></th>
+            <th colspan="3"><div style="width: 180px;">上月</div></th>
+            <th colspan="4"><div style="width: 240px;">累计数</div></th>
+            <th colspan="3"><div style="width: 180px;">本月数</div></th>
+            <th colspan="9"><div style="width: 540px;">其中</div></th>
+            <th rowspan="2"><div style="width: 60px;">备注</div></th>
+        </tr>
+        <tr>
+            <th>预测</th>
+            <th>实际</th>
+            <th>实际－预测差异</th>
+            <th>1-上上月实际</th>
+            <th>1-本月预测</th>
+            <th>1-本月预算</th>
+            <th>预测－预算差异</th>
+            <th>预算金额</th>
+            <th>计划金额</th>
+            <th>计划－预算差异</th>
+            <th>销售部</th>
+            <th>维修部</th>
+            <th>装潢部</th>
+            <th>行政部</th>
+            <th>财务部</th>
+            <th>总经理</th>
+            <th>客服部</th>
+            <th>市场部</th>
+            <th>其他</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($data_cost as $k => $v) { ?>
+        <?php if($k=='职工薪酬'){ ?>
+
+        <tr>
+            <td rowspan="11"><?php echo $k; ?></td>
+            <?php
+                    $sum_pm_expect=0;
+                    $sum_pm_actual=0;
+                    $sum_pm_diff=0;
+                    $sum_1_ppm_actual=0;
+                    $sum_1_tm_expect_c=0;
+                    $sum_1_tm_expect_s=0;
+                    $sum_expect_diff=0;
+                    $sum_tm_expect=0;
+                    $sum_tm_tot_expect=0;
+                    $sum_tm_diff=0;
+                    $sum_tm_salesDept_expect=0;
+                    $sum_tm_repairDept_expect=0;
+                    $sum_tm_ornDept_expect=0;
+                    $sum_tm_adminDept_expect=0;
+                    $sum_tm_financeDept_expect=0;
+                    $sum_tm_gmDept_expect=0;
+                    $sum_tm_serviceDept_expect=0;
+                    $sum_tm_market_expect=0;
+                    $sum_tm_other_expect=0;
+                     ?>
+            <?php foreach ($v['_child'] as $ke => $val) { ?>
+
+            <?php
+                        if(!empty($val['info'])){
+                            $sum_pm_expect+=$val['info']['pm_expect'];
+                            $sum_pm_actual+=$val['info']['pm_actual'];
+                            $sum_pm_diff+=$val['info']['pm_diff'];
+                            $sum_1_ppm_actual+=$val['info']['1_ppm_actual'];
+                            $sum_1_tm_expect_c+=$val['info']['1_tm_expect_c'];
+                            $sum_1_tm_expect_s+=$val['info']['1_tm_expect_s'];
+                            $sum_expect_diff+=$val['info']['expect_diff'];
+                            $sum_tm_expect+=$val['info']['tm_expect'];
+                            $sum_tm_tot_expect+=$val['info']['tm_tot_expect'];
+                            $sum_tm_diff+=$val['info']['tm_diff'];
+                            $sum_tm_salesDept_expect+=$val['info']['tm_salesDept_expect'];
+                            $sum_tm_repairDept_expect+=$val['info']['tm_repairDept_expect'];
+                            $sum_tm_ornDept_expect+=$val['info']['tm_ornDept_expect'];
+                            $sum_tm_adminDept_expect+=$val['info']['tm_adminDept_expect'];
+                            $sum_tm_financeDept_expect+=$val['info']['tm_financeDept_expect'];
+                            $sum_tm_gmDept_expect+=$val['info']['tm_gmDept_expect'];
+                            $sum_tm_serviceDept_expect+=$val['info']['tm_serviceDept_expect'];
+                            $sum_tm_market_expect+=$val['info']['tm_market_expect'];
+                            $sum_tm_other_expect+=$val['info']['tm_other_expect'];
+                         ?>
+            <td><?php echo $val['pid'].'-'.$val['id']; ?></td>
+            <td><?php echo $ke; ?></td>
+            <td class="edit" data-key="pm_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['pm_expect']; ?></td>
+            <td class="edit" data-key="pm_actual" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['pm_actual']; ?></td>
+            <td><?php echo $val['info']['pm_diff']; ?></td>
+            <td class="edit" data-key="1_ppm_actual" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['1_ppm_actual']; ?></td>
+            <td><?php echo $val['info']['1_tm_expect_c']; ?></td>
+            <td class="edit" data-key="1_tm_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['1_tm_expect_s']; ?></td>
+            <td><?php echo $val['info']['expect_diff']; ?></td>
+            <td class="edit" data-key="tm_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['tm_expect']; ?></td>
+            <td><?php echo $val['info']['tm_tot_expect']; ?></td>
+            <td><?php echo $val['info']['tm_diff']; ?></td>
+            <td class="edit" data-key="tm_salesDept_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['tm_salesDept_expect']; ?></td>
+            <td class="edit" data-key="tm_repairDept_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['tm_repairDept_expect']; ?></td>
+            <td class="edit" data-key="tm_ornDept_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['tm_ornDept_expect']; ?></td>
+            <td class="edit" data-key="tm_adminDept_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['tm_adminDept_expect']; ?></td>
+            <td class="edit" data-key="tm_financeDept_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['tm_financeDept_expect']; ?></td>
+            <td class="edit" data-key="tm_gmDept_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['tm_gmDept_expect']; ?></td>
+            <td class="edit" data-key="tm_serviceDept_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['tm_serviceDept_expect']; ?></td>
+            <td class="edit" data-key="tm_market_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['tm_market_expect']; ?></td>
+            <td class="edit" data-key="tm_other_expect" data-type="float" data-order="{$val['info']['id']}"><?php echo $val['info']['tm_other_expect']; ?></td>
+            <td class="edit" data-key="remark" data-type="text" data-order="{$val['info']['id']}"><?php echo $val['info']['remark']; ?></td>
+            <?php } ?>
+        </tr>
+        <?php } ?>
+        <tr style="background:red;">
+            <td colspan='2'>小计</td>
+            <td><?php echo $sum_pm_expect; ?></td>
+            <td><?php echo $sum_pm_actual; ?></td>
+            <td><?php echo $sum_pm_actual-$sum_pm_expect; ?></td>
+            <td><?php echo $sum_1_ppm_actual; ?></td>
+            <td><?php echo $sum_1_tm_expect_c; ?></td>
+            <td><?php echo $sum_1_tm_expect_s;?></td>
+            <td><?php echo $sum_expect_diff; ?></td>
+            <td><?php echo $sum_tm_expect; ?></td>
+            <td><?php echo $sum_tm_tot_expect; ?></td>
+            <td><?php echo $sum_tm_diff; ?></td>
+            <td><?php echo $sum_tm_salesDept_expect; ?></td>
+            <td><?php echo $sum_tm_repairDept_expect; ?></td>
+            <td><?php echo $sum_tm_ornDept_expect; ?></td>
+            <td><?php echo $sum_tm_adminDept_expect; ?></td>
+            <td><?php echo $sum_tm_financeDept_expect; ?></td>
+            <td><?php echo $sum_tm_gmDept_expect; ?></td>
+            <td><?php echo $sum_tm_serviceDept_expect; ?></td>
+            <td><?php echo $sum_tm_market_expect; ?></td>
+            <td><?php echo $sum_tm_other_expect; ?></td>
+            <td></td>
+        </tr>
+        <?php }else if($k=="变动费用"){ ?>
+            <?php
+                    $bian_sum_pm_expect=0;
+                    $bian_sum_pm_actual=0;
+                    $bian_sum_pm_diff=0;
+                    $bian_sum_1_ppm_actual=0;
+                    $bian_sum_1_tm_expect_c=0;
+                    $bian_sum_1_tm_expect_s=0;
+                    $bian_sum_expect_diff=0;
+                    $bian_sum_tm_expect=0;
+                    $bian_sum_tm_tot_expect=0;
+                    $bian_sum_tm_diff=0;
+                    $bian_sum_tm_salesDept_expect=0;
+                    $bian_sum_tm_repairDept_expect=0;
+                    $bian_sum_tm_ornDept_expect=0;
+                    $bian_sum_tm_adminDept_expect=0;
+                    $bian_sum_tm_financeDept_expect=0;
+                    $bian_sum_tm_gmDept_expect=0;
+                    $bian_sum_tm_serviceDept_expect=0;
+                    $bian_sum_tm_market_expect=0;
+                    $bian_sum_tm_other_expect=0;
+                     ?>
+            <?php foreach ($v['_child'] as $ke => $val) { ?>
+            <?php if($ke!='税费'){ ?>
+            <?php if(empty($val['info'])){ ?>            
+            <?php }else{ ?>
+            <?php
+                    $bian_sum_pm_expect+=$val['info']['pm_expect'];
+                    $bian_sum_pm_actual+=$val['info']['pm_actual'];
+                    $bian_sum_pm_diff+=$val['info']['pm_diff'];
+                    $bian_sum_1_ppm_actual+=$val['info']['1_ppm_actual'];
+                    $bian_sum_1_tm_expect_c+=$val['info']['1_tm_expect_c'];
+                    $bian_sum_1_tm_expect_s+=$val['info']['1_tm_expect_s'];
+                    $bian_sum_expect_diff+=$val['info']['expect_diff'];
+                    $bian_sum_tm_expect+=$val['info']['tm_expect'];
+                    $bian_sum_tm_tot_expect+=$val['info']['tm_tot_expect'];
+                    $bian_sum_tm_diff+=$val['info']['tm_diff'];
+                    $bian_sum_tm_salesDept_expect+=$val['info']['tm_salesDept_expect'];
+                    $bian_sum_tm_repairDept_expect+=$val['info']['tm_repairDept_expect'];
+                    $bian_sum_tm_ornDept_expect+=$val['info']['tm_ornDept_expect'];
+                    $bian_sum_tm_adminDept_expect+=$val['info']['tm_adminDept_expect'];
+                    $bian_sum_tm_financeDept_expect+=$val['info']['tm_financeDept_expect'];
+                    $bian_sum_tm_gmDept_expect+=$val['info']['tm_gmDept_expect'];
+                    $bian_sum_tm_serviceDept_expect+=$val['info']['tm_serviceDept_expect'];
+                    $bian_sum_tm_market_expect+=$val['info']['tm_market_expect'];
+                    $bian_sum_tm_other_expect+=$val['info']['tm_other_expect'];
+                     ?>                       
+
+            <?php } ?>
+            <?php } ?>
+            <?php if(!empty($val['_child'])){ ?>
+            <?php
+                    $sum_pm_expect_tax=0;
+                    $sum_pm_actual_tax=0;
+                    $sum_pm_diff_tax=0;
+                    $sum_1_ppm_actual_tax=0;
+                    $sum_1_tm_expect_c_tax=0;
+                    $sum_1_tm_expect_s_tax=0;
+                    $sum_expect_diff_tax=0;
+                    $sum_tm_expect_tax=0;
+                    $sum_tm_tot_expect_tax=0;
+                    $sum_tm_diff_tax=0;
+                    $sum_tm_salesDept_expect_tax=0;
+                    $sum_tm_repairDept_expect_tax=0;
+                    $sum_tm_ornDept_expect_tax=0;
+                    $sum_tm_adminDept_expect_tax=0;
+                    $sum_tm_financeDept_expect_tax=0;
+                    $sum_tm_gmDept_expect_tax=0;
+                    $sum_tm_serviceDept_expect_tax=0;
+                    $sum_tm_market_expect_tax=0;
+                    $sum_tm_other_expect_tax=0;
+
+                     ?>
+            <?php foreach ($val['_child'] as $ko => $vo) { ?>
+            <?php if(empty($vo['info_info'])){ ?>
+            <?php }else{ ?>
+            <?php
+                        $sum_pm_expect_tax+=$vo['info_info']['pm_expect'];
+                        $sum_pm_actual_tax+=$vo['info_info']['pm_actual'];
+                        $sum_pm_diff_tax+=$vo['info_info']['pm_diff'];
+                        $sum_1_ppm_actual_tax+=$vo['info_info']['1_ppm_actual'];
+                        $sum_1_tm_expect_c_tax+=$vo['info_info']['1_tm_expect_c'];
+                        $sum_1_tm_expect_s_tax+=$vo['info_info']['1_tm_expect_s'];
+                        $sum_expect_diff_tax+=$vo['info_info']['expect_diff'];
+                        $sum_tm_expect_tax+=$vo['info_info']['tm_expect'];
+                        $sum_tm_tot_expect_tax+=$vo['info_info']['tm_tot_expect'];
+                        $sum_tm_diff_tax+=$vo['info_info']['tm_diff'];
+                        $sum_tm_salesDept_expect_tax+=$vo['info_info']['tm_salesDept_expect'];
+                        $sum_tm_repairDept_expect_tax+=$vo['info_info']['tm_repairDept_expect'];
+                        $sum_tm_ornDept_expect_tax+=$vo['info_info']['tm_ornDept_expect'];
+                        $sum_tm_adminDept_expect_tax+=$vo['info_info']['tm_adminDept_expect'];
+                        $sum_tm_financeDept_expect_tax+=$vo['info_info']['tm_financeDept_expect'];
+                        $sum_tm_gmDept_expect_tax+=$vo['info_info']['tm_gmDept_expect'];
+                        $sum_tm_serviceDept_expect_tax+=$vo['info_info']['tm_serviceDept_expect'];
+                        $sum_tm_market_expect_tax+=$vo['info_info']['tm_market_expect'];
+                        $sum_tm_other_expect_tax+=$vo['info_info']['tm_other_expect'];
+                         ?>                        
+
+            <?php } ?>
+        <?php } ?>
+
+        <?php } ?>
+
+        <?php } ?>
+        <?php }else if($k=='固定费用'){ ?>
+            <?php
+                    $gu_sum_pm_expect=0;
+                    $gu_sum_pm_actual=0;
+                    $gu_sum_pm_diff=0;
+                    $gu_sum_1_ppm_actual=0;
+                    $gu_sum_1_tm_expect_c=0;
+                    $gu_sum_1_tm_expect_s=0;
+                    $gu_sum_expect_diff=0;
+                    $gu_sum_tm_expect=0;
+                    $gu_sum_tm_tot_expect=0;
+                    $gu_sum_tm_diff=0;
+                    $gu_sum_tm_salesDept_expect=0;
+                    $gu_sum_tm_repairDept_expect=0;
+                    $gu_sum_tm_ornDept_expect=0;
+                    $gu_sum_tm_adminDept_expect=0;
+                    $gu_sum_tm_financeDept_expect=0;
+                    $gu_sum_tm_gmDept_expect=0;
+                    $gu_sum_tm_serviceDept_expect=0;
+                    $gu_sum_tm_market_expect=0;
+                    $gu_sum_tm_other_expect=0;
+                     ?>
+            <?php foreach ($v['_child'] as $ke => $val) { ?>
+            <?php if($ke!='摊销费'){ ?>
+            <?php if(empty($val['info'])){ ?>            
+            <?php }else{ ?>
+            <?php
+                    $gu_sum_pm_expect+=$val['info']['pm_expect'];
+                    $gu_sum_pm_actual+=$val['info']['pm_actual'];
+                    $gu_sum_pm_diff+=$val['info']['pm_diff'];
+                    $gu_sum_1_ppm_actual+=$val['info']['1_ppm_actual'];
+                    $gu_sum_1_tm_expect_c+=$val['info']['1_tm_expect_c'];
+                    $gu_sum_1_tm_expect_s+=$val['info']['1_tm_expect_s'];
+                    $gu_sum_expect_diff+=$val['info']['expect_diff'];
+                    $gu_sum_tm_expect+=$val['info']['tm_expect'];
+                    $gu_sum_tm_tot_expect+=$val['info']['tm_tot_expect'];
+                    $gu_sum_tm_diff+=$val['info']['tm_diff'];
+                    $gu_sum_tm_salesDept_expect+=$val['info']['tm_salesDept_expect'];
+                    $gu_sum_tm_repairDept_expect+=$val['info']['tm_repairDept_expect'];
+                    $gu_sum_tm_ornDept_expect+=$val['info']['tm_ornDept_expect'];
+                    $gu_sum_tm_adminDept_expect+=$val['info']['tm_adminDept_expect'];
+                    $gu_sum_tm_financeDept_expect+=$val['info']['tm_financeDept_expect'];
+                    $gu_sum_tm_gmDept_expect+=$val['info']['tm_gmDept_expect'];
+                    $gu_sum_tm_serviceDept_expect+=$val['info']['tm_serviceDept_expect'];
+                    $gu_sum_tm_market_expect+=$val['info']['tm_market_expect'];
+                    $gu_sum_tm_other_expect+=$val['info']['tm_other_expect'];
+                     ?>
+            <?php } ?>
+            <?php } ?>
+            <?php if(!empty($val['_child'])){ ?>
+            <?php
+                            $gu_tan_sum_pm_expect=0;
+                            $gu_tan_sum_pm_actual=0;
+                            $gu_tan_sum_pm_diff=0;
+                            $gu_tan_sum_1_ppm_actual=0;
+                            $gu_tan_sum_1_tm_expect_c=0;
+                            $gu_tan_sum_1_tm_expect_s=0;
+                            $gu_tan_sum_expect_diff=0;
+                            $gu_tan_sum_tm_expect=0;
+                            $gu_tan_sum_tm_tot_expect=0;
+                            $gu_tan_sum_tm_diff=0;
+                            $gu_tan_sum_tm_salesDept_expect=0;
+                            $gu_tan_sum_tm_repairDept_expect=0;
+                            $gu_tan_sum_tm_ornDept_expect=0;
+                            $gu_tan_sum_tm_adminDept_expect=0;
+                            $gu_tan_sum_tm_financeDept_expect=0;
+                            $gu_tan_sum_tm_gmDept_expect=0;
+                            $gu_tan_sum_tm_serviceDept_expect=0;
+                            $gu_tan_sum_tm_market_expect=0;
+                            $gu_tan_sum_tm_other_expect=0;
+                             ?>
+            <?php foreach ($val['_child'] as $ko => $vo) { ?>
+            <?php if(empty($vo['info_info'])){ ?>
+            <?php }else{ ?>
+            <?php
+
+                            $gu_tan_sum_pm_expect+=$vo['info_info']['pm_expect'];
+                            $gu_tan_sum_pm_actual+=$vo['info_info']['pm_actual'];
+                            $gu_tan_sum_pm_diff+=$vo['info_info']['pm_diff'];
+                            $gu_tan_sum_1_ppm_actual+=$vo['info_info']['1_ppm_actual'];
+                            $gu_tan_sum_1_tm_expect_c+=$vo['info_info']['1_tm_expect_c'];
+                            $gu_tan_sum_1_tm_expect_s+=$vo['info_info']['1_tm_expect_s'];
+                            $gu_tan_sum_expect_diff+=$vo['info_info']['expect_diff'];
+                            $gu_tan_sum_tm_expect+=$vo['info_info']['tm_expect'];
+                            $gu_tan_sum_tm_tot_expect+=$vo['info_info']['tm_tot_expect'];
+                            $gu_tan_sum_tm_diff+=$vo['info_info']['tm_diff'];
+                            $gu_tan_sum_tm_salesDept_expect+=$vo['info_info']['tm_salesDept_expect'];
+                            $gu_tan_sum_tm_repairDept_expect+=$vo['info_info']['tm_repairDept_expect'];
+                            $gu_tan_sum_tm_ornDept_expect+=$vo['info_info']['tm_ornDept_expect'];
+                            $gu_tan_sum_tm_adminDept_expect+=$vo['info_info']['tm_adminDept_expect'];
+                            $gu_tan_sum_tm_financeDept_expect+=$vo['info_info']['tm_financeDept_expect'];
+                            $gu_tan_sum_tm_gmDept_expect+=$vo['info_info']['tm_gmDept_expect'];
+                            $gu_tan_sum_tm_serviceDept_expect+=$vo['info_info']['tm_serviceDept_expect'];
+                            $gu_tan_sum_tm_market_expect+=$vo['info_info']['tm_market_expect'];
+                            $gu_tan_sum_tm_other_expect+=$vo['info_info']['tm_other_expect'];
+                             ?>
+            <?php } ?>
+        <?php } ?>
+        <?php } ?>
+        <?php } ?>            
+        <?php }else if($k=='财务费用'){ ?>
+            <?php
+                            $cai_sum_pm_expect=0;
+                            $cai_sum_pm_actual=0;
+                            $cai_sum_pm_diff=0;
+                            $cai_sum_1_ppm_actual=0;
+                            $cai_sum_1_tm_expect_c=0;
+                            $cai_sum_1_tm_expect_s=0;
+                            $cai_sum_expect_diff=0;
+                            $cai_sum_tm_expect=0;
+                            $cai_sum_tm_tot_expect=0;
+                            $cai_sum_tm_diff=0;
+                            $cai_sum_tm_salesDept_expect=0;
+                            $cai_sum_tm_repairDept_expect=0;
+                            $cai_sum_tm_ornDept_expect=0;
+                            $cai_sum_tm_adminDept_expect=0;
+                            $cai_sum_tm_financeDept_expect=0;
+                            $cai_sum_tm_gmDept_expect=0;
+                            $cai_sum_tm_serviceDept_expect=0;
+                            $cai_sum_tm_market_expect=0;
+                            $cai_sum_tm_other_expect=0;
+                         ?>
+            <?php foreach ($v['_child'] as $ke => $val) { ?>
+            <?php if($ke!='利息收入' && $ke!='利息支出'){ ?>
+            <?php if(empty($val['info'])){ ?>           
+            <?php }else{ ?>
+            <?php
+                            $cai_sum_pm_expect+=$val['info']['pm_expect'];
+                            $cai_sum_pm_actual+=$val['info']['pm_actual'];
+                            $cai_sum_pm_diff+=$val['info']['pm_diff'];
+                            $cai_sum_1_ppm_actual+=$val['info']['1_ppm_actual'];
+                            $cai_sum_1_tm_expect_c+=$val['info']['1_tm_expect_c'];
+                            $cai_sum_1_tm_expect_s+=$val['info']['1_tm_expect_s'];
+                            $cai_sum_expect_diff+=$val['info']['expect_diff'];
+                            $cai_sum_tm_expect+=$val['info']['tm_expect'];
+                            $cai_sum_tm_tot_expect+=$val['info']['tm_tot_expect'];
+                            $cai_sum_tm_diff+=$val['info']['tm_diff'];
+                            $cai_sum_tm_salesDept_expect+=$val['info']['tm_salesDept_expect'];
+                            $cai_sum_tm_repairDept_expect+=$val['info']['tm_repairDept_expect'];
+                            $cai_sum_tm_ornDept_expect+=$val['info']['tm_ornDept_expect'];
+                            $cai_sum_tm_adminDept_expect+=$val['info']['tm_adminDept_expect'];
+                            $cai_sum_tm_financeDept_expect+=$val['info']['tm_financeDept_expect'];
+                            $cai_sum_tm_gmDept_expect+=$val['info']['tm_gmDept_expect'];
+                            $cai_sum_tm_serviceDept_expect+=$val['info']['tm_serviceDept_expect'];
+                            $cai_sum_tm_market_expect+=$val['info']['tm_market_expect'];
+                            $cai_sum_tm_other_expect+=$val['info']['tm_other_expect'];
+                            ?>            
+            <?php } ?>
+            <?php } ?>
+        <?php if(!empty($val['_child'])){ ?>
+            <?php
+                        if($val['id']=='58'){  //利息收入
+                            $cai_s_sum_pm_expect=0;
+                            $cai_s_sum_pm_actual=0;
+                            $cai_s_sum_pm_diff=0;
+                            $cai_s_sum_1_ppm_actual=0;
+                            $cai_s_sum_1_tm_expect_c=0;
+                            $cai_s_sum_1_tm_expect_s=0;
+                            $cai_s_sum_expect_diff=0;
+                            $cai_s_sum_tm_expect=0;
+                            $cai_s_sum_tm_tot_expect=0;
+                            $cai_s_sum_tm_diff=0;
+                            $cai_s_sum_tm_salesDept_expect=0;
+                            $cai_s_sum_tm_repairDept_expect=0;
+                            $cai_s_sum_tm_ornDept_expect=0;
+                            $cai_s_sum_tm_adminDept_expect=0;
+                            $cai_s_sum_tm_financeDept_expect=0;
+                            $cai_s_sum_tm_gmDept_expect=0;
+                            $cai_s_sum_tm_serviceDept_expect=0;
+                            $cai_s_sum_tm_market_expect=0;
+                            $cai_s_sum_tm_other_expect=0;
+                        }else if($val['id']=='62'){  //利息支出
+                            $cai_z_sum_pm_expect=0;
+                            $cai_z_sum_pm_actual=0;
+                            $cai_z_sum_pm_diff=0;
+                            $cai_z_sum_1_ppm_actual=0;
+                            $cai_z_sum_1_tm_expect_c=0;
+                            $cai_z_sum_1_tm_expect_s=0;
+                            $cai_z_sum_expect_diff=0;
+                            $cai_z_sum_tm_expect=0;
+                            $cai_z_sum_tm_tot_expect=0;
+                            $cai_z_sum_tm_diff=0;
+                            $cai_z_sum_tm_salesDept_expect=0;
+                            $cai_z_sum_tm_repairDept_expect=0;
+                            $cai_z_sum_tm_ornDept_expect=0;
+                            $cai_z_sum_tm_adminDept_expect=0;
+                            $cai_z_sum_tm_financeDept_expect=0;
+                            $cai_z_sum_tm_gmDept_expect=0;
+                            $cai_z_sum_tm_serviceDept_expect=0;
+                            $cai_z_sum_tm_market_expect=0;
+                            $cai_z_sum_tm_other_expect=0;
+                        }
+                            ?>
+            <?php foreach ($val['_child'] as $ko => $vo) { ?>
+            <?php if(empty($vo['info_info'])){ ?>            
+            <?php }else{ ?>
+            <?php
+                            if($vo['pid']=='58'){  //利息收入
+                            $cai_s_sum_pm_expect+=$vo['info_info']['pm_expect'];
+                            $cai_s_sum_pm_actual+=$vo['info_info']['pm_actual'];
+                            $cai_s_sum_pm_diff+=$vo['info_info']['pm_diff'];
+                            $cai_s_sum_1_ppm_actual+=$vo['info_info']['1_ppm_actual'];
+                            $cai_s_sum_1_tm_expect_c+=$vo['info_info']['1_tm_expect_c'];
+                            $cai_s_sum_1_tm_expect_s+=$vo['info_info']['1_tm_expect_s'];
+                            $cai_s_sum_expect_diff+=$vo['info_info']['expect_diff'];
+                            $cai_s_sum_tm_expect+=$vo['info_info']['tm_expect'];
+                            $cai_s_sum_tm_tot_expect+=$vo['info_info']['tm_tot_expect'];
+                            $cai_s_sum_tm_diff+=$vo['info_info']['tm_diff'];
+                            $cai_s_sum_tm_salesDept_expect+=$vo['info_info']['tm_salesDept_expect'];
+                            $cai_s_sum_tm_repairDept_expect+=$vo['info_info']['tm_repairDept_expect'];
+                            $cai_s_sum_tm_ornDept_expect+=$vo['info_info']['tm_ornDept_expect'];
+                            $cai_s_sum_tm_adminDept_expect+=$vo['info_info']['tm_adminDept_expect'];
+                            $cai_s_sum_tm_financeDept_expect+=$vo['info_info']['tm_financeDept_expect'];
+                            $cai_s_sum_tm_gmDept_expect+=$vo['info_info']['tm_gmDept_expect'];
+                            $cai_s_sum_tm_serviceDept_expect+=$vo['info_info']['tm_serviceDept_expect'];
+                            $cai_s_sum_tm_market_expect+=$vo['info_info']['tm_market_expect'];
+                            $cai_s_sum_tm_other_expect+=$vo['info_info']['tm_other_expect'];
+                            }else if($vo['pid']=='62'){
+                                $cai_z_sum_pm_expect+=$vo['info_info']['pm_expect'];
+                                $cai_z_sum_pm_actual+=$vo['info_info']['pm_actual'];
+                                $cai_z_sum_pm_diff+=$vo['info_info']['pm_diff'];
+                                $cai_z_sum_1_ppm_actual+=$vo['info_info']['1_ppm_actual'];
+                                $cai_z_sum_1_tm_expect_c+=$vo['info_info']['1_tm_expect_c'];
+                                $cai_z_sum_1_tm_expect_s+=$vo['info_info']['1_tm_expect_s'];
+                                $cai_z_sum_expect_diff+=$vo['info_info']['expect_diff'];
+                                $cai_z_sum_tm_expect+=$vo['info_info']['tm_expect'];
+                                $cai_z_sum_tm_tot_expect+=$vo['info_info']['tm_tot_expect'];
+                                $cai_z_sum_tm_diff+=$vo['info_info']['tm_diff'];
+                                $cai_z_sum_tm_salesDept_expect+=$vo['info_info']['tm_salesDept_expect'];
+                                $cai_z_sum_tm_repairDept_expect+=$vo['info_info']['tm_repairDept_expect'];
+                                $cai_z_sum_tm_ornDept_expect+=$vo['info_info']['tm_ornDept_expect'];
+                                $cai_z_sum_tm_adminDept_expect+=$vo['info_info']['tm_adminDept_expect'];
+                                $cai_z_sum_tm_financeDept_expect+=$vo['info_info']['tm_financeDept_expect'];
+                                $cai_z_sum_tm_gmDept_expect+=$vo['info_info']['tm_gmDept_expect'];
+                                $cai_z_sum_tm_serviceDept_expect+=$vo['info_info']['tm_serviceDept_expect'];
+                                $cai_z_sum_tm_market_expect+=$vo['info_info']['tm_market_expect'];
+                                $cai_z_sum_tm_other_expect+=$vo['info_info']['tm_other_expect'];
+                            }
+                            ?>
+            <?php } ?>
+        <?php } ?>
+        <?php } ?>
+
+        <?php } ?>            
+        <?php } ?>
+
+        <?php } ?>       
+
+        </tbody>
+    </table>
+</div>   
+<input type="hidden" value="<?php if(!empty($sid)) echo $sid; ?>" id="search_id"/>
+    <input type="hidden" value="<?php if(!empty($year)) echo $year; ?>" id="search_year"/>
+    <input type="hidden" value="<?php if(!empty($month)) echo $month; ?>" id="search_month"/>
+
+<script type="text/javascript" src="__LIB__/layer/2.4/layer.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var store_id = $("#store_id").val();
+        var str = "store_id="+store_id;
+        $.ajax({
+            type: 'POST',
+            url: '{:Url("index")}',
+            data:str,
+            dataType: 'json',
+            success: function(data){
+
+            }
+        });
+    });
+    $(function(){
+        //年份
+        var current_date = new Date();
+        var cur_year = current_date.getFullYear()-2 ;
+        for(var i=0; i<5;i++){
+            var html = '</option><option value="'+(cur_year+i)+'">'+(cur_year+i)+'年</option>';
+            $("#store_year").append(html);
+        };
+        $("#store_year").val(current_date.getFullYear());
+        //月份
+        var cur_month = current_date.getMonth()+1;
+        $("#store_month").val(cur_month);
+
+    })
+
+    $(document).ready(function(){
+        var store_id = $("#search_id").val();
+        var store_year = $("#search_year").val();
+        var store_month = $("#search_month").val();
+        if (store_id != "") {
+            $("#store_id").val(store_id);
+        };
+        if(store_year != ''){
+            $("#store_year").val(store_year);
+        }
+        if(store_month != ''){
+            $("#store_month").val(store_month);
+        };
+        var store_name = $("#store_id").find("option:selected").text();
+        $("h1 > span").eq(0).html(store_name);
+
+
+    });
+    $(document).ready(function(){
+        //执行
+        var self;
+        var status = $("#status").val();
+        //鼠标经过需要修改的地方的效果
+        $("td.edit,td.edit1").hover(
+                function(){
+                    if(status == 2 || status == ''){
+                        $(this).css({"cursor":"url(/position/public/kpi/img/edit.png),default","background-color":"#eee"});
+                    }
+                },
+                function(){
+                    if(status == 2 || status == ''){
+                        $(this).css({"cursor":"default","background-color":"#fff"});
+                    }
+                }
+        );
+        //表一数据修改
+        $("td.edit").on("dblclick",function(){
+            self = $(this);
+            var con = self.html();			//所点击要修改的原内容
+            var table_name = 'costbudget';			//所点击要修改的表名
+            var key_name = self.attr("data-key");			//所点击要修改的键名
+            var order_num = self.attr("data-order");			//所点击要修改的序号id
+            var datatype = self.attr("data-type");			//此处是何种类型格式
+            if(status == 2 || status == ''){
+                tip_function(datatype,table_name,key_name,con,1,order_num);
+            }
+        });
+        
+        //审批状态判断
+//                $(function(){
+//                    var ct_status = $("#ct_status").val();
+//                    if(ct_status!=="1"){
+//                        $("div[class^='table_box']").addClass("hidden");
+//                }
+//        });
+    })
+
+</script>
+</body>
+</html>

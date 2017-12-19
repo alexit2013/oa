@@ -1,0 +1,74 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<form class="form form-horizontal" id="form">
+    	
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>输入账号</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" placeholder="请选员工账号" id="emp_no" name="emp_no">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择类型</label>
+            <div class="formControls col-xs-8 col-sm-9" >
+                <select name="type" class="select" id="type">
+                    <option value="">请选择类型</option>
+                    <option value="1">签到</option>
+                    <option value="2">签退</option>
+                </select>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择时间</label>
+            <div class="formControls col-xs-8 col-sm-9" id="branch">
+                <input type="datetime-local" id="time" name="time"/>
+            </div>
+        </div>
+        
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <a id="dosubmit" class="btn btn-primary radius ml-20">提交</a>
+                <button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+            </div>
+        </div>
+    </form>
+{/block}
+
+{block name="js"}
+<script>
+    $("#dosubmit").click(function(){
+        var emp = $("#emp_no").val();
+        var type = $("#type").val();
+        var time = $("#time").val();
+        if(emp == ''){
+            layer.msg("请输入账号");
+            return;
+        }
+        if(type == ''){
+            layer.msg('请选择类型');
+            return;
+        }
+        if(time == ''){
+            layer.msg('请选择日期和输入时间');
+            return;
+        }
+        var form = $("#form").serialize();
+        $.ajax({
+            url:"{:Url('buqian')}",
+            type:"post",
+            data:form,
+            dataType: 'json',
+            success: function(data){
+                 alert(data.msg);   
+                if(data.status == 1){
+                   var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                }
+            },
+            error: function(data){
+                layer.msg(data.msg+"请求失败");
+            }
+        });
+    });
+</script>
+{/block}

@@ -1,0 +1,367 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    .c-red{color: red;}
+    .AddIcon{font-size: 19px;line-height: 31px;cursor:pointer;}
+    .mt-3{margin-top:3px;}
+    .ml1r{margin-left:1rem;}
+    .file_upload{
+        border: 1px solid #dfdfdf;
+        width: 121px;
+        height: 36px;
+        line-height: 34px;
+        text-align: center;
+        color: #676795;
+        font-size: 16px;
+        position: relative;
+        padding-left:18px;
+    }
+    .file_upload i{
+        position: absolute;
+        top:0px;
+        left:19px;
+        font-size:19px;
+        color: #60b879;
+    }
+    .msg_content{
+        margin:25px 0px;
+        padding: 25px 0px;
+        box-sizing:border-box;
+        border: 1px solid #00ccff;
+        border-radius:15px;
+        position: relative;
+    }
+    .msg_del{
+        border-radius:5px;
+        color: #fff;
+        background-color:#3399ff;
+        width:auto;
+        height: 28px;
+        line-height: 28px;
+        padding: 0px 12px;
+        position: absolute;
+        top:-15px;
+        left:16px;
+        text-align: center;
+        font-size: 13px;
+        cursor:pointer;
+    }
+    .addbox{padding: 0 1.5rem;}
+    .additem{float: left;margin-left:1rem;}
+    .de-container{padding:10px 20px}
+</style>
+<div class="page-container">
+    <form class="form form-horizontal" id="form-article-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店：</label>
+            <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                                <select class="select" name="store_id" id="store_id">
+                                    <?php foreach($stores as $k => $v){ ?>
+                                    <option value="{$v['ID']}">{$v['NAME']}</option>
+                                    <?php } ?>
+                                </select>
+				</span></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌：</label>
+            <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                <select class="select" name="carbrand_id" id="carbrand_id">
+                    <option>请选择</option>
+                </select>
+				</span></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车系：</label>
+            <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                <select class="select" name="carseries_id" id="carseries_id">
+                    <option>请选择</option>
+                </select>
+				</span></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车型：</label>
+            <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+				<select class="select" name="carsize_id" id="carsize_id">
+                    <option>请选择</option>
+                </select>
+				</span></div>
+        </div>
+        <div class="de-container">
+            <div class="msg_content">
+                <div class="msg_del">三个月以内</div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>数量：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" private="required"  msg="数量" placeholder="请输入数量" id="quantity1" name="three_num" onchange="auto_cal('1')" onkeyup="clearNoNum(this)">
+                    </div>
+                    <span class="c-red">辆</span>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>采购价：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" private="required" readonly="readonly"  msg="采购价" placeholder="请输入采购价" id="unit_price1" name="three_price" onchange="auto_cal('1')" onkeyup="clearNoNum(this)">
+                    </div>
+                    <span class="c-red">元</span>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>金额：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" placeholder="自动计算" id="money1" name="three_prices" readonly="readonly">
+                    </div>
+                    <span class="c-red">元</span>
+                </div>
+            </div>
+        </div>
+        <div class="de-container">
+            <div class="msg_content">
+                <div class="msg_del">3-6个月</div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>数量：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" private="required"  msg="数量" placeholder="请输入数量" id="quantity2" name="threetosix_num" onchange="auto_cal('2')" onkeyup="clearNoNum(this)">
+                    </div>
+                    <span class="c-red">辆</span>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>采购价：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" private="required" readonly="readonly"  msg="采购价" placeholder="请输入采购价" id="unit_price2" name="threetosix_price" onchange="auto_cal('2')" onkeyup="clearNoNum(this)">
+                    </div>
+                    <span class="c-red">元</span>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>金额：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" placeholder="自动计算" id="money2" name="threetosix_prices" readonly="readonly">
+                    </div>
+                    <span class="c-red">元</span>
+                </div>
+            </div>
+        </div>
+        <div class="de-container">
+            <div class="msg_content">
+                <div class="msg_del">6-12个月</div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>数量：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" private="required"  msg="数量" placeholder="请输入数量" id="quantity3" name="sixtotwelve_num" onchange="auto_cal('3')" onkeyup="clearNoNum(this)">
+                    </div>
+                    <span class="c-red">辆</span>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>采购价：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" private="required"  msg="采购价" readonly="readonly" placeholder="请输入采购价" id="unit_price3" name="sixtotwelve_price" onchange="auto_cal('3')" onkeyup="clearNoNum(this)">
+                    </div>
+                    <span class="c-red">元</span>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>金额：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" placeholder="自动计算" id="money3" name="sixtotwelve_prices" readonly="readonly">
+                    </div>
+                    <span class="c-red">元</span>
+                </div>
+            </div>
+        </div>
+        <div class="de-container">
+            <div class="msg_content">
+                <div class="msg_del">1年以上</div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>数量：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" private="required"  msg="数量" placeholder="请输入数量" id="quantity4" name="year_num" onchange="auto_cal('4')" onkeyup="clearNoNum(this)">
+                    </div>
+                    <span class="c-red">辆</span>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>采购价：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" private="required" readonly="readonly"  msg="采购价" placeholder="请输入采购价" id="unit_price4" name="year_price" onchange="auto_cal('4')" onkeyup="clearNoNum(this)">
+                    </div>
+                    <span class="c-red">元</span>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>金额：</label>
+                    <div class="formControls col-xs-8 col-sm-3">
+                        <input type="text" class="input-text" value="" placeholder="自动计算" id="money4" name="year_prices" readonly="readonly">
+                    </div>
+                    <span class="c-red">元</span>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-2">
+                <button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+                <button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function article_save_submit(){
+        if ($("#carbrand option:selected").text()=="请选择") {
+            layer.msg("请选择品牌");
+            return false;
+        }
+        if ($("#carseries option:selected").text()=="请选择") {
+            layer.msg("请选择车系");
+            return false;
+        }
+        var num=0;
+        var str="";
+        $("input[private='required']").each(function(n){
+            if($.trim($(this).val())=="")
+            {
+                num++;
+                str+=$(this).attr("msg")+"不能为空！\r\n";
+            }
+        });
+        if(num>0)
+        {
+            layer.msg(str);
+        }
+        else
+        {
+            var str = $("#form-article-add").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{:Url("add")}',
+                data:str,
+                dataType: 'json',
+                success: function(data){
+                    if(data.status=='1'){
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }else{
+                        layer.msg(data.msg);
+                        setTimeout("location.reload();",3000);
+                    }
+                },
+                error:function(data) {
+                    if(data.status=='0'){
+                        layer.msg(data.msg);
+                    }
+                },
+            });
+        }
+    }
+
+    //预加载获取品牌
+    $(document).ready(function(){
+        var store_id = "store_id=" + $("#store_id").val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    var html = '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                    $("#carbrand_id").append(html);
+                });
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+
+    //获取品牌（通过选择）
+    $("#store_id").change(function(){
+        var html = '<option>请选择</option>';
+        var store_id = "store_id=" + $(this).val();
+        $("#carbrand_id").html('<option>请选择</option>');
+        $("#carseries_id").html("<option value=''>请先选择品牌</option>");
+        $("#carsize_id").html("<option value=''>请先选择车系</option>");
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    html += '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                    $("#carbrand_id").html(html);
+                });
+
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取车系
+    $("#carbrand_id").change(function(){
+        var html="<option>请选择</option>";
+        var carbrand_id = "carbrand_id=" + $(this).val();
+        $("#carsize_id").html("<option value=''>请先选择车系</option>");
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carseries")}',
+            data: carbrand_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    html += '<option class="carseries" value="'+v.id+'">'+v.carseries_name+'</option>';
+                    $("#carseries_id").html(html);
+                });
+
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取车型
+    $("#carseries_id").change(function(){
+        var html = '<option>请选择</option>';
+        var carseries_id = "carseries_id=" + $(this).val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carsize")}',
+            data: carseries_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    html += '<option class="carsize" value="'+v.id+'">'+v.carsize_name+'</option>';
+                    $("#carsize_id").html(html);
+                });
+
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    
+    //根据车型查询厂家开票进货价格
+    $("#carsize_id").change(function(){
+        var id = "id=" + $(this).val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("invoiceprice")}',
+            data: id,
+            dataType: 'json',
+            success: function(data){
+                $('input[msg="采购价"]').each(function(){
+                        $(this).val(data.invoice_price);
+                        $(this).change();
+                });
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });    
+    //自动计算金额
+    function auto_cal(i){
+        var a = $("#quantity"+i).val();
+        var b = $("#unit_price"+i).val();
+        var c = a * b;
+        $("#money"+i).val(c);
+    }
+</script>
+{/block}

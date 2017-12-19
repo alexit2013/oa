@@ -1,0 +1,489 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+	<input type="hidden" name="ajax" id="ajax" value="1">
+	<select name="dept_list" id="dept_list" class="hidden">
+		{:fill_option($dept_list)}
+	</select>
+	{:W('PageHeader/search',array('name'=>'用户管理','search'=>'S'))}
+	<form method="post" id="form_adv_search" name="form_adv_search" method="post">
+		<input type="hidden" name="ajax" id="ajax" value="1">
+		<div class="operate panel panel-default">
+			<div class="panel-body">
+				<div class="pull-left form-inline">
+					<label  for="eq_is_del"><b>状态:</b></label>
+					<select id="eq_is_del" name="eq_is_del" class="col-10 form-control" onchange="submit_adv_search();">
+						<option value="0">启用</option>
+						<option value="1">禁用</option> 
+						<option value="2">其他</option>
+					</select>
+					<a onclick="import_user()" class="btn btn-sm btn-primary">导入</a>
+					<a onclick="weixin_sync()" class="hidden btn btn-sm btn-primary">同步到微信</a>
+					<a onclick="reset_pwd()" class="btn btn-sm btn-primary">设置密码</a>
+                                        <!--
+					<a onclick="del_pwd()" class="btn btn-sm btn-primary">清空工资密码</a>
+                                        -->
+				</div>
+				<div class="pull-right">
+					<a onclick="add()"  class="btn btn-sm btn-primary">新增</a>
+					<a onclick="save()"  class="btn btn-sm btn-primary">保存</a>
+					|
+					<a onclick="del()"  class="btn btn-sm btn-danger">删除</a>
+				</div>
+			</div>
+		</div>
+	</form>
+	<div class="row">
+		<div class="col-sm-4 sub_left_menu ">
+			<form id="form_user" name="form_data" method="post" class="form-horizontal">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="text-center col-4"><label class="inline pull-left">
+								<input class="ace" type="checkbox" name="id-toggle-all" id="id-toggle-all" />
+								<span class="lbl"></span></label></th>
+							<th>员工编号</th>
+							<th>姓名</th>
+							<th>状态</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name="list" id="data">
+							<tr id="{$data.id}" class="tbody">
+								<td class="text-center col-3"><label class="inline pull-left">
+									<input class="ace" type="checkbox" name="user_id[]" value="{$data.id}" />                                                                     
+									<span class="lbl"></span></label></td>
+								<td class="click">{$data.emp_no}</td>
+								<td class="click">{$data.name}</td>
+								<td class="click">{$data.is_del|status}</td>
+							</tr>
+						</volist>
+					</tbody>
+				</table>
+			</form>
+			<div class="pagination">
+				{$page}
+			</div>
+		</div>
+		<div class="col-sm-8">
+			<form id="form_data" name="form_data" method="post" class="form-horizontal">
+				<input type="hidden" id="save_name" name="save_name">
+				<input type="hidden" name="id" id="id">
+				<input type="hidden" name="pic" id="pic" >
+				<input type="hidden" name="signature" id="signature" >
+				<input type="hidden" name="opmode" id="opmode" value="edit">
+				<table class="table table-bordered" >
+					<tr>
+						<th class="col-10">
+						<nobr>
+							员工编号<i>*<i>
+						</nobr></th>
+						<td colspan="2" class="col-30">
+						<input class="form-control" type="text" id="emp_no" name="emp_no"  check="require" msg="请输入员工编号" readonly="readonly">
+						</td>
+						<td rowspan="3" class="col-20">
+							<img class="img-thumbnail col-12" id="emp_pic" onerror="javascript:this.src='__ROOT__/Uploads/emp_pic/no_avatar.jpg'" >
+							
+						</td>
+					</tr>
+					<tr>
+						<th>姓名<i>*<i></th>
+						<td colspan="2">
+						<input  class="form-control" type="text" id="name" name="name" class="input-sm" check="require" msg="请输入姓名">
+						</td>
+					</tr>
+					<tr>
+						<th>昵称<i>*<i></th>
+						<td colspan="2">
+						<input  class="form-control" type="text" id="nickname" name="nickname" class="input-sm" check="require" msg="请输入昵称">
+						</td>
+					</tr>
+					<tr>
+						<th>性别</th>
+						<td colspan="2">
+						<select name="sex" id="sex" class="form-control col-10">
+							<option  value="male">男</option>
+							<option value="female">女</option>
+						</select></td>
+					</tr>
+					<tr>
+						<th>生日</th>
+						<td colspan="2">
+						<input  type="text" id="birthday" name="birthday" readonly="readonly" class="input-date form-control">
+						</td>
+						<td colspan="2"><a onclick="select_avatar();" class="btn btn-sm btn-primary">上传头像</a>
+							</td>
+					</tr>
+					<tr>
+						<th>主要部门<i>*<i></th>
+						<td class="col-20">
+						<div class="input-group ">
+							<input class="form-control" name="dept_name"  id="dept_name" type="text" msg="请选择部门" check="require" readonly="readonly" />
+							<input name="dept_id" id="dept_id" type="hidden" msg="请选择部门" check="require" />
+							<div class="input-group-btn">
+								<a class="btn btn-sm btn-primary" onclick="select_dept();" > <i class="fa fa-search" ></i> </a>
+							</div>
+                                                </div></td>
+						<th class="col-10">职位<i>*<i></th>
+						<td>
+						<select name="position_id" id="position_id" class="form-control" msg="请选择职位" check="require">
+							 <!-- 判断超级管理员选择职位权限 -->
+                                                        <?php if(session('com_id')!=='0'){ ?>
+                                                        <option value="37">员工</option>
+                                                        <?php }else{ ?>
+                                                        <option value="">选择职位</option>
+                                                        {:fill_option($position_list)}
+                                                        <?php } ?>
+						</select></td>
+					</tr>
+                     <th class="col-10">所在公司<i>*<i></th>
+						<td>
+						<select name="com_id" id="com_id" class="form-control  selectcom" msg="请选择公司" check="require">   
+                            <option value="">选择公司</option>
+                            {:fill_option($com_list)}
+						</select></td>               
+					<tr>
+						<th>
+						<nobr>
+							办公室电话
+						</nobr></th>
+						<td>
+						<input type="text" id="office_tel" name="office_tel" class="form-control">
+						</td>
+						<th>
+						<nobr>
+							移动电话
+						</nobr></th>
+						<td>
+						<input type="text" id="mobile_tel" name="mobile_tel" class="form-control">
+						</td>
+					</tr>
+					<tr>
+                                        <tr>
+						<th>微信账号</th>
+						<td colspan="3">
+						<input type="text" id="weixin" name="wexin" class="form-control">
+						</td>
+					</tr>
+					<tr>
+						<th>电子邮箱</th>
+						<td colspan="3">
+						<input type="email" id="email" name="email" class="form-control">
+						</td>
+					</tr>
+					<tr>
+						<th>
+						<nobr>
+							负责业务
+						</nobr></th>
+						<td colspan="3">
+						<input type="text" id="duty" name="duty" class="form-control">
+						</td>
+					</tr>
+					<tr>
+						<th>状态</th>
+						<td colspan="3">
+						<select class="form-control col-10"  name="is_del" id="is_del">
+							<option  value="0">启用</option>
+							<option value="1">禁用</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td colspan="5">
+						<p align="">
+							带*为必填选项
+						</p></td>
+					</tr>
+				</table>
+					<div class="popup-body clearfix">
+			<!-- <div class="col-23 pull-left">
+				<span class="popup-label"><b>部门</b></span>
+				<div class="popup_tree_menu">
+					<div id="dept" style="width:100%;height:500px;">
+						<ul class="tree_menu">
+							<volist name="treeleft" id='treeleft'>
+								<li><a node="{$treeleft['id']}"><i class="fa fa-angle-right">&nbsp;&nbsp;</i><span>{$treeleft['name']}</span></a>
+								</li>
+								<volist name="treeleft[_child]" id='childleft'>
+									<li><a  node="{$childleft['id']}" >
+									&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-right"></i><span>{$childleft['name']}</span></a>
+									</li>
+									<volist name="childleft[_child]" id='childleftC'>
+										<li><a  node="{$childleftC['id']}" >
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-right"></i><span>{$childleftC['name']}</span></a>
+										</li>
+									</volist>
+								</volist>
+							</volist>
+						</ul>
+						</div>
+					</div>
+				</div>				
+			<div class="col-30 pull-left"> -->
+				<!-- <div class="col-7 pull-left text-center mid" style="margin-top: 24px;">
+					<div style="height:500px;">
+						<a onclick="add_address('rc');" class="btn btn-sm btn-primary btn-special"><i class="fa fa-angle-double-right"></i></a>
+						
+					</div> -->
+					<!--协商添加按钮注释开始-->
+					<!-- <a onclick="add_address('cc');" class="btn btn-sm btn-primary"><i class="fa fa-angle-double-right"></i></a> -->
+					<!--协商添加按钮注释结束-->
+				<!-- </div> -->
+                                <?php if(session('com_id')=='0'){ ?>
+				<div class="col-25 pull-left">
+					<b class="popup-label">管理部门</b><span id="rc_count"></span>
+					<div id="rc" class="selected-t" style="width:100%;height:500px;overflow:hidden">
+					<ul class="tree_menu">
+						<volist name="treeright" id='treeright'>
+							<li><a node="{$treeright['id']}"><i class="fa fa-angle-right">&nbsp;&nbsp;</i><span>{$treeright['name']}</span></a>
+							</li>
+							<volist name="treeright[_child]" id='childright'>
+								<li><a company="00032" node="{$childright['id']}" >
+								&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-right"></i><span>{$childright['name']}</span></a>
+								</li>
+								<volist name="childright[_child]" id='childrightC'>
+									<li><a id="dept_A_<?php echo $childrightC['id'];?>" class="hello" node="{$childrightC['id']}" >
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-right"></i><span>{$childrightC['name']}</span></a>
+									</li>
+								</volist>
+							</volist>
+						</volist>
+					</ul>
+					</div>					
+				</div>
+
+				<div class="col-25 pull-right">
+					<b class="popup-label">管理公司</b><span id="rc_count"></span>
+					<div id="rc" class="selected-t" style="width:100%;height:500px;overflow:hidden">
+					<ul class="tree_menu_com">
+						<volist name="com_list" id='listcom'>
+							<li><a id='com_id_{$listcom["id"]}' node="{$listcom['id']}"><i class="fa fa-angle-right">&nbsp;&nbsp;</i><span>{$listcom['name']}</span></a>
+							</li>
+						</volist>
+					</ul>
+					</div>			
+				</div>
+                                <?php } ?>
+			</div>
+		</div>	
+		<input type="hidden" id='dsp_data' name="dsp_data" value=''>
+                <input type="hidden" id='coms_data' name="coms_data" value=''>
+
+			</form>
+		</div>
+	</div>
+</block>
+<block name="js">
+	<script type="text/javascript">
+            //添加其他部门增量
+            var i;
+            // function test(){
+            //     sendForm("form_data", "{:U('data')}");
+            // }
+		function add() {
+			winopen("{:U('add')}", 880, 600);
+		};
+		function del_pwd() {
+			if ($("input[name='user_id[]']:checked").length === 0) {
+				ui_error('请选择要清空密码的人员 ');
+				return;
+			}
+			var vars = $("#form_user").serialize();
+			ui_confirm('确定要清空密码吗?', function() {
+
+				sendAjax("{:U('del_pwd')}", vars, function(data) {
+					if (data.status) {
+						ui_alert(data.info, function() {
+							location.reload(true);
+						});
+					}
+				});
+			});
+		}
+
+		function del() {
+			if ($("input[name='user_id[]']:checked").length === 0) {
+				ui_error('请选择要删除的人员 ');
+				return;
+			}
+			var vars = $("#form_user").serialize();
+                    
+			ui_confirm('确定要删除吗?', function() {
+				sendAjax("{:U('del')}", vars, function(data) {
+					if (data.status) {
+						ui_alert(data.info, function() {
+							location.reload(true);
+						});
+					}
+				}); 
+			});
+		}
+
+		function reset_pwd() {
+			if ($("#id").val().length < 1) {
+				ui_error("请选择用户");
+				return false;
+			}
+			winopen("{:U('password')}?id=" + $("#id").val(), 560, 470);
+		}
+
+		function import_user() {
+			window.open("{:U('import')}", "_self");
+			return false;
+		}
+
+		function select_dept() {
+			winopen("{:U('dept/winpop2')}", 560, 470);
+		}
+                 $(document).on('click',"#dept_select",function(){
+                    var num = $(this).children('#num').val();
+                    winopen("http://{$_SERVER['SERVER_NAME']}/index.php?m=&c=dept&a=winpop3&num="+num, 560, 470);
+                 });
+//                $("").click(function(){
+//                    var num = $(this+" #num").val();                 
+//                    winopen("http://{$_SERVER['SERVER_NAME']}/index.php?m=&c=dept&a=winpop3&num="+num, 560, 470);
+//                });
+		function weixin_sync() {
+			winopen("{:U('weixin_sync')}",560, 470);
+		}
+
+		function select_avatar() {
+			if ($("#id").val().length < 1) {
+				ui_error("请选择用户");
+				return false;
+			}
+			winopen("{:U('popup/avatar')}?id=" + $("#id").val(), 560, 470);
+		}
+
+		function select_signature() {
+			if ($("#id").val().length < 1) {
+				ui_error("请选择用户");
+				return false;
+			}
+			winopen("{:U('popup/signature')}?id=" + $("#id").val(), 560, 470);
+		}
+
+		function btn_search() {
+			sendForm("form_search", "__SELF__");
+			$("#form_search").submit();
+		}
+
+		function key_search() {
+			if (event.keyCode == 13) {
+				sendForm("form_search", "__SELF__");
+				return false;
+			}
+		}
+
+		function save() {
+			dsps();
+                        coms();
+			sendForm("form_data", "{:U('save')}");
+		}
+
+		function showdata(result) {
+                        $('.tree_menu li a').removeClass('active');
+                        $('.tree_menu_com li a').removeClass('active');
+                        var htmls = '';
+			$("#form_data select ").each(function() {
+				$(this).find('option:first').attr('selected', 'selected');
+			});
+			$("#form_data .selectcom ").each(function() {
+				$(this).find('option:first').attr('selected', 'selected');
+			});
+			for (var s in result.data) {
+				set_val(s, result.data[s]);
+			}
+						
+                        for (var k in result.data.depts){
+                        	$("#dept_A_"+result.data.depts[k].dept_id).attr('class','active');
+                        }
+                        for (var f in result.data.coms){
+                        	$("#com_id_"+result.data.coms[f].com_id).attr('class','active');
+                        }
+                        
+			$("#dept_name").val($("#dept_list option[value='" + $("#dept_id").val() + "']").text());
+			img_url = $("#pic").val();
+			if (img_url !== "") {
+				img_url += "?t=" + Math.random();
+				$("#emp_pic").attr("src", img_url);
+			} else {
+				$("#emp_pic").attr("src", "__ROOT__/Uploads/emp_pic/no_avatar.jpg");
+			}
+
+			$("#save_name").val("");
+			$("#opmode").val("edit");
+		}
+                /*
+                 * 添其他管理部门
+                 */
+                
+                function depts_add(){
+                    i++;
+                    $("#depts").append(' <div  class="input-group "><a class="btn btn-sm btn-primary form-color a-hover-special" id="dept_select" >\n\
+                                        <input type="hidden" id="num" value="'+i+'" />\n\
+                                        <input class="form-control" name="dept_names['+i+']"  id="dept_names'+i+'" type="text" msg="请选择部门" readonly="readonly" />\n\
+                                        <input name="dept_ids['+i+']" id="dept_ids'+i+'" type="hidden" msg="请选择部门" /></a></div>');
+                }
+                $('.tree_menu li a').click(function(){
+                	if($(this).attr('company')!='00032'){
+                		if ($(this).hasClass('active')) { 
+                        $(this).removeClass('active');
+                    	}else{
+                        $(this).attr('class','active');
+                   		}
+                	}
+                });
+               $('.tree_menu_com li a').click(function(){
+                		if ($(this).hasClass('active')) { 
+                        $(this).removeClass('active');
+                    	}else{
+                        $(this).attr('class','active');
+                   		}
+                });
+                function coms(){
+                    $('#coms_data').val("");
+                    var divs = $(".tree_menu_com a.active");
+                             var $coms = "";
+                             for(var i=0; i<divs.length; i++){
+                                    if(divs.length-1 == i){
+                                            $coms += divs.eq(i).attr("node");
+                                    }else{
+                                            $coms += divs.eq(i).attr("node")+",";
+                                    }                        
+                            }
+					
+					$('#coms_data').val($coms);
+			     }           
+                function dsps(){
+                    $('#dsp_data').val("");
+                            var divs = $(".tree_menu a.active");
+                             var $depts = "";
+                             for(var i=0; i<divs.length; i++){
+                                    if(divs.length-1 == i){
+                                            $depts += divs.eq(i).attr("node");
+                                    }else{
+                                            $depts += divs.eq(i).attr("node")+",";
+                                    }                        
+                            }
+					
+					$('#dsp_data').val($depts);
+			     }           
+                /*
+                 * 添其他管理公司
+                 */
+       
+		$(document).ready(function() {
+			set_return_url();
+			set_val('eq_is_del', "{$eq_is_del}");
+			$(".sub_left_menu tbody td.click").click(function() {
+				$tr = $(this).parent();
+				$(".sub_left_menu tbody tr.active").removeClass("active");
+				$tr.addClass("active"); 
+				sendAjax("{:U('read')}", "id=" + $tr.attr("id"), function(data) {
+					showdata(data);
+				});
+				return false;
+			});
+		});
+	</script>
+</block>

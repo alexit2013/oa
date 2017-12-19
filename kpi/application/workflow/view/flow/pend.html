@@ -1,0 +1,258 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<style>
+    .pr_input{width: 90px;text-align: center;background-color: #eeeeee;}
+    .breadcrumb{
+        background-color: #f5fafe;
+        border: solid 1px #eee;
+        border-radius: 10px;
+    }
+    a{
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+    a:hover{
+        color: inherit;
+        text-decoration: none;
+    }
+    @media (min-width: 726px) {
+        .pc_content{
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            max-width: 1920px;
+        }
+        .mobile_content{
+            display: none;
+        }
+        .bar_box {
+            width: 20%;
+            height: 112px;
+            border: 1px solid #eeeeee;
+            background-color: #FFFFFF;
+            border-radius: 15px;
+            float: left;
+            margin: 10px 2%;
+            overflow: hidden;
+            color: #5eb95e;
+            box-shadow: 4px 5px rgba(0, 80, 13, .3);
+            cursor: default;
+            position: relative;
+        }
+
+        .bar_box > .manager {
+            width: 94%;
+            padding-left: 7%;
+            height: 30px;
+            border-bottom: 1px solid #eeeeee;
+            line-height: 30px;
+            font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 0.8em;
+            background-color: #5d5d5d;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+
+        .bar_box > .manager > span {
+            display: block;
+            width: auto;
+            height: 30px;
+            float: left;
+            padding: 0 10px;
+        }
+        .bar_box > .manager > div.order {
+            width: 20px;
+            height: 20px;
+            border-radius: 100%;
+            color: #FFFFFF;
+            line-height: 20px;
+            text-align: center;
+            float: left;
+            margin-left: 5px;
+            margin-top: 5px;
+            margin-right: 4px;
+        }
+        .start_btn {
+            width: 55px;
+            height: 20px;
+            border: 1px solid #1aac88;
+            background-color: #5a98de;
+            float: right;
+            margin-right: 20px;
+            color: #FFFFFF;
+            font-size: 12px;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .start_btn:hover {
+            background-color: #486d97;
+        }
+        .found,.set_time{
+            width: 80%;
+            height: 18px;
+            line-height: 18px;
+            margin-top: 5px;
+            margin-left: 30px;
+            font-size: 0.7em;
+            color: #afafaf;
+        }
+        .found > span{
+            color: #0a6aa1;
+        }
+        .bar_box > .ap_status{
+            position: absolute;
+            top: 35px;
+            right: 6%;
+            width: 60px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            color: orange;
+            font-size: 0.8em;
+            border: 1px solid orange;
+            transform: rotate(30deg);
+            -webkit-transform: rotate(30deg);
+            -moz-transform: rotate(30deg);
+            -ms-transform: rotate(30deg);
+        }
+    }
+    @media (max-width: 726px) {
+        body,html{
+            width: 100%;
+            height: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: #efefef;
+        }
+
+        .pc_content{
+            display: none;
+        }
+        .mobile_content{
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            background-color: #FFFFFF;
+            border-top: 2px solid #eaeaea;
+        }
+        .mobile_content .content_list{
+            height: 40px;
+            width: 90%;
+            padding: 20px 5%;
+            border-bottom: 2px solid #eaeaea;
+        }
+        .mobile_content .content_icon{
+            width: 38px;
+            height:38px;
+            background-color: #07aa75;
+            border: 2px solid #bfd2ce;
+            color: #FFFFFF;
+            font-size: 34px;
+            text-align: center;
+            line-height: 38px;
+            float: left;
+            border-radius: 4px;
+            margin-right: 3px;
+        }
+        .mobile_content .content_info{
+            width: 66%;
+            height: 40px;
+            float: left;
+            font-size: 0.8em;
+            line-height: 20px;
+        }
+        .content_info .set_time{
+            color: #a4a4a4;
+        }
+        .mobile_content .info_status{
+            width: 13%;
+            height: 20px;
+            font-size: 0.8em;
+            line-height: 20px;
+            text-align: center;
+            float: left;
+            border: 1px solid orange;
+            color: orange;
+        }
+    }
+</style>
+
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 流程管理 <span class="c-gray en">&gt;</span> 待办 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+
+<div class="cl pd-5 bg-1 bk-gray mt-20" style="padding-bottom: 20px">
+    <!--PC端布局-->
+    <div class="pc_content">
+        <?php if(!empty($list)){ ?>
+        {foreach $list as $v}
+        <div class="bar_box">
+            <div class=" manager">
+                <div class="order"></div>
+                {$v['flow_name']}
+            </div>
+            <div class="found">创建人：<span>{$v['user_name']}</span></div>
+            <div class="set_time">创建时间：<span>{:date('Y-m-d H:i:s',$v['createtime'])}</span></div>
+            <div class="start_btn"><a href="javascript:;" onclick="member_add('/kpi/index.php/func/check/win2/id/{$v['id']}/flow_log_id/{$v['flow_log_id']}/yiban/');">查看&nbsp;&nbsp;<i class="icon Hui-iconfont">&#xe725;</i></a></div>
+            <div class="ap_status"><?php if($v['status'] == 2){ echo '已退回'; }else if($v['status'] == 0){ echo '待审批'; } ?></div>
+        </div>
+        {/foreach}
+        <?php }else{ ?>
+        <div style="width: 100%;line-height: 30px;text-align: center;font-size: 1.2em;font-weight: bold;">暂无代办事项！</div>
+        <?php } ?>
+    </div>
+    <!--PC端布局-->
+
+    <!--手机端布局-->
+    <div class="mobile_content">
+        <?php if(!empty($list)){ ?>
+        {foreach $list as $v}
+        <div class="content_list">
+            <a href="/kpi/index.php/func/check/win2/id/{$v['id']}/flow_log_id/{$v['flow_log_id']}/yiban/" target="_blank">
+                <div class="content_icon"><i class="icon Hui-iconfont">&#xe636;</i></div>
+                <div class="content_info">
+                    <div class="info">{$v['user_name']}提交的{$v['flow_name']}</div>
+                    <div class="set_time">{:date('Y-m-d   H:i:s',$v['createtime'])}</div>
+                </div>
+                <div class="info_status"><?php if($v['status'] == 2){ echo '已退回'; }else if($v['status'] == 0){ echo '待审批'; } ?></div>
+            </a>
+        </div>
+        {/foreach}
+        <?php }else{ ?>
+        <div style="width: 100%;line-height: 30px;text-align: center;font-size: 1.2em;font-weight: bold;">暂无代办事项！</div>
+        <?php } ?>
+    </div>
+    <!--手机端布局-->
+</div>
+{/block}
+
+{block name="js"}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".order").each(function(k,v){
+            var rbgB=['#ef47b4','#08de28','#03d3bb','#fadd55','#9b43bb','#aa9333','#f49cd6','#fc5857','#007775'];
+            var random=Math.floor(Math.random()*9);
+            $(this).css("background-color",rbgB[random]).html(k+1);
+        })
+    });
+    function member_add(url){
+        layer.open({
+            type: 2,
+            title: '待审批',
+            area: ['600px', '500px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: url
+        });
+    }
+    function myDate(s){
+        if(s == '1'){
+            location.reload();
+        }
+    };
+
+</script>
+{/block}

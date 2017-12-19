@@ -1,0 +1,178 @@
+{extend name="base@/base/page_base" /}
+{block name="content"}
+<style>
+	.map_area{height: 420px;border: 1px solid #ccc;padding: 10px;}
+</style>
+<div class="page-container">
+	<form class="form form-horizontal" id="form-admin-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="如：行政部微信GPS打卡，用于快速查找和查看" id="name" name="name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>打卡地址：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="输入地址或移动地图中位置坐标" id="mark_address" name="address">
+				<div class="map_area" id="container"></div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>打卡范围：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="1000" id="range" name="range">
+				<span style="position: absolute;top:0;right:0;color: red;">米</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>经度：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="lng" name="lng" readonly="readonly">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>纬度：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="lat" name="lat" readonly="readonly">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="ps" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！"></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>启用状态：</label>
+			<div class="formControls col-xs-5 col-sm-8 pt-3">
+                    <input type="radio" name="is_del" value="1" checked="">启用
+                    <span style="margin-left: 1rem;"><input type="radio" value="0" name="is_del">停用</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<input id="submit" class="btn btn-primary radius" type="button" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+{block name="js"}
+
+<!-- 提交 -->
+<script type="text/javascript">
+	$("#submit").click(function(){
+		var name = $("#name").val();
+		var adr = $("#mark_address").val();
+		var ran =$("#range").val();
+		var ln =$("#lng").val();
+		var la =$("#lat").val();
+		if(name == ''){
+			layer.msg("请填写名称！");
+			return false;
+		}
+		if(adr == ''){
+			layer.msg("请选择打卡地址！");
+			return false;
+		}
+		if(ran == ''){
+			layer.msg("请填写打卡范围！");
+			return false;
+		}
+		if(ln == ''){
+			layer.msg("请选择经度！");
+			return false;
+		}
+		if(la == ''){
+			layer.msg("请选择纬度！");
+			return false;
+		}else{
+			$.ajax({
+				url: "{:Url('add')}",
+		        dataType: 'json',
+		        data :$('#form-admin-add').serialize(),		
+		        type: 'POST',
+		        cache: false,
+		        success: function(data){
+		        		if(data.status=='1'){
+		        			layer.msg(data.msg);
+		        			setTimeout(function(){
+								parent. location.reload();
+		        			});		        			
+		        		}	        		
+		        },
+		        error:function(data){
+		        		 layer.msg(data.msg);
+		  				 return;
+		        }
+			});
+		}
+	})
+
+</script>
+
+<!-- 地图 -->
+<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp"></script>
+<script type="text/javascript">
+	var geocoder, map, marker = null;
+        var init = function() {
+            var center = new qq.maps.LatLng(24.995548991946308, 102.68121432512999);
+            map = new qq.maps.Map(document.getElementById('container'), {
+                center: center,
+                zoom: 13
+            });
+            //地址和经纬度之间进行转换服务
+            geocoder = new qq.maps.Geocoder();
+            qq.maps.event.addListener(map, 'click', function(event) {
+		    	var geocoder, map, marker = null;
+		        // alert('您点击的位置为: [' + event.latLng.getLat() + ', ' +
+		        // event.latLng.getLng() + ']\n\n将地图放大可点击精确位置!');
+		        $("#lng").val(event.latLng.getLng());
+		        $("#lat").val(event.latLng.getLat());
+		        init();
+		        codeLatLng();
+    		});    		
+        }
+
+            function codeLatLng() {
+                //获取输入框的经纬度
+                var p_lat = $("#lat").val();
+		        var p_lng = $("#lng").val();
+		        var lat = parseFloat(p_lat);
+		        var lng = parseFloat(p_lng);
+		        var latLng = new qq.maps.LatLng(lat, lng);
+                //对指定经纬度进行解析
+                geocoder.getAddress(latLng);
+                //设置服务请求成功的回调函数
+                geocoder.setComplete(function(result) {
+                    map.setCenter(result.detail.location);
+                    
+                    var marker = new qq.maps.Marker({
+                        map: map,
+                        position: result.detail.location
+                    });
+                    //点击Marker会弹出反查结果
+                    var info = new qq.maps.InfoWindow({
+                        map: map
+                    });
+                    qq.maps.event.addListener(marker, 'click', function() {
+                        info.open();
+                        info.setContent('<div style="width:280px;height:100px;">' +
+                            result.detail.address + '</div>');
+                        info.setPosition(result.detail.location);
+                    });
+                    $("#mark_address").val(result.detail.address);
+                });
+                //若服务请求失败，则运行以下函数
+                geocoder.setError(function() {
+                    alert("出错了，请输入正确的经纬度！！！");
+                });
+
+            }
+	$(function(){
+		init();
+	});
+</script>
+{/block}

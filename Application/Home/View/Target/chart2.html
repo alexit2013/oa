@@ -1,0 +1,116 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+    <form method="post" action="__SELF__">
+    	<div class="col-sm-3">
+        <label class="control-label col-sm-3 chart2label">店名</label>
+        	<div class="col-sm-9">        
+		        <select class="form-control"  name='dept_id'>
+		            <option value=''>全部</option>
+		            {:fill_option($dept_list)}
+		        </select>
+	        </div>
+        </div>
+        <div class="col-sm-3">
+	        <label class="control-label col-sm-4 chart2label">年份:</label>
+	        <div class="col-sm-8">
+		        <select class="form-control" name='year'>
+		            <option value=''>请选择年份</option>
+		            <option value='2017'>2017</option>
+		            <option value='2018'>2018</option>
+		            <option value='2019'>2019</option>
+		        </select>
+	        </div>
+        </div>
+        <div class="col-sm-3">
+	        <label class="control-label col-sm-4 chart2label">月份:</label>
+	        <div class="col-sm-8">
+		        <select class="form-control" name='month'>
+		            <option value=''>请选择月份</option>
+		            <option value='1'>1月</option>
+		            <option value='2'>2月</option>
+		            <option value='3'>3月</option>
+		            <option value='4'>4月</option>
+		            <option value='5'>5月</option>
+		            <option value='6'>6月</option>
+		            <option value='7'>7月</option>
+		            <option value='8'>8月</option>
+		            <option value='9'>9月</option>
+		            <option value='10'>10月</option>
+		            <option value='11'>11月</option>
+		            <option value='12'>12月</option>
+		        </select>
+	        </div>
+        </div>
+        <div class="col-sm-2 text-right">
+        <button class="hidden" id="turesubmit">提交</button>
+        <a class="btn btn-sm btn-info btn-special" id="chartsubmit" href="javascript:;">提交</a>
+        </div>
+        <input type="hidden" name="search" value='S'>    
+    </form>
+	<a class="btn btn-sm btn-info" id="export2" href="{:U('Chartexcel',array('import'=>'b'))}">导出</a>
+    <div class="chart3tab">
+	<table id="chart1tab">
+		<thead>
+						<tr class="theadcolor">
+							<th>店面</th>
+							<th>品牌</th>
+							<th>车系</th>
+							<th>本月放款台次(台)</th>
+							<th>本月收费(元)</th>
+							<th>本月ASP</th>
+						</tr>
+					</thead>
+					<tbody>
+                        <volist name="chart2list" id='vo'>
+						<tr class="">							 
+							<td>{$vo.name}</td>
+							<td>{$vo.carbrand}</td>
+							<td>{$vo.carseries}</td>
+							<td>{$vo.fktc}</td>
+							<td>{$vo.sf}</td>
+							<td>{$vo.asp}</td>							
+						</tr>
+                        </volist>
+					</tbody>
+			</table>
+    </div>
+    <script type="text/javascript">
+    $(function(){  	
+    	$("#chartsubmit").click(function(){
+    		var num = 0;
+    		var str ="";
+    		$("select[check='require']").each(function(n){
+		          if($(this).val()=="")
+		          {
+		               num++;
+		               str+=$(this).attr("msg")+"\r\n";
+		          }
+		     });
+		     if(num>0)
+		     {
+		          alert(str);
+		     }
+		     else{
+    		$("#turesubmit").click();
+    		}
+    	});
+    });
+    </script>
+    <script>
+	$(function () {
+		$('#chart1tab').fxdHdrCol({
+			fixedCols: 0,
+			width: "100%",
+			height: 400,
+			colModal: [
+			{ width: 135, align: 'center' },
+			{ width: 135, align: 'center' },
+			{ width: 135, align: 'center' },
+			{ width: 135, align: 'center' },
+			{ width: 135, align: 'center' },
+			{ width: 135, align: 'center' }			
+			]
+		});	
+	});
+	</script>     
+</block>

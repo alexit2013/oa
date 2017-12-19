@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>三个月滚动库存（整车）</title>
+        <script type="text/javascript" src="__PUBLIC__/kpi/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/kpi/table.js"></script>
+        <link rel="stylesheet" type="text/css" href="/position/public/lib/Hui-iconfont/1.0.8/iconfont.css" />
+        <link rel="stylesheet" type="text/css" href="/position/public/lib/self_tip.css" />
+        <script type="text/javascript" src="/position/public/lib/layer/2.4/layer.js"></script>
+        <script type="text/javascript" src="/position/public/lib/pubjs.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var w = $(".table_box").width();
+                var h = $(".table_box").height();
+                $("#MyTable thead tr th").css({"padding":"10px 10px","height":"20px"});
+                $("table").css({"text-align":"center","font-size":"0.5rem","width":w,"height":h});
+                $("table td").css({"padding":"10px","color":"rgb(70, 70, 70)"});
+                FixTable("MyTable",  2, w, h);
+            });
+            // ]]>
+        </script>   
+
+        <style>
+            body{
+                font-size: 62.5%;               
+            }
+            table{border-collapse:collapse;}
+            .table_box{
+                width: 100%;
+                height: 500px;
+                margin: 0 auto;
+                font-size: 0.5rem;
+            }
+            a{
+                text-decoration: none;;
+            }
+            .top_bar{
+                width: 100%;
+                height: 40px;
+            }
+            .top_bar .btn{
+                width: auto;
+                height: 20px;
+                padding: 4px 12px;
+                margin-top: 6px;
+                background-color: #5a98de;
+                border-radius: 8px;
+                -webkit-border-radius: 8px;
+                color: #fff;
+                font-size: 14px;
+                font-weight: 400;
+            }
+            .search_box{
+                width: 100%;
+                height: 40px;
+                margin: 10px auto;
+                border: 1px solid #eaeaea;
+            }
+            .select_box{
+                border: solid 1px #ddd;
+                box-sizing: border-box;
+                vertical-align: middle;
+                width: 200px;
+                padding: 4px 5px;
+                display: inline-block;
+                margin-top: 5px;
+                margin-left: 20px;
+                float: left;    
+                height: 30px;           
+            }
+            .search_box >span{
+                display: block;
+                float: left;
+                width: 40px;
+                height: 40px;
+                float: left;
+                text-align: right;
+                line-height: 40px;
+                font-size: 14px;
+            }
+            .select{
+                border: 0;
+                font-size: 14px;
+                box-sizing: border-box;
+                cursor: pointer;
+                line-height: normal;
+                font-weight: normal;
+                width: 100%;
+                float: right;
+                white-space: nowrap;
+                outline: none;              
+            }
+            .search_btn{
+                background-color: #5a98de;
+                border-radius: 5px;
+                color: #FFFFFF;
+                float: left;
+                display: inline-block;
+                box-sizing: border-box;
+                cursor: pointer;
+                text-align: center;
+                font-weight: 400;
+                white-space: nowrap;
+                vertical-align: middle;
+                -moz-padding-start: npx;
+                -moz-padding-end: npx;
+                width: auto;
+                border: none;
+                outline: none;
+                height: 30px;
+                margin-left: 20px;
+                margin-top: 5px;
+                padding: 0 10px;
+            }                       
+        </style>
+
+    </head>
+
+    <body>
+        <form action="{:Url('index')}" method="post">
+            <div class="search_box">
+                <span>门店:</span>
+                <div class="select_box">                    
+                    <select class="select" name="store_id" id="store_id">
+                        <?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+                        <option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <button name="" id="" class="search_btn" type="submit"> 查询</button>
+                <!--清除数据-->
+                <input type="hidden" id="table_name" value="threerollcar">
+                <?php $clear_button = session("clear_button"); if($clear_button == "1"){ echo '<button name="" id="clear_button" style="background-color:orange;" class="search_btn" type="button" onclick="clearbutton()">清空数据</button>';} ?>
+                <!--清除数据-->
+                <!--审批状态-->
+                <?php foreach ($data_status['update_list'] as $key => $value) { ?>
+                    <input type="hidden" id="<?php echo 'status'.$key; ?>" value="<?php echo  $value; ?>" class="status">
+                <?php } ?>
+                <!--审批状态-->
+            </div>
+        </form>
+        <h1 style="width:100%;text-align: center;"><span></span>三个月滚动库存（整车）{:is_pass($data_status['status_list'])}</h1>
+        <div class="table_box">
+            <table border="1" bordercolor="#ddd" cellpadding="0" cellspacing="0" id="MyTable">
+                <thead>
+                    <tr>
+                        <th rowspan="2"><div style="width: 100px;"></div></th>
+                        <th rowspan="2"><div style="width: 100px;">车系</div></th>
+                        <th><div style="width: 100px;">上年库存</div></th>
+                        <th rowspan="2"><div style="width: 100px;">1月预计</div> </th>
+                        <th rowspan="2"><div style="width: 100px;">1月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">2月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">2月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">3月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">3月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">4月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">4月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">5月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">5月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">6月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">6月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">7月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">7月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">8月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">8月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">9月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">9月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">10月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">10月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">11月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">11月实际</div></th>
+                        <th rowspan="2"><div style="width: 100px;">12月预计</div></th>
+                        <th rowspan="2"><div style="width: 100px;">12月实际</div></th>
+                    </tr>
+                    <tr>
+                        <th>12月实际</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+					<!--销量-->
+                                        {foreach $data_list as $k => $v}
+					<tr>
+                                            <td rowspan="{:count($v)}" <?php if($k=='整体库存当量'){ echo 'colspan="2"'; }?> style="padding: 10px;">{$k}</td>
+                                                {foreach $v as $ko => $vo}
+                                                <?php if($k!='整体库存当量'){ ?>
+						<td style="padding: 10px;" {eq name="$ko" value="total"}class="total"{/eq}><?php if($ko=='total'){echo "合计";}else{echo $ko;}?></td>
+                                                <?php } ?>
+                                                <td class='<?php if($ko == "total" || $k =="期末库存"){ echo ""; }else{ echo "actuallast";} ?>' data-key="actual" data-type="float" data-order='<?php if(isset($data_id[$k][$ko][($year-1)."-12|actual"])){ echo $data_id[$k][$ko][($year-1)."-12|actual"]; } ?>' style="padding: 10px;">
+                                                    <?php if(isset($vo[($year-1)."-12|actual"])){ 
+                                                        echo $vo[($year-1)."-12|actual"];   //12月实际
+                                                    } ?>
+                                                    
+                                                </td>
+                                                {for start="1" end="13"}
+						<td style="padding: 10px;" class='<?php if($ko == "total" || $k =="期末库存"){ echo ""; }else{ echo "expect".$i;} ?>' data-key="expect" data-type="float" data-order='<?php if(isset($data_id[$k][$ko][$year."-".$i."|expect"])){ echo $data_id[$k][$ko][$year."-".$i."|expect"]; } ?>'>
+                                                    <?php if(isset($vo[$year."-".$i."|expect"])){ 
+                                                        echo $vo[$year."-".$i."|expect"]; 
+                                                        } ?>
+                                                </td>
+						<td style="padding: 10px;" class='<?php if($ko == "total" || $k =="期末库存"){ echo ""; }else{ echo "actual".$i;} ?>' data-key="actual" data-type="float" data-order='<?php if(isset($data_id[$k][$ko][$year."-".$i."|actual"])){ echo $data_id[$k][$ko][$year."-".$i."|actual"]; } ?>'>
+                                                    <?php if(isset($vo[$year."-".$i."|actual"])){ 
+                                                    echo $vo[$year."-".$i."|actual"]; 
+                                                    } ?>
+                                                </td>
+                                                {/for}
+					</tr>
+                                            {/foreach}
+                                        
+                                        {/foreach}
+					
+					
+					<!--表第二部分-->
+                                        <?php 
+                                            $lastchaoqi = 0; //去年超期
+                                            $chaoqi = array();  //超期
+                                        ?>
+                                        {foreach $data_over as $k =>$v}
+					<tr>
+                                            
+						<td colspan="2" style="padding: 10px;">{:threerollcar($k)}</td>
+                        <td class="actuallast1" data-key="{$k}_actual" data-type="float" data-class="" style="padding: 10px;">
+                           <?php if(!empty($v[($year-1)."-12|actual"])){
+                                echo $v[($year-1)."-12|actual"];   //12月实际
+                                $lastchaoqi += $v[($year-1)."-12|actual"];
+                            } ?>
+                        </td>
+                        <?php for($i=1;$i<=12;$i++){ ?>
+						<td class="cqexpect{$i}" data-month="{$i}" data-key="{$k}_expect" data-type="float" data-class="" style="padding: 10px;">
+                            <?php if(!empty($v[$year."-".$i."|expect"])){
+                                echo $v[$year."-".$i."|expect"];   //1月预计
+                                if(!isset($chaoqi[$i."m_expect"])){
+                                    $chaoqi[$i."m_expect"] = 0;
+                                }
+                                $chaoqi[$i."m_expect"] += $v[$year."-".$i."|expect"];
+                            } ?>
+                        </td>
+                        <td class="cqactual{$i}" data-month="{$i}" data-key="{$k}_actual" data-type="float" data-class="" style="padding: 10px;">
+                            <?php if(!empty($v[$year."-".$i."|actual"])){
+                                echo $v[$year."-".$i."|actual"];   //1月实际
+                                if(!isset($chaoqi[$i."m_actual"])){
+                                    $chaoqi[$i."m_actual"] = 0;
+                                }
+                                $chaoqi[$i."m_actual"] += $v[$year."-".$i."|actual"];
+                            } ?>
+                        </td>
+                        <?php } ?>
+					</tr>	
+                                        {/foreach}
+					<!--超期小计-->
+					<tr style="background-color: red;">
+						<td colspan="2" style="padding: 10px;">超期小计</td>
+						<td style="padding: 10px;">{$lastchaoqi}</td>
+                                                <?php for($i=1;$i<=12;$i++){ ?>
+                                                <td style="padding: 10px;">
+                                                    <?php if(!empty($chaoqi[$i."m_expect"])){ 
+                                                        echo $chaoqi[$i."m_expect"];
+                                                    }?>
+                                                </td>
+                                                <td style="padding: 10px;">
+                                                    <?php if(!empty($chaoqi[$i."m_actual"])){ 
+                                                        echo $chaoqi[$i."m_actual"];
+                                                    }?>
+                                                </td>
+						<?php } ?>
+					</tr>	
+					<!--财务资金需求（万元）-->
+                                            <tr>
+                                                <td rowspan="4" style="padding: 10px;">财务资金需求（万元）</td>
+                                            <?php $lastfinance = 0;$finance_total = array(); ?>
+                                            {foreach $finance as $k => $v}
+						<td style="padding: 10px;">{:threerollcar($k)}</td>
+                                                <td class="actuallast1" data-month="{$i}" data-key="{$k}_actual" data-type="float" data-class="" style="padding: 10px;">
+                                                   <?php if(!empty($v[($year-1)."-12|actual"])){ 
+                                                        echo $v[($year-1)."-12|actual"];   //12月实际
+                                                        $lastfinance += $v[($year-1)."-12|actual"];
+                                                    } ?>
+                                                </td>
+                                                <?php for($i=1;$i<=12;$i++){ ?>
+                                                <td class="cqexpect{$i}" data-month="{$i}" data-key="{$k}_expect" data-type="float" data-class="" style="padding: 10px;">
+                                                    <?php if(!empty($v[$year."-".$i."|expect"])){ 
+                                                        echo $v[$year."-".$i."|expect"];   //x月预计
+                                                        if(!isset($finance_total[$i."m_expect"])){
+                                                            $finance_total[$i."m_expect"] = 0;
+                                                        }
+                                                        $finance_total[$i."m_expect"] += $v[$year."-".$i."|expect"];
+                                                    } ?>
+                                                </td>
+                                                <td class="cqactual{$i}" data-month="{$i}" data-key="{$k}_actual" data-type="float" data-class="" style="padding: 10px;">
+                                                    <?php if(!empty($v[$year."-".$i."|actual"])){ 
+                                                        echo $v[$year."-".$i."|actual"];   //1月实际
+                                                        if(!isset($finance_total[$i."m_actual"])){
+                                                            $finance_total[$i."m_actual"] = 0;
+                                                        }
+                                                        $finance_total[$i."m_actual"] += $v[$year."-".$i."|actual"];
+                                                    } ?>
+                                                </td>
+                                                <?php } ?>
+                                            </tr>
+                                            {/foreach}
+					<tr style="background-color: darkseagreen;">
+						<td style="padding: 10px;">合计</td>
+						<td style="padding: 10px;">{$lastfinance}</td>
+						<?php for($i=1;$i<=12;$i++){ ?>
+                                                <td style="padding: 10px;">
+                                                    <?php if(!empty($finance_total[$i."m_expect"])){ 
+                                                        echo $finance_total[$i."m_expect"];
+                                                    }?>
+                                                </td>
+                                                <td style="padding: 10px;">
+                                                    <?php if(!empty($finance_total[$i."m_actual"])){ 
+                                                        echo $finance_total[$i."m_actual"];
+                                                    }?>
+                                                </td>
+						<?php } ?>			
+					</tr>
+                </tbody>
+                
+            </table>
+        </div>
+        <input type="hidden" value="<?php if(!empty($sid)) echo $sid; ?>" id="search_id"/>
+
+        <script type="text/javascript" src="__LIB__/layer/2.4/layer.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var store_id = $("#search_id").val();
+                if (store_id != "") {
+                    $("#store_id").val(store_id);
+                }
+                var store_name = $("#store_id").find("option:selected").text();
+                $("h1 > span").eq(0).html(store_name);
+                $('.total').parent().css('background','red');
+            });
+
+            $(document).ready(function(){
+                $(".status").each(function(){       //查找状态为2的情况，添加修改功能
+                    var status  = $(this).val();
+                    if(status == 2){
+                        var edit_month = $(this).attr("id").substring(6);
+                        if(edit_month == '1'){
+                            $(".expect1,.actuallast").addClass('edit');
+                            $(".cqexpect1").addClass('edit1');
+                            $(".actuallast1").addClass('edit2');
+                        }else{
+                            var last_month = Number(edit_month)-1;
+                            $(".expect"+edit_month+",.actual"+last_month).addClass('edit');
+                            $(".cqexpect"+edit_month).addClass('edit1');
+                            $(".cqactual"+last_month).addClass('edit2');
+                        }
+                    }
+                });
+                //执行
+                var self;
+                    //鼠标经过需要修改的地方的效果
+                    $("td.edit,td.edit1,td.edit2").hover(
+                            function(){
+                                $(this).css({"cursor":"url(/position/public/kpi/img/edit.png),default","background-color":"#eee"});
+                            },
+                            function(){
+                                $(this).css({"cursor":"default","background-color":"#fff"});
+                            }
+                    );
+                    //表一数据修改
+                    $("td.edit").on("dblclick",function(){
+                        self = $(this);
+                        var con = self.html();			//所点击要修改的原内容
+                        var table_name = 'threerollcar';			//所点击要修改的表名
+                        var key_name = self.attr("data-key");			//所点击要修改的键名
+                        var order_num = self.attr("data-order");			//所点击要修改的序号id
+                        var datatype = self.attr("data-type");			//此处是何种类型格式
+                        tip_function(datatype,table_name,key_name,con,1,order_num);
+                    })
+                //表二数据修改->预计
+                    $("td.edit1").on("dblclick",function(){
+                        var date = new Date;
+                        var cur_year=date.getFullYear();
+                        var imonth= $(this).attr("data-month");
+                        self = $(this);
+                        var con = self.html();			//所点击要修改的原内容
+                        var table_name = 'threerollcar_over';			//所点击要修改的表名
+                        var key_name = self.attr("data-key");			//所点击要修改的键名
+                        var datatype = self.attr("data-type");			//此处是何种类型格式
+                        var year = cur_year;
+                        var month = imonth;
+                        var store_id = $("#store_id").val();
+                        tip_function(datatype,table_name,key_name,con,2,"",year,month,store_id,'','');
+                    })
+                //表二数据修改->实际
+                    $("td.edit2").on("dblclick",function(){
+                        var date = new Date;
+                        var cur_year=date.getFullYear();
+                        var imonth= $(this).attr("data-month");
+                        self = $(this);
+                        var con = self.html();			//所点击要修改的原内容
+                        var table_name = 'threerollcar_over';			//所点击要修改的表名
+                        var key_name = self.attr("data-key");			//所点击要修改的键名
+                        var datatype = self.attr("data-type");			//此处是何种类型格式
+                        var year = cur_year;
+                        var month = imonth;
+                        var store_id = $("#store_id").val();
+                        tip_function(datatype,table_name,key_name,con,2,"",year,month,store_id,'','');
+                    })
+
+                });
+        </script>
+
+
+    </body>
+</html>

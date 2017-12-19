@@ -1,0 +1,46 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+
+<div class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-article-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请输入品牌名称" id="revise_obj" name="carbrand_name">
+			</div>
+		</div>
+<!-- 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<ul>
+                    <?php foreach ($stores as $k => $v){ ?>
+					<li class="col-xs-4">
+						<input name="store[{$k}]" type="checkbox" value="{$v['id']}" />
+                                        {$v['name']}
+					</li>
+					<?php } ?>
+				</ul>
+			</div>
+		</div> -->
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+				<button id="ture_submit" style="display: none;" class="btn btn-primary radius" type="submit">提交</button>
+				<button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+	function article_save_submit(){
+			if ($("#revise_obj").val()=="") {
+				layer.msg("请填写品牌"); 
+				return false;
+			}
+			$("#ture_submit").click();
+		}
+		
+</script>
+{/block}

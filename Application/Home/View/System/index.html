@@ -1,0 +1,49 @@
+<extend name="Layout/ins_page" />
+<block name="content">
+	<script type="text/javascript"></script>
+	<form method="post" action="" id="form_search" name="form_search">
+		{:W('PageHeader/simple',array('name'=>'系统信息','search'=>'N'))}
+	</form>
+	<div class="row">
+		<div class="col-lg-3 ">
+			<div class="ibox float-e-margins bg-color-ss1">
+				<div class="ibox-title text-center">
+					<h2>用户数量</h2>
+				</div>
+				<div class="ibox-content text-center">
+					<h1 class="no-margins">{$user_count}</h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 ">
+			<div class="ibox float-e-margins bg-color-ss2">
+				<div class="ibox-title text-center">
+					<h2>部门数</h2>
+				</div>
+				<div class="ibox-content text-center">
+					<h1 class="no-margins">{$dept_count}</h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="ibox float-e-margins bg-color-ss3">
+				<div class="ibox-title text-center">
+					<h2>文件数量</h2>
+				</div>
+				<div class="ibox-content text-center">
+					<h1 class="no-margins">{$file_count}</h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="ibox float-e-margins bg-color-ss4">
+				<div class="ibox-title text-center">
+					<h2>占用空间</h2>
+				</div>
+				<div class="ibox-content text-center">
+					<h1 class="no-margins">{$file_spage|reunit}</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>

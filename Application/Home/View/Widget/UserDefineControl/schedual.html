@@ -1,0 +1,27 @@
+
+<?php if($readonly) { ?>
+
+<select disabled='disabled' class="form-control" id="udf_field_{$id}" name="udf_field_{$id}" >
+            <option value="0">请选择相应班次</option>
+		<?php $list = M('pos_schedual')->select();
+                    foreach ($list as $v){ ?>
+                    <option <?php if($v['id']==$val){ echo "selected='selected'"; } ?> value="{$v['id']}" >
+                        <?php echo $v['shift_name']."(".$v['work_start_time']."-".$v['work_end_time'].")"; ?>
+                    </option>
+                <?php }  ?>
+</select>
+<?php }else{ ?> 
+<select <notempty name="validate">check="{$validate}" msg="{$msg}"</notempty> class="form-control" id="udf_field_{$id}" name="udf_field_{$id}" >
+            <option value="0">请选择相应班次</option>
+		<?php $user_id = get_user_id();
+                        $user = M('user')->field('com_id')->find($user_id);
+                        $scheduals = M('pos_com_schedual')->where("com_id=".$user['com_id'])->find();
+                        if(!empty($scheduals)){
+                            $map['id']  = array('in',$scheduals['schedual_id']);
+                            $list = M('pos_schedual')->where($map)->select();
+                            foreach ($list as $v){ ?>
+                    <option value="{$v['id']}" ><?php echo $v['shift_name']."(".$v['work_start_time']."-".$v['work_end_time'].")"; ?></option>
+                <?php } }  ?>
+</select>
+
+<?php } ?>

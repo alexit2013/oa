@@ -1,0 +1,224 @@
+{extend name="base@base/page_base" /}
+{block name="content"}
+<style>
+    .c-red{color: red;}
+</style>
+<div class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-article-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>门店：</label>
+            <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                        <select class="select" name="store_id" id="store_id">
+                            <?php $res = get_comlist(); foreach($res as $k => $v){  ?>
+                            <option value="<?php echo $v['ID']; ?>"><?php echo $v['NAME']; ?></option>
+                            <?php } ?>
+                        </select>
+				</span></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌：</label>
+            <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                <select class="select" name="carbrand" id="carbrand">
+                    <option>请选择</option>
+                </select>
+				</span></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车系：</label>
+            <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+                <select class="select" name="carseries" id="carseries">
+                    <option>请选择</option>
+                </select>
+				</span></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>车型：</label>
+            <div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+				<select class="select" name="carsize" id="carsize">
+                    <option>请选择</option>
+                </select>
+				</span></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>现金折让：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" value="" placeholder="请输入现金折让金额" id="cash_discount" name="cash_discount" onkeyup="clearNoNum(this)">
+            </div>
+            <span class="c-red">元</span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>预计销售台数：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" value="" placeholder="请输入预计销售台数" id="projected_sale" name="projected_sale" onkeyup="clearNoNum(this)">
+                <input type="hidden" class="input-text" value="" id="iyear" name="iyear">
+                <input type="hidden" class="input-text" value="" id="imonth" name="imonth">
+            </div>
+            <span class="c-red">辆</span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>前装加价金额：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" value="" placeholder="请输入前装加价金额" id="qzjj" name="qzjj" onkeyup="clearNoNum(this)">
+            </div>
+            <span class="c-red">元</span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>前装成本金额：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" value="" placeholder="请输入前装成本金额" id="qzcb" name="qzcb" onkeyup="clearNoNum(this)">
+            </div>
+            <span class="c-red">元</span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>赠送礼包金额：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" value="" placeholder="请输入赠送礼包金额" id="zslb" name="zslb" onkeyup="clearNoNum(this)">
+            </div>
+            <span class="c-red">元</span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>赠送成本金额：</label>
+            <div class="formControls col-xs-8 col-sm-3">
+                <input type="text" class="input-text" value="" placeholder="请输入赠送成本金额" id="zscb" name="zscb" onkeyup="clearNoNum(this)">
+            </div>
+            <span class="c-red">元</span>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-2">
+                <button onClick="article_save_submit();" class="btn btn-primary radius" type="button">提交</button>
+                <button id="ture_submit" style="display: none;" class="btn btn-primary radius" type="submit">提交</button>
+                <button onClick="layer_close();" class="btn btn-default radius ml1r" type="button">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function article_save_submit(){
+        if ($("#store_id option:selected").text()=="请选择") {
+            layer.msg("请选择门店");
+            return false;
+        }
+        if ($("#carbrand option:selected").text()=="请选择") {
+            layer.msg("请选择品牌");
+            return false;
+        }
+        if ($("#carseries option:selected").text()=="请选择") {
+            layer.msg("请选择车系");
+            return false;
+        }
+        if ($("#carsize option:selected").text()=="请选择") {
+            layer.msg("请选择车型");
+            return false;
+        }
+        if ($("#cash_discount").val()=="") {
+            layer.msg("请填写现金折让");
+            return false;
+        }
+        if ($("#projected_sale").val()=="") {
+            layer.msg("预计销售台数");
+            return false;
+        }
+        $("#ture_submit").click();
+    }
+
+    //预加载获取品牌
+    $(document).ready(function(){
+        var store_id = "store_id=" + $("#store_id").val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+                $.each(data,function(k,v){
+                    var html = '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                    $("#carbrand").append(html);
+                });
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+
+    //获取品牌（通过选择）
+    $("#store_id").change(function(){
+        $("#carbrand > option").remove();
+        $("#carseries > option").remove();
+        $("#carsize > option").remove();
+        var store_id = "store_id=" + $(this).val();
+
+        $("#carseries").html("<option value=''>请先选择品牌</option>");
+        $("#carsize").html("<option value=''>请先选择车系</option>");
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carbrand")}',
+            data: store_id,
+            dataType: 'json',
+            success: function(data){
+                var html = '<option>请选择</option>';
+                $.each(data,function(k,v){
+                    html += '<option class="store_id" value="'+v.id+'">'+v.carbrand_name+'</option>';
+                });
+                $("#carbrand").append(html);
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取车系
+    $("#carbrand").change(function(){
+        $("#carseries > option").remove();
+        $("#carsize > option").remove();
+        var carbrand_id = "carbrand_id=" + $(this).val();
+        $("#carsize").html("<option value=''>请先选择车系</option>");
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carseries")}',
+            data: carbrand_id,
+            dataType: 'json',
+            success: function(data){
+                var html = '<option>请选择</option>';
+                $.each(data,function(k,v){
+                    html += '<option class="carseries" value="'+v.id+'">'+v.carseries_name+'</option>';
+                });
+                $("#carseries").append(html);
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取车型
+    $("#carseries").change(function(){
+        $("#carsize > option").remove();
+
+        var carseries_id = "carseries_id=" + $(this).val();
+        $.ajax({
+            type : 'POST' ,
+            url: '{:Url("carsize")}',
+            data: carseries_id,
+            dataType: 'json',
+            success: function(data){
+                var html = '<option>请选择</option>';
+                $.each(data,function(k,v){
+                    html += '<option class="carsize" value="'+v.id+'">'+v.carsize_name+'</option>';
+                });
+                $("#carsize").append(html);
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    });
+    //获取当前年月
+    var date=new Date;
+    var year=date.getFullYear();
+    var month=date.getMonth()+1;
+    $("#imonth").val(month);
+    $("#iyear").val(year);
+</script>
+{/block}
